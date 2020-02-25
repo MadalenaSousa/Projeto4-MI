@@ -24,19 +24,17 @@ session_start()
     $playlists = $api->getUserPlaylists($userData->{'id'}, ['limit' => 2]);
 
     foreach ($playlists->items as $playlist) {
-        echo htmlspecialchars($playlist->name) . '<br>' . $playlist->id . '<br><br>';
+        echo '<div>' . htmlspecialchars($playlist->name) . $playlist->id . '</div>>';
 
         $tracks = $api->getPlaylistTracks($playlist->id, ['limit' => 5]);
 
         foreach ($tracks->items as $track) {
             $track = $track->track;
-            echo $track->name . $track->id . '<br>';
+            echo '<div>' . $track->name . $track->id . '</div>';
 
             $features = getTrackAudioFeatures($api, $track->id)->{'audio_features'}[0];
-            echo 'Danceability: ' . $features->danceability . '<br><br>';
+            echo '<div>Danceability: <span class="danceability">' . $features->danceability . '</span></div>';
         }
-
-        echo '<br>';
     }
 
 ?>

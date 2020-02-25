@@ -1,3 +1,10 @@
-body, body* {
+body {
     background-color: transparent;
+    position: absolute;
+    display: grid;
+}
+
+canvas {
+    position: absolute;
+    z-index: -1;
 }
