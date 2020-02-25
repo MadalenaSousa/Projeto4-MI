@@ -1,6 +1,5 @@
 <?php
 require 'vendor/autoload.php';
-include_once "getTracks.php";
 
 $session = new SpotifyWebAPI\Session(
     'de8b0fa92d7a421da94cd48858522a77',
@@ -10,23 +9,15 @@ $session = new SpotifyWebAPI\Session(
 
 $api = new SpotifyWebAPI\SpotifyWebAPI();
 
-if (isset($_GET['code'])) {
+if (isset($_GET['code'])) { //Se já autorizou, já tem acesso
+    session_start();
+
     $session->requestAccessToken($_GET['code']);
-    $api->setAccessToken($session->getAccessToken());
+    $api->setAccessToken($session->getAccessToken()); //verifica e define o token de acesso
 
-    //getTracks($api);
+    $_SESSION['api_obj'] = $api;
 
-    $features = getTrackAudioFeatures($api)->{'audio_features'}[0];
-    print_r($features);
-
-    echo '<br><br>' . $features->{'energy'} . '<br><br>';
-
-    $meusDados = $api->me();
-    print_r($meusDados);
-
-    echo '<br><br>';
-
-    listUserPlaylists($api, $meusDados->{'id'});
+    header('Location: home.php');
 } else {
     $options = [
         'scope' => [
