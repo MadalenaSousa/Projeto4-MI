@@ -8,7 +8,8 @@ function setup() {
 }
 
 function draw() {
-    stroke(0);
+    background(0);
+    stroke(255);
     noFill();
 
     for(let i = 0; i < danceability.length; i++) {

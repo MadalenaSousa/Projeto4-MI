@@ -24,7 +24,7 @@ session_start()
     $playlists = $api->getUserPlaylists($userData->{'id'}, ['limit' => 2]);
 
     foreach ($playlists->items as $playlist) {
-        echo '<div>' . htmlspecialchars($playlist->name) . $playlist->id . '</div>>';
+        echo '<div>' . htmlspecialchars($playlist->name) . $playlist->id . '</div>';
 
         $tracks = $api->getPlaylistTracks($playlist->id, ['limit' => 5]);
 
