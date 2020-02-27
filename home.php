@@ -1,8 +1,7 @@
 <?php
-include_once "getData.php";
+include_once "php/get_data.php";
 
-session_start()
-
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -17,27 +16,41 @@ session_start()
     <script src="p5/addons/p5.sound.js"></script>
 </head>
 <body>
-<?php
-    $api = $_SESSION['api_obj'];
-    $userData = $api->me();
+<div class="titulo">DURAÇÃO VS AMPLITUDE</div>
 
-    $playlists = $api->getUserPlaylists($userData->{'id'}, ['limit' => 2]);
+<div>
+    <?php
+        $api = $_SESSION['api_obj'];
+        $userData = $api->me();
 
-    foreach ($playlists->items as $playlist) {
-        echo '<div>' . htmlspecialchars($playlist->name) . $playlist->id . '</div>';
+        $playlists = $api->getUserPlaylists($userData->{'id'}, ['limit' => 2]);
 
-        $tracks = $api->getPlaylistTracks($playlist->id, ['limit' => 5]);
+        foreach ($playlists->items as $playlist) {
+            echo '<div class="playlist">';
+            echo '<div><b>' . htmlspecialchars($playlist->name) . '</b></div>';
 
-        foreach ($tracks->items as $track) {
-            $track = $track->track;
-            echo '<div>' . $track->name . $track->id . '</div>';
+            $tracks = $api->getPlaylistTracks($playlist->id, ['limit' => 5]);
 
-            $features = getTrackAudioFeatures($api, $track->id)->{'audio_features'}[0];
-            echo '<div>Danceability: <span class="danceability">' . $features->danceability . '</span></div>';
+            foreach ($tracks->items as $track) {
+                $track = $track->track;
+                echo '<div>' . $track->name . '</div>';
+
+                $features = getTrackAudioFeatures($api, $track->id)->{'audio_features'}[0];
+                echo '<div>Duration: <span class="duration">' . $features->duration_ms . '</span></div>';
+                echo '<div>URI: <span class="uri">' . $features->uri . '</span></div>';
+            }
+
+            echo '</div>';
         }
-    }
 
-?>
+    ?>
+</div>
+
+<a href="second.php" style="text-decoration: none">
+    <div class="button">
+        NEXT
+    </div>
+</a>
 
 <script src="js/sketch.js"></script>
 </body>

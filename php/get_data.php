@@ -1,5 +1,5 @@
 <?php
-require 'vendor/autoload.php';
+require './vendor/autoload.php';
 
 function getTracks($api, $albumId) { //Vai buscar todos os tracks num album
     $tracks = $api->getAlbumTracks($albumId);

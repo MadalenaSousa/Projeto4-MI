@@ -18,7 +18,7 @@ if (isset($_GET['code'])) { //Se já autorizou, já tem acesso
     $_SESSION['api_obj'] = $api;
 
     header('Location: home.php');
-} else {
+} else { //se ainda não autorizou
     $options = [
         'scope' => [
             'user-read-email',
@@ -31,6 +31,6 @@ if (isset($_GET['code'])) { //Se já autorizou, já tem acesso
         ],
     ];
 
-    header('Location: ' . $session->getAuthorizeUrl($options));
+    header('Location: ' . $session->getAuthorizeUrl($options)); //manda para a pagina de autorização
     die();
 }
