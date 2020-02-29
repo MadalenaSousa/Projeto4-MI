@@ -16,12 +16,16 @@ session_start();
     <script src="p5/addons/p5.sound.js"></script>
 </head>
 <body>
-<div class="titulo">DURAÇÃO VS AMPLITUDE</div>
-
 <div>
     <?php
         $api = $_SESSION['api_obj'];
         $userData = $api->me();
+
+        $file = 'data.txt';
+        //$data = json_encode($userData);
+        $data = "olaola";
+
+        file_put_contents($file, $data, FILE_APPEND);
 
         $playlists = $api->getUserPlaylists($userData->{'id'}, ['limit' => 2]);
 
@@ -42,7 +46,6 @@ session_start();
 
             echo '</div>';
         }
-
     ?>
 </div>
 
