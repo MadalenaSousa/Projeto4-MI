@@ -15,7 +15,7 @@ session_start();
 </head>
 <body style="background-color: black">
 
-<a href="duration.php">
+<a href="tracks.php">
     <div class="option">
         TRACK ANALYSIS
     </div>
@@ -23,7 +23,7 @@ session_start();
 
 <a href="">
     <div class="option">
-        OPTION 2
+        PLAYLIST ANALYSIS
     </div>
 </a>
 

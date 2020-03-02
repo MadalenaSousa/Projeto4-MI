@@ -67,6 +67,6 @@ session_start();
         player.connect();
     };
 </script-->
-<script src="js/duration.js"></script>
+<script src="js/track.js"></script>
 </body>
 </html>
