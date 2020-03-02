@@ -1,9 +1,10 @@
 let x, y;
 let sounds = [];
-let userTracks;
+let userTracks, trackFeatures;
 
 function preload() {
-    userTracks = loadJSON('userPlaylistTracks.json');
+    userTracks = loadJSON('php/userPlaylistTracks.json');
+    trackFeatures = loadJSON('php/userTrackFeatures.json');
 
     for(let i = 0; i < sounds.length; i++) {
         sounds[i] = loadSound(userTracks[i].uri);
@@ -15,6 +16,7 @@ function setup() {
 
     console.log(userTracks);
     console.log(sounds);
+    console.log(trackFeatures);
 }
 
 function draw() {
