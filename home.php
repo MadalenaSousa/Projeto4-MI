@@ -23,11 +23,9 @@ session_start();
 
         $file = "data.txt";
         //$data = json_encode($userData);
-        $data = "olaola";
+        $data = "olaola\n";
 
-        fopen($file, 'w');
-        fwrite($file, $data, FILE_APPEND);
-        fclose($file);
+        file_put_contents($file, $data, FILE_APPEND);
 
         $playlists = $api->getUserPlaylists($userData->{'id'}, ['limit' => 2]);
 
