@@ -1,24 +1,43 @@
 <?php
-require './vendor/autoload.php';
+require '../vendor/autoload.php';
 
-function getTracks($api, $albumId) { //Vai buscar todos os tracks num album
-    $tracks = $api->getAlbumTracks($albumId);
+session_start();
+
+//Guardar API do utilizadr loggado na sessão
+
+$api = $_SESSION['api_obj'];
+
+//Guardar dados do utilizador loggado
+
+$user = $api->me();
+$userFile = "user.json";
+$userData = json_encode($user);
+
+file_put_contents($userFile, $userData);
+
+//Guardar dados das playlists do utilizador loggado
+
+$playlists = $api->getUserPlaylists($userData->{'id'}, ['limit' => 2]);
+$playlistsFile = "userPlaylist.json";
+$userPlaylists = json_encode($playlists);
+
+file_put_contents($playlistsFile, $userPlaylists);
+
+//Guardar dados dos tracks das playlists do utilizador loggado
+
+$preUserPlaylistTracks = array();
+$tracksFile = "userPlaylistTracks.json";
+
+foreach ($playlists->items as $playlist) {
+    $tracks = $api->getPlaylistTracks($playlist->id, ['limit' => 5]);
 
     foreach ($tracks->items as $track) {
-        echo '<b>' . $track->name . '</b> <br>';
+        $track = $track->track;
+        array_push($preUserPlaylistTracks, $track);
     }
 }
 
-function getTrackAudioFeatures($api, $trackId){ //Vai buscar todas as features de um Track
-    $analysis = $api->getAudioFeatures($trackId);
+$userPlaylistTracks = json_encode($preUserPlaylistTracks);
+file_put_contents($tracksFile, $userPlaylistTracks);
 
-    return $analysis;
-}
-
-function listUserPlaylists($api, $userId) { //Lista todas as playlists de um utilizador
-    $playlists = $api->getUserPlaylists($userId);
-
-    foreach ($playlists->items as $playlist) {
-        echo '<a href="' . $playlist->external_urls->spotify . '">' . htmlspecialchars($playlist->name) . '</a> <br>';
-    }
-}
+header('Location: ../options.php');
