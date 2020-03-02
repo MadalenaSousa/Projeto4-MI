@@ -1,30 +1,28 @@
 let x, y;
 let duration;
-let userData;
+let userTracks;
 
 function preload() {
-    userData = loadJSON('data.json');
+    userTracks = loadJSON('userPlaylistTracks.json');
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    duration = document.getElementsByClassName('duration');
-    uri = document.getElementsByClassName('uri');
-
-    console.log(userData);
+    console.log(userTracks);
+    console.log(Object.keys(userTracks).length);
 }
 
 function draw() {
     background(0);
-    stroke(255);
-    noFill();
+    fill(255);
 
     textSize(48);
     text('DURAÇÃO VS AMPLITUDE', 100, 100);
 
-    for(let i = 0; i < duration.length; i++) {
-        //console.log(uri[i].innerText); //n dá, bloqueado pela CORS policy
-        ellipse(windowWidth/2, windowHeight/2, duration[i].innerText / 1000, duration[i].innerText / 1000);
+    noFill();
+    stroke(255);
+    for(let i = 0; i < Object.keys(userTracks).length; i++) {
+        ellipse(windowWidth/2, windowHeight/2, userTracks[i].duration_ms / 1000, userTracks[i].duration_ms / 1000);
     }
 }

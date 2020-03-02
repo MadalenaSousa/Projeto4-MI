@@ -20,25 +20,31 @@ canvas {
     font-family: "Helvetica", sans-serif;
 }
 
-.titulo {
-    font-size: 48pt;
-    font-weight: bold;
-    margin: 5% 5% 2% 5%;
-    height: fit-content;
-}
-
-.playlist {
-    margin: 2% 5% 2% 5%;
-}
-
 .button {
-    background-color: white;
+    background-color: aquamarine;
     color: black;
     font-size: 24pt;
+    font-weight: bolder;
     padding: 1%;
     width: fit-content;
     display: inline-block;
     position: absolute;
     bottom: 5%;
     right: 5%;
+}
+
+.option {
+    display: inline-block;
+    float: left;
+
+    width: fit-content;
+
+    background-color: aquamarine;
+    color: black;
+
+    font-size: 24pt;
+    font-weight: bolder;
+
+    padding: 1%;
+    margin: 5%;
 }

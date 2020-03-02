@@ -13,25 +13,14 @@ session_start();
     <script src="p5/p5.js"></script>
     <script src="p5/addons/p5.sound.js"></script>
 </head>
-<body style="background-color: black">
+<body>
 
-<a href="duration.php">
-    <div class="option">
-        DURATION ANALYSIS
+<a href="" style="text-decoration: none">
+    <div class="button">
+        NEXT
     </div>
 </a>
 
-<a href="">
-    <div class="option">
-        OPTION 2
-    </div>
-</a>
-
-<a href="">
-    <div class="option">
-        OPTION 3
-    </div>
-</a>
-
+<script src="js/sketch.js"></script>
 </body>
 </html>
