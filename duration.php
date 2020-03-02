@@ -21,6 +21,6 @@ session_start();
     </div>
 </a>
 
-<script src="js/sketch.js"></script>
+<script src="js/duration.js"></script>
 </body>
 </html>

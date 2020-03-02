@@ -1,23 +1,27 @@
 let x, y;
-let duration;
+let sounds = [];
 let userTracks;
 
 function preload() {
     userTracks = loadJSON('userPlaylistTracks.json');
+
+    for(let i = 0; i < sounds.length; i++) {
+        sounds[i] = loadSound(userTracks[i].uri);
+    }
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
     console.log(userTracks);
-    console.log(Object.keys(userTracks).length);
+    console.log(sounds);
 }
 
 function draw() {
     background(0);
     fill(255);
 
-    textSize(48);
+    textSize(72);
     text('DURAÇÃO VS AMPLITUDE', 100, 100);
 
     noFill();
