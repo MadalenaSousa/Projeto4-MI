@@ -17,7 +17,7 @@ session_start();
 
 <a href="duration.php">
     <div class="option">
-        DURATION ANALYSIS
+        TRACK ANALYSIS
     </div>
 </a>
 
