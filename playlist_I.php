@@ -13,25 +13,14 @@ session_start();
     <script src="p5/p5.js"></script>
     <script src="p5/addons/p5.sound.js"></script>
 </head>
-<body style="background-color: black">
+<body>
 
-<a href="tracks.php">
-    <div class="option">
-        TRACK ANALYSIS
+<a href="" style="text-decoration: none">
+    <div class="button">
+        NEXT
     </div>
 </a>
 
-<a href="playlist_I.php">
-    <div class="option">
-        PLAYLIST ANALYSIS
-    </div>
-</a>
-
-<a href="">
-    <div class="option">
-        OPTION 3
-    </div>
-</a>
-
+<script src="js/playlist_I.js"></script>
 </body>
 </html>
