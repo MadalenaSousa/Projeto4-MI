@@ -1,12 +1,12 @@
 let x, y;
 let sounds = [];
-let userPlaylistTracks;
+let userPlaylistTracks, userPlaylists;
 let cor=255;
 let alfa, angulo, r, t;
 
 function preload() {
     userPlaylistTracks = loadJSON('php/userPlaylistTracks.json');
-    // músicas pertencentes a uma playlist
+    userPlaylists=loadJSON('php/userPlaylists.json');
 
     for(let i = 0; i < sounds.length; i++) {
         sounds[i] = loadSound(userPlaylistTracks[i].uri);
@@ -32,14 +32,14 @@ function setup() {
         alfa=0;
         angulo=TWO_PI/t;
         r=userPlaylistTracks.popularity;
-        
+
         //desenha x quadrados pelo número de quantas músicas existirem numa playlist
         stroke(cor, 255, 255);
         cor = cor - 30;
         //quanto maior o raio -> menor valor do vermelho -> mais ciano
 
-        x = windowWidth / 2 + (userPlaylistTracks[i].popularity*5) * cos(alfa);
-        y = windowHeight / 2 + (userPlaylistTracks[i].popularity*5) * sin(alfa);
+        x = windowWidth / 2 + (userPlaylistTracks[i].popularity) * cos(alfa);
+        y = windowHeight / 2 + (userPlaylistTracks[i].popularity) * sin(alfa);
 
         line(windowWidth / 2, windowHeight / 2, x, y );
         //raior maior quanto maior a popularidade de cada música pertencente à playlist
