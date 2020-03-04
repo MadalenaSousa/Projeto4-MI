@@ -31,7 +31,7 @@ function setup() {
         cor=cor-30;
         //quanto maior o raio -> menor valor do vermelho -> mais ciano
         rectMode(CENTER)
-        rect(windowWidth/2, windowHeight/2, userPlaylistTracks[i].popularity*5, userPlaylistTracks[i].popularity*5);
+        rect(windowWidth/2, windowHeight/2, userPlaylistTracks[i].popularity*3, userPlaylistTracks[i].popularity*3);
         //raior maior quanto maior a popularidade de cada música pertencente à playlist
     }
 }
