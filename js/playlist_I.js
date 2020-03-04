@@ -1,7 +1,7 @@
 let x, y;
 let sounds = [];
 let userPlaylistTracks;
-let cor=0;
+let cor=255;
 
 function preload() {
     userPlaylistTracks = loadJSON('php/userPlaylistTracks.json');
@@ -27,9 +27,9 @@ function setup() {
     noFill();
     for(let i = 0; i < Object.keys(userPlaylistTracks).length; i++) {
         //desenha x quadrados pelo número de quantas músicas existirem numa playlist
-        stroke(0,cor,cor);
-        cor=cor+30;
-        //quanto maior o raio -> maior valor de azul e verde
+        stroke(cor,255,255);
+        cor=cor-30;
+        //quanto maior o raio -> menor valor do vermelho -> mais ciano
         rectMode(CENTER)
         rect(windowWidth/2, windowHeight/2, userPlaylistTracks[i].popularity*5, userPlaylistTracks[i].popularity*5);
         //raior maior quanto maior a popularidade de cada música pertencente à playlist
