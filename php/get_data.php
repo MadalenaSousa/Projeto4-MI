@@ -31,7 +31,7 @@ $tracksFile = "userPlaylistTracks.json";
 $featuresFile = "userTrackFeatures.json";
 
 foreach ($playlists->items as $playlist) {
-    $tracks = $api->getPlaylistTracks($playlist->id, ['limit' => 5]);
+    $tracks = $api->getPlaylistTracks($playlist->id);
 
     foreach ($tracks->items as $track) {
         $track = $track->track;

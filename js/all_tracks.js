@@ -8,7 +8,7 @@ function preload() {
     userTracks = loadJSON('php/userPlaylistTracks.json');
     trackFeatures = loadJSON('php/userTrackFeatures.json');
 
-    for(let i = 0; i < sounds.length; i++) {
+    for(let i = 0; i < Object.keys(sounds).length; i++) {
         sounds[i] = loadSound(userTracks[i].uri);
     }
 }

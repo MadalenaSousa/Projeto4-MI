@@ -21,7 +21,7 @@ canvas {
 }
 
 .button {
-    background-color: aquamarine;
+    background-color: white;
     color: black;
     font-size: 24pt;
     font-weight: bolder;
@@ -39,7 +39,7 @@ canvas {
 
     width: fit-content;
 
-    background-color: aquamarine;
+    background-color: white;
     color: black;
 
     font-size: 24pt;
