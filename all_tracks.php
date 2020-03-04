@@ -15,6 +15,8 @@ session_start();
 </head>
 <body>
 
+<!-- Fazer cena para aceder a cada track individual -->
+
 <a href="" style="text-decoration: none">
     <div class="button">
         NEXT
