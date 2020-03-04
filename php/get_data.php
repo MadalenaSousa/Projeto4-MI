@@ -17,7 +17,7 @@ file_put_contents($userFile, $userData);
 
 //Guardar dados das playlists do utilizador loggado
 
-$playlists = $api->getUserPlaylists($userData->{'id'}, ['limit' => 2]);
+$playlists = $api->getUserPlaylists($user->{'id'}, ['limit' => 2]);
 $playlistsFile = "userPlaylist.json";
 $userPlaylists = json_encode($playlists);
 
