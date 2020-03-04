@@ -15,21 +15,28 @@ session_start();
 </head>
 <body style="background-color: black">
 
-<a href="tracks.php">
+<a href="all_tracks.php">
     <div class="option">
-        TRACK ANALYSIS
+        MY TRACKS
     </div>
 </a>
 
-<a href="playlist_I.php">
+<a href="all_playlists.php">
+
     <div class="option">
-        PLAYLIST ANALYSIS
+        MY PLAYLISTS
     </div>
 </a>
 
-<a href="">
+<a href="artists.php">
     <div class="option">
-        OPTION 3
+        ARTISTS
+    </div>
+</a>
+
+<a href="albuns.php">
+    <div class="option">
+        ALBUMS
     </div>
 </a>
 

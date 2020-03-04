@@ -15,6 +15,8 @@ session_start();
 </head>
 <body>
 
+<!-- Fazer cena para aceder a cada track individual -->
+
 <a href="" style="text-decoration: none">
     <div class="button">
         NEXT
@@ -67,6 +69,6 @@ session_start();
         player.connect();
     };
 </script-->
-<script src="js/track.js"></script>
+<script src="js/all_tracks.js"></script>
 </body>
 </html>
