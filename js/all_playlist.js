@@ -18,7 +18,7 @@ function setup() {
 
     console.log(userPlaylistTracks);
     console.log(sounds);
-    
+
     background(0);
     fill(255); //preenchimento das letras
 
@@ -32,19 +32,19 @@ function setup() {
         alfa=0;
         angulo=TWO_PI/t;
         r=userPlaylistTracks.popularity;
-        text(t, 100, 200);
-
+        
         //desenha x quadrados pelo número de quantas músicas existirem numa playlist
         stroke(cor, 255, 255);
         cor = cor - 30;
         //quanto maior o raio -> menor valor do vermelho -> mais ciano
 
-        x = windowWidth / 2 + (userPlaylistTracks[i].popularity/10) * cos(alfa);
-        y = windowHeight / 2 + (userPlaylistTracks[i].popularity/10) * sin(alfa);
+        x = windowWidth / 2 + (userPlaylistTracks[i].popularity*5) * cos(alfa);
+        y = windowHeight / 2 + (userPlaylistTracks[i].popularity*5) * sin(alfa);
 
-        line(windowWidth / 2, windowHeight / 2, userPlaylistTracks[i].popularity /10, userPlaylistTracks[i].popularity/10 );
+        line(windowWidth / 2, windowHeight / 2, x, y );
         //raior maior quanto maior a popularidade de cada música pertencente à playlist
         alfa = alfa + angulo;
+        text(userPlaylistTracks[i].popularity, 100, 300);
 
     }
 }
