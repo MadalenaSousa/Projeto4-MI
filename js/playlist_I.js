@@ -1,43 +1,41 @@
 let x, y;
 let sounds = [];
-let userPlaylist, userPlaylistTracks, playlistFeatures;
-let nb;
+let userPlaylistTracks;
+let cor=0;
 
 function preload() {
-    userPlaylist = loadJSON('php/userPlaylist.json');
     userPlaylistTracks = loadJSON('php/userPlaylistTracks.json');
-    //playlistFeatures = loadJSON('php/userPlaylistFeatures.json');
-
+    // músicas pertencentes a uma playlist
 
     for(let i = 0; i < sounds.length; i++) {
-        sounds[i] = loadSound(userPlaylist[i].uri);
+        sounds[i] = loadSound(userPlaylistTracks[i].uri);
     }
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    console.log(userPlaylist);
-    console.log(sounds);
     console.log(userPlaylistTracks);
-    //console.log(playlistFeatures);
+    console.log(sounds);
+
+    background(0);
+    fill(255); //preenchimento das letras
+
+    textSize(72);
+    text('TOTAL', 100, 100);
+
+    noFill();
+    for(let i = 0; i < Object.keys(userPlaylistTracks).length; i++) {
+        //desenha x quadrados pelo número de quantas músicas existirem numa playlist
+        stroke(0,cor,cor);
+        cor=cor+30;
+        //quanto maior o raio -> maior valor de azul e verde
+        rectMode(CENTER)
+        rect(windowWidth/2, windowHeight/2, userPlaylistTracks[i].popularity*5, userPlaylistTracks[i].popularity*5);
+        //raior maior quanto maior a popularidade de cada música pertencente à playlist
+    }
 }
 
 function draw() {
-    background(0);
-    fill(255);
 
-    textSize(72);
-    let nb = userPlaylist.total;
-    text('TOTAL', 100, 100);
-    text(nb, 100,200);
-    text(Object.keys(userTracks).length, 100, 300);
-
-    noFill();
-    stroke(255);
-
-
-    for(let i = 0; i < (userPlaylist.total).length; i++) {
-        ellipse(windowWidth/2, windowHeight/2, (userPlaylist.total)*50, (userPlaylist.total)*50);
-    }
 }
