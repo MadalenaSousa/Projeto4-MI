@@ -40,7 +40,8 @@ function draw() {
 
         stroke(c);
 
-        ellipse(x[i], y[i], userTracks[i].duration_ms / 1000, userTracks[i].duration_ms / 1000);
+        line(x[i], y[i], x[i+1], y[i+1]);
+        //ellipse(x[i], y[i], userTracks[i].duration_ms / 1000, userTracks[i].duration_ms / 1000);
         text(userTracks[i].name, x[i], y[i]);
     }
 }
