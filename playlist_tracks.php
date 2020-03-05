@@ -69,6 +69,6 @@ session_start();
         player.connect();
     };
 </script-->
-<script src="js/all_tracks.js"></script>
+<script src="js/playlist_tracks.js"></script>
 </body>
 </html>
