@@ -21,6 +21,6 @@ session_start();
     </div>
 </a>
 
-<script src=""></script>
+<script src="js/playlist_I.js"></script>
 </body>
 </html>

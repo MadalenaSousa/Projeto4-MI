@@ -22,6 +22,7 @@ session_start();
 </a>
 
 <a href="all_playlists.php">
+
     <div class="option">
         MY PLAYLISTS
     </div>
