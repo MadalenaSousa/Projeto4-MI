@@ -14,13 +14,13 @@ session_start();
     <script src="p5/addons/p5.sound.js"></script>
 </head>
 <body>
-
+<div id="lista"></div>
 <a href="" style="text-decoration: none">
     <div class="button">
         NEXT
     </div>
 </a>
 
-<script src=""></script>
+<script src="js/Artists.js"></script>
 </body>
 </html>
