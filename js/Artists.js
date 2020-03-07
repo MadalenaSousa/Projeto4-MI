@@ -1,29 +1,70 @@
-let artists = [];
-let myTopArtists;
+let x;
+let y = [];
+let topartists;
+let c;
+let div=100;
+let danceability=0.5;
 
 function preload() {
-    myTopArtists = loadJSON('php/userTopArtists.json');
-
+    topartists = loadJSON('php/userTopArtists.json');
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    console.log(myTopArtists);
-    console.log(artists);
+    for(let i = 0; i < 10; i++) {
+        if(i===0){
+            y[0]=windowHeight/6;
+        }else {
+            y[i] = y[i - 1] + (windowHeight / 15);
+        }
+    }
+    c = color(255);
+    console.log(topartists.items);
 }
-
 
 function draw() {
     background(0);
-    fill(255);
+   // For de cada artista
+    for(let i = 0; i < 10; i++) {
+        stroke(255);
+        //line(140,y[i], width, y[i]);
+        fill(255);
+        textAlign(RIGHT);
+        text(topartists.items[i].name, 5, y[i]-6, 136);
 
-    textSize(72);
-    text('DURAÇÃO VS AMPLITUDE', 100, 100);
+    //Map que vai transformar a média de daceability de cada artista
+        let altura=map(danceability, 0,1,0,windowHeight/4);
 
-    noFill();
-    stroke(255);
-    for (let i = 0; i < Object.keys(myTopArtists).length; i++) {
-        document.getElementById("lista").innerHTML = myTopArtists[i].name;
+    //Map que vai relacionar com a energy ou seja divisões
+        for (let g=0; g<div; g++) {
+           //começa no 140
+            if(g===0){
+                x=140;
+             }else {
+                x =140+g*((windowWidth-200) / div);
+            }
+
+            noFill();
+
+         //se for par arco para cima
+            if (g%2===0) {
+                stroke(255);
+                beginShape();
+                vertex(x, y[i]);
+                bezierVertex(x, y[i]-altura, x+((windowWidth-200)/div), y[i]-altura, x+((windowWidth-200)/div), y[i]);
+                endShape();
+            }
+
+         //se não for par arco para baixo
+            else {
+                beginShape();
+                stroke(255);
+                vertex(x, y[i]);
+                bezierVertex(x, y[i]+altura, x+((windowWidth-200)/div), y[i]+altura, x+((windowWidth-200)/div), y[i]);
+                endShape();
+            }
+        }
+
     }
 }
