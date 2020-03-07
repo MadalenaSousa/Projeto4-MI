@@ -46,4 +46,9 @@ $userTrackFeatures = json_encode($trackAudioFeatures);
 file_put_contents($tracksFile, $userPlaylistTracks);
 file_put_contents($featuresFile, $userTrackFeatures);
 
+$TopArtists = $api->getmytop("artists");
+$TopArtistsFile= "userTopArtists.json";
+$userTopArtistss = json_encode($TopArtists);
+file_put_contents($TopArtistsFile, $userTopArtistss);
+
 header('Location: ../options.php');
