@@ -36,4 +36,8 @@ $userTrackFeatures = json_encode($trackAudioFeatures);
 file_put_contents($tracksFile, $userPlaylistTracks);
 file_put_contents($featuresFile, $userTrackFeatures);
 
-header('Location: ../playlist_tracks.php');
+if($_GET['data'] == 0) {
+    header('Location: ../all_playlists.php');
+} else if($_GET['data'] == 1) {
+    header('Location: ../playlist_tracks.php');
+}

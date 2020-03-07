@@ -6,7 +6,7 @@ let alfa, angulo, r, t;
 
 function preload() {
     userPlaylistTracks = loadJSON('php/userPlaylistTracks.json');
-    userPlaylists=loadJSON('php/userPlaylists.json');
+    userPlaylists=loadJSON('php/userPlaylist.json');
 
     for(let i = 0; i < sounds.length; i++) {
         sounds[i] = loadSound(userPlaylistTracks[i].uri);
