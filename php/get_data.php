@@ -50,5 +50,65 @@ $TopArtists = $api->getmytop("artists");
 $TopArtistsFile= "userTopArtists.json";
 $userTopArtistss = json_encode($TopArtists);
 file_put_contents($TopArtistsFile, $userTopArtistss);
+/*
+
+$ArtistsTracks= $api->getartisttoptracks($TopArtists->items > "id","ISO 3166-2:PT",['limit' => 5]);
+$ArtistsTopTracksFile= "ArtistsTopTracks.json";
+$top = json_encode($ArtistsTracks);
+file_put_contents($ArtistsTopTracksFile, $top);*/
+
+
+
+$ArrayTopArtistsAlbums= array();
+$ArrayTopArtistsAlbumsTracks = array();
+$TopArtistsAlbumsFile= "TopArtistsAlbums.json";
+$TopArtistsAlbumsTracksFile = "TopArtistsAlbumsTracks.json";
+
+foreach ($TopArtists->items as $artist) {
+    $TopArtistsAlbums = $api->getArtistAlbums($artist->id);
+    foreach ($TopArtistsAlbums->items as $album) {
+        $albumid = $album->id;
+        $AlbumTracks = $api->getAlbumTracks($albumid);
+        array_push($ArrayTopArtistsAlbums, $TopArtistsAlbums);
+        array_push($ArrayTopArtistsAlbumsTracks, $AlbumTracks);
+    }
+
+}
+
+$TAT = json_encode($ArrayTopArtistsAlbums);
+$TATF = json_encode($ArrayTopArtistsAlbumsTracks);
+file_put_contents($TopArtistsAlbumsFile, $TAT);
+file_put_contents($TopArtistsAlbumsTracksFile, $TATF);
+
+
+
+
+
+/*
+$ArrayTopTracks= array();
+$trackAudioFeatures2 = array();
+$ArtistsTopTracksFile= "ArtistsTopTracks.json";
+$TopTracksfeaturesFile = "TopArtistTrackFeatures.json";
+
+$country="ISO 3166-2:PT";
+foreach ($TopArtists->items as $artist) {
+    $tracksArtisttop = $api->getArtistTopTracks($artist->id, $country);
+   // array_push($Array, $tracksArtisttop);
+    foreach ($tracksArtisttop->items as $track) {
+        $track = $track->track;
+        $trackFeatures = $api->getAudioFeatures($track->id);
+        array_push($ArrayTopTracks, $track);
+        array_push($trackAudioFeatures2, $trackFeatures);
+    }
+
+}
+
+$TAT = json_encode($ArrayTopTracks);
+$TATF = json_encode($trackAudioFeatures2);
+file_put_contents($ArtistsTopTracksFile, $TAT);
+file_put_contents($TopTracksfeaturesFile, $TATF);
+
+*/
+
 
 header('Location: ../options.php');
