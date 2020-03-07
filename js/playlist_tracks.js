@@ -23,8 +23,7 @@ function setup() {
 
     c = color(255);
 
-    console.log(sounds);
-    console.log(trackFeatures);
+    console.log(x);
 }
 
 function draw() {
@@ -39,9 +38,15 @@ function draw() {
         }
 
         stroke(c);
+        ellipse(x[i], y[i], userTracks[i].duration_ms / 1000, userTracks[i].duration_ms / 1000);
+        text(userTracks[i].name, x[i], y[i])
+    }
+}
 
-        line(x[i], y[i], x[i+1], y[i+1]);
-        //ellipse(x[i], y[i], userTracks[i].duration_ms / 1000, userTracks[i].duration_ms / 1000);
-        text(userTracks[i].name, x[i], y[i]);
+function mousePressed() {
+    for(let i = 0; i < Object.keys(userTracks).length; i++) {
+        if(dist(mouseX, mouseY, x[i], y[i]) <= (userTracks[i].duration_ms / 2000)){
+            location.replace('solo_track.php?id=' + userTracks[i].id)
+        }
     }
 }
