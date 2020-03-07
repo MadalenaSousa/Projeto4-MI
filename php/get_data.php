@@ -50,6 +50,7 @@ $TopArtists = $api->getmytop("artists");
 $TopArtistsFile= "userTopArtists.json";
 $userTopArtistss = json_encode($TopArtists);
 file_put_contents($TopArtistsFile, $userTopArtistss);
+
 /*
 
 $ArtistsTracks= $api->getartisttoptracks($TopArtists->items > "id","ISO 3166-2:PT",['limit' => 5]);
@@ -65,7 +66,7 @@ $TopArtistsAlbumsFile= "TopArtistsAlbums.json";
 $TopArtistsAlbumsTracksFile = "TopArtistsAlbumsTracks.json";
 
 foreach ($TopArtists->items as $artist) {
-    $TopArtistsAlbums = $api->getArtistAlbums($artist->id);
+    $TopArtistsAlbums = $api->getArtistAlbums($artist->id, ['limit' => 5]);
     foreach ($TopArtistsAlbums->items as $album) {
         $albumid = $album->id;
         $AlbumTracks = $api->getAlbumTracks($albumid);
