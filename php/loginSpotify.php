@@ -17,7 +17,7 @@ if (isset($_GET['code'])) { //Se já autorizou, já tem acesso
 
     $_SESSION['api_obj'] = $api;
 
-    header('Location: get_data.php');
+    header('Location: getUserInfo.php');
 } else { //se ainda não autorizou
     $options = [
         'scope' => [
