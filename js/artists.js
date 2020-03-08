@@ -19,11 +19,17 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
+    for(let i = 0; i < Object.keys(artiststoptracks).length; i++) {
+        dance[i] = toptracksfeatures.audio_features[i].loudness;
+    }
+
+
+/*
     for(let t = 0; t < Object.keys(artiststoptracks).length; t++) {
 
         dance[t]=toptracksfeatures[t].audio_features.danceability;
 
-    }
+    }*/
     console.log(dance);
 
   //  console.log(artiststoptracksfeatures[0].audio_features_danceability);
