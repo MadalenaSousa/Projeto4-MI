@@ -43,7 +43,7 @@ foreach ($TopArtists->items as $artist) {
 */$arrayid=array();
 
 foreach ($TopArtists->items as $artist) {
-    $TopArtistsAlbums = $api->getArtistAlbums($artist->id, ['limit' => 3]);
+    $TopArtistsAlbums = $api->getArtistAlbums($artist->id, ['limit' => 5]);
     foreach ($TopArtistsAlbums->items as $album) {
         $albumid = $album->id;
         $AlbumTracks = $api->getAlbumTracks($albumid);
