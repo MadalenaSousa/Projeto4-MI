@@ -10,6 +10,7 @@ let dance=[];
 let danceabilityavg;
 let altura=50;
 
+
 function preload() {
     topartists = loadJSON('php/userTopArtists.json');
     artiststoptracks = loadJSON('php/TopArtistsAlbumsTracks.json');
