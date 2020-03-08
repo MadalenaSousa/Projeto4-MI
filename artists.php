@@ -21,6 +21,6 @@ session_start();
     </div>
 </a>
 
-<script src="js/Artists.js"></script>
+<script src="js/artists.js"></script>
 </body>
 </html>

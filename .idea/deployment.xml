@@ -9,6 +9,13 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="xampp (project level)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="Projeto4-MI" local="$PROJECT_DIR$" web="/Projeto4-MI" />
+          </mappings>
+        </serverdata>
+      </paths>
     </serverData>
     <option name="myAutoUpload" value="ALWAYS" />
   </component>
