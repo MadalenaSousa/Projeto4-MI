@@ -1,6 +1,8 @@
 let x;
 let y = [];
 let topartists;
+let artiststoptracks;
+let toptracksfeatures;
 let artiststoptracksfeatures;
 let c;
 let div=100;
@@ -10,16 +12,16 @@ let altura=50;
 
 function preload() {
     topartists = loadJSON('php/userTopArtists.json');
-    //artiststoptracks = loadJSON('php/TopArtistsAlbumsTracks.json');
+    artiststoptracks = loadJSON('php/TopArtistsAlbumsTracks.json');
     toptracksfeatures = loadJSON('php/TopTracksAudioFeatures.json');
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    for(let t = 0; t < Object.keys(toptracksfeatures).length; t++) {
+    for(let t = 0; t < Object.keys(artiststoptracks).length; t++) {
 
-        dance=Object.keys(toptracksfeatures)[t].energy;
+        dance[t]=toptracksfeatures[t].audio_features.danceability;
 
     }
     console.log(dance);
