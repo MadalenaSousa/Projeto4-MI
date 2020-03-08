@@ -1,14 +1,13 @@
-let x, y;
+let x, y, l;
 let sounds = [];
-let userPlaylistTracks, userPlaylist, userArtist;
-//let cor=255;
+let userPlaylistTracks, userPlaylists;
+let cor=255;
 let media;
 let sum=0;
 
 function preload() {
     userPlaylistTracks = loadJSON('php/userPlaylistTracks.json');
-    userPlaylist=loadJSON('php/userPlaylist.json');
-    userArtist=loadJSON('php/userArtist.json');
+    userPlaylists=loadJSON('php/userPlaylist.json');
 
     for(let i = 0; i < sounds.length; i++) {
         sounds[i] = loadSound(userPlaylistTracks[i].uri);
@@ -19,8 +18,7 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
 
     console.log(userPlaylistTracks);
-    console.log(userPlaylist);
-    console.log(userArtist);
+    console.log(userPlaylists);
     console.log(sounds);
 
     background(0);
@@ -30,20 +28,17 @@ function setup() {
     text('MY PLAYLISTS', 100, 100);
 
     noFill();
-    text(Object.keys(userPlaylist).length, 100, 200);
-    for(let i = 0; i < Object.keys(userPlaylist).length; i++) {
+    for(let i = 0; i < userPlaylists.items.length; i++) {
 
-        //text(Object.keys(userPlaylist), 100, 200);
-
-        //stroke(cor,255,255);
-        //cor=cor-30;
         stroke(255);
+        l=userPlaylists.items[i].tracks.total;
         rectMode(CENTER)
-        rect(windowWidth/2, windowHeight/2, Object.keys(userPlaylistTracks).length*3, Object.keys(userPlaylistTracks).length*3);
-
+        if(l>=500) rect(windowWidth/2, windowHeight/2, 500, 500);
+        else rect(windowWidth/2, windowHeight/2, l, l);
+        textSize(24);
+        text(userPlaylists.items[i].name, 100, 200);
     }
 }
 
 function draw() {
-
 }
