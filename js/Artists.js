@@ -35,12 +35,12 @@ function setup() {
     console.log(topartists.items.length);
     console.log(dance);
     //Map que vai transformar a média de daceability de cada artista
-   // let altura=map(danceabilityavg, 0,1,0,windowHeight/4);
+    // let altura=map(danceabilityavg, 0,1,0,windowHeight/4);
 }
 
 function draw() {
     background(0);
-   // For de cada artista
+    // For de cada artista
     for(let i = 0; i < 10; i++) {
         stroke(255);
         //line(140,y[i], width, y[i]);
@@ -50,18 +50,18 @@ function draw() {
 
 
 
-    //Map que vai relacionar com a energy ou seja divisões
+        //Map que vai relacionar com a energy ou seja divisões
         for (let g=0; g<div; g++) {
-           //começa no 140
+            //começa no 140
             if(g===0){
                 x=140;
-             }else {
+            }else {
                 x =140+g*((windowWidth-200) / div);
             }
 
             noFill();
 
-         //se for par arco para cima
+            //se for par arco para cima
             if (g%2===0) {
                 stroke(255);
                 beginShape();
@@ -70,7 +70,7 @@ function draw() {
                 endShape();
             }
 
-         //se não for par arco para baixo
+            //se não for par arco para baixo
             else {
                 beginShape();
                 stroke(255);
