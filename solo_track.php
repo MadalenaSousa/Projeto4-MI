@@ -21,6 +21,6 @@ session_start();
     </div>
 </a>
 
-<script src=""></script>
+<script src="js/solo_track.js"></script>
 </body>
 </html>
