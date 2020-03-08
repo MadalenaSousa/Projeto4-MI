@@ -23,6 +23,8 @@ function setup() {
         dance=artiststoptracksfeatures[t].danceability;
 
     }
+    console.log(artiststoptracksfeatures.audio.feature[0].danceability);
+
 
     for(let i = 0; i < 10; i++) {
         if(i===0){
@@ -33,7 +35,7 @@ function setup() {
     }
     c = color(255);
     console.log(topartists.items.length);
-    console.log(dance);
+   // console.log(dance);
     //Map que vai transformar a média de daceability de cada artista
     // let altura=map(danceabilityavg, 0,1,0,windowHeight/4);
 }
