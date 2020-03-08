@@ -52,7 +52,7 @@ function draw() {
 
         if ((mouseX >= x[i]) && (mouseX <= (x[i] + l[i]*valor)) && (mouseY >= y[i]) && (mouseY <= (y[i] + l[i]*valor))) {
 
-            stroke(0,255,255)
+            stroke(0,255,255);
             rect(x[i], y[i], l[i]*valor, l[i]*valor);
             if(l[i]>1) {
                 for (let j = 0; j < (userPlaylists.items[i].tracks.total)/2-1; j++) {

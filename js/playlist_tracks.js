@@ -27,7 +27,7 @@ function setup() {
     }
 
     for(let i = 0; i < Object.keys(userTracks).length; i++) {
-        x[i] = (userTracks[i].duration_ms / 2000) + (windowWidth / Object.keys(userTracks).length) * i;
+        x[i] = getRaioFromTrack(i) + ((windowWidth - getRaioFromTrack(i)) / Object.keys(userTracks).length) * i;
         y[i] = windowHeight - getRaioFromTrack(i);
         white[i] = map(getAudioFeatures(i).valence, 0, 1, 0, 255);
         shakeX[i] = getAudioFeatures(i).energy * 5;
