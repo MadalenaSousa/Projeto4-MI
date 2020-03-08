@@ -3,14 +3,23 @@ let y = [];
 let topartists;
 let c;
 let div=100;
-let danceability=0.5;
+let danceability=[];
+let danceabilityavg;
+let altura=50;
 
 function preload() {
     topartists = loadJSON('php/userTopArtists.json');
+    //artiststoptracks = loadJSON('php/TopArtistsAlbumsTracks.json');
+    artiststoptracksfeatures = loadJSON('php/TopTracksAudioFeatures.json');
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
+
+    for(let t = 0; t < artiststoptracksfeatures.length; t++) {
+        danceability=artiststoptracksfeatures.audio_features[t].danceability;
+
+    }
 
     for(let i = 0; i < 10; i++) {
         if(i===0){
@@ -20,7 +29,10 @@ function setup() {
         }
     }
     c = color(255);
-    console.log(topartists.items);
+    console.log(topartists.items.length);
+    console.log(danceability);
+    //Map que vai transformar a média de daceability de cada artista
+   // let altura=map(danceabilityavg, 0,1,0,windowHeight/4);
 }
 
 function draw() {
@@ -33,8 +45,7 @@ function draw() {
         textAlign(RIGHT);
         text(topartists.items[i].name, 5, y[i]-6, 136);
 
-    //Map que vai transformar a média de daceability de cada artista
-        let altura=map(danceability, 0,1,0,windowHeight/4);
+
 
     //Map que vai relacionar com a energy ou seja divisões
         for (let g=0; g<div; g++) {
