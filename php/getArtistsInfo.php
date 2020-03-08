@@ -13,4 +13,41 @@ $userTopArtists = json_encode($TopArtists);
 
 file_put_contents($TopArtistsFile, $userTopArtists);
 
+
+$ArrayTopArtistsAlbums= array();
+$ArrayTopArtistsAlbumsTracks = array();
+$TopArtistsAlbumsFile= "TopArtistsAlbums.json";
+$TopArtistsAlbumsTracksFile = "TopArtistsAlbumsTracks.json";
+
+$trackTopTracksAudioFeatures = array();
+$featuresFile = "TopTracksAudioFeatures.json";
+
+
+foreach ($TopArtists->items as $artist) {
+    $TopArtistsAlbums = $api->getArtistAlbums($artist->id, ['limit' => 5]);
+    foreach ($TopArtistsAlbums->items as $album) {
+        $albumid = $album->id;
+        $AlbumTracks = $api->getAlbumTracks($albumid);
+        array_push($ArrayTopArtistsAlbums, $TopArtistsAlbums);
+        array_push($ArrayTopArtistsAlbumsTracks, $AlbumTracks);
+        foreach ($AlbumTracks->items as $track) {
+            $trackid = $track->id;
+            $trackFeaturesTopTracks = $api->getAudioFeatures($trackid);
+            array_push($trackTopTracksAudioFeatures, $trackFeaturesTopTracks);
+        }
+    }
+
+}
+
+$TAT = json_encode($ArrayTopArtistsAlbums);
+$TATF = json_encode($ArrayTopArtistsAlbumsTracks);
+file_put_contents($TopArtistsAlbumsFile, $TAT);
+file_put_contents($TopArtistsAlbumsTracksFile, $TATF);
+
+
+
+$userTrackFeatures = json_encode($trackTopTracksAudioFeatures);
+file_put_contents($featuresFile, $userTrackFeatures);
+
+
 header('Location: ../artists.php');
