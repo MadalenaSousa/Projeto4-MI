@@ -11,19 +11,20 @@ let altura=50;
 function preload() {
     topartists = loadJSON('php/userTopArtists.json');
     //artiststoptracks = loadJSON('php/TopArtistsAlbumsTracks.json');
-    artiststoptracksfeatures = loadJSON('php/TopTracksAudioFeatures.json');
+    toptracksfeatures = loadJSON('php/TopTracksAudioFeatures.json');
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    for(let t = 0; t < Object.keys(artiststoptracksfeatures).length; t++) {
-        console.log(dance);
+    for(let t = 0; t < Object.keys(toptracksfeatures).length; t++) {
 
-        dance=artiststoptracksfeatures[t].danceability;
+        dance=Object.keys(toptracksfeatures)[t].energy;
 
     }
-    console.log(artiststoptracksfeatures.audio.feature[0].danceability);
+    console.log(dance);
+
+  //  console.log(artiststoptracksfeatures[0].audio_features_danceability);
 
 
     for(let i = 0; i < 10; i++) {
