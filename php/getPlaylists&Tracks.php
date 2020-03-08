@@ -16,7 +16,8 @@ file_put_contents($playlistsFile, $userPlaylists);
 //Guardar dados dos tracks das playlists do utilizador loggado
 
 $preUserPlaylistTracks = array();
-$trackAudioFeatures = array();
+$trackIds = array();
+$trackFeatures = array();
 $tracksFile = "userPlaylistTracks.json";
 $featuresFile = "userTrackFeatures.json";
 
@@ -25,14 +26,15 @@ foreach ($playlists->items as $playlist) {
 
     foreach ($tracks->items as $track) {
         $track = $track->track;
-        $trackFeatures = $api->getAudioFeatures($track->id);
         array_push($preUserPlaylistTracks, $track);
-        array_push($trackAudioFeatures, $trackFeatures);
+        array_push($trackIds, $track->id);
     }
+
+    $trackFeatures = $api->getAudioFeatures($trackIds);
 }
 
 $userPlaylistTracks = json_encode($preUserPlaylistTracks);
-$userTrackFeatures = json_encode($trackAudioFeatures);
+$userTrackFeatures = json_encode($trackFeatures);
 file_put_contents($tracksFile, $userPlaylistTracks);
 file_put_contents($featuresFile, $userTrackFeatures);
 
