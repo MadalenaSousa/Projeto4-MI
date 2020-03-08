@@ -1,10 +1,13 @@
 let x = [];
 let y = [];
 let sounds = [];
-let userTracks, trackFeatures;
-let c;
+let userTracks, trackFeatures, c;
+let white = [];
 let loud = [];
 let raio = [];
+let shakeX = [];
+let shakeY = [];
+let randomX, randomY;
 
 function preload() {
     userTracks = loadJSON('php/userPlaylistTracks.json');
@@ -26,9 +29,10 @@ function setup() {
     for(let i = 0; i < Object.keys(userTracks).length; i++) {
         x[i] = (userTracks[i].duration_ms / 2000) + (windowWidth / Object.keys(userTracks).length) * i;
         y[i] = windowHeight - getRaioFromTrack(i);
+        white[i] = map(getAudioFeatures(i).valence, 0, 1, 0, 255);
+        shakeX[i] = getAudioFeatures(i).energy * 5;
+        shakeY[i] = getAudioFeatures(i).energy * 5;
     }
-
-    c = color(255);
 }
 
 function draw() {
@@ -37,13 +41,17 @@ function draw() {
 
     for(let i = 0; i < Object.keys(userTracks).length; i++) {
         if(dist(mouseX, mouseY, x[i], y[i]) <= getRaioFromTrack(i)){
-            c = color(255, 255, 0);
+            c = color(255, 255, white[i]);
+            randomX = random(-shakeX[i], shakeX[i]);
+            randomY = random(-shakeY[i], shakeY[i]);
         } else {
             c = color(255);
+            randomX = 0;
+            randomY = 0;
         }
 
         stroke(c);
-        ellipse(x[i], y[i], getRaioFromTrack(i) * 2, getRaioFromTrack(i) * 2);
+        ellipse(x[i] + randomX, y[i] + randomY, getRaioFromTrack(i) * 2, getRaioFromTrack(i) * 2);
         text(userTracks[i].name, x[i], y[i])
     }
 }
@@ -63,8 +71,8 @@ function mouseWheel(event) {
 
         y[i] = y[i] - event.delta;
 
-        if(y[i] <= map(trackFeatures.audio_features[i].loudness, min(loud), 0, getRaioFromTrack(i), windowHeight - getRaioFromTrack(i))) {
-            y[i] = map(trackFeatures.audio_features[i].loudness, min(loud), 0, getRaioFromTrack(i), windowHeight - getRaioFromTrack(i));
+        if(y[i] <= map(getAudioFeatures(i).loudness, min(loud), 0, getRaioFromTrack(i), windowHeight - getRaioFromTrack(i))) {
+            y[i] = map(getAudioFeatures(i).loudness, min(loud), 0, getRaioFromTrack(i), windowHeight - getRaioFromTrack(i));
         }
 
         if(y[i] >= windowHeight - getRaioFromTrack(i)) {
@@ -75,4 +83,8 @@ function mouseWheel(event) {
 
 function getRaioFromTrack(index) {
     return userTracks[index].duration_ms / 4000;
+}
+
+function getAudioFeatures(index) {
+    return trackFeatures.audio_features[index];
 }
