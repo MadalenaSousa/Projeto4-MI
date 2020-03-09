@@ -27,7 +27,7 @@ function setup() {
     for(let i = 0; i < userPlaylists.items.length; i++) {
         stroke(255);
         rectMode(CORNER);
-        x[i]=random(0,windowWidth);
+        x[i]=random(10,windowWidth);
         y[i]=random(0,windowHeight);
         valor=1;
     }
