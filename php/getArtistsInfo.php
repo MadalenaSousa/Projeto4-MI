@@ -14,17 +14,20 @@ $userTopArtists = json_encode($TopArtists);
 file_put_contents($TopArtistsFile, $userTopArtists);
 
 $TopArtistsAlbumsFile = "userTopArtistsAlbums.json";
-$ArrayTopArtistsAlbums = array();
+$albums = array();
 
 foreach ($TopArtists->items as $artist) {
     $TopArtistsAlbums = $api->getArtistAlbums($artist->id);
 
     foreach ($TopArtistsAlbums->items as $album) {
-        array_push($ArrayTopArtistsAlbums, $TopArtistsAlbums);
+        if($album->album_type == 'album') {
+            array_push($albums, $album);
+        }
     }
 
 }
-$TAT = json_encode($ArrayTopArtistsAlbums);
+
+$TAT = json_encode($albums);
 file_put_contents($TopArtistsAlbumsFile, $TAT);
 
 header('Location: ../artists.php');

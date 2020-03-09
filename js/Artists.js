@@ -22,10 +22,6 @@ function setup() {
 
     for (let i = 0; i < topArtists.items.length; i++) {
         white[i] = map(topArtists.items[i].popularity, min(popularity), max(popularity), 0, 255);
-    }
-
-
-    for (let i = 0; i < 10; i++) {
         seguidores = topArtists.items[i].followers.total;
 
         if (i === 0) {
