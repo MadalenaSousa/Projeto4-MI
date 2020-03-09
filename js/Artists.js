@@ -36,7 +36,7 @@ function setup() {
     for (let j = 0; j <topartists.items.length; j++) {
        // if(topartistsalbums[j].items.album_type==="album"){
 
-       albums[j]=add(topartistsalbums[j].items.total_tracks)
+       albums[j]= albums[j];
     }
 
     console.log(albums);
