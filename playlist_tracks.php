@@ -15,12 +15,6 @@ session_start();
 </head>
 <body>
 
-<a href="" style="text-decoration: none">
-    <div class="button">
-        NEXT
-    </div>
-</a>
-
 <!--script src="https://sdk.scdn.co/spotify-player.js"></script>
 <script>
     let sessionToken = <?//php echo $_SESSION['api_obj']?>;
