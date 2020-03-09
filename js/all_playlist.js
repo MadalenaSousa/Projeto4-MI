@@ -2,8 +2,6 @@ let x = [], y = [], l=[];
 
 let sounds = [];
 let userPlaylistTracks, userPlaylists;
-let media;
-let sum=0;
 let valor, dif;
 
 function preload() {
@@ -16,14 +14,13 @@ function setup() {
 
     background(0);
     fill(255); //preenchimento das letras
+    textSize(20);
 
-    noFill();
     for(let i = 0; i < userPlaylists.items.length; i++) {
-
         stroke(255);
         rectMode(CORNER);
-        x[i]=random(0,windowWidth);
-        y[i]=random(100,windowHeight);
+        x[i]=random(10,windowWidth);
+        y[i]=random(0,windowHeight);
         valor=1;
     }
 }
@@ -45,6 +42,7 @@ function draw() {
                     dif = ((j+1)*valor);
                     //dif=((j+1)*valor)/2;
                     rect(x[i]+2.5*dif, y[i]+2.5*dif, l[i]*valor-5*dif, l[i]*valor-5*dif);
+                    text(userPlaylists.items[i].name, x[i], y[i]-10);
                 }
             }
 
@@ -59,6 +57,7 @@ function draw() {
                     dif = ((j+1) * valor);
                     //dif=((j+1)*valor)/2;
                     rect(x[i]+2.5*dif, y[i]+2.5*dif, l[i]*valor-5*dif, l[i]*valor-5*dif);
+                    text(userPlaylists.items[i].name, x[i], y[i]-10);
                 }
             }
         }
