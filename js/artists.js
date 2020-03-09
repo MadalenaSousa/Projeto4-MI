@@ -10,12 +10,12 @@ let topartistsalbums;
 let div = [];
 let dance = [];
 let altura = 50;
-let cor;
 let popularidade = [];
 let seguidores = [];
 let minimo, maximo;
 let cores = [];
-
+let cor=[];
+let m;
 function preload() {
     topartists = loadJSON('php/userTopArtists.json');
     artiststoptracks = loadJSON('php/TopArtistsAlbumsTracks.json');
@@ -33,10 +33,10 @@ function setup() {
     let albums = [];
     let n = 0;
 
-    for (let j = 0; j <topartists.items.length; j++) {
-       // if(topartistsalbums[j].items.album_type==="album"){
+    for (let j = 0; j < topartists.items.length; j++) {
+        // if(topartistsalbums[j].items.album_type==="album"){
 
-       albums[j]=add(topartistsalbums[j].items.total_tracks)
+        albums[j] = albums[j]++;
     }
 
     console.log(albums);
@@ -50,6 +50,7 @@ function setup() {
         } else {
             y[i] = y[i - 1] + (windowHeight / 15);
         }
+        cor[i] = map(topartists.items[i].popularity, min(popularidade), 100, 0, 255);
 
     }
 }
@@ -71,7 +72,7 @@ function draw() {
         textAlign(RIGHT);
         text(topartists.items[i].name, 5, y[i] - 6, 136);
 
-
+        stroke(color(map(topartists.items[i].popularity, min(popularidade), 100, 0, 255), 0, map(topartists.items[i].popularity, min(popularidade), 100, 0, 255)));
         if (topartists.items[i].popularity >= min(popularidade) && topartists.items[i].popularity <= (100 - (2 * ((100 - min(popularidade)) / 3)))) {
             cores[i] = color(255, 255, 0);
             //    stroke(a, b, c);
@@ -111,7 +112,6 @@ function draw() {
             // var cp=color(a[i], b[i], c[i]);
             //stroke(cp);
             noFill();
-            stroke(255);
             // stroke(cor);
             //se for par arco para cima
 
