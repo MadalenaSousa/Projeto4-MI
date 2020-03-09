@@ -15,6 +15,13 @@ session_start();
 </head>
 <body>
 
+<div id="lista"></div>
+<a href="" style="text-decoration: none">
+    <div class="button">
+        NEXT
+    </div>
+</a>
+
 <script src="js/artists.js"></script>
 </body>
 </html>

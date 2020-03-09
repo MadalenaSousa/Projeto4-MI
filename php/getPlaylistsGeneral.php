@@ -22,14 +22,14 @@ $tracksFile = "userPlaylistTracks.json";
 $featuresFile = "userTrackFeatures.json";
 
 foreach ($playlists->items as $playlist) {
-    $tracks = $api->getPlaylistTracks($playlist->id, ['limit' => 10]);
+
+    $tracks = $api->getPlaylistTracks($playlist->id, ['limit' => 5]);
 
     foreach ($tracks->items as $track) {
         $track = $track->track;
         array_push($preUserPlaylistTracks, $track);
         array_push($trackIds, $track->id);
     }
-
     $trackFeatures = $api->getAudioFeatures($trackIds);
 }
 
