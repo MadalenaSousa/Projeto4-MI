@@ -13,7 +13,6 @@ $userTopArtists = json_encode($TopArtists);
 
 file_put_contents($TopArtistsFile, $userTopArtists);
 
-
 $ArrayTopArtistsAlbums= array();
 $ArrayTopArtistsAlbumsTracks = array();
 $TopArtistsAlbumsFile= "TopArtistsAlbums.json";

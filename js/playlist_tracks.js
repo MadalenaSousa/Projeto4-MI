@@ -10,8 +10,8 @@ let shakeY = [];
 let randomX, randomY;
 
 function preload() {
-    userTracks = loadJSON('php/userPlaylistTracks.json');
-    trackFeatures = loadJSON('php/userTrackFeatures.json');
+    userTracks = loadJSON('php/specificPlaylistTracks.json');
+    trackFeatures = loadJSON('php/specificTrackFeatures.json');
 
     for(let i = 0; i < Object.keys(sounds).length; i++) {
         sounds[i] = loadSound(userTracks[i].uri);
@@ -21,23 +21,24 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    for(let i = 0; i < Object.keys(userTracks).length; i++) {
-        loud[i] = trackFeatures.audio_features[i].loudness;
-        raio[i] = getRaioFromTrack(i);
-    }
+    if(Object.keys(userTracks)) {
+        for (let i = 0; i < Object.keys(userTracks).length; i++) {
+            loud[i] = trackFeatures.audio_features[i].loudness;
+            raio[i] = getRaioFromTrack(i);
+        }
 
-    for(let i = 0; i < Object.keys(userTracks).length; i++) {
-        x[i] = getRaioFromTrack(i) + ((windowWidth - getRaioFromTrack(i)) / Object.keys(userTracks).length) * i;
-        y[i] = windowHeight - getRaioFromTrack(i);
-        white[i] = map(getAudioFeatures(i).valence, 0, 1, 0, 255);
-        shakeX[i] = getAudioFeatures(i).energy * 5;
-        shakeY[i] = getAudioFeatures(i).energy * 5;
+        for (let i = 0; i < Object.keys(userTracks).length; i++) {
+            x[i] = getRaioFromTrack(i) + ((windowWidth - getRaioFromTrack(i)) / Object.keys(userTracks).length) * i;
+            y[i] = windowHeight - getRaioFromTrack(i);
+            white[i] = map(getAudioFeatures(i).valence, 0, 1, 0, 255);
+            shakeX[i] = getAudioFeatures(i).energy * 5;
+            shakeY[i] = getAudioFeatures(i).energy * 5;
+        }
     }
 }
 
 function draw() {
     background(0);
-    noFill();
 
     for(let i = 0; i < Object.keys(userTracks).length; i++) {
         if(dist(mouseX, mouseY, x[i], y[i]) <= getRaioFromTrack(i)){
@@ -51,7 +52,12 @@ function draw() {
         }
 
         stroke(c);
+        noFill();
         ellipse(x[i] + randomX, y[i] + randomY, getRaioFromTrack(i) * 2, getRaioFromTrack(i) * 2);
+        //line(x[i], windowHeight, x[i], 0);
+
+        noStroke();
+        fill(255);
         text(userTracks[i].name, x[i], y[i])
     }
 }
@@ -59,7 +65,7 @@ function draw() {
 function mousePressed() {
     for(let i = 0; i < Object.keys(userTracks).length; i++) {
         if(dist(mouseX, mouseY, x[i], y[i]) <= (getRaioFromTrack(i))){
-            location.replace('solo_track.php?id=' + userTracks[i].id)
+            location.replace('php/getAudioAnalysisOfTrack.php?id=' + userTracks[i].id)
         }
     }
 }
