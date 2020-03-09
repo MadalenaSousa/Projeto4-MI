@@ -2,10 +2,12 @@ let x;
 let y = [];
 let topArtists, topArtistsAlbums;
 let div = [];
-let altura = 50;
+let altura = [];
 let seguidores = [];
 let white = [];
 let popularity = [];
+let a=0;
+let clicar = [a,a,a,a,a,a,a,a,a,a];
 
 function preload() {
     topArtists = loadJSON('php/userTopArtists.json');
@@ -23,7 +25,6 @@ function setup() {
     for (let i = 0; i < topArtists.items.length; i++) {
         white[i] = map(topArtists.items[i].popularity, min(popularity), max(popularity), 0, 255);
         seguidores = topArtists.items[i].followers.total;
-
         if (i === 0) {
             y[0] = windowHeight / 6;
         } else {
@@ -37,12 +38,17 @@ function draw() {
 
     // For de cada artista
     for (let i = 0; i < 10; i++) {
-        div[i] = map(topArtists.items[i].followers.total, 0, 60000000, 10, 100);
 
+        if (clicar[i] === 0) {
+            altura[i] = 0;
+
+        }
+        div[i] = map(topArtists.items[i].followers.total, 0, 60000000, 10, 100);
         fill(255, 255 - white[i], 255);
         noStroke();
         textAlign(RIGHT);
         text(topArtists.items[i].name, 5, y[i] - 6, 136);
+        ellipse(5, y[i] - 6, 10, 10);
 
 
         for (let g = 0; g < div[i]; g++) {
@@ -60,7 +66,7 @@ function draw() {
             if (g % 2 === 0) {
                 beginShape();
                 vertex(x, y[i]);
-                bezierVertex(x, y[i] - altura, x + ((windowWidth - 200) / div[i]), y[i] - altura, x + ((windowWidth - 200) / div[i]), y[i]);
+                bezierVertex(x, y[i] - altura[i], x + ((windowWidth - 200) / div[i]), y[i] - altura[i], x + ((windowWidth - 200) / div[i]), y[i]);
                 endShape();
             }
 
@@ -68,11 +74,26 @@ function draw() {
             else {
                 beginShape();
                 vertex(x, y[i]);
-                bezierVertex(x, y[i] + altura, x + ((windowWidth - 200) / div[i]), y[i] + altura, x + ((windowWidth - 200) / div[i]), y[i]);
+                bezierVertex(x, y[i] + altura[i], x + ((windowWidth - 200) / div[i]), y[i] + altura[i], x + ((windowWidth - 200) / div[i]), y[i]);
                 endShape();
             }
         }
 
     }
 }
+
+function mousePressed() {
+    for (let i = 0; i < 10; i++) {
+        if (dist(mouseX, mouseY, 5, y[i] - 6) <= 10 && clicar === 0) {
+            altura[i] = 50;
+            a=1;
+            clicar[i] = a;
+        } else if (dist(mouseX, mouseY, 5, y[i] - 6) <= 10 && clicar === 1) {
+            altura[i] = 0;
+            a=0;
+            clicar[i] = a;
+        }
+    }
+}
+
 
