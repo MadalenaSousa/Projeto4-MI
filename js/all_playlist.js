@@ -35,7 +35,7 @@ function setup() {
         rectMode(CORNER);
         x[i]=random(0,windowWidth);
         y[i]=random(100,windowHeight);
-        valor=10;
+        valor=1;
 
         //textSize(24);
         //text(userPlaylists.items[i].name, 100, 200);
