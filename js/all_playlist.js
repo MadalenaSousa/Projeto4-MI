@@ -13,8 +13,8 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
 
     background(0);
-    fill(255); //preenchimento das letras
     textSize(20);
+    noFill();
 
     for(let i = 0; i < userPlaylists.items.length; i++) {
         stroke(255);
@@ -45,8 +45,6 @@ function draw() {
                     text(userPlaylists.items[i].name, x[i], y[i]-10);
                 }
             }
-
-            text(userPlaylists.items[i].name, x[i], y[i]);
 
         } else {
             stroke(255);
