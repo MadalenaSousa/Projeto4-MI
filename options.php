@@ -21,21 +21,9 @@ session_start();
     </div>
 </a>
 
-<a href="php/getPlaylistsGeneral.php?data=1">
-    <div class="option">
-        TRACKS
-    </div>
-</a>
-
 <a href="php/getArtistsInfo.php">
     <div class="option">
         ARTISTS
-    </div>
-</a>
-
-<a href="php/getAlbunsInfo.php">
-    <div class="option">
-        ALBUMS
     </div>
 </a>
 
