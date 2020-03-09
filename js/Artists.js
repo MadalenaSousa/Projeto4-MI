@@ -21,7 +21,7 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
 
     for(let i = 0; i < Object.keys(artiststoptracks).length; i++) {
-        dance[i] = toptracksfeatures.audio_features[i].loudness;
+  //      dance[i] = toptracksfeatures.audio_features[i].loudness;
     }
 
 
