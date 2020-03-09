@@ -19,9 +19,9 @@ let m;
 
 function preload() {
     topartists = loadJSON('php/userTopArtists.json');
-    artiststoptracks = loadJSON('php/TopArtistsAlbumsTracks.json');
-    toptracksfeatures = loadJSON('php/TopTracksAudioFeatures.json');
-    topartistsalbums = loadJSON('php/TopArtistsAlbums.json');
+    //artiststoptracks = loadJSON('php/TopArtistsAlbumsTracks.json');
+    //toptracksfeatures = loadJSON('php/TopTracksAudioFeatures.json');
+    topartistsalbums = loadJSON('php/userTopArtistsAlbums.json');
 
 }
 

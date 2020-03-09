@@ -13,9 +13,9 @@ $userTopArtists = json_encode($TopArtists);
 
 file_put_contents($TopArtistsFile, $userTopArtists);
 
-
 $TopArtistsAlbumsFile = "userTopArtistsAlbums.json";
-$ArrayTopArtistsAlbums=array();
+$ArrayTopArtistsAlbums = array();
+
 foreach ($TopArtists->items as $artist) {
     $TopArtistsAlbums = $api->getArtistAlbums($artist->id);
 
