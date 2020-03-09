@@ -35,7 +35,7 @@ function setup() {
         rectMode(CORNER);
         x[i]=random(0,windowWidth);
         y[i]=random(100,windowHeight);
-        valor=2;
+        valor=1;
 
         //textSize(24);
         //text(userPlaylists.items[i].name, 100, 200);
@@ -55,10 +55,10 @@ function draw() {
             stroke(0,255,255);
             rect(x[i], y[i], l[i]*valor, l[i]*valor);
             if(l[i]>1) {
-                for (let j = 0; j < (userPlaylists.items[i].tracks.total)/2-1; j++) {
+                for (let j = 0; j < (userPlaylists.items[i].tracks.total)/5-1; j++) {
                     dif=((j+1)*valor);
                     //dif=((j+1)*valor)/2;
-                    rect(x[i]+dif, y[i]+dif, l[i]*valor-2*dif, l[i]*valor-2*dif);
+                    rect(x[i]+2.5*dif, y[i]+2.5*dif, l[i]*valor-5*dif, l[i]*valor-5*dif);
                 }
             }
 
@@ -67,10 +67,10 @@ function draw() {
             rect(x[i], y[i], l[i]*valor, l[i]*valor);
             stroke(0);
             if(l[i]>1) {
-                for (let j = 0; j < (userPlaylists.items[i].tracks.total)/2-1; j++) {
+                for (let j = 0; j < (userPlaylists.items[i].tracks.total)/5-1; j++) {
                     dif=((j+1)*valor);
                     //dif=((j+1)*valor)/2;
-                    rect(x[i]+dif, y[i]+dif, l[i]*valor-2*dif, l[i]*valor-2*dif);
+                    rect(x[i]+2.5*dif, y[i]+2.5*dif, l[i]*valor-5*dif, l[i]*valor-5*dif);
                 }
             }
         }
