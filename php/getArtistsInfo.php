@@ -14,6 +14,10 @@ $userTopArtists = json_encode($TopArtists);
 file_put_contents($TopArtistsFile, $userTopArtists);
 
 
+
+
+/*
+
 $ArrayTopArtistsAlbums= array();
 $ArrayTopArtistsAlbumsTracks = array();
 $TopArtistsAlbumsFile= "TopArtistsAlbums.json";
@@ -29,9 +33,10 @@ $featuresFile = "TopArtistsTopTracksFeaturesFile.json";
 
 
 foreach ($TopArtists->items as $artist) {
-    $TopArtistsTopTracks = $api->getArtistTopTracks($artist->id, "from_token", ['limit' => 10]);
+    $TopArtistsTopTracks = $api->getArtistTopTracks($artist->id, "ISO 3166-2:US");
     foreach ($TopArtistsTopTracks->items as $track) {
-           array_push($TopTracksArray, $track);
+        $track = $track->track;
+        array_push($TopTracksArray, $track);
            array_push($trackIds, $track->id);
         }
     $trackFeaturesTopTracks = $api->getAudioFeatures($trackIds);
