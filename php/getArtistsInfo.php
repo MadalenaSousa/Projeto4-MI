@@ -8,12 +8,31 @@ $user = $api->me();
 //Guardar dados dos top artistas do utilizador loggado
 
 $TopArtists = $api->getmytop("artists");
-$TopArtistsFile= "userTopArtists.json";
+$TopArtistsFile = "userTopArtists.json";
 $userTopArtists = json_encode($TopArtists);
 
 file_put_contents($TopArtistsFile, $userTopArtists);
 
+/*
+$TopArtistsAlbums = $api->getArtistAlbums($TopArtists);
+$TopArtistsAlbumsFile = "userTopArtistsAlbums.json";
+$userTopArtistsAlbums = json_encode($TopArtistsAlbums);
 
+file_put_contents($TopArtistsAlbumsFile, $userTopArtistsAlbums);
+
+*/
+$TopArtistsAlbumsFile = "userTopArtistsAlbums.json";
+$ArrayTopArtistsAlbums=array();
+foreach ($TopArtists->items as $artist) {
+    $TopArtistsAlbums = $api->getArtistAlbums($artist->id);
+
+    foreach ($TopArtistsAlbums->items as $album) {
+        array_push($ArrayTopArtistsAlbums, $TopArtistsAlbums);
+    }
+
+}
+$TAT = json_encode($ArrayTopArtistsAlbums);
+file_put_contents($TopArtistsAlbumsFile, $TAT);
 
 
 /*
