@@ -2,7 +2,8 @@ let x = [], y = [], l=[];
 
 let sounds = [];
 let userPlaylistTracks, userPlaylists;
-let valor, dif;
+let valor, dif, m;
+let cor = [];
 
 function preload() {
     userPlaylistTracks = loadJSON('php/userPlaylistTracks.json');
