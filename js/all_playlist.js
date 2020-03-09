@@ -28,7 +28,7 @@ function setup() {
         stroke(255);
         rectMode(CORNER);
         x[i]=random(0,windowWidth);
-        y[i]=random(100,windowHeight);
+        y[i]=random(0,windowHeight);
         valor=1;
     }
 }
