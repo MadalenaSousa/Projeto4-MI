@@ -16,6 +16,7 @@ let minimo, maximo;
 let cores = [];
 let cor=[];
 let m;
+
 function preload() {
     topartists = loadJSON('php/userTopArtists.json');
     artiststoptracks = loadJSON('php/TopArtistsAlbumsTracks.json');
