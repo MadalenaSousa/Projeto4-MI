@@ -52,6 +52,7 @@ function draw() {
             stroke(255);
             rect(x[i], y[i], l[i]*valor, l[i]*valor);
             stroke(0);
+            noFill();
             if(l[i]>1) {
                 for (let j = 0; j < (userPlaylists.items[i].tracks.total) / 5-1; j++) {
                     dif = ((j+1) * valor);
