@@ -15,12 +15,6 @@ session_start();
 </head>
 <body>
 
-<a href="" style="text-decoration: none">
-    <div class="button">
-        NEXT
-    </div>
-</a>
-
 <script src="js/all_playlist.js"></script>
 </body>
 </html>
