@@ -35,10 +35,22 @@ foreach ($playlists->items as $playlist) {
                 "id" => $playlist->id,
                 "songs" => array(
                     "audio_analysis" => array(
-                        "bars" => $trackAnalysis->bars,
-                        "beats" => $trackAnalysis->beats,
-                        "segments" => $trackAnalysis->segments,
-                        "tatums" => $trackAnalysis->tatums
+                        "bars" => array(
+                            "total" => count($trackAnalysis->bars),
+                            "average_duration" => ""
+                        ),
+                        "beats" => array(
+                            "total" => count($trackAnalysis->beats),
+                            "average_duration" => ""
+                        ),
+                        "segments" => array(
+                            "total" => count($trackAnalysis->segments),
+                            "average_duration" => ""
+                        ),
+                        "tatums" => array(
+                            "total" => count($trackAnalysis->tatums),
+                            "average_duration" => ""
+                        ),
                     ),
                     "audio_features" => array(
                         "danceability" => $trackFeatures[$i]->danceability,
@@ -73,30 +85,42 @@ foreach ($songs->items as $track) {
     array_push($trackIds, $track->id);
 }
 
-$i = -1;
+$z = -1;
 foreach ($songs->items as $song) {
-    $i++;
+    $z++;
 
     $trackFeatures = $api->getAudioFeatures($trackIds)->audio_features;
     $trackAnalysis = $api->getAudioAnalysis($song->id);
 
     $singleTopSong = array(
         "audio_analysis" => array(
-            "bars" => $trackAnalysis->bars,
-            "beats" => $trackAnalysis->beats,
-            "segments" => $trackAnalysis->segments,
-            "tatums" => $trackAnalysis->tatums
+            "bars" => array(
+                "total" => count($trackAnalysis->bars),
+                "average_duration" => ""
+            ),
+            "beats" => array(
+                "total" => count($trackAnalysis->beats),
+                "average_duration" => ""
+            ),
+            "segments" => array(
+                "total" => count($trackAnalysis->segments),
+                "average_duration" => ""
+            ),
+            "tatums" => array(
+                "total" => count($trackAnalysis->tatums),
+                "average_duration" => ""
+            ),
         ),
         "audio_features" => array(
-            "danceability" => $trackFeatures[$i]->danceability,
-            "energy" => $trackFeatures[$i]->danceability,
-            "loudness" => $trackFeatures[$i]->danceability,
-            "positivity" => $trackFeatures[$i]->danceability,
-            "speed" => $trackFeatures[$i]->danceability
+            "danceability" => $trackFeatures[$z]->danceability,
+            "energy" => $trackFeatures[$z]->danceability,
+            "loudness" => $trackFeatures[$z]->danceability,
+            "positivity" => $trackFeatures[$z]->danceability,
+            "speed" => $trackFeatures[$z]->danceability
         ),
         "id" => $song->id,
         "name" => $song->name,
-        "artists" => $song->artists,
+        "artists" => $song->artists[0]->name,
         "album" => $song->album->name,
         "popularity" => $song->popularity,
         "preview_url" => $song->preview_url
