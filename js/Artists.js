@@ -1,6 +1,6 @@
 let x;
 let y = [];
-let topArtists, topArtistsAlbums;
+let topArtists;
 let div = [];
 let altura = 50;
 let seguidores = [];
@@ -9,8 +9,6 @@ let popularity = [];
 
 function preload() {
     topArtists = loadJSON('php/artist-object.json');
-    topArtistsAlbums = loadJSON('php/userTopArtistsAlbums.json');
-
 }
 
 function setup() {

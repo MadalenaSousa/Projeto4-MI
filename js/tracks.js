@@ -25,8 +25,8 @@ record.subscribe('firstname', function(value) {
 });
 
 function preload() {
-    userTracks = loadJSON('php/specificPlaylistTracks.json');
-    trackFeatures = loadJSON('php/specificTrackFeatures.json');
+    userTracks = loadJSON('php/playlist-songs-object.json');
+    trackFeatures = loadJSON('php/top-songs-object.json');
 
     for(let i = 0; i < Object.keys(sounds).length; i++) {
         sounds[i] = loadSound(userTracks[i].uri);

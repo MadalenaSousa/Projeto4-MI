@@ -1,12 +1,11 @@
 let x = [], y = [], l=[];
 
 let sounds = [];
-let userPlaylistTracks, userPlaylists;
+let userPlaylists;
 let valor, dif, m;
 let cor = [];
 
 function preload() {
-    userPlaylistTracks = loadJSON('php/userPlaylistTracks.json');
     userPlaylists = loadJSON('php/playlist-object.json');
 }
 
