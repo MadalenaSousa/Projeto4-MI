@@ -9,6 +9,21 @@ let shakeX = [];
 let shakeY = [];
 let randomX, randomY;
 
+const client = new DeepstreamClient('localhost:6020');
+client.login();
+
+const record = client.record.getRecord('some-name');
+
+const input = document.querySelector('input');
+
+input.onkeyup = (function() {
+    record.set('firstname', input.value)
+});
+
+record.subscribe('firstname', function(value) {
+    input.value = value
+});
+
 function preload() {
     userTracks = loadJSON('php/specificPlaylistTracks.json');
     trackFeatures = loadJSON('php/specificTrackFeatures.json');

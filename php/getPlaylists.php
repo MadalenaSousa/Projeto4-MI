@@ -7,8 +7,20 @@ $user = $api->me();
 
 //Guardar dados das playlists do utilizador loggado
 
+$playlistsFile = "playlist-object.json";
 $playlists = $api->getUserPlaylists($user->id, ['limit' => 10]);
-$playlistsFile = "userPlaylist.json";
+$playlistsObject = array();
+
+foreach ($playlists->items as $playlist) {
+    $tracks = $api->getPlaylistTracks($playlist->id, ['limit' => 5]);
+
+    $singlePlaylist = array(
+        "name" => 
+    );
+
+}
+
+/*$playlistsFile = "userPlaylist.json";
 $userPlaylists = json_encode($playlists);
 
 file_put_contents($playlistsFile, $userPlaylists);
@@ -36,7 +48,7 @@ foreach ($playlists->items as $playlist) {
 $userPlaylistTracks = json_encode($preUserPlaylistTracks);
 $userTrackFeatures = json_encode($trackFeatures);
 file_put_contents($tracksFile, $userPlaylistTracks);
-file_put_contents($featuresFile, $userTrackFeatures);
+file_put_contents($featuresFile, $userTrackFeatures);*/
 
 
 header('Location: ../all_playlists.php');

@@ -3,32 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Music Taste Visualiser | Login</title>
-    <script src="https://cdn.deepstream.io/js/client/latest/ds.min.js"></script>
 </head>
 <body style="background-color: black; height: 100vh">
 
-<!--a href="php/loginSpotify.php" style="text-decoration: none; position: absolute; top: 50%; left: 50%; transform: translateY(-100%) translateX(-50%);">
+<a href="php/loginSpotify.php" style="text-decoration: none; position: absolute; top: 50%; left: 50%; transform: translateY(-100%) translateX(-50%);">
     <div style="color: white; height: 15vh; width: 30vw; text-align: center; font-size: 2vw; font-family: sans-serif; font-weight: bolder; border: 1px solid white">
         <span style="position: relative; top: 30%;">Login to Your Spotify</span>
     </div>
-</a-->
-<input type="text" />
-<script type="text/javascript">
-    const client = new DeepstreamClient('localhost:6020');
-    client.login();
-
-    const record = client.record.getRecord('some-name');
-
-    const input = document.querySelector('input');
-
-    input.onkeyup = (function() {
-        record.set('firstname', input.value)
-    });
-
-    record.subscribe('firstname', function(value) {
-        input.value = value
-    });
-</script>
+</a>
 
 </body>
 </html>
