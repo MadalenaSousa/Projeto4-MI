@@ -49,7 +49,7 @@ foreach ($playlists->items as $playlist) {
                 "total" => $playlist->tracks->total,
                 "tracks-link" => $playlist->tracks->href
             ),
-            "average-features" => array(
+            "average_features" => array(
                 "danceability" => $danceability/count($trackFeatures),
                 "energy" => $energy/count($trackFeatures),
                 "loudness" => $loudness/count($trackFeatures),

@@ -42,7 +42,7 @@ foreach ($artists->items as $artist) {
         "genres" => $artist->genres,
         "photo" => $artist->images[0],
         "followers" => $artist->followers,
-        "top-tracks-average-features" => array(
+        "top_tracks_average_features" => array(
             "danceability" => $danceability/count($artistTrackFeatures),
             "energy" => $energy/count($artistTrackFeatures),
             "loudness" => $loudness/count($artistTrackFeatures),

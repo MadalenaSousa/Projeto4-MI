@@ -17,7 +17,7 @@ session_start();
 
 <div>
     PLAYLISTS ROOM
-    <a href="#">
+    <a href="getPlaylistsInfo.php">
         <div class="option">
             PUBLIC ROOM
         </div>
@@ -36,7 +36,7 @@ session_start();
 
 <div>
     SONGS ROOM
-    <a href="#">
+    <a href="php/getTracksInfo.php">
         <div class="option">
             PUBLIC ROOM
         </div>
@@ -55,7 +55,7 @@ session_start();
 
 <div>
     ARTISTS ROOM
-    <a href="#">
+    <a href="php/getArtistsInfo.php">
         <div class="option">
             PUBLIC ROOM
         </div>

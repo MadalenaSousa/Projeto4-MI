@@ -34,13 +34,13 @@ foreach ($playlists->items as $playlist) {
                 "name" => $playlist->name,
                 "id" => $playlist->id,
                 "songs" => array(
-                    "audio-analysis" => array(
+                    "audio_analysis" => array(
                         "bars" => $trackAnalysis->bars,
                         "beats" => $trackAnalysis->beats,
                         "segments" => $trackAnalysis->segments,
                         "tatums" => $trackAnalysis->tatums
                     ),
-                    "audio-features" => array(
+                    "audio_features" => array(
                         "danceability" => $trackFeatures[$i]->danceability,
                         "energy" => $trackFeatures[$i]->danceability,
                         "loudness" => $trackFeatures[$i]->danceability,
@@ -81,13 +81,13 @@ foreach ($songs->items as $song) {
     $trackAnalysis = $api->getAudioAnalysis($song->id);
 
     $singleTopSong = array(
-        "audio-analysis" => array(
+        "audio_analysis" => array(
             "bars" => $trackAnalysis->bars,
             "beats" => $trackAnalysis->beats,
             "segments" => $trackAnalysis->segments,
             "tatums" => $trackAnalysis->tatums
         ),
-        "audio-features" => array(
+        "audio_features" => array(
             "danceability" => $trackFeatures[$i]->danceability,
             "energy" => $trackFeatures[$i]->danceability,
             "loudness" => $trackFeatures[$i]->danceability,
