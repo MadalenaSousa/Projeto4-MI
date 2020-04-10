@@ -43,7 +43,7 @@ function setup() {
     }
 
     for (let i = 0; i < totalSongs; i++) {
-        x[i] = getRaioFromTrack(i) + ((windowWidth - getRaioFromTrack(i)) / songs.length) * i;
+        x[i] = getRaioFromTrack(i) + ((windowWidth - getRaioFromTrack(i)) / totalSongs) * i;
         y[i] = windowHeight - getRaioFromTrack(i);
         white[i] = map(getAudioFeatures(i).positivity, 0, 1, 0, 255);
         shakeX[i] = getAudioFeatures(i).energy * 5;
@@ -56,8 +56,10 @@ function draw() {
 
     if(fromPlaylist) {
         songs = playlistSongs;
+        totalSongs = Object.keys(songs).length;
     } else {
         songs = topSongs;
+        totalSongs = Object.keys(songs).length;
     }
 
     for(let i = 0; i < totalSongs; i++) {
@@ -71,8 +73,7 @@ function draw() {
             randomY = 0;
         }
 
-        //stroke(c);
-        stroke(255);
+        stroke(c);
         noFill();
         ellipse(x[i] + randomX, y[i] + randomY, getRaioFromTrack(i) * 2, getRaioFromTrack(i) * 2);
         //line(x[i], windowHeight, x[i], 0);
@@ -101,7 +102,7 @@ function mouseWheel(event) {
 }
 
 function getRaioFromTrack(index) {
-    return songs[index].audio_features.duration_ms / 4000;
+    return songs[index].duration / 2;
 }
 
 function getAudioFeatures(index) {

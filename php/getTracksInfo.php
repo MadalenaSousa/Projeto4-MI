@@ -64,7 +64,8 @@ foreach ($playlists->items as $playlist) {
                     "artists" => $track->artists,
                     "album" => $track->album->name,
                     "popularity" => $track->popularity,
-                    "preview_url" => $track->preview_url
+                    "preview_url" => $track->preview_url,
+                    "duration" => $track->duration_ms/1000
                 )
             );
 
@@ -123,7 +124,8 @@ foreach ($songs->items as $song) {
         "artists" => $song->artists[0]->name,
         "album" => $song->album->name,
         "popularity" => $song->popularity,
-        "preview_url" => $song->preview_url
+        "preview_url" => $song->preview_url,
+        "duration" => $track->duration_ms/1000
     );
 
     array_push($topSongObject, $singleTopSong);
