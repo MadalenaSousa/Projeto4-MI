@@ -9,6 +9,8 @@ let shakeX = [];
 let shakeY = [];
 let randomX, randomY;
 let fromPlaylist = false;
+let sound = [];
+let musicOn = [];
 
 /*const client = new DeepstreamClient('localhost:6020');
 client.login();
@@ -36,10 +38,10 @@ function setup() {
     songs = topSongs;
     totalSongs = Object.keys(songs).length;
 
-
     for (let i = 0; i < totalSongs; i++) {
         loud[i] = getAudioFeatures(i).loudness;
         raio[i] = getRaioFromTrack(i);
+        sound[i] = new Audio(songs[i].preview_url);
     }
 
     for (let i = 0; i < totalSongs; i++) {
@@ -80,7 +82,22 @@ function draw() {
 
         noStroke();
         fill(255);
-        text(songs[i].name, x[i], y[i])
+        text(songs[i].name, x[i], y[i]);
+
+
+        if(musicOn[i]){
+            sound[i].play();
+        } else {
+            sound[i].pause();
+        }
+    }
+}
+
+function mousePressed() {
+    for(let i = 0; i < totalSongs; i++) {
+        if(dist(mouseX, mouseY, x[i], y[i]) <= getRaioFromTrack(i)){
+            musicOn[i] = !musicOn[i];
+        }
     }
 }
 
