@@ -65,5 +65,5 @@ foreach ($playlists->items as $playlist) {
 $playlistData = json_encode($playlistsObject);
 file_put_contents($playlistsFile, $playlistData);
 
-header('Location: ../all_playlists.php');
+header('Location: ../playlists.php');
 

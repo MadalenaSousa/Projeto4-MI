@@ -108,4 +108,4 @@ foreach ($songs->items as $song) {
 $topSongData = json_encode($topSongObject);
 file_put_contents($topSongsFile, $topSongData);
 
-header('Location: ../playlist_tracks.php');
+header('Location: ../tracks.php');

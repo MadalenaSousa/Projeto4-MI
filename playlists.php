@@ -16,6 +16,7 @@ session_start();
     <script src="https://cdn.deepstream.io/js/client/latest/ds.min.js"></script>
 </head>
 <body>
-<script src="js/playlist_tracks.js"></script>
+
+<script src="js/playlists.js"></script>
 </body>
 </html>
