@@ -7,7 +7,7 @@ let cor = [];
 
 function preload() {
     userPlaylistTracks = loadJSON('php/userPlaylistTracks.json');
-    userPlaylists = loadJSON('php/userPlaylist.json');
+    userPlaylists = loadJSON('php/playlist-object.json');
 }
 
 function setup() {
@@ -68,7 +68,7 @@ function draw() {
 function mousePressed() {
     for(let i = 0; i < userPlaylists.items.length; i++) {
         if((mouseX >= x[i]) && (mouseX <= (x[i] + l[i]*valor)) && (mouseY >= y[i]) && (mouseY <= (y[i] + l[i]*valor))){
-            location.replace('php/getPlaylistTracks.php?id=' + userPlaylists.items[i].id)
+            location.replace('php/getTracksInfo.php?id=' + userPlaylists.items[i].id)
         }
     }
 }

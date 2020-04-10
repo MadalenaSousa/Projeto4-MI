@@ -17,17 +17,17 @@ session_start();
 
 <div>
     PLAYLISTS ROOM
-    <a href="php/getPlaylists.php?data=0">
+    <a href="#">
         <div class="option">
             PUBLIC ROOM
         </div>
     </a>
-    <a href="php/getPlaylists.php?data=0">
+    <a href="#">
         <div class="option">
             WITH FRIENDS
         </div>
     </a>
-    <a href="php/getPlaylists.php?data=0">
+    <a href="php/getPlaylistsInfo.php">
         <div class="option">
             ONLY ME
         </div>
@@ -36,17 +36,17 @@ session_start();
 
 <div>
     SONGS ROOM
-    <a href="php/getPlaylists.php?data=0">
+    <a href="#">
         <div class="option">
             PUBLIC ROOM
         </div>
     </a>
-    <a href="php/getPlaylists.php?data=0">
+    <a href="#">
         <div class="option">
             WITH FRIENDS
         </div>
     </a>
-    <a href="php/getPlaylists.php?data=0">
+    <a href="php/getTracksInfo.php">
         <div class="option">
             ONLY ME
         </div>
@@ -55,12 +55,12 @@ session_start();
 
 <div>
     ARTISTS ROOM
-    <a href="php/getArtistsInfo.php">
+    <a href="#">
         <div class="option">
             PUBLIC ROOM
         </div>
     </a>
-    <a href="php/getArtistsInfo.php">
+    <a href="#">
         <div class="option">
             WITH FRIENDS
         </div>

@@ -8,7 +8,7 @@ let white = [];
 let popularity = [];
 
 function preload() {
-    topArtists = loadJSON('php/userTopArtists.json');
+    topArtists = loadJSON('php/artist-object.json');
     topArtistsAlbums = loadJSON('php/userTopArtistsAlbums.json');
 
 }

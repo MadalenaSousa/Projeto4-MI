@@ -80,7 +80,7 @@ function draw() {
 function mousePressed() {
     for(let i = 0; i < Object.keys(userTracks).length; i++) {
         if(dist(mouseX, mouseY, x[i], y[i]) <= (getRaioFromTrack(i))){
-            location.replace('php/getAudioAnalysisOfTrack.php?id=' + userTracks[i].id)
+            location.replace('php/getTracksAnalysis.php?id=' + userTracks[i].id)
         }
     }
 }
