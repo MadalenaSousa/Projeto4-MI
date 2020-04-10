@@ -54,12 +54,6 @@ function setup() {
 function draw() {
     background(0);
 
-    fill(255);
-    for(let i; i < totalSongs; i++) {
-        ellipse(random(width), random(height), 50, 50)
-    }
-
-
     if(fromPlaylist) {
         songs = playlistSongs;
     } else {
