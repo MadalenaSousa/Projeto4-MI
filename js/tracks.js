@@ -12,20 +12,8 @@ let fromPlaylist = false;
 let sound = [];
 let musicOn = [];
 
-/*const client = new DeepstreamClient('localhost:6020');
-client.login();
-
-const record = client.record.getRecord('some-name');
-
-const input = document.querySelector('input');
-
-input.onkeyup = (function() {
-    record.set('firstname', input.value)
-});
-
-record.subscribe('firstname', function(value) {
-    input.value = value
-});*/
+const client = new DeepstreamClient('localhost:6020');
+const record = [];
 
 function preload() {
     playlistSongs = loadJSON('php/playlist-songs-object.json');
@@ -35,6 +23,7 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
+    client.login();
     songs = topSongs;
     totalSongs = Object.keys(songs).length;
 
@@ -42,14 +31,20 @@ function setup() {
         loud[i] = getAudioFeatures(i).loudness;
         raio[i] = getRaioFromTrack(i);
         sound[i] = new Audio(songs[i].preview_url);
-    }
-
-    for (let i = 0; i < totalSongs; i++) {
         x[i] = getRaioFromTrack(i) + ((windowWidth - getRaioFromTrack(i)) / totalSongs) * i;
         y[i] = windowHeight - getRaioFromTrack(i);
         white[i] = map(getAudioFeatures(i).positivity, 0, 1, 0, 255);
         shakeX[i] = getAudioFeatures(i).energy * 5;
         shakeY[i] = getAudioFeatures(i).energy * 5;
+
+        record[i] = client.record.getRecord(client.getUid());
+
+        record[i].set({
+            song: 'john',
+            color: white[i]
+        });
+
+        console.log(record[i]);
     }
 }
 
@@ -65,10 +60,13 @@ function draw() {
     }
 
     for(let i = 0; i < totalSongs; i++) {
+
+
         if(dist(mouseX, mouseY, x[i], y[i]) <= getRaioFromTrack(i)){
             c = color(255, 255, white[i]);
             randomX = random(-shakeX[i], shakeX[i]);
             randomY = random(-shakeY[i], shakeY[i]);
+
         } else {
             c = color(255);
             randomX = 0;

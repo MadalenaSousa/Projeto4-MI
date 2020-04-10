@@ -81,3 +81,43 @@ a {
         visibility: visible;
     }
 }
+
+.titulo {
+    font-weight: bolder;
+    font-size: 24px;
+}
+
+.list-people, .list-songs {
+    height: 30vh;
+    border: 2px solid white;
+    padding: 10px;
+    overflow-y: scroll;
+}
+
+.menu {
+    text-align: left;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+    height: 100%;
+    padding: 30px;
+}
+
+.menu div {
+    margin-bottom: 15px;
+}
+
+.menu-option {
+    border: 2px solid white;
+    padding: 10px;
+}
+
+.menu-option:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    font-weight: bolder;
+}
