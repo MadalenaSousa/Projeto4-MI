@@ -61,7 +61,6 @@ function draw() {
 
     for(let i = 0; i < totalSongs; i++) {
 
-
         if(dist(mouseX, mouseY, x[i], y[i]) <= getRaioFromTrack(i)){
             c = color(255, 255, white[i]);
             randomX = random(-shakeX[i], shakeX[i]);

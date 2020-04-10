@@ -17,6 +17,28 @@ session_start();
 </head>
 <body>
 
+<div class="home-button"><a href="homepage.php">BACK TO HOMEPAGE</a></div>
+
+<div class="menu">
+    <div class="titulo">MENU</div>
+    <div>
+        Other People in the Room
+        <div class="list-people">
+            #list of people
+        </div>
+        <div>
+            Choose a song to add to the artboard
+            <div class="menu-option">MY PLAYLIST SONGS</div>
+            <div class="menu-option">MY TOP SONGS</div>
+            <div class="list-songs">
+                #list of songs
+            </div>
+            <div class="menu-option">GENERATE PLAYLIST</div>
+            <div class="menu-option">SAVE ART AND SHARE</div>
+        </div>
+    </div>
+</div>
+
 <script src="js/playlists.js"></script>
 </body>
 </html>

@@ -17,6 +17,8 @@ session_start();
 </head>
 <body>
 
+<div class="home-button"><a href="homepage.php">BACK TO HOMEPAGE</a></div>
+
 <div class="menu">
     <div class="titulo">MENU</div>
     <div>
