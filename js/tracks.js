@@ -28,15 +28,19 @@ function setup() {
 
     for (let i = 0; i < totalSongs; i++) {
         document.querySelectorAll(".song")[i].addEventListener("click", function () {
-            newFlower = new flowerSong(songs[i].name, (songs[i].duration/2) + ((width - (songs[i].duration/2)) / totalSongs) * i, height - (songs[i].duration/2), (songs[i].duration/3), map(getAudioFeatures(i).positivity, 0, 1, 0, 255), getAudioFeatures(i).energy * 5, getAudioFeatures(i).energy * 5, songs[i].preview_url);
+            newFlower = new flowerSong(songs[i].name, (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i, height - (songs[i].duration / 2), (songs[i].duration / 3), map(getAudioFeatures(i).positivity, 0, 1, 0, 255), getAudioFeatures(i).energy * 5, getAudioFeatures(i).energy * 5, songs[i].preview_url);
             flowers.push(newFlower);
-            console.log("in");
-        });
 
-        record[i] = client.record.getRecord(client.getUid());
-        record[i].set({
-            song: 'john',
-            color: ""
+            record[i] = client.record.getRecord(client.getUid());
+            record[i].set({
+                song: songs[i].name,
+                x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
+                y: height - (songs[i].duration / 2),
+                raio: (songs[i].duration / 3),
+                url: songs[i].preview_url
+            });
+
+            console.log("nova info: " + client.record.getRecord(client.getUid()));
         });
     }
 }
