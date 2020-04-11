@@ -49,6 +49,7 @@ function draw() {
         text(topArtists[i].name, 5, y[i] - 6, 136);
         ellipse(5, y[i] - 6, 10, 10);
 
+
         for (let g = 0; g < div[i]; g++) {
             //começa no 140
             if (g === 0) {
