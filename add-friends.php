@@ -12,20 +12,13 @@ session_start();
 
     <script src="p5/p5.js"></script>
     <script src="p5/addons/p5.sound.js"></script>
+
+    <script src="https://cdn.deepstream.io/js/client/latest/ds.min.js"></script>
 </head>
-<body style="background-color: black">
+<body>
 
-<a href="php/getPlaylistsGeneral.php?data=0">
-    <div class="option">
-        PLAYLISTS
-    </div>
-</a>
+<div class="home-button"><a href="homepage.php">BACK TO HOMEPAGE</a></div>
 
-<a href="php/getArtistsInfo.php">
-    <div class="option">
-        ARTISTS
-    </div>
-</a>
-
+<script src="#"></script>
 </body>
 </html>

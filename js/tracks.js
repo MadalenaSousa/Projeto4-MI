@@ -1,0 +1,124 @@
+let x = [];
+let y = [];
+let sounds = [];
+let playlistSongs, topSongs, songs, c, totalSongs;
+let white = [];
+let loud = [];
+let raio = [];
+let shakeX = [];
+let shakeY = [];
+let randomX, randomY;
+let fromPlaylist = false;
+let sound = [];
+let musicOn = [];
+
+const client = new DeepstreamClient('localhost:6020');
+const record = [];
+
+function preload() {
+    playlistSongs = loadJSON('php/playlist-songs-object.json');
+    topSongs = loadJSON('php/top-songs-object.json');
+}
+
+function setup() {
+    createCanvas(windowWidth, windowHeight);
+
+    client.login();
+    songs = topSongs;
+    totalSongs = Object.keys(songs).length;
+
+    for (let i = 0; i < totalSongs; i++) {
+        loud[i] = getAudioFeatures(i).loudness;
+        raio[i] = getRaioFromTrack(i);
+        sound[i] = new Audio(songs[i].preview_url);
+        x[i] = getRaioFromTrack(i) + ((windowWidth - getRaioFromTrack(i)) / totalSongs) * i;
+        y[i] = windowHeight - getRaioFromTrack(i);
+        white[i] = map(getAudioFeatures(i).positivity, 0, 1, 0, 255);
+        shakeX[i] = getAudioFeatures(i).energy * 5;
+        shakeY[i] = getAudioFeatures(i).energy * 5;
+
+        record[i] = client.record.getRecord(client.getUid());
+
+        record[i].set({
+            song: 'john',
+            color: white[i]
+        });
+
+        console.log(record[i]);
+    }
+}
+
+function draw() {
+    background(0);
+
+    if(fromPlaylist) {
+        songs = playlistSongs;
+        totalSongs = Object.keys(songs).length;
+    } else {
+        songs = topSongs;
+        totalSongs = Object.keys(songs).length;
+    }
+
+    for(let i = 0; i < totalSongs; i++) {
+
+        if(dist(mouseX, mouseY, x[i], y[i]) <= getRaioFromTrack(i)){
+            c = color(255, 255, white[i]);
+            randomX = random(-shakeX[i], shakeX[i]);
+            randomY = random(-shakeY[i], shakeY[i]);
+
+        } else {
+            c = color(255);
+            randomX = 0;
+            randomY = 0;
+        }
+
+        stroke(c);
+        noFill();
+        ellipse(x[i] + randomX, y[i] + randomY, getRaioFromTrack(i) * 2, getRaioFromTrack(i) * 2);
+        //line(x[i], windowHeight, x[i], 0);
+
+        noStroke();
+        fill(255);
+        text(songs[i].name, x[i], y[i]);
+
+
+        if(musicOn[i]){
+            sound[i].play();
+        } else {
+            sound[i].pause();
+        }
+    }
+}
+
+function mousePressed() {
+    for(let i = 0; i < totalSongs; i++) {
+        if(dist(mouseX, mouseY, x[i], y[i]) <= getRaioFromTrack(i)){
+            musicOn[i] = !musicOn[i];
+        }
+    }
+}
+
+function mouseWheel(event) {
+    print(event.delta);
+
+    for(let i = 0; i < totalSongs; i++) {
+
+        y[i] = y[i] - event.delta;
+
+        if(y[i] <= map(getAudioFeatures(i).loudness, min(loud), 0, getRaioFromTrack(i), windowHeight - getRaioFromTrack(i))) {
+            y[i] = map(getAudioFeatures(i).loudness, min(loud), 0, getRaioFromTrack(i), windowHeight - getRaioFromTrack(i));
+        }
+
+        if(y[i] >= windowHeight - getRaioFromTrack(i)) {
+            y[i] = windowHeight - getRaioFromTrack(i);
+        }
+    }
+}
+
+function getRaioFromTrack(index) {
+    return songs[index].duration / 2;
+}
+
+function getAudioFeatures(index) {
+    return songs[index].audio_features;
+}

@@ -1,6 +1,6 @@
 let x;
 let y = [];
-let topArtists, topArtistsAlbums;
+let topArtists, totalArtists;
 let div = [];
 let altura = [];
 let seguidores = [];
@@ -10,21 +10,21 @@ let a=0;
 let clicar = [a,a,a,a,a,a,a,a,a,a];
 
 function preload() {
-    topArtists = loadJSON('php/userTopArtists.json');
-    topArtistsAlbums = loadJSON('php/userTopArtistsAlbums.json');
-
+    topArtists = loadJSON('php/artists-object.json');
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    for (let j = 0; j < topArtists.items.length; j++) {
-        popularity[j] = topArtists.items[j].popularity;
+    totalArtists = Object.keys(topArtists).length;
+
+    for (let j = 0; j < totalArtists; j++) {
+        popularity[j] = topArtists[j].popularity;
     }
 
-    for (let i = 0; i < topArtists.items.length; i++) {
-        white[i] = map(topArtists.items[i].popularity, min(popularity), max(popularity), 0, 255);
-        seguidores = topArtists.items[i].followers.total;
+    for (let i = 0; i < totalArtists; i++) {
+        white[i] = map(topArtists[i].popularity, min(popularity), max(popularity), 0, 255);
+        seguidores = topArtists[i].followers.total;
         if (i === 0) {
             y[0] = windowHeight / 6;
         } else {
@@ -38,7 +38,6 @@ function draw() {
 
     // For de cada artista
     for (let i = 0; i < 10; i++) {
-
         if (clicar[i] === 0) {
             altura[i] = 0;
 
@@ -47,9 +46,8 @@ function draw() {
         fill(255, 255 - white[i], 255);
         noStroke();
         textAlign(RIGHT);
-        text(topArtists.items[i].name, 5, y[i] - 6, 136);
+        text(topArtists[i].name, 5, y[i] - 6, 136);
         ellipse(5, y[i] - 6, 10, 10);
-
 
         for (let g = 0; g < div[i]; g++) {
             //começa no 140
