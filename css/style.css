@@ -157,3 +157,11 @@ a {
 .home-button a:hover {
     text-decoration: underline;
 }
+
+.song {
+    cursor: pointer;
+}
+
+.song:hover {
+    color: yellow;
+}

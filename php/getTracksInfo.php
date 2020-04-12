@@ -61,7 +61,7 @@ foreach ($playlists->items as $playlist) {
                     ),
                     "id" => $track->id,
                     "name" => $track->name,
-                    "artists" => $track->artists,
+                    "artists" => $track->artists[0]->name,
                     "album" => $track->album->name,
                     "popularity" => $track->popularity,
                     "preview_url" => $track->preview_url,
