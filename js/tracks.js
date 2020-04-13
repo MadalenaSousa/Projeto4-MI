@@ -1,14 +1,16 @@
-let playlistSongs, topSongs, songs, totalSongs;
+let playlistSongs, topSongs, user, songs, totalSongs;
 let fromPlaylist = false;
 let flowers = [];
 let newFlower;
 
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
+let recordList;
 
 function preload() {
     playlistSongs = loadJSON('php/playlist-songs-object.json');
     topSongs = loadJSON('php/top-songs-object.json');
+    user = loadJSON('php/user-object.json');
 }
 
 function setup() {
@@ -26,23 +28,44 @@ function setup() {
         document.querySelector(".list-songs").appendChild(list);
     }
 
-    for (let i = 0; i < totalSongs; i++) {
-        document.querySelectorAll(".song")[i].addEventListener("click", function () {
-            newFlower = new flowerSong(songs[i].name, (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i, height - (songs[i].duration / 2), (songs[i].duration / 3), map(getAudioFeatures(i).positivity, 0, 1, 0, 255), getAudioFeatures(i).energy * 5, getAudioFeatures(i).energy * 5, songs[i].preview_url);
-            flowers.push(newFlower);
+    recordList = client.record.getList('all-songs');
 
-            record[i] = client.record.getRecord(client.getUid());
-            record[i].set({
+    for (let i = 0; i < totalSongs; i++) {
+        document.querySelectorAll(".song")[i].addEventListener("click", function () { //sempre que clico numa música
+            record[i] = client.record.getRecord(songs[i].name); //crio um novo record no servidor
+            record[i].set({ //defino o novo record
+                user: "user",
                 song: songs[i].name,
                 x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
                 y: height - (songs[i].duration / 2),
                 raio: (songs[i].duration / 3),
+                color: map(getAudioFeatures(i).positivity, 0, 1, 0, 255),
+                energy: getAudioFeatures(i).energy * 5,
                 url: songs[i].preview_url
             });
 
-            console.log("nova info: " + client.record.getRecord(client.getUid()));
+            recordList.addEntry(songs[i].name);
+            //recordList.removeEntry(songs[i].name);
         });
     }
+
+    recordList.subscribe(function () {
+        if(recordList.isEmpty() === false) {
+            var lastSong = recordList.getEntries()[recordList.getEntries().length-1];
+            var currentRecord = client.record.getRecord(lastSong);
+
+            currentRecord.whenReady(function () {
+                console.log(recordList.getEntries());
+                addNewFlower(currentRecord.get('song'), currentRecord.get('x'), currentRecord.get('y'), currentRecord.get('raio'), currentRecord.get('color'), currentRecord.get('energy'), currentRecord.get('energy'), currentRecord.get('url'));
+            });
+        }
+    }, true);
+}
+
+function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url) {
+    newFlower = new flowerSong(name, x, y, raio, color, shakeX, shakeY, url);
+    flowers.push(newFlower);
+    console.log(flowers);
 }
 
 function draw() {
@@ -56,8 +79,10 @@ function draw() {
         totalSongs = Object.keys(songs).length;
     }
 
-    for(let i = 0; i < flowers.length; i++) {
-        flowers[i].display();
+    if(flowers.length > 0) {
+        for(let i = 0; i < flowers.length; i++) {
+            flowers[i].display();
+        }
     }
 }
 
