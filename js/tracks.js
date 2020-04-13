@@ -6,7 +6,6 @@ let newFlower;
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
 let recordList;
-let currentRecords = [];
 
 function preload() {
     playlistSongs = loadJSON('php/playlist-songs-object.json');
@@ -46,7 +45,12 @@ function setup() {
             });
 
             recordList.addEntry(songs[i].name);
+            //recordList.removeEntry(songs[i].name);
+        });
+    }
 
+    recordList.subscribe(function () {
+        if(recordList.isEmpty() === false) {
             var lastSong = recordList.getEntries()[recordList.getEntries().length-1];
             var currentRecord = client.record.getRecord(lastSong);
 
@@ -54,13 +58,14 @@ function setup() {
                 console.log(recordList.getEntries());
                 addNewFlower(currentRecord.get('song'), currentRecord.get('x'), currentRecord.get('y'), currentRecord.get('raio'), currentRecord.get('color'), currentRecord.get('energy'), currentRecord.get('energy'), currentRecord.get('url'));
             });
-        });
-    }
+        }
+    }, true);
 }
 
 function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url) {
     newFlower = new flowerSong(name, x, y, raio, color, shakeX, shakeY, url);
     flowers.push(newFlower);
+    console.log(flowers);
 }
 
 function draw() {
@@ -74,8 +79,10 @@ function draw() {
         totalSongs = Object.keys(songs).length;
     }
 
-    for(let i = 0; i < flowers.length; i++) {
-        flowers[i].display();
+    if(flowers.length > 0) {
+        for(let i = 0; i < flowers.length; i++) {
+            flowers[i].display();
+        }
     }
 }
 
