@@ -57,6 +57,7 @@ function draw() {
                         dif = ((j + 1) * valor);
                         //dif=((j+1)*valor)/2;
                         rect(x[i] + 2.5 * dif, y[i] + 2.5 * dif, l[i] * valor - 5 * dif, l[i] * valor - 5 * dif);
+                        textSize(12);
                         text(userPlaylists[i].name, x[i], y[i] - 10);
                     }
                 }
@@ -71,6 +72,7 @@ function draw() {
                         dif = ((j + 1) * valor);
                         //dif=((j+1)*valor)/2;
                         rect(x[i] + 2.5 * dif, y[i] + 2.5 * dif, l[i] * valor - 5 * dif, l[i] * valor - 5 * dif);
+                        textSize(12);
                         text(userPlaylists[i].name, x[i], y[i] - 10);
                     }
                 }
