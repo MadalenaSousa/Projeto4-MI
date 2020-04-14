@@ -81,3 +81,87 @@ a {
         visibility: visible;
     }
 }
+
+.titulo {
+    font-weight: bolder;
+    font-size: 24px;
+}
+
+.list-people, .list-songs {
+    height: 30vh;
+    border: 2px solid white;
+    padding: 10px;
+    overflow-y: scroll;
+}
+
+.menu {
+    text-align: left;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+    height: 100%;
+    padding: 30px;
+}
+
+.menu div {
+    margin-bottom: 15px;
+}
+
+.menu-option {
+    border: 2px solid white;
+    padding: 10px;
+    text-align: center;
+}
+
+.menu-option:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    font-weight: bolder;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: white;
+}
+
+::-webkit-scrollbar-thumb {
+    background: black;
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: grey;
+}
+
+.home-button {
+    position: absolute;
+    text-align: left;
+    left: 1vw;
+    top: 3vh;
+    width: 50vw;
+    font-size: 0.5vw;
+}
+
+.home-button a {
+    color: white;
+    text-decoration: none;
+}
+
+.home-button a:hover {
+    text-decoration: underline;
+}
+
+.song {
+    cursor: pointer;
+}
+
+.song:hover {
+    color: yellow;
+}

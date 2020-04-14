@@ -39,8 +39,6 @@ session_start();
     </div>
 </div>
 
-<div id="lista"></div>
-
-<script src="js/artists.js"></script>
+<script src="js/playlists.js"></script>
 </body>
 </html>
