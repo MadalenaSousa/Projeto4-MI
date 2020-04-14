@@ -42,7 +42,7 @@ function draw() {
             altura[i] = 0;
 
         }
-        div[i] = map(topArtists.items[i].followers.total, 0, 60000000, 10, 100);
+        div[i] = map(topArtists[i].followers.total, 0, 60000000, 10, 100);
         fill(255, 255 - white[i], 255);
         noStroke();
         textAlign(RIGHT);
