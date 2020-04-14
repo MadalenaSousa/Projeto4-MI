@@ -1,22 +1,21 @@
-let x = [], y = [], l=[];
-
-let sounds = [];
-let userPlaylists;
-let valor, dif, m;
-let cor = [];
+let userPlaylists, totalPlaylists;
+let fromPlaylist = false;
+let mountains = [];
+let newMountain;
 
 const client = new DeepstreamClient('localhost:6020');
+const record = [];
+let recordList;
 
 function preload() {
     userPlaylists = loadJSON('php/playlist-object.json');
 }
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
+    createCanvas(windowWidth - windowWidth/6, windowHeight);
 
     client.login();
-
-    totalPlaylists = Object.keys(userPlaylists).length;
+    totalPlaylists=Object.keys(userPlaylists).length;
 
     for(let i = 0; i < totalPlaylists; i++) {
         let list = document.createElement("div");
@@ -25,57 +24,82 @@ function setup() {
         document.querySelector(".list-playlists").appendChild(list);
     }
 
-    background(0);
-    textSize(20);
-    noFill();
+    recordList = client.record.getList('all-playlists');
 
-    for(let i = 0; i < totalPlaylists; i++) {
-        m = color(255, 255, cor[i]);
-        stroke(m);
-        rectMode(CORNER);
-        x[i]=random(10,windowWidth);
-        y[i]=random(0,windowHeight);
-        valor=1;
+    for (let i = 0; i < totalPlaylists; i++) {
+        document.querySelectorAll(".playlist")[i].addEventListener("click", function () { //sempre que clico numa música
+            record[i] = client.record.getRecord(userPlaylists[i].name); //crio um novo record no servidor
+            record[i].set({ //defino o novo record
+                playlist: userPlaylists[i].name,
+                x: random(0, windowWidth),
+                y: random(0, windowHeight),
+                color: color(255),
+                largura: userPlaylists[i].tracks.total
+            });
+
+            recordList.addEntry(userPlaylists[i].name);
+        });
     }
+
+    recordList.subscribe(function () {
+        if(recordList.isEmpty() === false) {
+            var lastPlaylist = recordList.getEntries()[recordList.getEntries().length-1];
+            var currentRecord = client.record.getRecord(lastPlaylist);
+
+            currentRecord.whenReady(function () {
+                console.log(recordList.getEntries());
+                addNewFlower(currentRecord.get('playlist'), currentRecord.get('x'), currentRecord.get('y'), currentRecord.get('largura'), currentRecord.get('color'));
+            });
+        }
+    }, true);
+}
+
+function addNewFlower(name, x, y, largura, color) {
+    newMountain = new classMountain(name, x, y, largura, color);
+    mountains.push(newMountain);
+    console.log(mountains);
 }
 
 function draw() {
+    background(0);
 
-    for(let i = 0; i < totalPlaylists; i++) {
-            strokeWeight(0.5);
-            l[i] = userPlaylists[i].tracks.total;
-
-            if (x[i] > windowWidth - l[i] * valor) x[i] = windowWidth - l[i] * valor;
-            if (y[i] > windowHeight - l[i] * valor) y[i] = windowHeight - l[i] * valor;
-
-            if ((mouseX >= x[i]) && (mouseX <= (x[i] + l[i] * valor)) && (mouseY >= y[i]) && (mouseY <= (y[i] + l[i] * valor))) {
-
-                stroke(0, 255, 255);
-                rect(x[i], y[i], l[i] * valor, l[i] * valor);
-                if (l[i] > 1) {
-                    for (let j = 0; j < (userPlaylists[i].tracks.total) / 5 - 1; j++) {
-                        dif = ((j + 1) * valor);
-                        //dif=((j+1)*valor)/2;
-                        rect(x[i] + 2.5 * dif, y[i] + 2.5 * dif, l[i] * valor - 5 * dif, l[i] * valor - 5 * dif);
-                        textSize(12);
-                        text(userPlaylists[i].name, x[i], y[i] - 10);
-                    }
-                }
-
-            } else {
-                stroke(255);
-                rect(x[i], y[i], l[i] * valor, l[i] * valor);
-                stroke(0);
-                noFill();
-                if (l[i] > 1) {
-                    for (let j = 0; j < (userPlaylists[i].tracks.total) / 5 - 1; j++) {
-                        dif = ((j + 1) * valor);
-                        //dif=((j+1)*valor)/2;
-                        rect(x[i] + 2.5 * dif, y[i] + 2.5 * dif, l[i] * valor - 5 * dif, l[i] * valor - 5 * dif);
-                        textSize(12);
-                        text(userPlaylists[i].name, x[i], y[i] - 10);
-                    }
-                }
-            }
+    if(mountains.length > 0) {
+        for(let i = 0; i < mountains.length; i++) {
+            mountains[i].display();
+        }
     }
+}
+
+
+class classMountain {
+    c;
+
+    constructor(name, x, y, largura, color) {
+        this.name = name;
+        this.x = x;
+        this.y = y;
+        this.largura = largura;
+        this.color  = color;
+    }
+
+    display() {
+        if(dist(mouseX, mouseY, this.x, this.y) <= this.largura){
+            this.c = color(0,200,255);
+
+        } else {
+            this.c = color(255);
+        }
+
+        stroke(this.c);
+        strokeWeight(2);
+        noFill();
+        rectMode(CENTER);
+        rect(this.x, this.y, this.largura * 2, this.largura * 2);
+
+        noStroke();
+        fill(this.c);
+        textSize(12);
+        text(this.name, this.x, this.y);
+    }
+
 }
