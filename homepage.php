@@ -17,7 +17,7 @@ session_start();
 
 <div>
     PLAYLISTS ROOM
-    <a href="getPlaylistsInfo.php">
+    <a href="php/getPlaylistsInfo.php">
         <div class="option">
             PUBLIC ROOM
         </div>
