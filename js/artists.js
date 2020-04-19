@@ -97,7 +97,7 @@ class waveArtist {
                 this.x = 140 + g * ((windowWidth - 200) / this.divisoes);
             }
 
-            stroke(255, 255 - this.color, 255);
+            stroke(255,255-this.color, 255);
             noFill();
 
             //se for par arco para cima
@@ -118,7 +118,7 @@ class waveArtist {
         }
         textAlign(RIGHT);
         noStroke();
-        fill(255, 255 - this.color, 255);
+        fill(255,255-this.color, 255);
         text(this.name, 5, this.y - 6, 136);
     }
 }
