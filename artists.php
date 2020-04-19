@@ -31,7 +31,6 @@ session_start();
             <div class="menu-option">MY PLAYLIST SONGS</div>
             <div class="menu-option">MY TOP SONGS</div>
             <div class="list-songs">
-                #list of songs
             </div>
             <div class="menu-option">GENERATE PLAYLIST</div>
             <div class="menu-option">SAVE ART AND SHARE</div>
