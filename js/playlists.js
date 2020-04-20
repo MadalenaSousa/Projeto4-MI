@@ -106,6 +106,11 @@ class classMountain {
         if(dist(mouseX, mouseY, this.px, this.py) <= this.largura*5){
             this.c = color(0,200,255);
             this.t += this.tChange;
+            //nome da playlist
+            noStroke();
+            fill(this.c);
+            textSize(12);
+            text(this.name, this.px, this.py);
 
         } else {
             this.c = color(255);
@@ -129,13 +134,6 @@ class classMountain {
             }
         }
         endShape(CLOSE);
-
-
-        //nome da playlist
-        noStroke();
-        fill(this.c);
-        textSize(12);
-        text(this.name, this.px, this.py);
     }
 
 }
