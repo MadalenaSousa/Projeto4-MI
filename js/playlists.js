@@ -37,7 +37,7 @@ function setup() {
                 color: color(255),
                 numtracks: userPlaylists[i].tracks.total,
                 resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
-                tam: map(userPlaylists[i].tracks.total, 0, 500, 0, 70), //tamanho
+                tam: map(userPlaylists[i].tracks.total, 0, 500, 0, 60), //tamanho
                 round: map(userPlaylists[i].average_features.energy, 0.0, 1.0, 30, 0), //quanto maior o valor, mais espalmada
                 nAmp: map(userPlaylists[i].average_features.loudness, -60, 0, 0.3, 1), // valor=1 -> redonda
                 t: 0,
