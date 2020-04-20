@@ -32,18 +32,19 @@ function setup() {
             record[i] = client.record.getRecord(userPlaylists[i].name); //crio um novo record no servidor
             record[i].set({ //defino o novo record
                 playlist: userPlaylists[i].name,
-                px: random(0, windowWidth-200),
-                py: random(0, windowHeight-200),
+                px: random(0, windowWidth-300),
+                py: random(0, windowHeight-300),
                 color: color(255),
                 largura: userPlaylists[i].tracks.total,
                 resolution: 13, // número de "vértices"
                 rad: 90,  //tamanho
-                round: random(0, 10), //valor q ainda nao percebi o q afeta bem
-                nInt: 500, // tmb n sei q faz
+                round: random(0, 100), //valor q ainda nao percebi o q afeta bem
+                nInt: 460, // tmb n sei q faz
                 nAmp: 0.4, // valor=1 -> redonda
                 nSeed: random(0, 60), // tambem n sei q afeta
                 t: 0,
                 tChange: 0.01
+                //tChange: getAudioFeatures(i).energy
             });
 
             recordList.addEntry(userPlaylists[i].name);
@@ -73,7 +74,6 @@ function addNewFlower(name, px, py, largura, color, resolution, rad, round, nInt
 
 function draw() {
     background(0);
-
     if(mountains.length > 0) {
         for(let i = 0; i < mountains.length; i++) {
             mountains[i].display();
@@ -115,19 +115,23 @@ class classMountain {
 
         //desenho
         stroke(this.c);
-        strokeWeight(2);
+        strokeWeight(1.5);
         noFill();
 
         beginShape();
-        for (let a=- 1; a <= TWO_PI; a += TWO_PI/this.resolution) {
-            this.nVal = map(noise(cos(a)*this.nInt+this.nSeed, sin(a)*this.nInt+this.nSeed,this.t), 0.0, 1.0, this.nAmp, 1.0);
+        for (let b=1; b<=2; b++) {
+            for (let a = -1; a <= TWO_PI; a += TWO_PI / this.resolution) {
+                this.nVal = map(noise(cos(a) * this.nInt + this.nSeed, sin(a) * this.nInt + this.nSeed, this.t), 0.0, 1.0, this.nAmp, 1.0);
 
-            this.x = this.px + cos(a)*(this.rad+this.round) *this.nVal;
-            this.y = this.py + sin(a)*this.rad *this.nVal;
+                this.x = this.px + cos(a) * (this.rad + this.round) * this.nVal;
+                this.y = this.py + sin(a) * this.rad * this.nVal;
 
-            curveVertex(this.x, this.y);
+                curveVertex(this.x, this.y);
+
+            }
         }
         endShape(CLOSE);
+
 
         //nome da playlist
         noStroke();
