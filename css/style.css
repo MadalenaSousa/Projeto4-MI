@@ -165,3 +165,7 @@ a {
 .song:hover {
     color: yellow;
 }
+
+.remove {
+    display: none;
+}

@@ -2,6 +2,8 @@ let playlistSongs, topSongs, user, songs, totalSongs;
 let fromPlaylist = false;
 let flowers = [];
 let newFlower;
+let remove;
+let flowerExists = false;
 
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
@@ -16,17 +18,52 @@ function preload() {
 function setup() {
     createCanvas(windowWidth - windowWidth/6, windowHeight);
 
-    client.login();
+    client.login({username: user.name});
     songs = topSongs;
 
     totalSongs = Object.keys(songs).length;
 
     for(let i = 0; i < totalSongs; i++) {
         let list = document.createElement("div");
-        list.innerText = songs[i].name;
-        list.classList.add("song");
+        let nomeDiv = document.createElement("div");
+        let nome = document.createElement("span");
+        let remove = document.createElement("span");
+        let artista = document.createElement("div");
+
+        nomeDiv.setAttribute("style", "margin: 0px");
+        nome.innerHTML ='<b>' + songs[i].name + '</b>';
+        remove.innerText = "x";
+        remove.classList.add("remove");
+        remove.setAttribute("style", "cursor: pointer; margin-left: 5px;");
+
+        nomeDiv.appendChild(nome);
+        nomeDiv.appendChild(remove);
+
+        nome.classList.add("song");
+
+        artista.setAttribute("style", "font-size: 10pt");
+        artista.innerHTML = songs[i].artists;
+
+        list.appendChild(nomeDiv);
+        list.appendChild(artista);
         document.querySelector(".list-songs").appendChild(list);
     }
+
+    remove = document.querySelectorAll(".remove");
+
+    client.presence.subscribe((username, isLoggedIn) => {
+        if(isLoggedIn){
+            client.presence.getAll((clients) => {
+                for(let i = 0; i < clients.length; i++){
+                    let peopleList = document.createElement('div');
+                    peopleList.innerText = username;
+                    peopleList.classList.add("user");
+
+                    document.querySelector(".list-people").appendChild(peopleList);
+                }
+            });
+        }
+    });
 
     recordList = client.record.getList('all-songs');
 
@@ -41,35 +78,61 @@ function setup() {
                 raio: (songs[i].duration / 3),
                 color: map(getAudioFeatures(i).positivity, 0, 1, 0, 255),
                 energy: getAudioFeatures(i).energy * 5,
+                artist: songs[i].artists,
                 url: songs[i].preview_url
             });
 
-            recordList.addEntry(songs[i].name);
+            if(contains(recordList, songs[i].name) === false){
+                recordList.addEntry(songs[i].name);
+            }
             //recordList.removeEntry(songs[i].name);
+        });
+
+        remove[i].addEventListener("click", function () {
+            recordList.removeEntry(songs[i].name);
+            removeFlower(i);
+            console.log(recordList.getEntries());
+            console.log(flowers);
         });
     }
 
     recordList.subscribe(function () {
-        if(recordList.isEmpty() === false) {
-            var lastSong = recordList.getEntries()[recordList.getEntries().length-1];
-            var currentRecord = client.record.getRecord(lastSong);
-
-            currentRecord.whenReady(function () {
-                console.log(recordList.getEntries());
-                addNewFlower(currentRecord.get('song'), currentRecord.get('x'), currentRecord.get('y'), currentRecord.get('raio'), currentRecord.get('color'), currentRecord.get('energy'), currentRecord.get('energy'), currentRecord.get('url'));
-            });
+        if(recordList.isEmpty() === false && flowerExists === false) {
+            var currentRecord = [];
+            for(let i = 0; i < recordList.getEntries().length; i++) {
+                currentRecord[i] = client.record.getRecord(recordList.getEntries()[i]);
+                currentRecord[i].whenReady(function () {
+                    console.log(recordList.getEntries());
+                    addNewFlower(currentRecord[i].get('song'), currentRecord[i].get('x'), currentRecord[i].get('y'), currentRecord[i].get('raio'), currentRecord[i].get('color'), currentRecord[i].get('energy'), currentRecord[i].get('energy'), currentRecord[i].get('url'), currentRecord[i].get('artist'));
+                });
+            }
         }
     }, true);
 }
 
-function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url) {
-    newFlower = new flowerSong(name, x, y, raio, color, shakeX, shakeY, url);
+function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist) {
+    newFlower = new flowerSong(name, x, y, raio, color, shakeX, shakeY, url, artist);
     flowers.push(newFlower);
     console.log(flowers);
 }
 
+function removeFlower(index) {
+    flowers.splice(index, 1);
+}
+
+function contains(array, obj) {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function draw() {
     background(0);
+
+    client.record.has('Black Madonna');
 
     if(fromPlaylist) {
         songs = playlistSongs;
@@ -103,7 +166,7 @@ class flowerSong {
     musicOn;
     sound;
 
-    constructor(name, x, y, raio, color, shakeX, shakeY, url) {
+    constructor(name, x, y, raio, color, shakeX, shakeY, url, artist) {
         this.name = name;
         this.x = x;
         this.y = y;
@@ -111,6 +174,7 @@ class flowerSong {
         this.color  = color;
         this.shakeX = shakeX;
         this.shakeY = shakeY;
+        this.artist = artist;
 
         this.sound = new Audio(url);
         this.musicOn = false;
@@ -142,7 +206,11 @@ class flowerSong {
         noStroke();
         fill(this.c);
         textSize(12);
+        textStyle(BOLD);
         text(this.name, this.x, this.y);
+        textSize(10);
+        textStyle(NORMAL);
+        text(this.artist, this.x, this.y + 10);
     }
 
     playSong() {

@@ -24,7 +24,6 @@ session_start();
     <div>
         Other People in the Room
         <div  class="list-people">
-
         </div>
         <div>
             <div class="menu-option">MY PLAYLIST SONGS</div>
