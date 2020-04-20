@@ -107,6 +107,7 @@ class classMountain {
     display() {
         if(dist(mouseX, mouseY, this.px, this.py) <= this.largura*5){
             this.c = color(0,200,255);
+            this.t += this.tChange;
 
         } else {
             this.c = color(255);
@@ -116,10 +117,7 @@ class classMountain {
         stroke(this.c);
         strokeWeight(2);
         noFill();
-        rectMode(CENTER);
-        rect(this.px, this.py, this.largura * 2, this.largura * 2);
 
-        //****************************************************************************************
         beginShape();
         for (let a=- 1; a <= TWO_PI; a += TWO_PI/this.resolution) {
             this.nVal = map(noise(cos(a)*this.nInt+this.nSeed, sin(a)*this.nInt+this.nSeed,this.t), 0.0, 1.0, this.nAmp, 1.0);
@@ -128,13 +126,9 @@ class classMountain {
             this.y = this.py + sin(a)*this.rad *this.nVal;
 
             curveVertex(this.x, this.y);
-
         }
-
         endShape(CLOSE);
 
-        this.t += this.tChange;
-        //****************************************************************************************
         //nome da playlist
         noStroke();
         fill(this.c);
