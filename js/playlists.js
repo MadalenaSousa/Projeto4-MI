@@ -40,11 +40,10 @@ function setup() {
                 rad: 90,  //tamanho
                 round: random(0, 100), //valor q ainda nao percebi o q afeta bem
                 nInt: 460, // tmb n sei q faz
-                nAmp: 0.4, // valor=1 -> redonda
+                nAmp: map(userPlaylists[i].average_features.loudness, -60, 0, 0.1, 1), // valor=1 -> redonda
                 nSeed: random(0, 60), // tambem n sei q afeta
                 t: 0,
-                tChange: 0.01
-                //tChange: getAudioFeatures(i).energy
+                tChange: map(userPlaylists[i].average_features.danceability, 0.0, 1.0, 0.01, 0.2)
             });
 
             recordList.addEntry(userPlaylists[i].name);
