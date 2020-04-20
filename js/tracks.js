@@ -17,7 +17,6 @@ function preload() {
 
 function setup() {
     createCanvas(windowWidth - windowWidth/6, windowHeight);
-
     client.login({username: user.name});
     songs = topSongs;
 
@@ -69,20 +68,21 @@ function setup() {
 
     for (let i = 0; i < totalSongs; i++) {
         document.querySelectorAll(".song")[i].addEventListener("click", function () { //sempre que clico numa música
-            record[i] = client.record.getRecord(songs[i].name); //crio um novo record no servidor
-            record[i].set({ //defino o novo record
-                user: "user",
-                song: songs[i].name,
-                x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
-                y: height - (songs[i].duration / 2),
-                raio: (songs[i].duration / 3),
-                color: map(getAudioFeatures(i).positivity, 0, 1, 0, 255),
-                energy: getAudioFeatures(i).energy * 5,
-                artist: songs[i].artists,
-                url: songs[i].preview_url
-            });
+            if(client.record.has(songs[i].name)) {
+            } else {
+                record[i] = client.record.getRecord(songs[i].name); //crio um novo record no servidor
+                record[i].set({ //defino o novo record
+                    user: "user",
+                    song: songs[i].name,
+                    x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
+                    y: height - (songs[i].duration / 2),
+                    raio: (songs[i].duration / 3),
+                    color: map(getAudioFeatures(i).positivity, 0, 1, 0, 255),
+                    energy: getAudioFeatures(i).energy * 5,
+                    artist: songs[i].artists,
+                    url: songs[i].preview_url
+                });
 
-            if(contains(recordList, songs[i].name) === false){
                 recordList.addEntry(songs[i].name);
             }
             //recordList.removeEntry(songs[i].name);
@@ -132,14 +132,16 @@ function contains(array, obj) {
 function draw() {
     background(0);
 
-    client.record.has('Black Madonna');
-
     if(fromPlaylist) {
         songs = playlistSongs;
         totalSongs = Object.keys(songs).length;
     } else {
         songs = topSongs;
         totalSongs = Object.keys(songs).length;
+    }
+
+    if(client.record.has("Black Madonna")){
+        console.log("NÃO TEM");
     }
 
     if(flowers.length > 0) {
