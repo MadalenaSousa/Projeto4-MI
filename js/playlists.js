@@ -1,11 +1,12 @@
 let userPlaylists, totalPlaylists;
-let fromPlaylist = false;
 let mountains = [];
 let newMountain;
 
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
 let recordList;
+
+let trackstotal=[];
 
 
 function preload() {
@@ -23,6 +24,7 @@ function setup() {
         list.innerText = userPlaylists[i].name;
         list.classList.add("playlist");
         document.querySelector(".list-playlists").appendChild(list);
+        trackstotal.push(userPlaylists[i].tracks.total);
     }
 
     recordList = client.record.getList('all-playlists');
@@ -37,7 +39,7 @@ function setup() {
                 color: color(255),
                 numtracks: userPlaylists[i].tracks.total,
                 resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
-                tam: map(userPlaylists[i].tracks.total, 0, 500, 0, 60), //tamanho
+                tam: map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 0, 60), //tamanho
                 round: map(userPlaylists[i].average_features.energy, 0.0, 1.0, 30, 0), //quanto maior o valor, mais espalmada
                 nAmp: map(userPlaylists[i].average_features.loudness, -60, 0, 0.3, 1), // valor=1 -> redonda
                 t: 0,
@@ -103,7 +105,7 @@ class classMountain {
     }
 
     display() {
-        if(dist(mouseX, mouseY, this.px, this.py) <= this.numtracks*5){
+        if(dist(mouseX, mouseY, this.px, this.py) <= 10){
             this.c = color(0,200,255);
             this.t += this.tChange;
             //nome da playlist
