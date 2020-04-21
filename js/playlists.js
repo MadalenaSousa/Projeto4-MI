@@ -39,7 +39,7 @@ function setup() {
                 color: color(255),
                 numtracks: userPlaylists[i].tracks.total,
                 resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
-                tam: map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 0, 60), //tamanho
+                tam: map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 10, 60), //tamanho
                 round: map(userPlaylists[i].average_features.energy, 0.0, 1.0, 30, 0), //quanto maior o valor, mais espalmada
                 nAmp: map(userPlaylists[i].average_features.loudness, -60, 0, 0.3, 1), // valor=1 -> redonda
                 t: 0,
@@ -110,7 +110,7 @@ class classMountain {
     }
 
     display() {
-        if(dist(mouseX, mouseY, this.px, this.py) <= 15){
+        if(dist(mouseX, mouseY, this.px, this.py) <= this.tam*2){
             this.c = color(0,200,255);
             this.t += this.tChange;
             //nome da playlist
@@ -127,11 +127,8 @@ class classMountain {
         stroke(this.c);
         strokeWeight(1);
         noFill();
-
-
-        if((this.numtracks)>=20) this.valor=(this.numtracks)/10;
-        else this.valor=2;
-        for (let b=1; b<=this.valor; b++) {
+        
+        for (let b=1; b<=(this.tam)/10; b++) {
             beginShape();
             for (let a = -1; a <= 5; a += 5/ this.resolution) {
                 this.nVal = map(noise(cos(a)*this.nInt+this.nSeed, sin(a)*this.nInt+this.nSeed, this.t), 0.0, 1.0, this.nAmp, 2.0);
