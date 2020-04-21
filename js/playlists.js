@@ -127,7 +127,7 @@ class classMountain {
         stroke(this.c);
         strokeWeight(1);
         noFill();
-        
+
         for (let b=1; b<=(this.tam)/10; b++) {
             beginShape();
             for (let a = -1; a <= 5; a += 5/ this.resolution) {
