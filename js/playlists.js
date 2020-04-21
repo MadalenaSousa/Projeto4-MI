@@ -60,9 +60,9 @@ function setup() {
                 currentRecord[i] = client.record.getRecord(recordList.getEntries()[i]);
 
                 currentRecord[i].whenReady( function () {
-                    addNewMountain (currentRecord.get('playlist'), currentRecord.get('px'), currentRecord.get('py'), currentRecord.get('numtracks'), currentRecord.get('color'),
-                        currentRecord.get('resolution'), currentRecord.get('tam'), currentRecord.get('round'), currentRecord.get('nAmp'),
-                        currentRecord.get('t'), currentRecord.get('tChange'), currentRecord.get('nInt'), currentRecord.get('nSeed'));
+                    addNewMountain (currentRecord[i].get('playlist'), currentRecord[i].get('px'), currentRecord[i].get('py'), currentRecord[i].get('numtracks'), currentRecord[i].get('color'),
+                        currentRecord[i].get('resolution'), currentRecord[i].get('tam'), currentRecord[i].get('round'), currentRecord[i].get('nAmp'),
+                        currentRecord[i].get('t'), currentRecord[i].get('tChange'), currentRecord[i].get('nInt'), currentRecord[i].get('nSeed'));
                 });
             }
         }
@@ -125,7 +125,7 @@ class classMountain {
 
         //desenho
         stroke(this.c);
-        strokeWeight(1.5);
+        strokeWeight(1);
         noFill();
 
 
