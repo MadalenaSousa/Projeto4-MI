@@ -1,11 +1,12 @@
 let userPlaylists, totalPlaylists;
-let fromPlaylist = false;
 let mountains = [];
 let newMountain;
 
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
 let recordList;
+
+let trackstotal=[];
 
 
 function preload() {
@@ -23,6 +24,7 @@ function setup() {
         list.innerText = userPlaylists[i].name;
         list.classList.add("playlist");
         document.querySelector(".list-playlists").appendChild(list);
+        trackstotal.push(userPlaylists[i].tracks.total);
     }
 
     recordList = client.record.getList('all-playlists');
@@ -32,12 +34,12 @@ function setup() {
             record[i] = client.record.getRecord(userPlaylists[i].name); //cria um novo record no servidor
             record[i].set({ //define o novo record
                 playlist: userPlaylists[i].name,
-                px: random(150, windowWidth-550),
-                py: random(150, windowHeight-100),
+                px: random(100, windowWidth-400),
+                py: random(100, windowHeight-100),
                 color: color(255),
                 numtracks: userPlaylists[i].tracks.total,
                 resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
-                tam: map(userPlaylists[i].tracks.total, 0, 500, 0, 60), //tamanho
+                tam: map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 10, 60), //tamanho
                 round: map(userPlaylists[i].average_features.energy, 0.0, 1.0, 30, 0), //quanto maior o valor, mais espalmada
                 nAmp: map(userPlaylists[i].average_features.loudness, -60, 0, 0.3, 1), // valor=1 -> redonda
                 t: 0,
@@ -52,20 +54,24 @@ function setup() {
 
     recordList.subscribe(function () {
         if(recordList.isEmpty() === false) {
-            var lastPlaylist = recordList.getEntries()[recordList.getEntries().length-1];
-            var currentRecord = client.record.getRecord(lastPlaylist);
+            let currentRecord=[];
 
-            currentRecord.whenReady(function () {
-                console.log(recordList.getEntries());
-                addNewFlower(currentRecord.get('playlist'), currentRecord.get('px'), currentRecord.get('py'), currentRecord.get('numtracks'), currentRecord.get('color'),
-                    currentRecord.get('resolution'), currentRecord.get('tam'), currentRecord.get('round'), currentRecord.get('nAmp'),
-                    currentRecord.get('t'), currentRecord.get('tChange'), currentRecord.get('nInt'), currentRecord.get('nSeed'));
-            });
+            for(let i = 0; i < recordList.getEntries().length; i++) {
+                currentRecord[i] = client.record.getRecord(recordList.getEntries()[i]);
+
+                currentRecord[i].whenReady( function () {
+                    addNewMountain (currentRecord[i].get('playlist'), currentRecord[i].get('px'), currentRecord[i].get('py'), currentRecord[i].get('numtracks'), currentRecord[i].get('color'),
+                        currentRecord[i].get('resolution'), currentRecord[i].get('tam'), currentRecord[i].get('round'), currentRecord[i].get('nAmp'),
+                        currentRecord[i].get('t'), currentRecord[i].get('tChange'), currentRecord[i].get('nInt'), currentRecord[i].get('nSeed'));
+                });
+            }
         }
     }, true);
+
+
 }
 
-function addNewFlower(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed) {
+function addNewMountain(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed) {
     newMountain = new classMountain(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed);
     mountains.push(newMountain);
     console.log(mountains);
@@ -86,6 +92,7 @@ class classMountain {
     nVal;
     x;
     y;
+    valor;
 
     constructor(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed) {
         this.name = name;
@@ -103,7 +110,7 @@ class classMountain {
     }
 
     display() {
-        if(dist(mouseX, mouseY, this.px, this.py) <= this.numtracks*5){
+        if(dist(mouseX, mouseY, this.px, this.py) <= this.tam*2){
             this.c = color(0,200,255);
             this.t += this.tChange;
             //nome da playlist
@@ -118,11 +125,10 @@ class classMountain {
 
         //desenho
         stroke(this.c);
-        strokeWeight(1.5);
+        strokeWeight(1);
         noFill();
 
-
-        for (let b=1; b<=(this.numtracks)/10; b++) {
+        for (let b=1; b<=(this.tam)/10; b++) {
             beginShape();
             for (let a = -1; a <= 5; a += 5/ this.resolution) {
                 this.nVal = map(noise(cos(a)*this.nInt+this.nSeed, sin(a)*this.nInt+this.nSeed, this.t), 0.0, 1.0, this.nAmp, 2.0);
