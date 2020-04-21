@@ -54,7 +54,6 @@ function setup() {
             currentRecord.whenReady(function () {
                 console.log(recordList.getEntries());
                 addNewWave(currentRecord.get('artist'), currentRecord.get('color'), currentRecord.get('divisoes'), currentRecord.get('y'));
-                //  addNewFlower(currentRecord.get('song'), currentRecord.get('x'), currentRecord.get('y'), currentRecord.get('raio'), currentRecord.get('color'), currentRecord.get('energy'), currentRecord.get('energy'), currentRecord.get('url'));
             });
         }
     }, true);
@@ -78,6 +77,8 @@ function draw() {
 
 class waveArtist {
     x;
+    l;
+    a;
 
     constructor(name, color, divisoes, y) {
         this.name = name;
@@ -89,6 +90,43 @@ class waveArtist {
 
     display() {
 
+        this.x = 300;
+        this.l=300;
+        this.a=150;
+        noFill();
+        stroke(255,255-this.color, 255);
+        beginShape();
+        vertex(this.x-this.l, this.y-0);
+        bezierVertex(this.x-this.l, this.y-0,this.l/3, this.y-0, this.l/2, this.y-(this.a/3));
+        bezierVertex(2*(this.l/3), this.y-(2*(this.a/3)), this.x-(4*(this.l/15)),this.y-this.a, this.x-0, this.y-this.a);
+        bezierVertex(this.x+(4*(this.l/15)), this.y-this.a, this.x+(4*(this.l/15)), this.y-(this.a/3), this.x-0, this.y-(this.a/3));
+        bezierVertex(this.x-(2*(this.l/15)), this.y-(this.a/3), this.x-(2*(this.l/15)), this.y-(2*(this.a/3)), this.x-0, this.y-(2*(this.a/3)));
+        endShape();
+        /*
+        beginShape();
+        vertex(0, this.y);
+        bezierVertex(100, 280, this.x-60, this.y, this.x-40, this.y-20);
+        bezierVertex(this.x-40, this.y-18, this.x-30, this.y-40, this.x, this.y-40);
+        bezierVertex(this.x+60, this.y-40, this.x+60, this.y+40, this.x, this.y+40);
+        bezierVertex(this.x-30, this.y+40, this.x-30, this.y, this.x, this.y);
+        endShape();
+
+        beginShape();
+        vertex(100, this.y);
+        bezierVertex(130, 280, this.x-50, this.y, this.x-30, this.y-20);
+        bezierVertex(this.x-30, this.y-20, this.x-20, this.y-30, this.x, this.y-30);
+        bezierVertex(this.x+40, this.y-30, this.x+40, this.y+30, this.x, this.y+30);
+        bezierVertex(this.x-15, this.y+30, this.x-20, this.y, this.x, this.y);
+        endShape();
+
+        beginShape();
+        vertex(200, this.y);
+        bezierVertex(160, 280, this.x-40, this.y, this.x-20, this.y-20);
+        bezierVertex(this.x-20, this.y-22, this.x-10, this.y-20, this.x, this.y-20);
+        bezierVertex(this.x+20, this.y-20, this.x+20, this.y+20, this.x, this.y+20);
+        bezierVertex(this.x, this.y+20, this.x-10, this.y, this.x, this.y);
+        endShape();*/
+        /*
         for (let g = 0; g < this.divisoes; g++) {
 
             //começa no 140
@@ -101,7 +139,7 @@ class waveArtist {
             stroke(255,255-this.color, 255);
 
             noFill();
-
+/*
             //se for par arco para cima
             if (g % 2 === 0) {
                 beginShape();
@@ -117,8 +155,11 @@ class waveArtist {
                 bezierVertex(this.x, this.y + 50, this.x + ((windowWidth - 200) / this.divisoes), this.y + 50, this.x + ((windowWidth - 200) / this.divisoes), this.y);
                 endShape();
             }
-        }
-        textAlign(RIGHT);
+            }
+         */
+
+
+        textAlign(LEFT);
         noStroke();
         fill(255,255-this.color, 255);
         text(this.name, 5, this.y - 6, 136);
