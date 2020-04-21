@@ -48,14 +48,16 @@ function setup() {
 
     recordList.subscribe(function () {
         if (recordList.isEmpty() === false) {
-            var lastArtist = recordList.getEntries()[recordList.getEntries().length - 1];
-            var currentRecord = client.record.getRecord(lastArtist);
+            let currentRecord = [];
 
-            currentRecord.whenReady(function () {
-                console.log(recordList.getEntries());
-                addNewWave(currentRecord.get('artist'), currentRecord.get('color'), currentRecord.get('divisoes'), currentRecord.get('y'));
-                //  addNewFlower(currentRecord.get('song'), currentRecord.get('x'), currentRecord.get('y'), currentRecord.get('raio'), currentRecord.get('color'), currentRecord.get('energy'), currentRecord.get('energy'), currentRecord.get('url'));
-            });
+            for(let i = 0; i < recordList.getEntries().length; i++) {
+                currentRecord[i] = client.record.getRecord(recordList.getEntries()[i]);
+                currentRecord[i].whenReady(function () {
+                    console.log(recordList.getEntries());
+                    addNewWave(currentRecord[i].get('artist'), currentRecord[i].get('color'), currentRecord[i].get('divisoes'), currentRecord[i].get('y'));
+                    //  addNewFlower(currentRecord.get('song'), currentRecord.get('x'), currentRecord.get('y'), currentRecord.get('raio'), currentRecord.get('color'), currentRecord.get('energy'), currentRecord.get('energy'), currentRecord.get('url'));
+                });
+            }
         }
     }, true);
 }
