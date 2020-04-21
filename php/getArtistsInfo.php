@@ -19,7 +19,7 @@ foreach ($artists->items as $artist) {
     $positivity = 0;
     $speed = 0;
 
-    $tracks = $api->getArtistTopTracks($artist->id, ['country' => 'PT'], ['limit' => 10]);
+    $tracks = $api->getArtistTopTracks($artist->id, ['country' => 'PT'], ['limit' => 10],  ['time_range' => 'short_term']);
 
     foreach ($tracks->tracks as $track) {
         array_push($trackIds, $track->id);
