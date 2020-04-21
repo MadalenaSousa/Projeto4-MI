@@ -16,38 +16,14 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(windowWidth - windowWidth/6, windowHeight);
+    createCanvas(windowWidth - windowWidth / 6, windowHeight);
     client.login({username: user.name});
+
     songs = topSongs;
     totalSongs = Object.keys(songs).length;
 
-    for(let i = 0; i < totalSongs; i++) {
-        let list = document.createElement("div");
-        let nomeDiv = document.createElement("div");
-        let nome = document.createElement("span");
-        let remove = document.createElement("span");
-        let artista = document.createElement("div");
-
-        nomeDiv.setAttribute("style", "margin: 0px");
-        nome.innerHTML ='<b>' + songs[i].name + '</b>';
-        remove.innerText = "x";
-        remove.classList.add("remove");
-        remove.setAttribute("style", "cursor: pointer; margin-left: 5px;");
-
-        nomeDiv.appendChild(nome);
-        nomeDiv.appendChild(remove);
-
-        nome.classList.add("song");
-
-        artista.setAttribute("style", "font-size: 10pt");
-        artista.innerHTML = songs[i].artists;
-
-        list.appendChild(nomeDiv);
-        list.appendChild(artista);
-        document.querySelector(".list-songs").appendChild(list);
-    }
-
-    remove = document.querySelectorAll(".remove");
+    createUserDiv();
+    createSongDiv();
 
     client.presence.subscribe((username, isLoggedIn) => {
         if(isLoggedIn){
@@ -64,11 +40,13 @@ function setup() {
     });
 
     recordList = client.record.getList('all-songs');
+    remove = document.querySelectorAll(".remove");
 
     for (let i = 0; i < totalSongs; i++) {
-        document.querySelectorAll(".song")[i].addEventListener("click", function () { //sempre que clico numa música
-            if(client.record.has(songs[i].name)) {
-            } else {
+        client.record.has(songs[i].name, function (error, hasRecord) {
+            if (hasRecord === false) {
+                //if(contains(flowers, songs[i].name) === false){
+                console.log('doesnt have record');
                 record[i] = client.record.getRecord(songs[i].name); //crio um novo record no servidor
                 record[i].set({ //defino o novo record
                     user: "user",
@@ -83,30 +61,37 @@ function setup() {
                 });
 
                 recordList.addEntry(songs[i].name);
+                //recordList.removeEntry(songs[i].name);
+
+                record[i].whenReady(function () {
+                    addNewFlower(record[i].get('song'), record[i].get('x'), record[i].get('y'), record[i].get('raio'), record[i].get('color'), record[i].get('energy'), record[i].get('energy'), record[i].get('url'), record[i].get('artist'));
+                });
+            } else {
+                console.log('has record');
+                recordList.addEntry(songs[i].name);
+                record[i] = client.record.getRecord(songs[i].name);
+                record[i].whenReady(function () {
+                    addNewFlower(record[i].get('song'), record[i].get('x'), record[i].get('y'), record[i].get('raio'), record[i].get('color'), record[i].get('energy'), record[i].get('energy'), record[i].get('url'), record[i].get('artist'));
+                });
             }
-            //recordList.removeEntry(songs[i].name);
         });
 
         remove[i].addEventListener("click", function () {
-            recordList.removeEntry(songs[i].name);
-            removeFlower(i);
-            console.log(recordList.getEntries());
-            console.log(flowers);
-        });
-    }
+            client.record.has(songs[i].name, function (error, hasRecord) {
+                if (hasRecord) {
+                    console.log('has record, can delete');
+                    let recordNoServer = client.record.getRecord(songs[i].name);
+                    //console.log(recordNoServer.get());
+                    recordNoServer.delete();
+                    console.log(recordNoServer.get());
 
-    recordList.subscribe(function () {
-        if(recordList.isEmpty() === false && flowerExists === false) {
-            var currentRecord = [];
-            for(let i = 0; i < recordList.getEntries().length; i++) {
-                currentRecord[i] = client.record.getRecord(recordList.getEntries()[i]);
-                currentRecord[i].whenReady(function () {
-                    console.log(recordList.getEntries());
-                    addNewFlower(currentRecord[i].get('song'), currentRecord[i].get('x'), currentRecord[i].get('y'), currentRecord[i].get('raio'), currentRecord[i].get('color'), currentRecord[i].get('energy'), currentRecord[i].get('energy'), currentRecord[i].get('url'), currentRecord[i].get('artist'));
-                });
-            }
-        }
-    }, true);
+                    removeFlower(songs[i].name);
+                    console.log(flowers);
+                }
+            });
+        });
+
+    }
 }
 
 function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist) {
@@ -115,17 +100,73 @@ function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist) {
     console.log(flowers);
 }
 
-function removeFlower(index) {
-    flowers.splice(index, 1);
+function removeFlower(nome) {
+    for (let i = 0; i < flowers.length; i++) {
+        if (flowers[i].name === nome) {
+            flowers.splice(i, 1);
+        }
+    }
 }
 
-function contains(array, obj) {
+function contains(array, nome) {
     for (let i = 0; i < array.length; i++) {
-        if (array[i] === obj) {
+        if (array[i].name === nome) {
             return true;
         }
     }
     return false;
+}
+
+function createUserDiv() {
+    let userDiv = document.createElement('div');
+    let person = document.createElement('div');
+    let img = document.createElement('img');
+
+    img.setAttribute('src', user.profile_pic);
+    img.setAttribute('width', '30px');
+    img.setAttribute('height', '30px');
+
+    person.innerText = user.name;
+    person.classList.add('username');
+
+    userDiv.classList.add('user');
+    userDiv.appendChild(img);
+    userDiv.appendChild(person);
+
+    document.querySelector(".list-people").appendChild(userDiv);
+}
+
+function createSongDiv() {
+    for(let i = 0; i < totalSongs; i++) {
+        let song = document.createElement("div");
+
+        let nomeDiv = document.createElement("div");
+        let nome = document.createElement("span");
+        let artista = document.createElement("div");
+
+        let remove = document.createElement("div");
+
+        nomeDiv.setAttribute("style", "margin: 0px");
+        nomeDiv.classList.add('song');
+
+        nome.innerHTML ='<b>' + songs[i].name + '</b>';
+
+        artista.setAttribute("style", "font-size: 10pt");
+        artista.innerHTML = songs[i].artists;
+
+        nomeDiv.appendChild(nome);
+        nomeDiv.appendChild(artista);
+
+        remove.innerText = "x";
+        remove.classList.add("remove");
+        remove.setAttribute("style", "cursor: pointer; margin-left: 5px;");
+
+        song.classList.add('unit');
+
+        song.appendChild(nomeDiv);
+        song.appendChild(remove);
+        document.querySelector(".list-songs").appendChild(song);
+    }
 }
 
 function draw() {
@@ -139,13 +180,11 @@ function draw() {
         totalSongs = Object.keys(songs).length;
     }
 
-    if(client.record.has("Black Madonna")){
-        console.log("NÃO TEM");
-    }
-
     if(flowers.length > 0) {
         for(let i = 0; i < flowers.length; i++) {
-            flowers[i].display();
+            if(flowers[i].added === true) {
+                flowers[i].display();
+            }
         }
     }
 }
@@ -166,6 +205,7 @@ class flowerSong {
     randomY;
     musicOn;
     sound;
+    added;
 
     constructor(name, x, y, raio, color, shakeX, shakeY, url, artist) {
         this.name = name;
@@ -179,6 +219,7 @@ class flowerSong {
 
         this.sound = new Audio(url);
         this.musicOn = false;
+        this.added = false;
     }
 
     display() {

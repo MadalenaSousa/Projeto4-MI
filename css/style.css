@@ -106,8 +106,9 @@ a {
     padding: 30px;
 }
 
-.menu div {
+.unit {
     margin-bottom: 15px;
+    position: relative;
 }
 
 .menu-option {
@@ -159,8 +160,8 @@ a {
 }
 
 .song, .artist, .playlist {
-
     cursor: pointer;
+    display: inline-block;
 }
 
 .song:hover {
@@ -168,7 +169,13 @@ a {
 }
 
 .remove {
-    display: none;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+}
+
+.remove:hover {
+    color: yellow;
 }
 
 .playlist:hover {
@@ -177,4 +184,12 @@ a {
 
 .artist:hover {
     color: magenta;
+}
+
+.user .username {
+    display: inline-block;
+}
+
+.user img {
+    border-radius: 50%;
 }
