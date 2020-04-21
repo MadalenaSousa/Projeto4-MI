@@ -87,7 +87,7 @@ a {
     font-size: 24px;
 }
 
-.list-people, .list-songs {
+.list-people, .list-songs, .list-playlists {
     height: 30vh;
     border: 2px solid white;
     padding: 10px;
@@ -158,12 +158,17 @@ a {
     text-decoration: underline;
 }
 
-.song, .artist {
+.song, .artist, .playlist {
+
     cursor: pointer;
 }
 
 .song:hover {
     color: yellow;
+}
+
+.playlist:hover {
+    color: deepskyblue;
 }
 
 .artist:hover {
