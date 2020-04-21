@@ -54,20 +54,24 @@ function setup() {
 
     recordList.subscribe(function () {
         if(recordList.isEmpty() === false) {
-            var lastPlaylist = recordList.getEntries()[recordList.getEntries().length-1];
-            var currentRecord = client.record.getRecord(lastPlaylist);
+            let currentRecord=[];
 
-            currentRecord.whenReady(function () {
-                console.log(recordList.getEntries());
-                addNewFlower(currentRecord.get('playlist'), currentRecord.get('px'), currentRecord.get('py'), currentRecord.get('numtracks'), currentRecord.get('color'),
-                    currentRecord.get('resolution'), currentRecord.get('tam'), currentRecord.get('round'), currentRecord.get('nAmp'),
-                    currentRecord.get('t'), currentRecord.get('tChange'), currentRecord.get('nInt'), currentRecord.get('nSeed'));
-            });
+            for(let i = 0; i < recordList.getEntries().length; i++) {
+                currentRecord[i] = client.record.getRecord(recordList.getEntries()[i]);
+
+                currentRecord[i].whenReady( function () {
+                    addNewMountain (currentRecord.get('playlist'), currentRecord.get('px'), currentRecord.get('py'), currentRecord.get('numtracks'), currentRecord.get('color'),
+                        currentRecord.get('resolution'), currentRecord.get('tam'), currentRecord.get('round'), currentRecord.get('nAmp'),
+                        currentRecord.get('t'), currentRecord.get('tChange'), currentRecord.get('nInt'), currentRecord.get('nSeed'));
+                });
+            }
         }
     }, true);
+
+
 }
 
-function addNewFlower(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed) {
+function addNewMountain(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed) {
     newMountain = new classMountain(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed);
     mountains.push(newMountain);
     console.log(mountains);
