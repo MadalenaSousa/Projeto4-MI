@@ -27,12 +27,10 @@ session_start();
             #list of people
         </div>
         <div>
-            Choose a song to add to the artboard
-            <div class="menu-option">MY PLAYLIST SONGS</div>
-            <div class="menu-option">MY TOP SONGS</div>
+            Choose an artist to add to the artboard
+            <div class="menu-option">MY TOP ARTISTS</div>
             <div class="list-songs">
             </div>
-            <div class="menu-option">GENERATE PLAYLIST</div>
             <div class="menu-option">SAVE ART AND SHARE</div>
         </div>
     </div>

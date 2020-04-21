@@ -2,6 +2,8 @@ let user, artists, totalArtists, topArtists;
 let x;
 let waves = [];
 let newWave;
+let popularity=[];
+
 
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
@@ -22,6 +24,7 @@ function setup() {
         list.innerText = artists[i].name;
         list.classList.add("artist");
         document.querySelector(".list-songs").appendChild(list);
+        popularity.push(artists[i].popularity);
     }
 
     recordList = client.record.getList('all-artists');
@@ -32,8 +35,7 @@ function setup() {
             record[i].set({ //defino o novo record
                 user: "user",
                 artist: artists[i].name,
-                popularity: artists[i].popularity,
-                color: map(artists[i].popularity, 0, 100, 0, 255),
+                color: map(artists[i].popularity, min(popularity), max(popularity), 0, 255),
                 divisoes: map(artists[i].followers.total, 0, 60000000, 10, 100),
                 y: map(i, 0, totalArtists, windowHeight / 7, windowHeight-(windowHeight / 10))
 
@@ -51,15 +53,15 @@ function setup() {
 
             currentRecord.whenReady(function () {
                 console.log(recordList.getEntries());
-                addNewWave(currentRecord.get('artist'), currentRecord.get('popularity'), currentRecord.get('color'), currentRecord.get('divisoes'), currentRecord.get('y'));
+                addNewWave(currentRecord.get('artist'), currentRecord.get('color'), currentRecord.get('divisoes'), currentRecord.get('y'));
                 //  addNewFlower(currentRecord.get('song'), currentRecord.get('x'), currentRecord.get('y'), currentRecord.get('raio'), currentRecord.get('color'), currentRecord.get('energy'), currentRecord.get('energy'), currentRecord.get('url'));
             });
         }
     }, true);
 }
 
-function addNewWave(name, popularity, color, divisoes, y) {
-    newWave = new waveArtist(name, popularity, color, divisoes, y);
+function addNewWave(name, color, divisoes, y) {
+    newWave = new waveArtist(name, color, divisoes, y);
     waves.push(newWave);
     console.log(waves);
 }
@@ -77,9 +79,8 @@ function draw() {
 class waveArtist {
     x;
 
-    constructor(name, popularity, color, divisoes, y) {
+    constructor(name, color, divisoes, y) {
         this.name = name;
-        this.popularity = popularity;
         this.color = color;
         this.divisoes = divisoes;
         this.y = y;
@@ -98,6 +99,7 @@ class waveArtist {
             }
 
             stroke(255,255-this.color, 255);
+
             noFill();
 
             //se for par arco para cima
