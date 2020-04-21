@@ -18,7 +18,8 @@ function preload() {
 function setup() {
     createCanvas(windowWidth - windowWidth/6, windowHeight);
     client.login({username: user.name});
-    songs = topSongs;
+    user.delete();}
+    /*songs = topSongs;
 
     totalSongs = Object.keys(songs).length;
 
@@ -220,4 +221,4 @@ class flowerSong {
             this.musicOn = !this.musicOn;
         }
     }
-}
+}*/
