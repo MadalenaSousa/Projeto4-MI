@@ -158,7 +158,8 @@ a {
     text-decoration: underline;
 }
 
-.song, .playlist {
+.song, .artist, .playlist {
+
     cursor: pointer;
 }
 
@@ -168,4 +169,8 @@ a {
 
 .playlist:hover {
     color: deepskyblue;
+}
+
+.artist:hover {
+    color: magenta;
 }
