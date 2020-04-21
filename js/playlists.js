@@ -34,8 +34,8 @@ function setup() {
             record[i] = client.record.getRecord(userPlaylists[i].name); //cria um novo record no servidor
             record[i].set({ //define o novo record
                 playlist: userPlaylists[i].name,
-                px: random(150, windowWidth-550),
-                py: random(150, windowHeight-100),
+                px: random(100, windowWidth-400),
+                py: random(100, windowHeight-100),
                 color: color(255),
                 numtracks: userPlaylists[i].tracks.total,
                 resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
@@ -88,6 +88,7 @@ class classMountain {
     nVal;
     x;
     y;
+    valor;
 
     constructor(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed) {
         this.name = name;
@@ -105,7 +106,7 @@ class classMountain {
     }
 
     display() {
-        if(dist(mouseX, mouseY, this.px, this.py) <= 10){
+        if(dist(mouseX, mouseY, this.px, this.py) <= 15){
             this.c = color(0,200,255);
             this.t += this.tChange;
             //nome da playlist
@@ -124,7 +125,9 @@ class classMountain {
         noFill();
 
 
-        for (let b=1; b<=(this.numtracks)/10; b++) {
+        if((this.numtracks)>=20) this.valor=(this.numtracks)/10;
+        else this.valor=2;
+        for (let b=1; b<=this.valor; b++) {
             beginShape();
             for (let a = -1; a <= 5; a += 5/ this.resolution) {
                 this.nVal = map(noise(cos(a)*this.nInt+this.nSeed, sin(a)*this.nInt+this.nSeed, this.t), 0.0, 1.0, this.nAmp, 2.0);
