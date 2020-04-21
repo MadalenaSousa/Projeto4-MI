@@ -43,37 +43,39 @@ function setup() {
     remove = document.querySelectorAll(".remove");
 
     for (let i = 0; i < totalSongs; i++) {
-        client.record.has(songs[i].name, function (error, hasRecord) {
-            if (hasRecord === false) {
-                //if(contains(flowers, songs[i].name) === false){
-                console.log('doesnt have record');
-                record[i] = client.record.getRecord(songs[i].name); //crio um novo record no servidor
-                record[i].set({ //defino o novo record
-                    user: "user",
-                    song: songs[i].name,
-                    x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
-                    y: height - (songs[i].duration / 2),
-                    raio: (songs[i].duration / 3),
-                    color: map(getAudioFeatures(i).positivity, 0, 1, 0, 255),
-                    energy: getAudioFeatures(i).energy * 5,
-                    artist: songs[i].artists,
-                    url: songs[i].preview_url
-                });
+        document.querySelectorAll(".song")[i].addEventListener("click", function () {
+            client.record.has(songs[i].name, function (error, hasRecord) {
+                if (hasRecord === false) {
+                    //if(contains(flowers, songs[i].name) === false){
+                    console.log('doesnt have record');
+                    record[i] = client.record.getRecord(songs[i].name); //crio um novo record no servidor
+                    record[i].set({ //defino o novo record
+                        user: "user",
+                        song: songs[i].name,
+                        x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
+                        y: height - (songs[i].duration / 2),
+                        raio: (songs[i].duration / 3),
+                        color: map(getAudioFeatures(i).positivity, 0, 1, 0, 255),
+                        energy: getAudioFeatures(i).energy * 5,
+                        artist: songs[i].artists,
+                        url: songs[i].preview_url
+                    });
 
-                recordList.addEntry(songs[i].name);
-                //recordList.removeEntry(songs[i].name);
+                    recordList.addEntry(songs[i].name);
+                    //recordList.removeEntry(songs[i].name);
+                }
+            });
 
-                record[i].whenReady(function () {
-                    addNewFlower(record[i].get('song'), record[i].get('x'), record[i].get('y'), record[i].get('raio'), record[i].get('color'), record[i].get('energy'), record[i].get('energy'), record[i].get('url'), record[i].get('artist'));
-                });
-            } else {
-                console.log('has record');
-                recordList.addEntry(songs[i].name);
-                record[i] = client.record.getRecord(songs[i].name);
-                record[i].whenReady(function () {
-                    addNewFlower(record[i].get('song'), record[i].get('x'), record[i].get('y'), record[i].get('raio'), record[i].get('color'), record[i].get('energy'), record[i].get('energy'), record[i].get('url'), record[i].get('artist'));
-                });
-            }
+            recordList.subscribe(function () {
+                    let currentRecord = [];
+
+                    currentRecord[i] = client.record.getRecord(recordList.getEntries()[i]);
+                    currentRecord[i].whenReady(function () {
+                        console.log(recordList.getEntries());
+                        addNewFlower(currentRecord[i].get('song'), currentRecord[i].get('x'), currentRecord[i].get('y'), currentRecord[i].get('raio'), currentRecord[i].get('color'), currentRecord[i].get('energy'), currentRecord[i].get('energy'), currentRecord[i].get('url'));
+                    });
+            }, true);
+
         });
 
         remove[i].addEventListener("click", function () {
@@ -83,7 +85,6 @@ function setup() {
                     let recordNoServer = client.record.getRecord(songs[i].name);
                     //console.log(recordNoServer.get());
                     recordNoServer.delete();
-                    console.log(recordNoServer.get());
 
                     removeFlower(songs[i].name);
                     console.log(flowers);
