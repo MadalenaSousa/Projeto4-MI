@@ -158,10 +158,14 @@ a {
     text-decoration: underline;
 }
 
-.song {
+.song, .artist {
     cursor: pointer;
 }
 
 .song:hover {
     color: yellow;
+}
+
+.artist:hover {
+    color: magenta;
 }
