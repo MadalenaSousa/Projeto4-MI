@@ -2,7 +2,7 @@ let user, artists, totalArtists, topArtists;
 let x;
 let waves = [];
 let newWave;
-let popularity=[];
+let popularity = [];
 
 
 const client = new DeepstreamClient('localhost:6020');
@@ -37,7 +37,7 @@ function setup() {
                 artist: artists[i].name,
                 color: map(artists[i].popularity, min(popularity), max(popularity), 0, 255),
                 divisoes: map(artists[i].followers.total, 0, 60000000, 10, 100),
-                y: map(i, 0, totalArtists, windowHeight / 7, windowHeight-(windowHeight / 10))
+                y: map(i, 0, totalArtists, windowHeight / 7, windowHeight - (windowHeight / 10))
 
             });
 
@@ -77,8 +77,6 @@ function draw() {
 
 class waveArtist {
     x;
-    l;
-    a;
 
     constructor(name, color, divisoes, y) {
         this.name = name;
@@ -91,17 +89,25 @@ class waveArtist {
     display() {
 
         this.x = 300;
-        this.l=300;
-        this.a=150;
         noFill();
-        stroke(255,255-this.color, 255);
-        beginShape();
-        vertex(this.x-this.l, this.y-0);
-        bezierVertex(this.x-this.l, this.y-0,this.l/3, this.y-0, this.l/2, this.y-(this.a/3));
-        bezierVertex(2*(this.l/3), this.y-(2*(this.a/3)), this.x-(4*(this.l/15)),this.y-this.a, this.x-0, this.y-this.a);
-        bezierVertex(this.x+(4*(this.l/15)), this.y-this.a, this.x+(4*(this.l/15)), this.y-(this.a/3), this.x-0, this.y-(this.a/3));
-        bezierVertex(this.x-(2*(this.l/15)), this.y-(this.a/3), this.x-(2*(this.l/15)), this.y-(2*(this.a/3)), this.x-0, this.y-(2*(this.a/3)));
-        endShape();
+        stroke(255, 255 - this.color, 255);
+        /* beginShape();
+         vertex(this.x-this.l, this.y-0);
+         bezierVertex(this.x-this.l, this.y-0,this.l/3, this.y-0, this.l/2, this.y-(this.a/3));
+         bezierVertex(2*(this.l/3), this.y-(2*(this.a/3)), this.x-(4*(this.l/15)),this.y-this.a, this.x-0, this.y-this.a);
+         bezierVertex(this.x+(4*(this.l/15)), this.y-this.a, this.x+(4*(this.l/15)), this.y-(this.a/3), this.x-0, this.y-(this.a/3));
+         bezierVertex(this.x-(2*(this.l/15)), this.y-(this.a/3), this.x-(2*(this.l/15)), this.y-(2*(this.a/3)), this.x-0, this.y-(2*(this.a/3)));
+         endShape();*/
+        for (let i = 0; i < 6; i++) {
+            beginShape();
+            vertex(this.x- 300+i*(1500/36), this.y - 0);
+            bezierVertex(this.x - 300+i*(1500/36), this.y - 0,  this.x-(300-i*(1500/36)) / 3, this.y - 0,  this.x-(300-i*(1500/36)) / 2, this.y - ((150-i*(150/18))/ 3));
+            bezierVertex(this.x-(2 * ( (300-i*(1500/36)) / 3)), this.y - (2 * ((150-i*(150/18)) / 3)), this.x - (4 * ( (300-i*(1500/36)) / 15)), this.y - (150-i*(150/18)), this.x - 0, this.y - (150-i*(150/18)));
+            bezierVertex(this.x + (4 * ( (300-i*(1500/36)) / 15)), this.y - (150-i*(150/18)), this.x + (4 * ( (300-i*(1500/36)) / 15)), this.y -50-(i*(150/18)), this.x - 0, this.y -50-(i*(150/18)));
+            bezierVertex(this.x - (2 * ( (300-i*(1500/36)) / 15)), this.y -50-(i*(150/18)), this.x - (2 * ( (300-i*(1500/36)) / 15)), this.y -((2 *150)/ 3), this.x - 0, this.y -((2 *150)/ 3));
+            endShape();
+        }
+
         /*
         beginShape();
         vertex(0, this.y);
@@ -161,7 +167,7 @@ class waveArtist {
 
         textAlign(LEFT);
         noStroke();
-        fill(255,255-this.color, 255);
+        fill(255, 255 - this.color, 255);
         text(this.name, 5, this.y - 6, 136);
     }
 }
