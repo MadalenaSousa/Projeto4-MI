@@ -100,11 +100,11 @@ class waveArtist {
          endShape();*/
         for (let i = 0; i < 6; i++) {
             beginShape();
-            vertex(this.x- 300+i*(1500/36), this.y - 0);
-            bezierVertex(this.x - 300+i*(1500/36), this.y - 0,  this.x-(300-i*(1500/36)) / 3, this.y - 0,  this.x-(300-i*(1500/36)) / 2, this.y - ((150-i*(150/18))/ 3));
-            bezierVertex(this.x-(2 * ( (300-i*(1500/36)) / 3)), this.y - (2 * ((150-i*(150/18)) / 3)), this.x - (4 * ( (300-i*(1500/36)) / 15)), this.y - (150-i*(150/18)), this.x - 0, this.y - (150-i*(150/18)));
-            bezierVertex(this.x + (4 * ( (300-i*(1500/36)) / 15)), this.y - (150-i*(150/18)), this.x + (4 * ( (300-i*(1500/36)) / 15)), this.y -50-(i*(150/18)), this.x - 0, this.y -50-(i*(150/18)));
-            bezierVertex(this.x - (2 * ( (300-i*(1500/36)) / 15)), this.y -50-(i*(150/18)), this.x - (2 * ( (300-i*(1500/36)) / 15)), this.y -((2 *150)/ 3), this.x - 0, this.y -((2 *150)/ 3));
+            vertex(this.x- 300+i*(1500/42), this.y - 0);
+            bezierVertex(this.x - 300+i*(1500/42), this.y - 0,  100+i*22, this.y - 0,  300/2+((((2/6)*300)/6)*i), this.y - ((150-i*(150/18))/ 3));
+            bezierVertex(200+i*10, this.y - (2 * ((150-i*(150/18)) / 3)), this.x - (4 * ( (300-i*(1500/42)) / 15)), this.y - (150-i*(150/18)), this.x - 0, this.y - (150-i*(150/18)));
+            bezierVertex(((this.x +60)-(((6*300)/30)/6)*i), this.y - (150-i*(150/18)), ((this.x +60)-(((6*300)/30)/6)*i), this.y -50-(i*(150/18)), this.x - 0, this.y -50-(i*(150/18)));
+            bezierVertex(this.x - (2 * ( (300-i*(1500/42)) / 15)), this.y -50-(i*(150/18)), this.x - (2 * ( (300-i*(1500/36)) / 15)), this.y -((2 *150)/ 3), this.x - 0, this.y -((2 *150)/ 3));
             endShape();
         }
 
