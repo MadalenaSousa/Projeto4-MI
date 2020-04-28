@@ -3,12 +3,10 @@ let fromPlaylist = false;
 let flowers = [];
 let newFlower;
 let remove;
-let flowerExists = false;
 
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
 let recordList;
-let currentRecordListSize;
 
 function preload() {
     playlistSongs = loadJSON('php/playlist-songs-object.json');
