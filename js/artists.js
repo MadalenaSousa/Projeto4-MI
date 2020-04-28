@@ -11,6 +11,7 @@ let recordList;
 
 function preload() {
     topArtists = loadJSON('php/artists-object.json');
+    user = loadJSON('php/user-object.json');
 }
 
 function setup() {
@@ -19,11 +20,10 @@ function setup() {
     client.login();
     totalArtists = Object.keys(artists).length;
 
+    createArtistDiv();
+    createUserDiv();
+
     for (let i = 0; i < totalArtists; i++) {
-        let list = document.createElement("div");
-        list.innerText = artists[i].name;
-        list.classList.add("artist");
-        document.querySelector(".list-songs").appendChild(list);
         popularity.push(artists[i].popularity);
     }
 
@@ -63,6 +63,53 @@ function addNewWave(name, color, divisoes, y) {
     newWave = new waveArtist(name, color, divisoes, y);
     waves.push(newWave);
     console.log(waves);
+}
+
+function createArtistDiv() {
+    for(let i = 0; i < totalArtists; i++) {
+        let song = document.createElement("div");
+
+        let nomeDiv = document.createElement("div");
+        let nome = document.createElement("span");
+
+        let remove = document.createElement("div");
+
+        nomeDiv.setAttribute("style", "margin: 0px");
+        nomeDiv.classList.add('artist');
+
+        nome.innerHTML ='<b>' + artists[i].name + '</b>';
+
+        nomeDiv.appendChild(nome);
+
+        remove.innerText = "x";
+        remove.classList.add("remove");
+        remove.setAttribute("style", "cursor: pointer; margin-left: 5px;");
+
+        song.classList.add('unit');
+
+        song.appendChild(nomeDiv);
+        song.appendChild(remove);
+        document.querySelector(".list-songs").appendChild(song);
+    }
+}
+
+function createUserDiv() {
+    let userDiv = document.createElement('div');
+    let person = document.createElement('div');
+    let img = document.createElement('img');
+
+    img.setAttribute('src', user.profile_pic);
+    img.setAttribute('width', '30px');
+    img.setAttribute('height', '30px');
+
+    person.innerText = user.name;
+    person.classList.add('username');
+
+    userDiv.classList.add('user');
+    userDiv.appendChild(img);
+    userDiv.appendChild(person);
+
+    document.querySelector(".list-people").appendChild(userDiv);
 }
 
 function draw() {

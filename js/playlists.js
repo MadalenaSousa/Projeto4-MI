@@ -11,6 +11,7 @@ let trackstotal=[];
 
 function preload() {
     userPlaylists = loadJSON('php/playlist-object.json');
+    user = loadJSON('php/user-object.json');
 }
 
 function setup() {
@@ -19,11 +20,10 @@ function setup() {
     client.login();
     totalPlaylists=Object.keys(userPlaylists).length;
 
+    createUserDiv();
+    createPlaylistDiv();
+
     for(let i = 0; i < totalPlaylists; i++) {
-        let list = document.createElement("div");
-        list.innerText = userPlaylists[i].name;
-        list.classList.add("playlist");
-        document.querySelector(".list-playlists").appendChild(list);
         trackstotal.push(userPlaylists[i].tracks.total);
     }
 
@@ -75,6 +75,53 @@ function addNewMountain(name, px, py, numtracks, color, resolution, tam, round, 
     newMountain = new classMountain(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed);
     mountains.push(newMountain);
     console.log(mountains);
+}
+
+function createPlaylistDiv() {
+    for(let i = 0; i < totalPlaylists; i++) {
+        let song = document.createElement("div");
+
+        let nomeDiv = document.createElement("div");
+        let nome = document.createElement("span");
+
+        let remove = document.createElement("div");
+
+        nomeDiv.setAttribute("style", "margin: 0px");
+        nomeDiv.classList.add('playlist');
+
+        nome.innerText =userPlaylists[i].name;
+
+        nomeDiv.appendChild(nome);
+
+        remove.innerText = "x";
+        remove.classList.add("remove");
+        remove.setAttribute("style", "cursor: pointer; margin-left: 5px;");
+
+        song.classList.add('unit');
+
+        song.appendChild(nomeDiv);
+        song.appendChild(remove);
+        document.querySelector(".list-playlists").appendChild(song);
+    }
+}
+
+function createUserDiv() {
+    let userDiv = document.createElement('div');
+    let person = document.createElement('div');
+    let img = document.createElement('img');
+
+    img.setAttribute('src', user.profile_pic);
+    img.setAttribute('width', '30px');
+    img.setAttribute('height', '30px');
+
+    person.innerText = user.name;
+    person.classList.add('username');
+
+    userDiv.classList.add('user');
+    userDiv.appendChild(img);
+    userDiv.appendChild(person);
+
+    document.querySelector(".list-people").appendChild(userDiv);
 }
 
 function draw() {
