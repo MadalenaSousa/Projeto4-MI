@@ -66,19 +66,9 @@ function setup() {
                 }
             });
 
-            recordList.subscribe(function () {
-                    let currentRecord = [];
-
-                    currentRecord[i] = client.record.getRecord(recordList.getEntries()[i]);
-                    currentRecord[i].whenReady(function () {
-                        console.log(recordList.getEntries());
-                        addNewFlower(currentRecord[i].get('song'), currentRecord[i].get('x'), currentRecord[i].get('y'), currentRecord[i].get('raio'), currentRecord[i].get('color'), currentRecord[i].get('energy'), currentRecord[i].get('energy'), currentRecord[i].get('url'));
-                    });
-            }, true);
-
         });
 
-        remove[i].addEventListener("click", function () {
+       /* remove[i].addEventListener("click", function () {
             client.record.has(songs[i].name, function (error, hasRecord) {
                 if (hasRecord) {
                     console.log('has record, can delete');
@@ -90,9 +80,21 @@ function setup() {
                     console.log(flowers);
                 }
             });
-        });
+        });*/
 
     }
+
+    recordList.subscribe(function () {
+        let currentRecord = [];
+
+        for(let i = 0; i < recordList.getEntries().length; i++) {
+            currentRecord[i] = client.record.getRecord(recordList.getEntries()[i]);
+            currentRecord[i].whenReady(function () {
+                console.log(recordList.getEntries());
+                addNewFlower(currentRecord[i].get('song'), currentRecord[i].get('x'), currentRecord[i].get('y'), currentRecord[i].get('raio'), currentRecord[i].get('color'), currentRecord[i].get('energy'), currentRecord[i].get('energy'), currentRecord[i].get('url'));
+            });
+        }
+    }, true);
 }
 
 function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist) {
@@ -183,9 +185,7 @@ function draw() {
 
     if(flowers.length > 0) {
         for(let i = 0; i < flowers.length; i++) {
-            if(flowers[i].added === true) {
                 flowers[i].display();
-            }
         }
     }
 }
@@ -244,7 +244,10 @@ class flowerSong {
         stroke(this.c);
         strokeWeight(3);
         noFill();
-        ellipse(this.x + this.randomX, this.y + this.randomY, this.raio * 2, this.raio * 2);
+        //ellipse(this.x + this.randomX, this.y + this.randomY, this.raio * 2, this.raio * 2);
+        for (let i = 0; i < 5; i++) {
+            this.flor(this.x + this.randomX, this.y + this.randomY, 10, 60-i*15, 65-i*15);
+        }
 
         noStroke();
         fill(this.c);
@@ -260,5 +263,15 @@ class flowerSong {
         if(dist(mouseX, mouseY, this.x, this.y) <= this.raio){
             this.musicOn = !this.musicOn;
         }
+    }
+
+    flor(x, y, nVert, rG, rP) {
+        let alpha = TWO_PI/nVert;
+        beginShape();
+            for (let i = 0; i <= nVert+1; i++) {
+            curveVertex(x+rG*cos(i*alpha), y+rG*sin(i*alpha));
+            curveVertex(x+rP*cos(i*alpha+alpha/2), y+rP*sin(i*alpha+alpha/2));
+            }
+        endShape();
     }
 }
