@@ -89,9 +89,8 @@ class waveArtist {
 
     display() {
         this.x = 300;
-        this.numeroLinhas=6;
+        this.numeroLinhas = 6;
         stroke(255, 255 - this.color, 255);
-        noFill();
 
         /* beginShape();
          vertex(this.x-this.l, this.y-0);
@@ -101,33 +100,34 @@ class waveArtist {
          bezierVertex(this.x-(2*(this.l/15)), this.y-(this.a/3), this.x-(2*(this.l/15)), this.y-(2*(this.a/3)), this.x-0, this.y-(2*(this.a/3)));
          endShape();*/
 
-
+        fill(0);
         beginShape();
-        vertex((this.x - 300) + (i * (1500 / (this.numeroLinhas*7))), this.y - 0);
-        bezierVertex(this.x - 300 + i * (1500 / (this.numeroLinhas*7)), this.y - 0, 100 + i * 22, this.y - 0, 300 / 2 + ((((2 / 6) * 300) / this.numeroLinhas) * i), this.y - ((150 - i * (150 /(this.numeroLinhas*3))) / 3));
-        bezierVertex(200 + i * 10, this.y - (2 * ((150 - i * (150 / (this.numeroLinhas*3))) / 3)), this.x - (4 * ((300 - i * (1500 / (this.numeroLinhas*7))) / 15)), this.y - (150 - i * (150 / (this.numeroLinhas*3))), this.x - 0, this.y - (150 - i * (150 / (this.numeroLinhas*3))));
-        bezierVertex(((this.x + 60) - (((6 * 300) / 30) / this.numeroLinhas) * i), this.y - (150 - i * (150 / (this.numeroLinhas*3))), ((this.x + 60) - (((6 * 300) / 30) /this.numeroLinhas) * i), this.y - 50 - (i * (150 / (this.numeroLinhas*3))), this.x - 0, this.y - 50 - (i * (150 / (this.numeroLinhas*3))));
-        bezierVertex(this.x - (2 * ((300 - i * (1500 / (this.numeroLinhas*7))) / 15)), this.y - 50 - (i * (150 / (this.numeroLinhas*3))), this.x - (2 * ((300 - i * (1500 / (this.numeroLinhas*7))) / 15)), this.y - ((2 * 150) / 3), this.x - 0, this.y - ((2 * 150) / 3));
-        bezierVertex(this.x - (2 * ((300 - this.numeroLinhas * (1500 / (this.numeroLinhas*7))) / 15)), this.y - 50 - (this.numeroLinhas * (150 / (this.numeroLinhas*3))), this.x - (2 * ((300 - i * (1500 / (this.numeroLinhas*7))) / 15)), this.y - ((2 * 150) / 3), this.x - 0, this.y - ((2 * 150) / 3));
+        vertex((this.x - 300), this.y - 0);
+        bezierVertex(this.x - 300, this.y - 0, 100, this.y - 0, 300 / 2, this.y - (150 / 3));
+        bezierVertex(200, this.y - (2 * (150 / 3)), this.x - (4 * (300 / 15)), this.y - 150, this.x - 0, this.y - 150);
+        bezierVertex(this.x + 60, this.y - 150, this.x + 60, this.y - 50, this.x - 0, this.y - 50);
+        bezierVertex(this.x - (2 * (300 / 15)), this.y - 50, this.x - (2 * (300 / 15)), this.y - ((2 * 150) / 3), this.x - 0, this.y - ((2 * 150) / 3));
+        bezierVertex(this.x - (2 * ((300 - (this.numeroLinhas - 1) * (1500 / (this.numeroLinhas * 7))) / 15)), this.y - ((2 * 150) / 3), this.x - (2 * ((300 - (this.numeroLinhas - 1) * (1500 / (this.numeroLinhas * 7))) / 15)), this.y - 50 - ((this.numeroLinhas - 1) * (150 / (this.numeroLinhas * 3))), this.x - 0, this.y - 50 - ((this.numeroLinhas - 1) * (150 / (this.numeroLinhas * 3))));
+        bezierVertex(((this.x + 60) - (((6 * 300) / 30) / this.numeroLinhas) * (this.numeroLinhas - 1)), this.y - 50 - ((this.numeroLinhas - 1) * (150 / (this.numeroLinhas * 3))), (this.x + 60) - (((6 * 300) / 30) / this.numeroLinhas) * (this.numeroLinhas - 1), this.y - (150 - (this.numeroLinhas - 1) * (150 / (this.numeroLinhas * 3))), this.x - 0, this.y - (150 - (this.numeroLinhas - 1) * (150 / (this.numeroLinhas * 3))));
+        bezierVertex(this.x - (4 * ((300 - (this.numeroLinhas - 1) * (1500 / (this.numeroLinhas * 7))) / 15)), this.y - (150 - (this.numeroLinhas - 1) * (150 / (this.numeroLinhas * 3))), 200 + (this.numeroLinhas - 1) * 10, this.y - (2 * ((150 - (this.numeroLinhas - 1) * (150 / (this.numeroLinhas * 3))) / 3)), 300 / 2 + ((((2 / 6) * 300) / this.numeroLinhas) * (this.numeroLinhas - 1)), this.y - ((150 - (this.numeroLinhas - 1) * (150 / (this.numeroLinhas * 3))) / 3));
+        bezierVertex(100 + (this.numeroLinhas - 1) * 22, this.y - 0, this.x - 300 + (this.numeroLinhas - 1) * (1500 / (this.numeroLinhas * 7)), this.y - 0, (this.x - 300) + ((this.numeroLinhas - 1) * (1500 / (this.numeroLinhas * 7))), this.y - 0);
+        vertex(this.x - 300, this.y - 0);
 
 
         endShape();
 
-
-
-
-
-
-
         for (let i = 0; i < this.numeroLinhas; i++) {
+            noFill();
+
             beginShape();
-            vertex((this.x - 300) + (i * (1500 / (this.numeroLinhas*7))), this.y - 0);
-            bezierVertex(this.x - 300 + i * (1500 / (this.numeroLinhas*7)), this.y - 0, 100 + i * 22, this.y - 0, 300 / 2 + ((((2 / 6) * 300) / this.numeroLinhas) * i), this.y - ((150 - i * (150 /(this.numeroLinhas*3))) / 3));
-            bezierVertex(200 + i * 10, this.y - (2 * ((150 - i * (150 / (this.numeroLinhas*3))) / 3)), this.x - (4 * ((300 - i * (1500 / (this.numeroLinhas*7))) / 15)), this.y - (150 - i * (150 / (this.numeroLinhas*3))), this.x - 0, this.y - (150 - i * (150 / (this.numeroLinhas*3))));
-            bezierVertex(((this.x + 60) - (((6 * 300) / 30) / this.numeroLinhas) * i), this.y - (150 - i * (150 / (this.numeroLinhas*3))), ((this.x + 60) - (((6 * 300) / 30) /this.numeroLinhas) * i), this.y - 50 - (i * (150 / (this.numeroLinhas*3))), this.x - 0, this.y - 50 - (i * (150 / (this.numeroLinhas*3))));
-            bezierVertex(this.x - (2 * ((300 - i * (1500 / (this.numeroLinhas*7))) / 15)), this.y - 50 - (i * (150 / (this.numeroLinhas*3))), this.x - (2 * ((300 - i * (1500 / (this.numeroLinhas*7))) / 15)), this.y - ((2 * 150) / 3), this.x - 0, this.y - ((2 * 150) / 3));
+            vertex((this.x - 300) + (i * (1500 / (this.numeroLinhas * 7))), this.y - 0);
+            bezierVertex(this.x - 300 + i * (1500 / (this.numeroLinhas * 7)), this.y - 0, 100 + i * 22, this.y - 0, 300 / 2 + ((((2 / 6) * 300) / this.numeroLinhas) * i), this.y - ((150 - i * (150 / (this.numeroLinhas * 3))) / 3));
+            bezierVertex(200 + i * 10, this.y - (2 * ((150 - i * (150 / (this.numeroLinhas * 3))) / 3)), this.x - (4 * ((300 - i * (1500 / (this.numeroLinhas * 7))) / 15)), this.y - (150 - i * (150 / (this.numeroLinhas * 3))), this.x - 0, this.y - (150 - i * (150 / (this.numeroLinhas * 3))));
+            bezierVertex(((this.x + 60) - (((6 * 300) / 30) / this.numeroLinhas) * i), this.y - (150 - i * (150 / (this.numeroLinhas * 3))), ((this.x + 60) - (((6 * 300) / 30) / this.numeroLinhas) * i), this.y - 50 - (i * (150 / (this.numeroLinhas * 3))), this.x - 0, this.y - 50 - (i * (150 / (this.numeroLinhas * 3))));
+            bezierVertex(this.x - (2 * ((300 - i * (1500 / (this.numeroLinhas * 7))) / 15)), this.y - 50 - (i * (150 / (this.numeroLinhas * 3))), this.x - (2 * ((300 - i * (1500 / (this.numeroLinhas * 7))) / 15)), this.y - ((2 * 150) / 3), this.x - 0, this.y - ((2 * 150) / 3));
             endShape();
         }
+
 
         /*
         beginShape();
