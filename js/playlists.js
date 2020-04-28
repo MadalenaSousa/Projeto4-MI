@@ -126,7 +126,7 @@ class classMountain {
         //desenho
         stroke(this.c);
         strokeWeight(1);
-        noFill();
+        fill(0);
 
         for (let b=1; b<=(this.tam)/10; b++) {
             beginShape();
