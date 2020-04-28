@@ -28,6 +28,7 @@ foreach ($playlists->items as $playlist) {
         $track = $track->track;
 
         $trackAnalysis = $api->getAudioAnalysis($track->id);
+        $genres = $api->getArtist($track->artists[0]->id)->genres;
 
         if ($user->id == $playlist->owner->id) {
             $singlePlaylistSong = array(
@@ -63,6 +64,7 @@ foreach ($playlists->items as $playlist) {
                     "name" => $track->name,
                     "artists" => $track->artists[0]->name,
                     "album" => $track->album->name,
+                    "genres" => $genres,
                     "popularity" => $track->popularity,
                     "preview_url" => $track->preview_url,
                     "duration" => $track->duration_ms/1000
