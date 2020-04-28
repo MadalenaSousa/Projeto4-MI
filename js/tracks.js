@@ -25,17 +25,17 @@ function setup() {
     createSongDiv();
 
     client.presence.subscribe((username, isLoggedIn) => {
-        if(isLoggedIn){
-            client.presence.getAll((clients) => {
-                for(let i = 0; i < clients.length; i++){
-                    let peopleList = document.createElement('div');
-                    peopleList.innerText = username;
-                    peopleList.classList.add("user");
+        console.log('Dentro do SUBSCRIBE');
+        client.presence.getAll((error, clients) => {
+            for(let i = 0; i < clients.length; i++){
+                console.log('Dentro do GETALL, this are the clients: ' + clients);
+                let peopleList = document.createElement('div');
+                peopleList.innerText = username;
+                peopleList.classList.add("user");
 
-                    document.querySelector(".list-people").appendChild(peopleList);
-                }
-            });
-        }
+                document.querySelector(".list-people").appendChild(peopleList);
+            }
+        });
     });
 
     recordList = client.record.getList('all-songs');
