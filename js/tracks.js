@@ -264,7 +264,7 @@ class flowerSong {
         }
 
         stroke(this.c);
-        strokeWeight(3);
+        strokeWeight(2);
         noFill();
         //ellipse(this.x + this.randomX, this.y + this.randomY, this.raio * 2, this.raio * 2);
         for (let i = 0; i < 4; i++) {
