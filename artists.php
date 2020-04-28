@@ -20,18 +20,17 @@ session_start();
 <div class="home-button"><a href="homepage.php">BACK TO HOMEPAGE</a></div>
 
 <div class="menu">
-    <div class="titulo">MENU</div>
+    <div class="titulo unit">MENU</div>
     <div>
         Other People in the Room
-        <div class="list-people">
-            #list of people
+        <div class="list-people unit">
         </div>
         <div>
             Choose an artist to add to the artboard
-            <div class="menu-option">MY TOP ARTISTS</div>
-            <div class="list-songs">
+            <div class="menu-option unit">MY TOP ARTISTS</div>
+            <div class="list-songs unit">
             </div>
-            <div class="menu-option">SAVE ART AND SHARE</div>
+            <div class="menu-option unit">SAVE ART AND SHARE</div>
         </div>
     </div>
 </div>

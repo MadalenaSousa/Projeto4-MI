@@ -2,6 +2,8 @@ let playlistSongs, topSongs, user, songs, totalSongs;
 let fromPlaylist = false;
 let flowers = [];
 let newFlower;
+let remove;
+let flowerExists = false;
 
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
@@ -14,58 +16,182 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(windowWidth - windowWidth/6, windowHeight);
+    createCanvas(windowWidth - windowWidth / 6, windowHeight);
+    client.login({username: user.name});
 
-    client.login();
     songs = topSongs;
-
     totalSongs = Object.keys(songs).length;
 
-    for(let i = 0; i < totalSongs; i++) {
-        let list = document.createElement("div");
-        list.innerText = songs[i].name;
-        list.classList.add("song");
-        document.querySelector(".list-songs").appendChild(list);
-    }
+    createUserDiv();
+    createSongDiv();
 
-    recordList = client.record.getList('all-songs');
+    client.presence.subscribe((username, isLoggedIn) => {
+        if(isLoggedIn){
+            client.presence.getAll((clients) => {
+                for(let i = 0; i < clients.length; i++){
+                    let peopleList = document.createElement('div');
+                    peopleList.innerText = username;
+                    peopleList.classList.add("user");
 
-    for (let i = 0; i < totalSongs; i++) {
-        document.querySelectorAll(".song")[i].addEventListener("click", function () { //sempre que clico numa música
-            record[i] = client.record.getRecord(songs[i].name); //crio um novo record no servidor
-            record[i].set({ //defino o novo record
-                user: "user",
-                song: songs[i].name,
-                x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
-                y: height - (songs[i].duration / 2),
-                raio: (songs[i].duration / 3),
-                color: map(getAudioFeatures(i).positivity, 0, 1, 0, 255),
-                energy: getAudioFeatures(i).energy * 5,
-                url: songs[i].preview_url
-            });
-
-            recordList.addEntry(songs[i].name);
-            //recordList.removeEntry(songs[i].name);
-        });
-    }
-
-    recordList.subscribe(function () {
-        if(recordList.isEmpty() === false) {
-            var lastSong = recordList.getEntries()[recordList.getEntries().length-1];
-            var currentRecord = client.record.getRecord(lastSong);
-
-            currentRecord.whenReady(function () {
-                console.log(recordList.getEntries());
-                addNewFlower(currentRecord.get('song'), currentRecord.get('x'), currentRecord.get('y'), currentRecord.get('raio'), currentRecord.get('color'), currentRecord.get('energy'), currentRecord.get('energy'), currentRecord.get('url'));
+                    document.querySelector(".list-people").appendChild(peopleList);
+                }
             });
         }
-    }, true);
+    });
+
+    recordList = client.record.getList('all-songs');
+    remove = document.querySelectorAll(".remove");
+    console.log("LISTA ATUAL: " + recordList.getEntries());
+
+    let currentRecord = [];
+    for(let i = 0; i < recordList.getEntries().length; i++){
+        currentRecord[i] = client.record.getRecord(recordList.getEntries()[i]);
+        addNewFlower(currentRecord[i].get('song'), currentRecord.get('x'), currentRecord[i].get('y'), currentRecord[i].get('raio'), currentRecord[i].get('color'),
+            currentRecord[i].get('energy'), currentRecord[i].get('energy'), currentRecord[i].get('url'));
+
+        console.log("RECORD: " + currentRecord[i].get());
+    }
+
+    for (let i = 0; i < totalSongs; i++) {
+        document.querySelectorAll(".song")[i].addEventListener("click", function () {
+            console.log("Clicou na música" + songs[i].name);
+            client.record.has(songs[i].name, function (error, hasRecord) {
+                if (hasRecord === false) {
+                    //if(contains(flowers, songs[i].name) === false){
+                    console.log('doesnt have record with name: ' + songs[i].name + ", can create it");
+                    record[i] = client.record.getRecord(songs[i].name); //crio um novo record no servidor
+                    record[i].set({ //defino o novo record
+                        user: "user",
+                        song: songs[i].name,
+                        x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
+                        y: height - (songs[i].duration / 2),
+                        raio: (songs[i].duration / 3),
+                        color: map(getAudioFeatures(i).positivity, 0, 1, 0, 255),
+                        energy: getAudioFeatures(i).energy * 5,
+                        artist: songs[i].artists,
+                        url: songs[i].preview_url
+                    });
+
+                    recordList.addEntry(songs[i].name);
+                    record[i].whenReady(function () {
+                        addNewFlower(record[i].get('song'), record[i].get('x'), record[i].get('y'), record[i].get('raio'), record[i].get('color'),
+                            record[i].get('energy'), record[i].get('energy'), record[i].get('url'))
+                    });
+                    //recordList.removeEntry(songs[i].name);
+
+                    console.log("NOVA LISTA: " + recordList.getEntries());
+                } else {
+                    console.log('Record with name: ' + songs[i].name + ", already exists, cannot create it");
+                }
+            });
+
+        });
+
+       remove[i].addEventListener("click", function () {
+            client.record.has(songs[i].name, function (error, hasRecord) {
+                if (hasRecord) {
+                    console.log('has record with name: ' + songs[i].name + ', can delete it');
+                    record[i].delete();
+                    recordList.removeEntry(songs[i].name);
+                    removeFlower(songs[i].name);
+
+                    console.log("NOVA LISTA: " + recordList.getEntries());
+                } else {
+                    console.log('Doesnt have record with name: ' + songs[i].name + ', cannot delete it');
+                }
+            });
+        });
+
+    }
+
+   /* recordList.subscribe(function () {
+        let currentRecord = [];
+
+        for(let i = 0; i < recordList.getEntries().length; i++) {
+            currentRecord[i] = client.record.getRecord(recordList.getEntries()[i]);
+            currentRecord[i].whenReady(function () {
+                console.log(recordList.getEntries());
+                console.log(currentRecord[i].get());
+                addNewFlower(currentRecord[i].get('song'), currentRecord[i].get('x'), currentRecord[i].get('y'), currentRecord[i].get('raio'), currentRecord[i].get('color'),
+                currentRecord[i].get('energy'), currentRecord[i].get('energy'), currentRecord[i].get('url'));
+            });
+        }
+    }, true);*/
 }
 
-function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url) {
-    newFlower = new flowerSong(name, x, y, raio, color, shakeX, shakeY, url);
+function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist) {
+    newFlower = new flowerSong(name, x, y, raio, color, shakeX, shakeY, url, artist);
     flowers.push(newFlower);
     console.log(flowers);
+}
+
+function removeFlower(nome) {
+    for (let i = 0; i < flowers.length; i++) {
+        if (flowers[i].name === nome) {
+            flowers.splice(i, 1);
+        }
+    }
+}
+
+function contains(array, nome) {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i].name === nome) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function createUserDiv() {
+    let userDiv = document.createElement('div');
+    let person = document.createElement('div');
+    let img = document.createElement('img');
+
+    img.setAttribute('src', user.profile_pic);
+    img.setAttribute('width', '30px');
+    img.setAttribute('height', '30px');
+
+    person.innerText = user.name;
+    person.classList.add('username');
+
+    userDiv.classList.add('user');
+    userDiv.appendChild(img);
+    userDiv.appendChild(person);
+
+    document.querySelector(".list-people").appendChild(userDiv);
+}
+
+function createSongDiv() {
+    for(let i = 0; i < totalSongs; i++) {
+        let song = document.createElement("div");
+
+        let nomeDiv = document.createElement("div");
+        let nome = document.createElement("span");
+        let artista = document.createElement("div");
+
+        let remove = document.createElement("div");
+
+        nomeDiv.setAttribute("style", "margin: 0px");
+        nomeDiv.classList.add('song');
+
+        nome.innerHTML ='<b>' + songs[i].name + '</b>';
+
+        artista.setAttribute("style", "font-size: 10pt");
+        artista.innerHTML = songs[i].artists;
+
+        nomeDiv.appendChild(nome);
+        nomeDiv.appendChild(artista);
+
+        remove.innerText = "x";
+        remove.classList.add("remove");
+        remove.setAttribute("style", "cursor: pointer; margin-left: 5px;");
+
+        song.classList.add('unit');
+
+        song.appendChild(nomeDiv);
+        song.appendChild(remove);
+        document.querySelector(".list-songs").appendChild(song);
+    }
 }
 
 function draw() {
@@ -81,7 +207,7 @@ function draw() {
 
     if(flowers.length > 0) {
         for(let i = 0; i < flowers.length; i++) {
-            flowers[i].display();
+                flowers[i].display();
         }
     }
 }
@@ -102,8 +228,9 @@ class flowerSong {
     randomY;
     musicOn;
     sound;
+    added;
 
-    constructor(name, x, y, raio, color, shakeX, shakeY, url) {
+    constructor(name, x, y, raio, color, shakeX, shakeY, url, artist) {
         this.name = name;
         this.x = x;
         this.y = y;
@@ -111,9 +238,11 @@ class flowerSong {
         this.color  = color;
         this.shakeX = shakeX;
         this.shakeY = shakeY;
+        this.artist = artist;
 
         this.sound = new Audio(url);
         this.musicOn = false;
+        this.added = false;
     }
 
     display() {
@@ -135,19 +264,36 @@ class flowerSong {
         }
 
         stroke(this.c);
-        strokeWeight(3);
+        strokeWeight(2);
         noFill();
-        ellipse(this.x + this.randomX, this.y + this.randomY, this.raio * 2, this.raio * 2);
+        //ellipse(this.x + this.randomX, this.y + this.randomY, this.raio * 2, this.raio * 2);
+        for (let i = 0; i < 4; i++) {
+            this.flor(this.x + this.randomX, this.y + this.randomY, 10, 60-i*15, 65-i*15);
+        }
 
         noStroke();
         fill(this.c);
         textSize(12);
+        textStyle(BOLD);
         text(this.name, this.x, this.y);
+        textSize(10);
+        textStyle(NORMAL);
+        text(this.artist, this.x, this.y + 10);
     }
 
     playSong() {
         if(dist(mouseX, mouseY, this.x, this.y) <= this.raio){
             this.musicOn = !this.musicOn;
         }
+    }
+
+    flor(x, y, nVert, rG, rP) {
+        let alpha = TWO_PI/nVert;
+        beginShape();
+            for (let i = 0; i <= nVert+1; i++) {
+            curveVertex(x+rG*cos(i*alpha), y+rG*sin(i*alpha));
+            curveVertex(x+rP*cos(i*alpha+alpha/2), y+rP*sin(i*alpha+alpha/2));
+            }
+        endShape();
     }
 }
