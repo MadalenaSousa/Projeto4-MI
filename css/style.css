@@ -58,30 +58,6 @@ a {
     color: cyan;
 }
 
-.loader {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-    color: white;
-    top: 0;
-    left: 0;
-    text-align: center;
-    opacity: 0;
-    visibility: hidden;
-}
-
-.hidden {
-    animation: fade 5s;
-}
-
-@keyframes fade {
-    100% {
-        opacity: 1;
-        visibility: visible;
-    }
-}
-
 .titulo {
     font-weight: bolder;
     font-size: 24px;
@@ -194,4 +170,8 @@ a {
 
 .user img {
     border-radius: 50%;
+}
+
+.hide {
+    visibility: hidden;
 }

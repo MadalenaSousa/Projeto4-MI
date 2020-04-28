@@ -17,7 +17,7 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(windowWidth - windowWidth / 6, windowHeight);
+    createCanvas(windowWidth - windowWidth/6, windowHeight);
     client.login({username: user.name});
 
     songs = topSongs;
@@ -61,14 +61,21 @@ function setup() {
     });
 
     for (let i = 0; i < totalSongs; i++) {
+        recordList.subscribe(function () {
+            if(contains(recordList.getEntries(), songs[i].name)){
+                remove[i].classList.remove('hide');
+            } else {
+                remove[i].classList.add('hide');
+            }
+        });
+
         document.querySelectorAll(".song")[i].addEventListener("click", function () {
             console.log("Clicou na música" + songs[i].name);
             client.record.has(songs[i].name, function (error, hasRecord) {
                 if (hasRecord === false) {
-                    //if(contains(flowers, songs[i].name) === false){
                     console.log('doesnt have record with name: ' + songs[i].name + ", can create it");
-                    record[i] = client.record.getRecord(songs[i].name); //crio um novo record no servidor
-                    record[i].set({ //defino o novo record
+                    record[i] = client.record.getRecord(songs[i].name);
+                    record[i].set({
                         user: "user",
                         song: songs[i].name,
                         x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
@@ -81,6 +88,7 @@ function setup() {
                     });
 
                     recordList.addEntry(songs[i].name);
+
                     console.log("NOVA LISTA: " + recordList.getEntries());
                 } else {
                     console.log('Record with name: ' + songs[i].name + ", already exists, cannot create it");
@@ -119,7 +127,7 @@ function clearFlowers() {
 
 function contains(array, nome) {
     for (let i = 0; i < array.length; i++) {
-        if (array[i].name === nome) {
+        if (array[i] === nome) {
             return true;
         }
     }
@@ -168,6 +176,7 @@ function createSongDiv() {
 
         remove.innerText = "x";
         remove.classList.add("remove");
+        remove.classList.add("hide");
         remove.setAttribute("style", "cursor: pointer; margin-left: 5px;");
 
         song.classList.add('unit');
@@ -212,7 +221,6 @@ class flowerSong {
     randomY;
     musicOn;
     sound;
-    added;
 
     constructor(name, x, y, raio, color, shakeX, shakeY, url, artist) {
         this.name = name;
@@ -226,7 +234,6 @@ class flowerSong {
 
         this.sound = new Audio(url);
         this.musicOn = false;
-        this.added = false;
     }
 
     display() {
