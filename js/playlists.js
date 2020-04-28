@@ -11,8 +11,8 @@ let trackstotal=[];
 
 
 function preload() {
-    userPlaylists = loadJSON('php/playlist-object.json');
-    user = loadJSON('php/user-object.json');
+    userPlaylists = loadJSON('php/' + userid + '-playlist-object.json');
+    user = loadJSON('php/' + userid + '-user-object.json');
 }
 
 function setup() {

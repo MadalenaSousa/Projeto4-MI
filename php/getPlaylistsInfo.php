@@ -7,7 +7,7 @@ $user = $api->me();
 
 //Guardar dados das playlists do utilizador loggado
 
-$playlistsFile = "playlist-object.json";
+$playlistsFile = $user->id . "-playlist-object.json";
 $playlists = $api->getUserPlaylists($user->id, ['limit' => 10]);
 $playlistsObject = array();
 $trackIds = array();

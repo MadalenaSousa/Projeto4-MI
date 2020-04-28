@@ -9,9 +9,9 @@ const record = [];
 let recordList;
 
 function preload() {
-    playlistSongs = loadJSON('php/playlist-songs-object.json');
-    topSongs = loadJSON('php/top-songs-object.json');
-    user = loadJSON('php/user-object.json');
+    playlistSongs = loadJSON('php/' + userid +'-playlist-songs-object.json');
+    topSongs = loadJSON('php/' + userid + '-top-songs-object.json');
+    user = loadJSON('php/' + userid + '-user-object.json');
 }
 
 function setup() {
@@ -25,7 +25,6 @@ function setup() {
     createSongDiv();
 
     client.presence.subscribe((username, isLoggedIn) => {
-        console.log("alooooooo");
         if(isLoggedIn){
             client.presence.getAll((clients) => {
                 for(let i = 0; i < clients.length; i++){
@@ -70,8 +69,9 @@ function setup() {
         });
 
         document.querySelectorAll(".song")[i].addEventListener("click", function () {
-            console.log("Clicou na música" + songs[i].name);
+            console.log("Clicou na música " + songs[i].name);
             client.record.has(songs[i].name, function (error, hasRecord) {
+                console.log(error);
                 if (hasRecord === false) {
                     console.log('doesnt have record with name: ' + songs[i].name + ", can create it");
                     record[i] = client.record.getRecord(songs[i].name);
@@ -90,8 +90,10 @@ function setup() {
                     recordList.addEntry(songs[i].name);
 
                     console.log("NOVA LISTA: " + recordList.getEntries());
-                } else {
+                } else if(hasRecord) {
                     console.log('Record with name: ' + songs[i].name + ", already exists, cannot create it");
+                } else if(error) {
+                    console.log("ERRO");
                 }
             });
 
