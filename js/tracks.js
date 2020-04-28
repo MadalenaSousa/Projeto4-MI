@@ -8,6 +8,7 @@ let flowerExists = false;
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
 let recordList;
+let currentRecordListSize;
 
 function preload() {
     playlistSongs = loadJSON('php/playlist-songs-object.json');
@@ -16,7 +17,7 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(windowWidth - windowWidth / 6, windowHeight);
+    createCanvas(windowWidth - windowWidth/6, windowHeight);
     client.login({username: user.name});
 
     songs = topSongs;
@@ -41,26 +42,40 @@ function setup() {
 
     recordList = client.record.getList('all-songs');
     remove = document.querySelectorAll(".remove");
-    console.log("LISTA ATUAL: " + recordList.getEntries());
 
-    let currentRecord = [];
-    for(let i = 0; i < recordList.getEntries().length; i++){
-        currentRecord[i] = client.record.getRecord(recordList.getEntries()[i]);
-        addNewFlower(currentRecord[i].get('song'), currentRecord.get('x'), currentRecord[i].get('y'), currentRecord[i].get('raio'), currentRecord[i].get('color'),
-            currentRecord[i].get('energy'), currentRecord[i].get('energy'), currentRecord[i].get('url'));
-
-        console.log("RECORD: " + currentRecord[i].get());
-    }
+    recordList.subscribe(function () {
+        console.log("LISTA DE RECORDS ATUAL: " + recordList.getEntries());
+        if(recordList.isEmpty()) {
+            console.log("Não há músicas na lista");
+        } else {
+            clearFlowers();
+            let recordsOnList = [];
+            for(let i = 0; i < recordList.getEntries().length; i++){
+                recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
+                recordsOnList[i].whenReady(function () {
+                    addNewFlower(recordsOnList[i].get('song'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
+                        recordsOnList[i].get('energy'), recordsOnList[i].get('energy'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'));
+                });
+            }
+        }
+    });
 
     for (let i = 0; i < totalSongs; i++) {
+        recordList.subscribe(function () {
+            if(contains(recordList.getEntries(), songs[i].name)){
+                remove[i].classList.remove('hide');
+            } else {
+                remove[i].classList.add('hide');
+            }
+        });
+
         document.querySelectorAll(".song")[i].addEventListener("click", function () {
             console.log("Clicou na música" + songs[i].name);
             client.record.has(songs[i].name, function (error, hasRecord) {
                 if (hasRecord === false) {
-                    //if(contains(flowers, songs[i].name) === false){
                     console.log('doesnt have record with name: ' + songs[i].name + ", can create it");
-                    record[i] = client.record.getRecord(songs[i].name); //crio um novo record no servidor
-                    record[i].set({ //defino o novo record
+                    record[i] = client.record.getRecord(songs[i].name);
+                    record[i].set({
                         user: "user",
                         song: songs[i].name,
                         x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
@@ -73,11 +88,6 @@ function setup() {
                     });
 
                     recordList.addEntry(songs[i].name);
-                    record[i].whenReady(function () {
-                        addNewFlower(record[i].get('song'), record[i].get('x'), record[i].get('y'), record[i].get('raio'), record[i].get('color'),
-                            record[i].get('energy'), record[i].get('energy'), record[i].get('url'))
-                    });
-                    //recordList.removeEntry(songs[i].name);
 
                     console.log("NOVA LISTA: " + recordList.getEntries());
                 } else {
@@ -90,10 +100,10 @@ function setup() {
        remove[i].addEventListener("click", function () {
             client.record.has(songs[i].name, function (error, hasRecord) {
                 if (hasRecord) {
-                    console.log('has record with name: ' + songs[i].name + ', can delete it');
-                    record[i].delete();
+                    console.log('Has record with name: ' + songs[i].name + ', can delete it');
+
                     recordList.removeEntry(songs[i].name);
-                    removeFlower(songs[i].name);
+                    client.record.getRecord(songs[i].name).delete();
 
                     console.log("NOVA LISTA: " + recordList.getEntries());
                 } else {
@@ -103,39 +113,21 @@ function setup() {
         });
 
     }
-
-   /* recordList.subscribe(function () {
-        let currentRecord = [];
-
-        for(let i = 0; i < recordList.getEntries().length; i++) {
-            currentRecord[i] = client.record.getRecord(recordList.getEntries()[i]);
-            currentRecord[i].whenReady(function () {
-                console.log(recordList.getEntries());
-                console.log(currentRecord[i].get());
-                addNewFlower(currentRecord[i].get('song'), currentRecord[i].get('x'), currentRecord[i].get('y'), currentRecord[i].get('raio'), currentRecord[i].get('color'),
-                currentRecord[i].get('energy'), currentRecord[i].get('energy'), currentRecord[i].get('url'));
-            });
-        }
-    }, true);*/
 }
 
 function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist) {
     newFlower = new flowerSong(name, x, y, raio, color, shakeX, shakeY, url, artist);
     flowers.push(newFlower);
-    console.log(flowers);
+    console.log("LISTA DE FLORES ATUAL: " + flowers);
 }
 
-function removeFlower(nome) {
-    for (let i = 0; i < flowers.length; i++) {
-        if (flowers[i].name === nome) {
-            flowers.splice(i, 1);
-        }
-    }
+function clearFlowers() {
+    flowers.splice(0, flowers.length);
 }
 
 function contains(array, nome) {
     for (let i = 0; i < array.length; i++) {
-        if (array[i].name === nome) {
+        if (array[i] === nome) {
             return true;
         }
     }
@@ -184,6 +176,7 @@ function createSongDiv() {
 
         remove.innerText = "x";
         remove.classList.add("remove");
+        remove.classList.add("hide");
         remove.setAttribute("style", "cursor: pointer; margin-left: 5px;");
 
         song.classList.add('unit');
@@ -228,7 +221,6 @@ class flowerSong {
     randomY;
     musicOn;
     sound;
-    added;
 
     constructor(name, x, y, raio, color, shakeX, shakeY, url, artist) {
         this.name = name;
@@ -242,7 +234,6 @@ class flowerSong {
 
         this.sound = new Audio(url);
         this.musicOn = false;
-        this.added = false;
     }
 
     display() {
