@@ -30,7 +30,7 @@ function setup() {
     recordList = client.record.getList('all-playlists');
 
     for (let i = 0; i < totalPlaylists; i++) {
-        document.querySelectorAll(".playlist")[i].addEventListener("click", function () { //sempre que clicar numa música
+        document.querySelectorAll(".playlist")[i].addEventListener("click", function () { //sempre que clicar numa playlist
             record[i] = client.record.getRecord(userPlaylists[i].name); //cria um novo record no servidor
             record[i].set({ //define o novo record
                 playlist: userPlaylists[i].name,
