@@ -68,7 +68,7 @@ function setup() {
 
         });
 
-       /* remove[i].addEventListener("click", function () {
+       remove[i].addEventListener("click", function () {
             client.record.has(songs[i].name, function (error, hasRecord) {
                 if (hasRecord) {
                     console.log('has record, can delete');
@@ -80,7 +80,7 @@ function setup() {
                     console.log(flowers);
                 }
             });
-        });*/
+        });
 
     }
 
@@ -91,6 +91,7 @@ function setup() {
             currentRecord[i] = client.record.getRecord(recordList.getEntries()[i]);
             currentRecord[i].whenReady(function () {
                 console.log(recordList.getEntries());
+                console.log(currentRecord[i].get());
                 addNewFlower(currentRecord[i].get('song'), currentRecord[i].get('x'), currentRecord[i].get('y'), currentRecord[i].get('raio'), currentRecord[i].get('color'), currentRecord[i].get('energy'), currentRecord[i].get('energy'), currentRecord[i].get('url'));
             });
         }
