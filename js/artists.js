@@ -87,9 +87,10 @@ class waveArtist {
     }
 
     display() {
-
         this.x = 300;
         stroke(255, 255 - this.color, 255);
+        noFill();
+
         /* beginShape();
          vertex(this.x-this.l, this.y-0);
          bezierVertex(this.x-this.l, this.y-0,this.l/3, this.y-0, this.l/2, this.y-(this.a/3));
@@ -98,12 +99,6 @@ class waveArtist {
          bezierVertex(this.x-(2*(this.l/15)), this.y-(this.a/3), this.x-(2*(this.l/15)), this.y-(2*(this.a/3)), this.x-0, this.y-(2*(this.a/3)));
          endShape();*/
         for (let i = 0; i < 6; i++) {
-            if (i === 5) {
-                fill(0);
-            }
-            else{
-                noFill();
-            }
             beginShape();
             vertex(this.x - 300 + i * (1500 / 42), this.y - 0);
             bezierVertex(this.x - 300 + i * (1500 / 42), this.y - 0, 100 + i * 22, this.y - 0, 300 / 2 + ((((2 / 6) * 300) / 6) * i), this.y - ((150 - i * (150 / 18)) / 3));
