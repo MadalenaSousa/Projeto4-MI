@@ -41,13 +41,24 @@ function setup() {
 
     recordList = client.record.getList('all-songs');
     remove = document.querySelectorAll(".remove");
+    console.log("LISTA ATUAL: " + recordList.getEntries());
+
+    let currentRecord = [];
+    for(let i = 0; i < recordList.getEntries().length; i++){
+        currentRecord[i] = client.record.getRecord(recordList.getEntries()[i]);
+        addNewFlower(currentRecord[i].get('song'), currentRecord.get('x'), currentRecord[i].get('y'), currentRecord[i].get('raio'), currentRecord[i].get('color'),
+            currentRecord[i].get('energy'), currentRecord[i].get('energy'), currentRecord[i].get('url'));
+
+        console.log("RECORD: " + currentRecord[i].get());
+    }
 
     for (let i = 0; i < totalSongs; i++) {
         document.querySelectorAll(".song")[i].addEventListener("click", function () {
+            console.log("Clicou na música" + songs[i].name);
             client.record.has(songs[i].name, function (error, hasRecord) {
                 if (hasRecord === false) {
                     //if(contains(flowers, songs[i].name) === false){
-                    console.log('doesnt have record');
+                    console.log('doesnt have record with name: ' + songs[i].name + ", can create it");
                     record[i] = client.record.getRecord(songs[i].name); //crio um novo record no servidor
                     record[i].set({ //defino o novo record
                         user: "user",
@@ -62,7 +73,15 @@ function setup() {
                     });
 
                     recordList.addEntry(songs[i].name);
+                    record[i].whenReady(function () {
+                        addNewFlower(record[i].get('song'), record[i].get('x'), record[i].get('y'), record[i].get('raio'), record[i].get('color'),
+                            record[i].get('energy'), record[i].get('energy'), record[i].get('url'))
+                    });
                     //recordList.removeEntry(songs[i].name);
+
+                    console.log("NOVA LISTA: " + recordList.getEntries());
+                } else {
+                    console.log('Record with name: ' + songs[i].name + ", already exists, cannot create it");
                 }
             });
 
@@ -71,20 +90,21 @@ function setup() {
        remove[i].addEventListener("click", function () {
             client.record.has(songs[i].name, function (error, hasRecord) {
                 if (hasRecord) {
-                    console.log('has record, can delete');
-                    let recordNoServer = client.record.getRecord(songs[i].name);
-                    //console.log(recordNoServer.get());
-                    recordNoServer.delete();
-
+                    console.log('has record with name: ' + songs[i].name + ', can delete it');
+                    record[i].delete();
+                    recordList.removeEntry(songs[i].name);
                     removeFlower(songs[i].name);
-                    console.log(flowers);
+
+                    console.log("NOVA LISTA: " + recordList.getEntries());
+                } else {
+                    console.log('Doesnt have record with name: ' + songs[i].name + ', cannot delete it');
                 }
             });
         });
 
     }
 
-    recordList.subscribe(function () {
+   /* recordList.subscribe(function () {
         let currentRecord = [];
 
         for(let i = 0; i < recordList.getEntries().length; i++) {
@@ -92,10 +112,11 @@ function setup() {
             currentRecord[i].whenReady(function () {
                 console.log(recordList.getEntries());
                 console.log(currentRecord[i].get());
-                addNewFlower(currentRecord[i].get('song'), currentRecord[i].get('x'), currentRecord[i].get('y'), currentRecord[i].get('raio'), currentRecord[i].get('color'), currentRecord[i].get('energy'), currentRecord[i].get('energy'), currentRecord[i].get('url'));
+                addNewFlower(currentRecord[i].get('song'), currentRecord[i].get('x'), currentRecord[i].get('y'), currentRecord[i].get('raio'), currentRecord[i].get('color'),
+                currentRecord[i].get('energy'), currentRecord[i].get('energy'), currentRecord[i].get('url'));
             });
         }
-    }, true);
+    }, true);*/
 }
 
 function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist) {
@@ -246,7 +267,7 @@ class flowerSong {
         strokeWeight(3);
         noFill();
         //ellipse(this.x + this.randomX, this.y + this.randomY, this.raio * 2, this.raio * 2);
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 4; i++) {
             this.flor(this.x + this.randomX, this.y + this.randomY, 10, 60-i*15, 65-i*15);
         }
 
