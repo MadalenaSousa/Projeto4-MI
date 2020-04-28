@@ -10,8 +10,8 @@ const record = [];
 let recordList;
 
 function preload() {
-    topArtists = loadJSON('php/artists-object.json');
-    user = loadJSON('php/user-object.json');
+    topArtists = loadJSON('php/' + userid + '-artists-object.json');
+    user = loadJSON('php/' + userid + '-user-object.json');
 }
 
 function setup() {

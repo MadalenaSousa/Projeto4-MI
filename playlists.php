@@ -1,5 +1,6 @@
 <?php
 session_start();
+$session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 ?>
 
 <!DOCTYPE html>
@@ -9,6 +10,10 @@ session_start();
     <title>Music Taste Visualiser</title>
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <script type="text/javascript">
+        var userid = '<?php echo $session_value;?>'';
+    </script>
 
     <script src="p5/p5.js"></script>
     <script src="p5/addons/p5.sound.js"></script>
@@ -34,7 +39,6 @@ session_start();
         </div>
     </div>
 </div>
-
 <script src="js/playlists.js"></script>
 </body>
 </html>

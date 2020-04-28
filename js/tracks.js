@@ -9,9 +9,9 @@ const record = [];
 let recordList;
 
 function preload() {
-    playlistSongs = loadJSON('php/playlist-songs-object.json');
-    topSongs = loadJSON('php/top-songs-object.json');
-    user = loadJSON('php/user-object.json');
+    playlistSongs = loadJSON('php/' + userid +'-playlist-songs-object.json');
+    topSongs = loadJSON('php/' + userid + '-top-songs-object.json');
+    user = loadJSON('php/' + userid + '-user-object.json');
 }
 
 function setup() {
@@ -21,21 +21,21 @@ function setup() {
     songs = topSongs;
     totalSongs = Object.keys(songs).length;
 
-    createUserDiv();
+    createUserDiv(user.name, user.profile_pic);
     createSongDiv();
 
     client.presence.subscribe((username, isLoggedIn) => {
-        if(isLoggedIn){
-            client.presence.getAll((clients) => {
-                for(let i = 0; i < clients.length; i++){
-                    let peopleList = document.createElement('div');
-                    peopleList.innerText = username;
-                    peopleList.classList.add("user");
+        console.log('Dentro do SUBSCRIBE');
+        client.presence.getAll((error, clients) => {
+            for(let i = 0; i < clients.length; i++){
+                console.log('Dentro do GETALL, this are the clients: ' + clients);
+                let peopleList = document.createElement('div');
+                peopleList.innerText = username;
+                peopleList.classList.add("user");
 
-                    document.querySelector(".list-people").appendChild(peopleList);
-                }
-            });
-        }
+                document.querySelector(".list-people").appendChild(peopleList);
+            }
+        });
     });
 
     recordList = client.record.getList('all-songs');
@@ -69,7 +69,7 @@ function setup() {
         });
 
         document.querySelectorAll(".song")[i].addEventListener("click", function () {
-            console.log("Clicou na música" + songs[i].name);
+            console.log("Clicou na música " + songs[i].name);
             client.record.has(songs[i].name, function (error, hasRecord) {
                 if (hasRecord === false) {
                     console.log('doesnt have record with name: ' + songs[i].name + ", can create it");
@@ -133,16 +133,16 @@ function contains(array, nome) {
     return false;
 }
 
-function createUserDiv() {
+function createUserDiv(name, profilepic) {
     let userDiv = document.createElement('div');
     let person = document.createElement('div');
     let img = document.createElement('img');
 
-    img.setAttribute('src', user.profile_pic);
+    img.setAttribute('src', profilepic);
     img.setAttribute('width', '30px');
     img.setAttribute('height', '30px');
 
-    person.innerText = user.name;
+    person.innerText = name;
     person.classList.add('username');
 
     userDiv.classList.add('user');
