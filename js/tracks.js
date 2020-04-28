@@ -71,7 +71,6 @@ function setup() {
         document.querySelectorAll(".song")[i].addEventListener("click", function () {
             console.log("Clicou na música " + songs[i].name);
             client.record.has(songs[i].name, function (error, hasRecord) {
-                console.log(error);
                 if (hasRecord === false) {
                     console.log('doesnt have record with name: ' + songs[i].name + ", can create it");
                     record[i] = client.record.getRecord(songs[i].name);
@@ -90,10 +89,8 @@ function setup() {
                     recordList.addEntry(songs[i].name);
 
                     console.log("NOVA LISTA: " + recordList.getEntries());
-                } else if(hasRecord) {
+                } else {
                     console.log('Record with name: ' + songs[i].name + ", already exists, cannot create it");
-                } else if(error) {
-                    console.log("ERRO");
                 }
             });
 
