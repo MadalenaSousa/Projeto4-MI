@@ -15,7 +15,7 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
+    createCanvas(windowWidth - windowWidth/6, windowHeight);
     artists = topArtists;
     client.login();
     totalArtists = Object.keys(artists).length;
@@ -33,6 +33,7 @@ function setup() {
     recordList.subscribe(function () {
         console.log("LISTA DE RECORDS ATUAL: " + recordList.getEntries());
         if(recordList.isEmpty()) {
+            clearWaves();
             console.log("Não há músicas na lista");
         } else {
             clearWaves();
@@ -105,11 +106,7 @@ function addNewWave(name, color, divisoes, y) {
 }
 
 function clearWaves() {
-    if(waves.length > 0) {
-        waves.splice(0, waves.length);
-    } else {
-        waves.splice(0, 1);
-    }
+     waves.splice(0, waves.length);
 }
 
 function contains(array, nome) {

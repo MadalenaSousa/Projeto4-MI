@@ -44,6 +44,7 @@ function setup() {
     recordList.subscribe(function () {
         console.log("LISTA DE RECORDS ATUAL: " + recordList.getEntries());
         if(recordList.isEmpty()) {
+            clearFlowers();
             console.log("Não há músicas na lista");
         } else {
             clearFlowers();

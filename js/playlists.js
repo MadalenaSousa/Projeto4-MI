@@ -34,6 +34,7 @@ function setup() {
     recordList.subscribe(function () {
         console.log("LISTA DE RECORDS ATUAL: " + recordList.getEntries());
         if(recordList.isEmpty()) {
+            clearMountains();
             console.log("Não há músicas na lista");
         } else {
             clearMountains();
