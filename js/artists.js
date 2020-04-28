@@ -15,7 +15,7 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
+    createCanvas(windowWidth - windowWidth/6, windowHeight);
     artists = topArtists;
     client.login();
     totalArtists = Object.keys(artists).length;
