@@ -21,10 +21,11 @@ function setup() {
     songs = topSongs;
     totalSongs = Object.keys(songs).length;
 
-    createUserDiv();
+    createUserDiv(user.name, user.profile_pic);
     createSongDiv();
 
     client.presence.subscribe((username, isLoggedIn) => {
+        console.log("alooooooo");
         if(isLoggedIn){
             client.presence.getAll((clients) => {
                 for(let i = 0; i < clients.length; i++){
@@ -133,16 +134,16 @@ function contains(array, nome) {
     return false;
 }
 
-function createUserDiv() {
+function createUserDiv(name, profilepic) {
     let userDiv = document.createElement('div');
     let person = document.createElement('div');
     let img = document.createElement('img');
 
-    img.setAttribute('src', user.profile_pic);
+    img.setAttribute('src', profilepic);
     img.setAttribute('width', '30px');
     img.setAttribute('height', '30px');
 
-    person.innerText = user.name;
+    person.innerText = name;
     person.classList.add('username');
 
     userDiv.classList.add('user');
