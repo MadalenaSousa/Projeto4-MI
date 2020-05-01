@@ -7,10 +7,11 @@ $user = $api->me();
 
 //Guardar dados das playlists do utilizador loggado
 
-$playlistsFile = "playlist-object.json";
+$playlistsFile = $user->id . "-playlist-object.json";
 $playlists = $api->getUserPlaylists($user->id, ['limit' => 10]);
 $playlistsObject = array();
 $trackIds = array();
+$genres = array();
 
 foreach ($playlists->items as $playlist) {
     $danceability = 0;
@@ -24,6 +25,12 @@ foreach ($playlists->items as $playlist) {
     foreach ($tracks->items as $track) {
         $track = $track->track;
         array_push($trackIds, $track->id);
+
+        $artist = $api->getArtist($track->artists[0]->id);
+
+        for ($i = 0; $i < count($artist->genres); $i++) {
+           array_push($genres, $artist->genres[$i]);
+        }
     }
 
     $trackFeatures = $api->getAudioFeatures($trackIds)->audio_features;
@@ -45,6 +52,7 @@ foreach ($playlists->items as $playlist) {
             "owner" => array(
                 "id" => $playlist->owner->id
             ),
+            "genres" => $genres,
             "tracks" => array(
                 "total" => $playlist->tracks->total,
                 "tracks-link" => $playlist->tracks->href

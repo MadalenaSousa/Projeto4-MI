@@ -1,6 +1,7 @@
 let userPlaylists, totalPlaylists;
 let mountains = [];
 let newMountain;
+let remove;
 
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
@@ -10,15 +11,15 @@ let trackstotal=[];
 
 
 function preload() {
-    userPlaylists = loadJSON('php/playlist-object.json');
-    user = loadJSON('php/user-object.json');
+    userPlaylists = loadJSON('php/' + userid + '-playlist-object.json');
+    user = loadJSON('php/' + userid + '-user-object.json');
 }
 
 function setup() {
     createCanvas(windowWidth - windowWidth/6, windowHeight);
 
     client.login();
-    totalPlaylists=Object.keys(userPlaylists).length;
+    totalPlaylists = Object.keys(userPlaylists).length;
 
     createUserDiv();
     createPlaylistDiv();
@@ -28,46 +29,84 @@ function setup() {
     }
 
     recordList = client.record.getList('all-playlists');
-
-    for (let i = 0; i < totalPlaylists; i++) {
-        document.querySelectorAll(".playlist")[i].addEventListener("click", function () { //sempre que clicar numa playlist
-            record[i] = client.record.getRecord(userPlaylists[i].name); //cria um novo record no servidor
-            record[i].set({ //define o novo record
-                playlist: userPlaylists[i].name,
-                px: random(100, windowWidth-400),
-                py: random(100, windowHeight-100),
-                color: color(255),
-                numtracks: userPlaylists[i].tracks.total,
-                resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
-                tam: map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 10, 60), //tamanho
-                round: map(userPlaylists[i].average_features.energy, 0.0, 1.0, 30, 0), //quanto maior o valor, mais espalmada
-                nAmp: map(userPlaylists[i].average_features.loudness, -60, 0, 0.3, 1), // valor=1 -> redonda
-                t: 0,
-                tChange: map(userPlaylists[i].average_features.danceability, 0.0, 1.0, 0.01, 0.06), // dança do objeto
-                nInt: 10, //intensidade
-                nSeed: 10
-            });
-
-            recordList.addEntry(userPlaylists[i].name);
-        });
-    }
+    remove = document.querySelectorAll(".remove");
 
     recordList.subscribe(function () {
-        if(recordList.isEmpty() === false) {
-            let currentRecord=[];
-
-            for(let i = 0; i < recordList.getEntries().length; i++) {
-                currentRecord[i] = client.record.getRecord(recordList.getEntries()[i]);
-
-                currentRecord[i].whenReady( function () {
-                    addNewMountain (currentRecord[i].get('playlist'), currentRecord[i].get('px'), currentRecord[i].get('py'), currentRecord[i].get('numtracks'), currentRecord[i].get('color'),
-                        currentRecord[i].get('resolution'), currentRecord[i].get('tam'), currentRecord[i].get('round'), currentRecord[i].get('nAmp'),
-                        currentRecord[i].get('t'), currentRecord[i].get('tChange'), currentRecord[i].get('nInt'), currentRecord[i].get('nSeed'));
+        console.log("LISTA DE RECORDS ATUAL: " + recordList.getEntries());
+        if(recordList.isEmpty()) {
+            clearMountains();
+            console.log("Não há músicas na lista");
+        } else {
+            clearMountains();
+            let recordsOnList = [];
+            for(let i = 0; i < recordList.getEntries().length; i++){
+                recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
+                recordsOnList[i].whenReady(function () {
+                    addNewMountain (recordsOnList[i].get('playlist'), recordsOnList[i].get('px'), recordsOnList[i].get('py'), recordsOnList[i].get('numtracks'), recordsOnList[i].get('color'),
+                        recordsOnList[i].get('resolution'), recordsOnList[i].get('tam'), recordsOnList[i].get('round'), recordsOnList[i].get('nAmp'),
+                        recordsOnList[i].get('t'), recordsOnList[i].get('tChange'), recordsOnList[i].get('nInt'), recordsOnList[i].get('nSeed'));
                 });
             }
         }
-    }, true);
+    });
 
+    for (let i = 0; i < totalPlaylists; i++) {
+        recordList.subscribe(function () {
+            if(contains(recordList.getEntries(), userPlaylists[i].name)){
+                remove[i].classList.remove('hide');
+            } else {
+                remove[i].classList.add('hide');
+            }
+        });
+
+        document.querySelectorAll(".playlist")[i].addEventListener("click", function () {
+            console.log("Clicou na música" + userPlaylists[i].name);
+            client.record.has(userPlaylists[i].name, function (error, hasRecord) {
+                if (hasRecord === false) {
+                    console.log('doesnt have record with name: ' + userPlaylists[i].name + ", can create it");
+                    record[i] = client.record.getRecord(userPlaylists[i].name); //cria um novo record no servidor
+                    record[i].set({ //define o novo record
+                        playlist: userPlaylists[i].name,
+                        px: random(100, windowWidth-400),
+                        py: random(100, windowHeight-100),
+                        color: color(255),
+                        numtracks: userPlaylists[i].tracks.total,
+                        resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
+                        tam: map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 10, 60), //tamanho
+                        round: map(userPlaylists[i].average_features.energy, 0.0, 1.0, 30, 0), //quanto maior o valor, mais espalmada
+                        nAmp: map(userPlaylists[i].average_features.loudness, -60, 0, 0.3, 1), // valor=1 -> redonda
+                        t: 0,
+                        tChange: map(userPlaylists[i].average_features.danceability, 0.0, 1.0, 0.01, 0.06), // dança do objeto
+                        nInt: 10, //intensidade
+                        nSeed: 10
+                    });
+
+                    recordList.addEntry(userPlaylists[i].name);
+
+                    console.log("NOVA LISTA: " + recordList.getEntries());
+                } else {
+                    console.log('Record with name: ' + userPlaylists[i].name + ", already exists, cannot create it");
+                }
+            });
+
+        });
+
+        remove[i].addEventListener("click", function () {
+            client.record.has(userPlaylists[i].name, function (error, hasRecord) {
+                if (hasRecord) {
+                    console.log('Has record with name: ' + userPlaylists[i].name + ', can delete it');
+
+                    recordList.removeEntry(userPlaylists[i].name);
+                    client.record.getRecord(userPlaylists[i].name).delete();
+
+                    console.log("NOVA LISTA: " + recordList.getEntries());
+                } else {
+                    console.log('Doesnt have record with name: ' + userPlaylists[i].name + ', cannot delete it');
+                }
+            });
+        });
+
+    }
 
 }
 
@@ -77,9 +116,22 @@ function addNewMountain(name, px, py, numtracks, color, resolution, tam, round, 
     console.log(mountains);
 }
 
+function clearMountains() {
+    mountains.splice(0, mountains.length);
+}
+
+function contains(array, nome) {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i] === nome) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function createPlaylistDiv() {
     for(let i = 0; i < totalPlaylists; i++) {
-        let song = document.createElement("div");
+        let playlist = document.createElement("div");
 
         let nomeDiv = document.createElement("div");
         let nome = document.createElement("span");
@@ -97,11 +149,11 @@ function createPlaylistDiv() {
         remove.classList.add("remove");
         remove.setAttribute("style", "cursor: pointer; margin-left: 5px;");
 
-        song.classList.add('unit');
+        playlist.classList.add('unit');
 
-        song.appendChild(nomeDiv);
-        song.appendChild(remove);
-        document.querySelector(".list-playlists").appendChild(song);
+        playlist.appendChild(nomeDiv);
+        playlist.appendChild(remove);
+        document.querySelector(".list-playlists").appendChild(playlist);
     }
 }
 

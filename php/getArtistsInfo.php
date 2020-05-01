@@ -8,7 +8,7 @@ $user = $api->me();
 //Guardar dados dos top artistas do utilizador loggado
 
 $artists = $api->getMyTop("artists", ['limit' => 10]);
-$artistsFile = "artists-object.json";
+$artistsFile = $user->id . "-artists-object.json";
 $artistObject = array();
 $trackIds = array();
 

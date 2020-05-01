@@ -7,7 +7,7 @@ $user = $api->me();
 
 //Guardar dados das músicas do utilizador loggado
 
-$playlistsSongsFile = "playlist-songs-object.json";
+$playlistsSongsFile = $user->id . "-playlist-songs-object.json";
 $playlists = $api->getUserPlaylists($user->id, ['limit' => 10]);
 $playlistsSongObject = array();
 $trackIds = array();
@@ -28,6 +28,7 @@ foreach ($playlists->items as $playlist) {
         $track = $track->track;
 
         $trackAnalysis = $api->getAudioAnalysis($track->id);
+        $genres = $api->getArtist($track->artists[0]->id)->genres;
 
         if ($user->id == $playlist->owner->id) {
             $singlePlaylistSong = array(
@@ -63,6 +64,7 @@ foreach ($playlists->items as $playlist) {
                     "name" => $track->name,
                     "artists" => $track->artists[0]->name,
                     "album" => $track->album->name,
+                    "genres" => $genres,
                     "popularity" => $track->popularity,
                     "preview_url" => $track->preview_url,
                     "duration" => $track->duration_ms/1000
@@ -77,7 +79,7 @@ foreach ($playlists->items as $playlist) {
 $playlistSongsData = json_encode($playlistsSongObject);
 file_put_contents($playlistsSongsFile, $playlistSongsData);
 
-$topSongsFile = "top-songs-object.json";
+$topSongsFile = $user->id . "-top-songs-object.json";
 $songs = $api->getMyTop("tracks", ['limit' => 10]);
 $topSongObject = array();
 $trackIds = array();

@@ -3,19 +3,19 @@ let x;
 let waves = [];
 let newWave;
 let popularity = [];
-
+let remove;
 
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
 let recordList;
 
 function preload() {
-    topArtists = loadJSON('php/artists-object.json');
-    user = loadJSON('php/user-object.json');
+    topArtists = loadJSON('php/' + userid + '-artists-object.json');
+    user = loadJSON('php/' + userid + '-user-object.json');
 }
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
+    createCanvas(windowWidth - windowWidth/6, windowHeight);
     artists = topArtists;
     client.login();
     totalArtists = Object.keys(artists).length;
@@ -28,41 +28,94 @@ function setup() {
     }
 
     recordList = client.record.getList('all-artists');
-
-    for (let i = 0; i < totalArtists; i++) {
-        document.querySelectorAll(".artist")[i].addEventListener("click", function () { //sempre que clico num artista
-            record[i] = client.record.getRecord(artists[i].name); //crio um novo record no servidor
-            record[i].set({ //defino o novo record
-                user: "user",
-                artist: artists[i].name,
-                color: map(artists[i].popularity, min(popularity), max(popularity), 0, 255),
-                divisoes: map(artists[i].followers.total, 0, 60000000, 10, 100),
-                y: map(i, 0, totalArtists, windowHeight / 7, windowHeight - (windowHeight / 10))
-
-            });
-
-            recordList.addEntry(artists[i].name);
-            //recordList.removeEntry(songs[i].name);
-        });
-    }
+    remove = document.querySelectorAll(".remove");
 
     recordList.subscribe(function () {
-        if (recordList.isEmpty() === false) {
-            var lastArtist = recordList.getEntries()[recordList.getEntries().length - 1];
-            var currentRecord = client.record.getRecord(lastArtist);
-
-            currentRecord.whenReady(function () {
-                console.log(recordList.getEntries());
-                addNewWave(currentRecord.get('artist'), currentRecord.get('color'), currentRecord.get('divisoes'), currentRecord.get('y'));
-            });
+        console.log("LISTA DE RECORDS ATUAL: " + recordList.getEntries());
+        if(recordList.isEmpty()) {
+            clearWaves();
+            console.log("Não há músicas na lista");
+        } else {
+            clearWaves();
+            let recordsOnList = [];
+            for(let i = 0; i < recordList.getEntries().length; i++){
+                recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
+                recordsOnList[i].whenReady(function () {
+                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('y'));
+                });
+            }
         }
-    }, true);
+    });
+
+    for (let i = 0; i < totalArtists; i++) {
+        recordList.subscribe(function () {
+            if(contains(recordList.getEntries(), artists[i].name)){
+                remove[i].classList.remove('hide');
+            } else {
+                remove[i].classList.add('hide');
+            }
+        });
+
+        document.querySelectorAll(".artist")[i].addEventListener("click", function () {
+            console.log("Clicou na música" + artists[i].name);
+            client.record.has(artists[i].name, function (error, hasRecord) {
+                if (hasRecord === false) {
+                    console.log('doesnt have record with name: ' + topArtists[i].name + ", can create it");
+                    record[i] = client.record.getRecord(artists[i].name); //crio um novo record no servidor
+                    record[i].set({ //defino o novo record
+                        user: "user",
+                        artist: artists[i].name,
+                        color: map(artists[i].popularity, min(popularity), max(popularity), 0, 255),
+                        divisoes: map(artists[i].followers.total, 0, 60000000, 10, 100),
+                        y: map(i, 0, totalArtists, windowHeight / 7, windowHeight - (windowHeight / 10))
+
+                    });
+
+                    recordList.addEntry(artists[i].name);
+
+                    console.log("NOVA LISTA: " + recordList.getEntries());
+                } else {
+                    console.log('Record with name: ' + artists[i].name + ", already exists, cannot create it");
+                }
+            });
+
+        });
+
+        remove[i].addEventListener("click", function () {
+            client.record.has(artists[i].name, function (error, hasRecord) {
+                if (hasRecord) {
+                    console.log('Has record with name: ' + artists[i].name + ', can delete it');
+
+                    recordList.removeEntry(artists[i].name);
+                    client.record.getRecord(artists[i].name).delete();
+
+                    console.log("NOVA LISTA: " + recordList.getEntries());
+                } else {
+                    console.log('Doesnt have record with name: ' + artists[i].name + ', cannot delete it');
+                }
+            });
+        });
+
+    }
 }
 
 function addNewWave(name, color, divisoes, y) {
     newWave = new waveArtist(name, color, divisoes, y);
     waves.push(newWave);
     console.log(waves);
+}
+
+function clearWaves() {
+     waves.splice(0, waves.length);
+}
+
+function contains(array, nome) {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i] === nome) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function createArtistDiv() {
