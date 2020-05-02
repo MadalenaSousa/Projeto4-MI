@@ -110,7 +110,7 @@ function setup() {
                     console.log('doesnt have record with name: ' + songs[i].name + ", can create it");
                     record[i] = client.record.getRecord(songs[i].name);
                     record[i].set({
-                        user: "user",
+                        user: user.name,
                         song: songs[i].name,
                         x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
                         y: height - (songs[i].duration / 2),
@@ -145,8 +145,12 @@ function setup() {
                 }
             });
         });
-
     }
+
+    document.getElementsByClassName('confirm-logout').addEventListener('click', function () {
+        closeConnection();
+        document.location = './homepage.php';
+    });
 }
 
 function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist) {
@@ -166,6 +170,24 @@ function contains(array, nome) {
         }
     }
     return false;
+}
+
+function closeConnection() {
+    client.on('connectionStateChanged', connectionState => {
+        if(connectionState === 'CLOSED') {
+            let recordsToRemove = [];
+            recordList.subscribe(function () {
+                for(let i = 0; i < recordList.getEntries().length; i++){
+                    recordsToRemove[i] = client.record.getRecord(recordList.getEntries()[i]);
+                    if(recordsToRemove[i].get('user') === client.username) {
+                        recordsToRemove[i].delete();
+                        recordList.removeEntry(recordsToRemove[i].get('song'));
+                    }
+                }
+            });
+        }
+    });
+    client.close();
 }
 
 function logoutPopUp() {
