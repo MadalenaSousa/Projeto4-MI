@@ -70,6 +70,8 @@ function setup() {
 
     createUserDiv(user.name, user.profile_pic);
     createSongDiv();
+    logoutPopUp();
+    sharePopUp();
 
     recordList = client.record.getList('all-songs');
     remove = document.querySelectorAll(".remove");
@@ -164,6 +166,26 @@ function contains(array, nome) {
         }
     }
     return false;
+}
+
+function logoutPopUp() {
+    document.querySelector(".leave").addEventListener('click', function () {
+        document.querySelector('.logout').classList.toggle('hide');
+    });
+
+    document.querySelector(".back").addEventListener('click', function () {
+        document.querySelector('.logout').classList.add('hide');
+    });
+}
+
+function sharePopUp() {
+    document.querySelector('.share-button').addEventListener('click', function () {
+        document.querySelector('.share').classList.toggle('hide');
+    });
+
+    document.querySelector(".close-share").addEventListener('click', function () {
+        document.querySelector('.share').classList.add('hide');
+    });
 }
 
 function createUserDiv(name, profilepic) {
