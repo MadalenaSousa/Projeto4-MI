@@ -34,6 +34,15 @@ function setup() {
             remove[i].classList.add('hide');
         });
     }
+
+    document.querySelector('.confirm-logout').addEventListener('click', function () {
+        document.location = './homepage.php';
+    });
+
+    document.querySelector('.download').addEventListener('click', function () {
+        console.log('Canvas will be downloaded');
+        saveCanvas( 'solo-tracks-artboard.png');
+    });
 }
 
 function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist) {

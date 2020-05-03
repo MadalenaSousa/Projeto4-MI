@@ -150,6 +150,11 @@ function setup() {
     }
 
     document.querySelector('.confirm-logout').addEventListener('click', closeConnection);
+
+    document.querySelector('.download').addEventListener('click', function () {
+        console.log('Canvas will be downloaded');
+        saveCanvas( 'public-tracks-artboard.png');
+    });
 }
 
 function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist) {
