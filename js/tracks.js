@@ -172,21 +172,23 @@ function contains(array, nome) {
 }
 
 function closeConnection() {
+    let recordsToRemove = [];
+    for(let i = 0; i < recordList.getEntries().length; i++){
+        client.record.has(recordList.getEntries()[i], function () {
+            recordsToRemove[i] = client.record.getRecord(recordList.getEntries()[i]);
+            recordsToRemove[i].whenReady(function () {
+                if(recordsToRemove[i].get('user') === user.name) {
+                    console.log('Record to delete: ' + recordsToRemove[i].get('song') + 'Owner of the record: ' + recordsToRemove[i].get('user'));
+                    recordsToRemove[i].delete();
+                    //recordList.removeEntry(recordsToRemove[i].get('song'));
+                }
+            });
+        });
+    }
+
     client.on('connectionStateChanged', connectionState => {
-        console.log('Connection State changed to: ' + connectionState);
         if(connectionState === 'CLOSED') {
-            console.log('Connection state is CLOSED');
-            let recordsToRemove = [];
-            for(let i = 0; i < recordList.getEntries().length; i++){
-                recordsToRemove[i] = client.record.getRecord(recordList.getEntries()[i]);
-                recordList.subscribe(function () {
-                    console.log('User: ' + user.name + 'Username on the Records: ' + recordsToRemove[i].get('user'));
-                    if(recordsToRemove[i].get('user') === user.name) {
-                        recordsToRemove[i].delete();
-                        recordList.removeEntry(recordsToRemove[i].get('song'));
-                    }
-                });
-            }
+            console.log('Connection state changed to: ' + connectionState + ', you will be redirected to homepage');
             //document.location = './homepage.php';
         }
     });

@@ -8,6 +8,7 @@ body {
     height: 100%;
     text-align: center;
     display: grid;
+    overflow: hidden;
 }
 
 body * {
@@ -35,32 +36,76 @@ canvas {
 }
 
 a {
-    display: inline-block;
     margin: 1%;
     text-align: center;
+    text-decoration: none;
+}
+
+.all-categories {
+    width: 80%;
+    height: 60%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-55%);
+}
+
+.category {
+    display: inline-block;
+    position: relative;
+    height: 100%;
+    margin-left: 5%;
+    border: 2px solid white;
+    padding: 2%;
+}
+
+.all-categories .category:first-child .titulo {
+    color: cyan;
+}
+
+.all-categories .category:nth-child(2) .titulo {
+    color: yellow;
+}
+
+.all-categories .category:last-child .titulo {
+    color: magenta;
+}
+
+.category .playlist-room:hover {
+    background-color: cyan;
+    color: black;
+    font-weight: bolder;
+    border: 2px solid cyan;
+}
+
+.category .song-room:hover {
+    background-color: yellow;
+    color: black;
+    font-weight: bolder;
+    border: 2px solid yellow;
+}
+
+.category .artist-room:hover {
+    background-color: magenta;
+    color: black;
+    font-weight: bolder;
+    border: 2px solid magenta;
 }
 
 .option {
-    display: inline-block;
-    width: 20vw;
-    border: 1px solid white;
+    border: 2px solid white;
     color: white;
 
-    font-size: 24pt;
+    font-size: 18pt;
     font-weight: bolder;
 
     padding: 1%;
     margin: 3%;
 }
 
-.option:hover {
-    border: 1px solid cyan;
-    color: cyan;
-}
-
 .titulo {
     font-weight: bolder;
-    font-size: 24px;
+    font-size: 24pt;
     display: inline-block;
 }
 
