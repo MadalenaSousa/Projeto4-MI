@@ -52,17 +52,19 @@ function setup() {
     });
 
     client.presence.subscribe((username, isLoggedIn) => {
-        console.log('A new client logged in');
-        clearArray(clientsRecords);
-        client.presence.getAll((error, clients) => {
-            for(let i = 0; i < clients.length; i++){
-                console.log('Updated clients list: ' + clients);
-                clientsRecords[i] = client.record.getRecord(clients[i]);
-                clientsRecords[i].subscribe(function () {
-                    createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
-                });
-            }
-        });
+        if(isLoggedIn){
+            console.log('A new client logged in');
+            clearArray(clientsRecords);
+            client.presence.getAll((error, clients) => {
+                for(let i = 0; i < clients.length; i++){
+                    console.log('Updated clients list: ' + clients);
+                    clientsRecords[i] = client.record.getRecord(clients[i]);
+                    clientsRecords[i].subscribe(function () {
+                        createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
+                    });
+                }
+            });
+        }
     });
 
     songs = topSongs;
@@ -147,10 +149,7 @@ function setup() {
         });
     }
 
-    document.getElementsByClassName('confirm-logout').addEventListener('click', function () {
-        closeConnection();
-        document.location = './homepage.php';
-    });
+    document.querySelector('.confirm-logout').addEventListener('click', closeConnection);
 }
 
 function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist) {
@@ -174,17 +173,21 @@ function contains(array, nome) {
 
 function closeConnection() {
     client.on('connectionStateChanged', connectionState => {
+        console.log('Connection State changed to: ' + connectionState);
         if(connectionState === 'CLOSED') {
+            console.log('Connection state is CLOSED');
             let recordsToRemove = [];
-            recordList.subscribe(function () {
-                for(let i = 0; i < recordList.getEntries().length; i++){
-                    recordsToRemove[i] = client.record.getRecord(recordList.getEntries()[i]);
-                    if(recordsToRemove[i].get('user') === client.username) {
+            for(let i = 0; i < recordList.getEntries().length; i++){
+                recordsToRemove[i] = client.record.getRecord(recordList.getEntries()[i]);
+                recordList.subscribe(function () {
+                    console.log('User: ' + user.name + 'Username on the Records: ' + recordsToRemove[i].get('user'));
+                    if(recordsToRemove[i].get('user') === user.name) {
                         recordsToRemove[i].delete();
                         recordList.removeEntry(recordsToRemove[i].get('song'));
                     }
-                }
-            });
+                });
+            }
+            //document.location = './homepage.php';
         }
     });
     client.close();
