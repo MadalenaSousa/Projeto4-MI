@@ -61,6 +61,19 @@ a {
 .titulo {
     font-weight: bolder;
     font-size: 24px;
+    display: inline-block;
+}
+
+.leave {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    bottom: 2%;
+}
+
+.leave:hover {
+    color: yellow;
+    cursor: pointer;
 }
 
 .list-people, .list-songs, .list-playlists {
@@ -79,7 +92,67 @@ a {
     color: white;
     border: 2px solid white;
     height: 100%;
+    width: 20%;
     padding: 30px;
+}
+
+h2 {
+    margin: 0;
+}
+
+.logout {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background-color: black;
+    border: 2px solid white;
+    height: 30%;
+    width: 30%;
+    transform: translateY(-50%) translateX(-50%);
+    visibility: visible;
+}
+
+.logout .unit {
+    margin: 8%;
+    font-size: 12pt;
+}
+
+.logout .menu-option {
+    margin-bottom: 5%;
+}
+
+.share {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background-color: black;
+    border: 2px solid white;
+    height: 30%;
+    width: 40%;
+    transform: translateY(-50%) translateX(-50%);
+    visibility: visible;
+}
+
+.share .unit {
+    margin: 5%;
+}
+
+.share .menu-option {
+    display: inline-block;
+    margin: 0.5%;
+}
+
+.close-share {
+    display: inline-block;
+    position: absolute;
+    right: 3%;
+    top: 5%;
+    cursor: pointer;
+}
+
+.close-share:hover {
+    color: yellow;
+    cursor: pointer;
 }
 
 .unit {
