@@ -22,6 +22,38 @@ canvas {
     font-family: "Helvetica", sans-serif;
 }
 
+.login {
+    width: 40%;
+    height: 45%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-55%);
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+    padding: 3%;
+}
+
+.login .unit {
+    text-align: left;
+}
+
+.login .titulo {
+    font-size: 36pt;
+}
+
+.login .option {
+    margin: 0;
+}
+
+.login .option:hover {
+    font-weight: bolder;
+    color: black;
+    background-color: white;
+    border: 2px solid white;
+}
+
 .button {
     background-color: white;
     color: black;
