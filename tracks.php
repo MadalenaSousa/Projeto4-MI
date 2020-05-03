@@ -80,7 +80,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
             <div><img src="icons/twitter.png"></div>
             <div>Twitter</div>
         </div>
-        <div class="menu-option">
+        <div class="menu-option download">
             <div><img src="icons/download.png"></div>
             <div>Download</div>
         </div>
