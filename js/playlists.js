@@ -23,6 +23,8 @@ function setup() {
 
     createUserDiv();
     createPlaylistDiv();
+    logoutPopUp();
+    sharePopUp();
 
     for(let i = 0; i < totalPlaylists; i++) {
         trackstotal.push(userPlaylists[i].tracks.total);
@@ -127,6 +129,26 @@ function contains(array, nome) {
         }
     }
     return false;
+}
+
+function logoutPopUp() {
+    document.querySelector(".leave").addEventListener('click', function () {
+        document.querySelector('.logout').classList.toggle('hide');
+    });
+
+    document.querySelector(".back").addEventListener('click', function () {
+        document.querySelector('.logout').classList.add('hide');
+    });
+}
+
+function sharePopUp() {
+    document.querySelector('.share-button').addEventListener('click', function () {
+        document.querySelector('.share').classList.toggle('hide');
+    });
+
+    document.querySelector(".close-share").addEventListener('click', function () {
+        document.querySelector('.share').classList.add('hide');
+    });
 }
 
 function createPlaylistDiv() {
