@@ -20,17 +20,18 @@ function setup() {
     logoutPopUp();
     sharePopUp();
 
-    recordList = client.record.getList('all-songs');
     remove = document.querySelectorAll(".remove");
 
     for (let i = 0; i < totalSongs; i++) {
         document.querySelectorAll(".song")[i].addEventListener("click", function () {
             addNewFlower(songs[i].name, (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i, height - (songs[i].duration / 2), (songs[i].duration / 3),
                     map(getAudioFeatures(i).positivity, 0, 1, 0, 255), getAudioFeatures(i).energy * 5, getAudioFeatures(i).energy * 5, songs[i].preview_url, songs[i].artists);
+            remove[i].classList.remove('hide');
         });
 
         remove[i].addEventListener("click", function () {
             removeFlower(songs[i].name);
+            remove[i].classList.add('hide');
         });
     }
 }
