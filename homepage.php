@@ -23,7 +23,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 <div class="all-categories">
     <div class="category">
         <div class="titulo unit">PLAYLISTS ROOM</div>
-        <div class="iframe"><iframe src="playlists.php"></iframe></div>
+        <div><img src="icons/playlist-room.png"></div>
         <a href="php/getPlaylistsInfo.php">
             <div class="option playlist-room">
                 PUBLIC ROOM
@@ -43,7 +43,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
     <div class="category">
         <div class="titulo unit">SONGS ROOM</div>
-        <div class="iframe"><iframe src="tracks.php"></iframe></div>
+        <div><img src="icons/song-room.png"></div>
         <a href="php/getTracksInfo.php">
             <div class="option song-room">
                 PUBLIC ROOM
@@ -63,7 +63,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
     <div class="category">
         <div class="titulo unit">ARTISTS ROOM</div>
-        <div class="iframe"><iframe src="artists.php"></iframe></div>
+        <div><img src="icons/artist-room.png"></div>
         <a href="php/getArtistsInfo.php">
             <div class="option artist-room">
                 PUBLIC ROOM
