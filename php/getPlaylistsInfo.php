@@ -73,5 +73,11 @@ foreach ($playlists->items as $playlist) {
 $playlistData = json_encode($playlistsObject);
 file_put_contents($playlistsFile, $playlistData);
 
-header('Location: ../playlists.php');
+if($_GET['type'] == 'public') {
+    header('Location: ../playlists.php');
+} else if($_GET['type'] == 'solo'){
+    header('Location: ../playlists-solo.php');
+} else {
+    echo 'PAGE NOT AVAILABLE';
+}
 

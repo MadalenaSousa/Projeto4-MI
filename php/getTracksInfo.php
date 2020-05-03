@@ -136,4 +136,10 @@ foreach ($songs->items as $song) {
 $topSongData = json_encode($topSongObject);
 file_put_contents($topSongsFile, $topSongData);
 
-header('Location: ../tracks.php');
+if($_GET['type'] == 'public') {
+    header('Location: ../tracks.php');
+} else if($_GET['type'] == 'solo'){
+    header('Location: ../tracks-solo.php');
+} else {
+    echo 'PAGE NOT AVAILABLE';
+}
