@@ -20,61 +20,66 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 </head>
 <body style="background-color: black">
 
-<div>
-    PLAYLISTS ROOM
-    <a href="php/getPlaylistsInfo.php">
-        <div class="option">
-            PUBLIC ROOM
-        </div>
-    </a>
-    <a href="#">
-        <div class="option">
-            WITH FRIENDS
-        </div>
-    </a>
-    <a href="php/getPlaylistsInfo.php">
-        <div class="option">
-            ONLY ME
-        </div>
-    </a>
-</div>
+<div class="all-categories">
+    <div class="category">
+        <div class="titulo unit">PLAYLISTS ROOM</div>
+        <div class="iframe"><iframe src="playlists.php"></iframe></div>
+        <a href="php/getPlaylistsInfo.php">
+            <div class="option playlist-room">
+                PUBLIC ROOM
+            </div>
+        </a>
+        <a href="#">
+            <div class="option playlist-room">
+                WITH FRIENDS
+            </div>
+        </a>
+        <a href="php/getPlaylistsInfo.php">
+            <div class="option playlist-room">
+                ONLY ME
+            </div>
+        </a>
+    </div>
 
-<div>
-    SONGS ROOM
-    <a href="php/getTracksInfo.php">
-        <div class="option">
-            PUBLIC ROOM
-        </div>
-    </a>
-    <a href="#">
-        <div class="option">
-            WITH FRIENDS
-        </div>
-    </a>
-    <a href="php/getTracksInfo.php">
-        <div class="option">
-            ONLY ME
-        </div>
-    </a>
-</div>
+    <div class="category">
+        <div class="titulo unit">SONGS ROOM</div>
+        <div class="iframe"><iframe src="tracks.php"></iframe></div>
+        <a href="php/getTracksInfo.php">
+            <div class="option song-room">
+                PUBLIC ROOM
+            </div>
+        </a>
+        <a href="#">
+            <div class="option song-room">
+                WITH FRIENDS
+            </div>
+        </a>
+        <a href="php/getTracksInfo.php">
+            <div class="option song-room">
+                ONLY ME
+            </div>
+        </a>
+    </div>
 
-<div>
-    ARTISTS ROOM
-    <a href="php/getArtistsInfo.php">
-        <div class="option">
-            PUBLIC ROOM
-        </div>
-    </a>
-    <a href="#">
-        <div class="option">
-            WITH FRIENDS
-        </div>
-    </a>
-    <a href="php/getArtistsInfo.php">
-        <div class="option">
-            ONLY ME
-        </div>
-    </a>
+    <div class="category">
+        <div class="titulo unit">ARTISTS ROOM</div>
+        <div class="iframe"><iframe src="artists.php"></iframe></div>
+        <a href="php/getArtistsInfo.php">
+            <div class="option artist-room">
+                PUBLIC ROOM
+            </div>
+        </a>
+        <a href="#">
+            <div class="option artist-room">
+                WITH FRIENDS
+            </div>
+        </a>
+        <a href="php/getArtistsInfo.php">
+            <div class="option artist-room">
+                ONLY ME
+            </div>
+        </a>
+    </div>
 </div>
 
 </body>
