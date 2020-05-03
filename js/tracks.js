@@ -6,6 +6,8 @@ let remove;
 
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
+let personRecord;
+let clientsRecords = [];
 let recordList;
 
 function preload() {
@@ -16,27 +18,62 @@ function preload() {
 
 function setup() {
     createCanvas(windowWidth - windowWidth/6, windowHeight);
-    client.login({username: user.name});
+    client.login({username: user.name}, (success, data) => {
+        if(success) {
+            console.log("User logged in successfully");
+            client.record.has(user.name, function (error, hasRecord) {
+                console.log(error);
+                if(hasRecord === false) {
+                    console.log("Record of this user doesnt exist, it will be created");
+                    personRecord = client.record.getRecord(user.name);
+                    personRecord.set({
+                        name: user.name,
+                        id: user.id,
+                        profile_pic: user.profile_pic
+                    });
+                } else {
+                    console.log("A record of this user already exists, it will be retrieved");
+                    personRecord = client.record.getRecord(user.name);
+                }
+            });
+        } else {
+            console.log('Login failed');
+        }
+    });
+
+    client.presence.getAll((error, clients) => {
+        for(let i = 0; i < clients.length; i++){
+            console.log('Clients present on login: ' + clients);
+            clientsRecords[i] = client.record.getRecord(clients[i]);
+            clientsRecords[i].subscribe(function () {
+                createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
+            });
+        }
+    });
+
+    client.presence.subscribe((username, isLoggedIn) => {
+        if(isLoggedIn){
+            console.log('A new client logged in');
+            clearArray(clientsRecords);
+            client.presence.getAll((error, clients) => {
+                for(let i = 0; i < clients.length; i++){
+                    console.log('Updated clients list: ' + clients);
+                    clientsRecords[i] = client.record.getRecord(clients[i]);
+                    clientsRecords[i].subscribe(function () {
+                        createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
+                    });
+                }
+            });
+        }
+    });
 
     songs = topSongs;
     totalSongs = Object.keys(songs).length;
 
     createUserDiv(user.name, user.profile_pic);
     createSongDiv();
-
-    client.presence.subscribe((username, isLoggedIn) => {
-        console.log('Dentro do SUBSCRIBE');
-        client.presence.getAll((error, clients) => {
-            for(let i = 0; i < clients.length; i++){
-                console.log('Dentro do GETALL, this are the clients: ' + clients);
-                let peopleList = document.createElement('div');
-                peopleList.innerText = username;
-                peopleList.classList.add("user");
-
-                document.querySelector(".list-people").appendChild(peopleList);
-            }
-        });
-    });
+    logoutPopUp();
+    sharePopUp();
 
     recordList = client.record.getList('all-songs');
     remove = document.querySelectorAll(".remove");
@@ -44,10 +81,10 @@ function setup() {
     recordList.subscribe(function () {
         console.log("LISTA DE RECORDS ATUAL: " + recordList.getEntries());
         if(recordList.isEmpty()) {
-            clearFlowers();
+            clearArray(flowers);
             console.log("Não há músicas na lista");
         } else {
-            clearFlowers();
+            clearArray(flowers);
             let recordsOnList = [];
             for(let i = 0; i < recordList.getEntries().length; i++){
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
@@ -75,7 +112,7 @@ function setup() {
                     console.log('doesnt have record with name: ' + songs[i].name + ", can create it");
                     record[i] = client.record.getRecord(songs[i].name);
                     record[i].set({
-                        user: "user",
+                        user: user.name,
                         song: songs[i].name,
                         x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
                         y: height - (songs[i].duration / 2),
@@ -110,8 +147,9 @@ function setup() {
                 }
             });
         });
-
     }
+
+    document.querySelector('.confirm-logout').addEventListener('click', closeConnection);
 }
 
 function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist) {
@@ -120,8 +158,8 @@ function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist) {
     console.log("LISTA DE FLORES ATUAL: " + flowers);
 }
 
-function clearFlowers() {
-    flowers.splice(0, flowers.length);
+function clearArray(array) {
+    array.splice(0, array.length);
 }
 
 function contains(array, nome) {
@@ -131,6 +169,48 @@ function contains(array, nome) {
         }
     }
     return false;
+}
+
+function closeConnection() {
+    client.on('connectionStateChanged', connectionState => {
+        console.log('Connection State changed to: ' + connectionState);
+        if(connectionState === 'CLOSED') {
+            console.log('Connection state is CLOSED');
+            let recordsToRemove = [];
+            for(let i = 0; i < recordList.getEntries().length; i++){
+                recordsToRemove[i] = client.record.getRecord(recordList.getEntries()[i]);
+                recordList.subscribe(function () {
+                    console.log('User: ' + user.name + 'Username on the Records: ' + recordsToRemove[i].get('user'));
+                    if(recordsToRemove[i].get('user') === user.name) {
+                        recordsToRemove[i].delete();
+                        recordList.removeEntry(recordsToRemove[i].get('song'));
+                    }
+                });
+            }
+            //document.location = './homepage.php';
+        }
+    });
+    client.close();
+}
+
+function logoutPopUp() {
+    document.querySelector(".leave").addEventListener('click', function () {
+        document.querySelector('.logout').classList.toggle('hide');
+    });
+
+    document.querySelector(".back").addEventListener('click', function () {
+        document.querySelector('.logout').classList.add('hide');
+    });
+}
+
+function sharePopUp() {
+    document.querySelector('.share-button').addEventListener('click', function () {
+        document.querySelector('.share').classList.toggle('hide');
+    });
+
+    document.querySelector(".close-share").addEventListener('click', function () {
+        document.querySelector('.share').classList.add('hide');
+    });
 }
 
 function createUserDiv(name, profilepic) {
