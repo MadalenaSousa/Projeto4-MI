@@ -12,7 +12,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
     <script type="text/javascript">
-        var userid = '<?php echo $session_value;?>'';
+        var userid = '<?php echo $session_value;?>';
     </script>
 
     <script src="p5/p5.js"></script>
