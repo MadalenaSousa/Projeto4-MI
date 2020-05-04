@@ -1,12 +1,12 @@
 <?php
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 session_start();
 $api = $_SESSION['api_obj'];
 $user = $api->me();
 
 //Guardar dados das músicas do utilizador loggado
-
+/*
 $playlistsSongsFile = $user->id . "-playlist-songs-object.json";
 $playlists = $api->getUserPlaylists($user->id, ['limit' => 10]);
 $playlistsSongObject = array();
@@ -54,11 +54,11 @@ foreach ($playlists->items as $playlist) {
                         ),
                     ),
                     "audio_features" => array(
-                        "danceability" => $trackFeatures[$i]->danceability,
-                        "energy" => $trackFeatures[$i]->danceability,
-                        "loudness" => $trackFeatures[$i]->danceability,
-                        "positivity" => $trackFeatures[$i]->danceability,
-                        "speed" => $trackFeatures[$i]->danceability
+                        "danceability" => $trackFeatures[$z]->danceability,
+                        "energy" => $trackFeatures[$z]->energy,
+                        "loudness" => $trackFeatures[$z]->loudness,
+                        "positivity" => $trackFeatures[$z]->valence,
+                        "speed" => $trackFeatures[$z]->tempo
                     ),
                     "id" => $track->id,
                     "name" => $track->name,
@@ -77,7 +77,7 @@ foreach ($playlists->items as $playlist) {
 }
 
 $playlistSongsData = json_encode($playlistsSongObject);
-file_put_contents($playlistsSongsFile, $playlistSongsData);
+file_put_contents($playlistsSongsFile, $playlistSongsData);*/
 
 $topSongsFile = $user->id . "-top-songs-object.json";
 $songs = $api->getMyTop("tracks", ['limit' => 10]);
@@ -116,10 +116,10 @@ foreach ($songs->items as $song) {
         ),
         "audio_features" => array(
             "danceability" => $trackFeatures[$z]->danceability,
-            "energy" => $trackFeatures[$z]->danceability,
-            "loudness" => $trackFeatures[$z]->danceability,
-            "positivity" => $trackFeatures[$z]->danceability,
-            "speed" => $trackFeatures[$z]->danceability
+            "energy" => $trackFeatures[$z]->energy,
+            "loudness" => $trackFeatures[$z]->loudness,
+            "positivity" => $trackFeatures[$z]->valence,
+            "speed" => $trackFeatures[$z]->tempo
         ),
         "id" => $song->id,
         "name" => $song->name,
