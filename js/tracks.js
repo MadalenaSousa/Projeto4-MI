@@ -155,6 +155,14 @@ function setup() {
         console.log('Canvas will be downloaded');
         saveCanvas( 'public-tracks-artboard.png');
     });
+
+    document.querySelector('.from-playlist').addEventListener('click', function () {
+        fromPlaylist = true;
+    });
+
+    document.querySelector('.top-songs').addEventListener('click', function () {
+        fromPlaylist = false;
+    });
 }
 
 function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist) {
