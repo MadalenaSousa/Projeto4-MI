@@ -99,6 +99,11 @@ function setup() {
         });
 
     }
+
+    document.querySelector('.download').addEventListener('click', function () {
+        console.log('Canvas will be downloaded');
+        saveCanvas( 'public-artists-artboard.png');
+    });
 }
 
 function addNewWave(name, color, divisoes, y) {

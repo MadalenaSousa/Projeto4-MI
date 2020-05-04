@@ -30,7 +30,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <div class="leave">Leave Room</div>
     </div>
     <div>
-        Other People in the Room
+        People in the Room
         <div class="list-people unit">
         </div>
         <div>
@@ -79,7 +79,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
             <div><img src="icons/twitter.png"></div>
             <div>Twitter</div>
         </div>
-        <div class="menu-option">
+        <div class="menu-option download">
             <div><img src="icons/download.png"></div>
             <div>Download</div>
         </div>

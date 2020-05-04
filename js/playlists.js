@@ -110,6 +110,10 @@ function setup() {
 
     }
 
+    document.querySelector('.download').addEventListener('click', function () {
+        console.log('Canvas will be downloaded');
+        saveCanvas( 'public-playlists-artboard.png');
+    });
 }
 
 function addNewMountain(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed) {
