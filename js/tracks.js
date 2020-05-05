@@ -177,31 +177,34 @@ function contains(array, nome) {
 }
 
 function closeConnection() {
+    let allRecords = [];
     let recordsToRemove = [];
-    for(let i = 0; i < recordList.getEntries().length; i++){
-        client.record.has(recordList.getEntries()[i], function () {
-            recordsToRemove[i] = client.record.getRecord(recordList.getEntries()[i]);
-            recordsToRemove[i].whenReady(function () {
-                if(recordsToRemove[i].get('user') === user.name) {
-                    console.log('Record to delete: ' + recordsToRemove[i].get('song') + 'Owner of the record: ' + recordsToRemove[i].get('user'));
-                    recordList.removeEntry(recordsToRemove[i].get('song'));
-                    recordsToRemove[i].delete();
-                }
-            });
-        });
-
-        recordsToRemove[i].isDestroyed(function () {
-            console.log('foi apagado');
+    for(let i = 0; i < recordList.getEntries().length; i++) {
+        allRecords[i] = client.record.getRecord(recordList.getEntries()[i]);
+        allRecords[i].whenReady(function () {
+            console.log('Record to delete: ' + allRecords[i].get('song') + ' Owner of the record: ' + allRecords[i].get('user'));
+            if (allRecords[i].get('user') === user.name) {
+                recordsToRemove.push(allRecords[i]);
+            }
         });
     }
 
-    /*client.on('connectionStateChanged', connectionState => {
+
+    for(let i = 0; i < recordsToRemove.length; i++) {
+        recordList.removeEntry(recordsToRemove[i].get('song'));
+        client.record.getRecord(recordsToRemove[i].get('song')).delete();
+    }
+
+    recordsToRemove[recordsToRemove.length - 1].on('delete', function () {
+        client.close();
+    });
+
+    client.on('connectionStateChanged', connectionState => {
         if(connectionState === 'CLOSED') {
             console.log('Connection state changed to: ' + connectionState + ', you will be redirected to homepage');
-            //document.location = './homepage.php';
+            document.location = './homepage.php';
         }
     });
-    client.close();*/
 }
 
 function logoutPopUp() {
