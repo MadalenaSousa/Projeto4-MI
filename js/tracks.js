@@ -4,6 +4,8 @@ let flowers = [];
 let newFlower;
 let remove;
 
+let allLoudness = [];
+
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
 let personRecord;
@@ -96,6 +98,10 @@ function setup() {
         }
     });
 
+    for(let i = 0; i < totalSongs; i++) {
+        allLoudness[i] = getAudioFeatures(i).loudness;
+    }
+
     for (let i = 0; i < totalSongs; i++) {
         recordList.subscribe(function () {
             if(contains(recordList.getEntries(), songs[i].name)){
@@ -115,7 +121,7 @@ function setup() {
                         user: user.name,
                         song: songs[i].name,
                         x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
-                        y: map(getAudioFeatures(i).loudness, -60, 0, 0, height),
+                        y: map(allLoudness[i], min(allLoudness), max(allLoudness), 0, height),
                         raio: (songs[i].duration / 3),
                         color: map(getAudioFeatures(i).positivity, 0, 1, 0, 255),
                         energy: getAudioFeatures(i).energy * 5,
@@ -183,7 +189,7 @@ function closeSongsRoomConnection() {
     for(let i = 0; i < recordList.getEntries().length; i++) {
         allRecords[i] = client.record.getRecord(recordList.getEntries()[i]);
         allRecords[i].whenReady(function () {
-            console.log('Record to delete: ' + allRecords[i].get('playlist') + ' Owner of the record: ' + allRecords[i].get('user'));
+            console.log('Record to delete: ' + allRecords[i].get('song') + ' Owner of the record: ' + allRecords[i].get('user'));
             if (allRecords[i].get('user') === user.name) {
                 recordsToRemove.push(allRecords[i]);
             }
@@ -194,8 +200,8 @@ function closeSongsRoomConnection() {
         client.close();
     } else {
         for(let i = 0; i < recordsToRemove.length; i++) {
-            recordList.removeEntry(recordsToRemove[i].get('playlist'));
-            client.record.getRecord(recordsToRemove[i].get('playlist')).delete();
+            recordList.removeEntry(recordsToRemove[i].get('song'));
+            client.record.getRecord(recordsToRemove[i].get('song')).delete();
         }
 
         recordsToRemove[recordsToRemove.length - 1].on('delete', function () {
