@@ -68,7 +68,7 @@ function setup() {
                         user: "user",
                         artist: artists[i].name,
                         color: map(artists[i].popularity, min(popularity), max(popularity), 0, 255),
-                        divisoes: map(artists[i].followers.total, 100, 60000000, 1, 10),
+                        divisoes: map(artists[i].followers.total, 1, 60000000, 3, 10),
                         y: map(i, 0, totalArtists, windowHeight / 3, windowHeight - (windowHeight / 50))
 
                     });
@@ -215,7 +215,7 @@ class waveArtist {
     display() {
         this.x = 300;
         stroke(255, 255 - this.color, 255);
-        beginShape();
+       /* beginShape();
         fill(0);
         vertex(this.x - 300, this.y - 0);
         bezierVertex(this.x - 300, this.y - 0, this.x - (300 / 2) - (300 * (1 / 12)), this.y - 0, this.x - (300 / 2), this.y - ((4 / 15) * 150));
@@ -224,11 +224,12 @@ class waveArtist {
         bezierVertex(this.x - (2 * (300 / 15)), this.y - 50, this.x - (2 * (300 / 15)), this.y - ((2 * 150) / 3), this.x - 0, this.y - ((2 * 150) / 3));
         bezierVertex(this.x - (2 * ((300 - (this.divisoes - 1) * (1800 / (this.divisoes * 7))) / 15)), this.y - ((2 * 150) / 3), this.x - (2 * ((300 - (this.divisoes - 1) * (1800 / (this.divisoes * 7))) / 15)), this.y - 50 - ((this.divisoes - 1) * (150 / (this.divisoes * 3))), this.x - 0, this.y - 50 - ((this.divisoes - 1) * (150 / (this.divisoes * 3))));
         bezierVertex(((this.x + 60) - (((6 * 300) / 30) / this.divisoes) * (this.divisoes - 1)), this.y - 50 - ((this.divisoes - 1) * (150 / (this.divisoes * 3))), (this.x + 60) - (((6 * 300) / 30) / this.divisoes) * (this.divisoes - 1), this.y - (150 - (this.divisoes - 1) * (150 / (this.divisoes * 3))), this.x - 0, this.y - (150 - (this.divisoes - 1) * (150 / (this.divisoes * 3))));
-        bezierVertex(this.x - (4 * ((300 - (this.divisoes - 1) * (1800 / (this.divisoes * 7))) / 15)), this.y - (150 - (this.divisoes - 1) * (150 / (this.divisoes * 3))), (this.x - (300 / 2) + (this.divisoes * (((3 / 10) * 300) / this.divisoes))) + ((1 / 30) * 300), (this.y - ((4 / 15) * 150)) - ((1 / 10) * 150), this.x - (300 / 2) + (this.divisoes * (((3 / 10) * 300) / this.divisoes)), this.y - ((4 / 15) * 150));
-        bezierVertex((this.x - (300 / 2) + (this.divisoes * (((3 / 10) * 300) / this.divisoes))) - (300 * (1 / 12)), this.y - 0, (this.x - 300) + (this.divisoes * (((3 / 5) * 300) / this.divisoes)), this.y - 0, (this.x - 300) + (this.divisoes * (((3 / 5) * 300) / this.divisoes)), this.y - 0);
+        bezierVertex(this.x - (4 * ((300 - (this.divisoes - 1) * (1800 / (this.divisoes * 7))) / 15)), this.y - (150 - (this.divisoes - 1) * (150 / (this.divisoes * 3))), (this.x - (300 / 2) + (this.divisoes * (((3 / 10) * 300) / this.divisoes))) + ((1 / 30) * 300), (this.y - ((4 / 15) * 150)) - ((1 / 10) * 150), this.x - (300 / 2) + ((this.divisoes - 1) * (((3 / 10) * 300) / this.divisoes)), this.y - ((4 / 15) * 150));
+        bezierVertex((this.x - (300 / 2) + ((this.divisoes - 1) * (((3 / 10) * 300) / this.divisoes))) - (300 * (1 / 12)), this.y - 0, (this.x - 300) + ((this.divisoes - 1) * (((3 / 5) * 300) / this.divisoes)), this.y - 0, (this.x - 300) + ((this.divisoes - 1) * (((3 / 5) * 300) / this.divisoes)), this.y - 0);
         vertex(this.x - 300, this.y - 0);
         endShape();
         noFill();
+*/        noFill();
 
         for (let i = 0; i < this.divisoes; i++) {
             strokeWeight(1.8);
