@@ -85,10 +85,15 @@ a {
 .category {
     display: inline-block;
     position: relative;
-    height: 100%;
-    margin-left: 5%;
+    width: calc(100% / 4);
+    height: fit-content;
+    margin: 2%;
     border: 2px solid white;
     padding: 2%;
+}
+
+.category img {
+    width: 100%;
 }
 
 .all-categories .category:first-child .titulo {
@@ -128,7 +133,7 @@ a {
     border: 2px solid white;
     color: white;
 
-    font-size: 18pt;
+    font-size: 1vw;
     font-weight: bolder;
 
     padding: 1%;
@@ -137,7 +142,7 @@ a {
 
 .titulo {
     font-weight: bolder;
-    font-size: 24pt;
+    font-size: 1.5vw;
     display: inline-block;
 }
 
@@ -233,7 +238,7 @@ h2 {
 }
 
 .unit {
-    margin-bottom: 15px;
+    margin-bottom: 5%;
     position: relative;
 }
 
