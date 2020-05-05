@@ -21,10 +21,10 @@ foreach ($songs->items as $song) {
     $z++;
 
     $trackFeatures = $api->getAudioFeatures($trackIds)->audio_features;
-    $trackAnalysis = $api->getAudioAnalysis($song->id);
+    //$trackAnalysis = $api->getAudioAnalysis($song->id);
 
     $singleTopSong = array(
-        "audio_analysis" => array(
+        /*"audio_analysis" => array(
             "bars" => array(
                 "total" => count($trackAnalysis->bars),
                 "average_duration" => ""
@@ -41,7 +41,7 @@ foreach ($songs->items as $song) {
                 "total" => count($trackAnalysis->tatums),
                 "average_duration" => ""
             ),
-        ),
+        ),*/
         "audio_features" => array(
             "danceability" => $trackFeatures[$z]->danceability,
             "energy" => $trackFeatures[$z]->energy,
