@@ -24,7 +24,7 @@ canvas {
 
 .login {
     width: 40%;
-    height: 45%;
+    height: fit-content;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -40,7 +40,7 @@ canvas {
 }
 
 .login .titulo {
-    font-size: 36pt;
+    font-size: 2vw;
 }
 
 .login .option {
