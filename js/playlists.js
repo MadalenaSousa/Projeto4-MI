@@ -68,6 +68,7 @@ function setup() {
                     console.log('doesnt have record with name: ' + userPlaylists[i].name + ", can create it");
                     record[i] = client.record.getRecord(userPlaylists[i].name); //cria um novo record no servidor
                     record[i].set({ //define o novo record
+                        user: user.name,
                         playlist: userPlaylists[i].name,
                         px: random(100, windowWidth-400),
                         py: random(100, windowHeight-100),
@@ -109,6 +110,8 @@ function setup() {
         });
 
     }
+
+    document.querySelector('.confirm-logout').addEventListener('click', closePlaylistRoomConnection);
 
     document.querySelector('.download').addEventListener('click', function () {
         console.log('Canvas will be downloaded');
@@ -200,6 +203,37 @@ function createUserDiv() {
     userDiv.appendChild(person);
 
     document.querySelector(".list-people").appendChild(userDiv);
+}
+
+function closePlaylistRoomConnection() {
+    let allRecords = [];
+    let recordsToRemove = [];
+    for(let i = 0; i < recordList.getEntries().length; i++) {
+        allRecords[i] = client.record.getRecord(recordList.getEntries()[i]);
+        allRecords[i].whenReady(function () {
+            console.log('Record to delete: ' + allRecords[i].get('playlist') + ' Owner of the record: ' + allRecords[i].get('user'));
+            if (allRecords[i].get('user') === user.name) {
+                recordsToRemove.push(allRecords[i]);
+            }
+        });
+    }
+
+
+    for(let i = 0; i < recordsToRemove.length; i++) {
+        recordList.removeEntry(recordsToRemove[i].get('playlist'));
+        client.record.getRecord(recordsToRemove[i].get('playlist')).delete();
+    }
+
+    recordsToRemove[recordsToRemove.length - 1].on('delete', function () {
+        client.close();
+    });
+
+    client.on('connectionStateChanged', connectionState => {
+        if(connectionState === 'CLOSED') {
+            console.log('Connection state changed to: ' + connectionState + ', you will be redirected to homepage');
+            document.location = './homepage.php';
+        }
+    });
 }
 
 function draw() {
