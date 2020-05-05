@@ -179,25 +179,29 @@ function contains(array, nome) {
 function closeSongsRoomConnection() {
     let allRecords = [];
     let recordsToRemove = [];
+
     for(let i = 0; i < recordList.getEntries().length; i++) {
         allRecords[i] = client.record.getRecord(recordList.getEntries()[i]);
         allRecords[i].whenReady(function () {
-            console.log('Record to delete: ' + allRecords[i].get('song') + ' Owner of the record: ' + allRecords[i].get('user'));
+            console.log('Record to delete: ' + allRecords[i].get('playlist') + ' Owner of the record: ' + allRecords[i].get('user'));
             if (allRecords[i].get('user') === user.name) {
                 recordsToRemove.push(allRecords[i]);
             }
         });
     }
 
-
-    for(let i = 0; i < recordsToRemove.length; i++) {
-        recordList.removeEntry(recordsToRemove[i].get('song'));
-        client.record.getRecord(recordsToRemove[i].get('song')).delete();
-    }
-
-    recordsToRemove[recordsToRemove.length - 1].on('delete', function () {
+    if(recordsToRemove.length === 0) {
         client.close();
-    });
+    } else {
+        for(let i = 0; i < recordsToRemove.length; i++) {
+            recordList.removeEntry(recordsToRemove[i].get('playlist'));
+            client.record.getRecord(recordsToRemove[i].get('playlist')).delete();
+        }
+
+        recordsToRemove[recordsToRemove.length - 1].on('delete', function () {
+            client.close();
+        });
+    }
 
     client.on('connectionStateChanged', connectionState => {
         if(connectionState === 'CLOSED') {

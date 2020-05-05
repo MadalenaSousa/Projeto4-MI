@@ -5,6 +5,8 @@ let remove;
 
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
+let personRecord;
+let clientsRecords = [];
 let recordList;
 
 let trackstotal=[];
@@ -17,11 +19,58 @@ function preload() {
 
 function setup() {
     createCanvas(windowWidth - windowWidth/6, windowHeight);
+    client.login({username: user.name}, (success, data) => {
+        if(success) {
+            console.log("User logged in successfully");
+            client.record.has(user.name, function (error, hasRecord) {
+                console.log(error);
+                if(hasRecord === false) {
+                    console.log("Record of this user doesnt exist, it will be created");
+                    personRecord = client.record.getRecord(user.name);
+                    personRecord.set({
+                        name: user.name,
+                        id: user.id,
+                        profile_pic: user.profile_pic
+                    });
+                } else {
+                    console.log("A record of this user already exists, it will be retrieved");
+                    personRecord = client.record.getRecord(user.name);
+                }
+            });
+        } else {
+            console.log('Login failed');
+        }
+    });
 
-    client.login();
+    client.presence.getAll((error, clients) => {
+        for(let i = 0; i < clients.length; i++){
+            console.log('Clients present on login: ' + clients);
+            clientsRecords[i] = client.record.getRecord(clients[i]);
+            clientsRecords[i].subscribe(function () {
+                createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
+            });
+        }
+    });
+
+    client.presence.subscribe((username, isLoggedIn) => {
+        if(isLoggedIn){
+            console.log('A new client logged in');
+            clearArray(clientsRecords);
+            client.presence.getAll((error, clients) => {
+                for(let i = 0; i < clients.length; i++){
+                    console.log('Updated clients list: ' + clients);
+                    clientsRecords[i] = client.record.getRecord(clients[i]);
+                    clientsRecords[i].subscribe(function () {
+                        createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
+                    });
+                }
+            });
+        }
+    });
+
     totalPlaylists = Object.keys(userPlaylists).length;
 
-    createUserDiv();
+    createUserDiv(user.name, user.profile_pic);
     createPlaylistDiv();
     logoutPopUp();
     sharePopUp();
@@ -186,16 +235,16 @@ function createPlaylistDiv() {
     }
 }
 
-function createUserDiv() {
+function createUserDiv(name, profilepic) {
     let userDiv = document.createElement('div');
     let person = document.createElement('div');
     let img = document.createElement('img');
 
-    img.setAttribute('src', user.profile_pic);
+    img.setAttribute('src', profilepic);
     img.setAttribute('width', '30px');
     img.setAttribute('height', '30px');
 
-    person.innerText = user.name;
+    person.innerText = name;
     person.classList.add('username');
 
     userDiv.classList.add('user');
@@ -208,6 +257,7 @@ function createUserDiv() {
 function closePlaylistRoomConnection() {
     let allRecords = [];
     let recordsToRemove = [];
+
     for(let i = 0; i < recordList.getEntries().length; i++) {
         allRecords[i] = client.record.getRecord(recordList.getEntries()[i]);
         allRecords[i].whenReady(function () {
@@ -218,15 +268,18 @@ function closePlaylistRoomConnection() {
         });
     }
 
-
-    for(let i = 0; i < recordsToRemove.length; i++) {
-        recordList.removeEntry(recordsToRemove[i].get('playlist'));
-        client.record.getRecord(recordsToRemove[i].get('playlist')).delete();
-    }
-
-    recordsToRemove[recordsToRemove.length - 1].on('delete', function () {
+    if(recordsToRemove.length === 0) {
         client.close();
-    });
+    } else {
+        for(let i = 0; i < recordsToRemove.length; i++) {
+            recordList.removeEntry(recordsToRemove[i].get('playlist'));
+            client.record.getRecord(recordsToRemove[i].get('playlist')).delete();
+        }
+
+        recordsToRemove[recordsToRemove.length - 1].on('delete', function () {
+            client.close();
+        });
+    }
 
     client.on('connectionStateChanged', connectionState => {
         if(connectionState === 'CLOSED') {
