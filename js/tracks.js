@@ -11,7 +11,7 @@ let clientsRecords = [];
 let recordList;
 
 function preload() {
-    playlistSongs = loadJSON('php/' + userid +'-playlist-songs-object.json');
+    //playlistSongs = loadJSON('php/' + userid +'-playlist-songs-object.json');
     topSongs = loadJSON('php/' + userid + '-top-songs-object.json');
     user = loadJSON('php/' + userid + '-user-object.json');
 }
@@ -90,7 +90,7 @@ function setup() {
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
                     addNewFlower(recordsOnList[i].get('song'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
-                        recordsOnList[i].get('energy'), recordsOnList[i].get('energy'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'));
+                        recordsOnList[i].get('energy'), recordsOnList[i].get('energy'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'), recordsOnList[i].get('user'));
                 });
             }
         }
@@ -115,7 +115,7 @@ function setup() {
                         user: user.name,
                         song: songs[i].name,
                         x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
-                        y: height - (songs[i].duration / 2),
+                        y: map(getAudioFeatures(i).loudness, -60, 0, 0, height),
                         raio: (songs[i].duration / 3),
                         color: map(getAudioFeatures(i).positivity, 0, 1, 0, 255),
                         energy: getAudioFeatures(i).energy * 5,
@@ -157,8 +157,8 @@ function setup() {
     });
 }
 
-function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist) {
-    newFlower = new flowerSong(name, x, y, raio, color, shakeX, shakeY, url, artist);
+function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist, owner) {
+    newFlower = new flowerSong(name, x, y, raio, color, shakeX, shakeY, url, artist, owner);
     flowers.push(newFlower);
     console.log("LISTA DE FLORES ATUAL: " + flowers);
 }
@@ -308,7 +308,7 @@ class flowerSong {
     musicOn;
     sound;
 
-    constructor(name, x, y, raio, color, shakeX, shakeY, url, artist) {
+    constructor(name, x, y, raio, color, shakeX, shakeY, url, artist, owner) {
         this.name = name;
         this.x = x;
         this.y = y;
@@ -317,6 +317,7 @@ class flowerSong {
         this.shakeX = shakeX;
         this.shakeY = shakeY;
         this.artist = artist;
+        this.owner = owner;
 
         this.sound = new Audio(url);
         this.musicOn = false;
@@ -324,10 +325,9 @@ class flowerSong {
 
     display() {
         if(dist(mouseX, mouseY, this.x, this.y) <= this.raio){
-            this.c = color(255, 255, this.color);
+            this.c = color(255, 255, 255 - this.color);
             this.randomX = random(-this.shakeX, this.shakeX);
             this.randomY = random(-this.shakeY, this.shakeY);
-
         } else {
             this.c = color(255);
             this.randomX = 0;
@@ -341,9 +341,6 @@ class flowerSong {
         }
 
         stroke(this.c);
-        strokeWeight(2);
-        noFill();
-        //ellipse(this.x + this.randomX, this.y + this.randomY, this.raio * 2, this.raio * 2);
         for (let i = 0; i < 4; i++) {
             this.flor(this.x + this.randomX, this.y + this.randomY, 10, 60-i*15, 65-i*15);
         }
@@ -356,6 +353,10 @@ class flowerSong {
         textSize(10);
         textStyle(NORMAL);
         text(this.artist, this.x, this.y + 10);
+
+        if(dist(mouseX, mouseY, this.x, this.y) <= this.raio) {
+            this.balao();
+        }
     }
 
     playSong() {
@@ -365,6 +366,8 @@ class flowerSong {
     }
 
     flor(x, y, nVert, rG, rP) {
+        strokeWeight(2);
+        noFill();
         let alpha = TWO_PI/nVert;
         beginShape();
             for (let i = 0; i <= nVert+1; i++) {
@@ -372,5 +375,40 @@ class flowerSong {
             curveVertex(x+rP*cos(i*alpha+alpha/2), y+rP*sin(i*alpha+alpha/2));
             }
         endShape();
+    }
+
+    balao() {
+        fill(0);
+        strokeWeight(2);
+        stroke(this.c);
+        beginShape();
+            vertex(this.x, this.y - 210);
+            vertex(this.x + 130, this.y - 210);
+            vertex(this.x + 130, this.y - 50);
+            vertex(this.x + 30, this.y - 50);
+            vertex(this.x + 20, this.y - 25);
+            vertex(this.x + 10, this.y - 50);
+            vertex(this.x, this.y - 50);
+        endShape(CLOSE);
+
+        noStroke();
+        fill(this.c);
+        textStyle(BOLD);
+        textSize(12);
+        text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y - 190);
+        textStyle(NORMAL);
+        text("Energy: " + map(this.shakeX, 0, 5, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 170);
+        text("Danceability: ", this.x + 10, this.y - 150);
+        text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 130);
+        text("Loudness: ", this.x + 10, this.y - 110);
+        text("Speed: ", this.x + 10, this.y - 90);
+
+        fill(0);
+        stroke(this.c);
+        rect(this.x + 10, this.y - 80, 110, 20);
+        noStroke();
+        fill(this.c);
+        textSize(10);
+        text("Add to Favorites ", this.x + 30, this.y - 65);
     }
 }
