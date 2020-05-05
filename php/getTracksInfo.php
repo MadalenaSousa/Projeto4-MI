@@ -6,6 +6,64 @@ $api = $_SESSION['api_obj'];
 $user = $api->me();
 
 //Guardar dados das músicas do utilizador loggado
+
+$topSongsFile = $user->id . "-top-songs-object.json";
+$songs = $api->getMyTop("tracks", ['limit' => 10]);
+$topSongObject = array();
+$trackIds = array();
+
+foreach ($songs->items as $track) {
+    array_push($trackIds, $track->id);
+}
+
+$z = -1;
+foreach ($songs->items as $song) {
+    $z++;
+
+    $trackFeatures = $api->getAudioFeatures($trackIds)->audio_features;
+    //$trackAnalysis = $api->getAudioAnalysis($song->id);
+
+    $singleTopSong = array(
+        /*"audio_analysis" => array(
+            "bars" => array(
+                "total" => count($trackAnalysis->bars),
+                "average_duration" => ""
+            ),
+            "beats" => array(
+                "total" => count($trackAnalysis->beats),
+                "average_duration" => ""
+            ),
+            "segments" => array(
+                "total" => count($trackAnalysis->segments),
+                "average_duration" => ""
+            ),
+            "tatums" => array(
+                "total" => count($trackAnalysis->tatums),
+                "average_duration" => ""
+            ),
+        ),*/
+        "audio_features" => array(
+            "danceability" => $trackFeatures[$z]->danceability,
+            "energy" => $trackFeatures[$z]->energy,
+            "loudness" => $trackFeatures[$z]->loudness,
+            "positivity" => $trackFeatures[$z]->valence,
+            "speed" => $trackFeatures[$z]->tempo
+        ),
+        "id" => $song->id,
+        "name" => $song->name,
+        "artists" => $song->artists[0]->name,
+        "album" => $song->album->name,
+        "popularity" => $song->popularity,
+        "preview_url" => $song->preview_url,
+        "duration" => $track->duration_ms/1000
+    );
+
+    array_push($topSongObject, $singleTopSong);
+}
+
+$topSongData = json_encode($topSongObject);
+file_put_contents($topSongsFile, $topSongData);
+
 /*
 $playlistsSongsFile = $user->id . "-playlist-songs-object.json";
 $playlists = $api->getUserPlaylists($user->id, ['limit' => 10]);
@@ -78,63 +136,6 @@ foreach ($playlists->items as $playlist) {
 
 $playlistSongsData = json_encode($playlistsSongObject);
 file_put_contents($playlistsSongsFile, $playlistSongsData);*/
-
-$topSongsFile = $user->id . "-top-songs-object.json";
-$songs = $api->getMyTop("tracks", ['limit' => 10]);
-$topSongObject = array();
-$trackIds = array();
-
-foreach ($songs->items as $track) {
-    array_push($trackIds, $track->id);
-}
-
-$z = -1;
-foreach ($songs->items as $song) {
-    $z++;
-
-    $trackFeatures = $api->getAudioFeatures($trackIds)->audio_features;
-    $trackAnalysis = $api->getAudioAnalysis($song->id);
-
-    $singleTopSong = array(
-        "audio_analysis" => array(
-            "bars" => array(
-                "total" => count($trackAnalysis->bars),
-                "average_duration" => ""
-            ),
-            "beats" => array(
-                "total" => count($trackAnalysis->beats),
-                "average_duration" => ""
-            ),
-            "segments" => array(
-                "total" => count($trackAnalysis->segments),
-                "average_duration" => ""
-            ),
-            "tatums" => array(
-                "total" => count($trackAnalysis->tatums),
-                "average_duration" => ""
-            ),
-        ),
-        "audio_features" => array(
-            "danceability" => $trackFeatures[$z]->danceability,
-            "energy" => $trackFeatures[$z]->energy,
-            "loudness" => $trackFeatures[$z]->loudness,
-            "positivity" => $trackFeatures[$z]->valence,
-            "speed" => $trackFeatures[$z]->tempo
-        ),
-        "id" => $song->id,
-        "name" => $song->name,
-        "artists" => $song->artists[0]->name,
-        "album" => $song->album->name,
-        "popularity" => $song->popularity,
-        "preview_url" => $song->preview_url,
-        "duration" => $track->duration_ms/1000
-    );
-
-    array_push($topSongObject, $singleTopSong);
-}
-
-$topSongData = json_encode($topSongObject);
-file_put_contents($topSongsFile, $topSongData);
 
 if($_GET['type'] == 'public') {
     header('Location: ../tracks.php');
