@@ -65,7 +65,7 @@ function setup() {
                     console.log('doesnt have record with name: ' + topArtists[i].name + ", can create it");
                     record[i] = client.record.getRecord(artists[i].name); //crio um novo record no servidor
                     record[i].set({ //defino o novo record
-                        user: "user",
+                        user: user.name,
                         artist: artists[i].name,
                         color: map(artists[i].popularity, min(popularity), max(popularity), 0, 255),
                         divisoes: map(artists[i].followers.total, 100, 60000000, 1, 10),
@@ -99,6 +99,8 @@ function setup() {
         });
 
     }
+
+    document.querySelector('.confirm-logout').addEventListener('click', closeArtistRoomConnection);
 
     document.querySelector('.download').addEventListener('click', function () {
         console.log('Canvas will be downloaded');
@@ -190,6 +192,37 @@ function createUserDiv() {
     userDiv.appendChild(person);
 
     document.querySelector(".list-people").appendChild(userDiv);
+}
+
+function closeArtistRoomConnection() {
+    let allRecords = [];
+    let recordsToRemove = [];
+    for(let i = 0; i < recordList.getEntries().length; i++) {
+        allRecords[i] = client.record.getRecord(recordList.getEntries()[i]);
+        allRecords[i].whenReady(function () {
+            console.log('Record to delete: ' + allRecords[i].get('artist') + ' Owner of the record: ' + allRecords[i].get('user'));
+            if (allRecords[i].get('user') === user.name) {
+                recordsToRemove.push(allRecords[i]);
+            }
+        });
+    }
+
+
+    for(let i = 0; i < recordsToRemove.length; i++) {
+        recordList.removeEntry(recordsToRemove[i].get('artist'));
+        client.record.getRecord(recordsToRemove[i].get('artist')).delete();
+    }
+
+    recordsToRemove[recordsToRemove.length - 1].on('delete', function () {
+        client.close();
+    });
+
+    client.on('connectionStateChanged', connectionState => {
+        if(connectionState === 'CLOSED') {
+            console.log('Connection state changed to: ' + connectionState + ', you will be redirected to homepage');
+            document.location = './homepage.php';
+        }
+    });
 }
 
 function draw() {

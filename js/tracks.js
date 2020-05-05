@@ -149,7 +149,7 @@ function setup() {
         });
     }
 
-    document.querySelector('.confirm-logout').addEventListener('click', closeConnection);
+    document.querySelector('.confirm-logout').addEventListener('click', closeSongsRoomConnection);
 
     document.querySelector('.download').addEventListener('click', function () {
         console.log('Canvas will be downloaded');
@@ -176,7 +176,7 @@ function contains(array, nome) {
     return false;
 }
 
-function closeConnection() {
+function closeSongsRoomConnection() {
     let allRecords = [];
     let recordsToRemove = [];
     for(let i = 0; i < recordList.getEntries().length; i++) {
