@@ -184,20 +184,24 @@ function closeConnection() {
             recordsToRemove[i].whenReady(function () {
                 if(recordsToRemove[i].get('user') === user.name) {
                     console.log('Record to delete: ' + recordsToRemove[i].get('song') + 'Owner of the record: ' + recordsToRemove[i].get('user'));
+                    recordList.removeEntry(recordsToRemove[i].get('song'));
                     recordsToRemove[i].delete();
-                    //recordList.removeEntry(recordsToRemove[i].get('song'));
                 }
             });
         });
+
+        recordsToRemove[i].isDestroyed(function () {
+            console.log('foi apagado');
+        });
     }
 
-    client.on('connectionStateChanged', connectionState => {
+    /*client.on('connectionStateChanged', connectionState => {
         if(connectionState === 'CLOSED') {
             console.log('Connection state changed to: ' + connectionState + ', you will be redirected to homepage');
             //document.location = './homepage.php';
         }
     });
-    client.close();
+    client.close();*/
 }
 
 function logoutPopUp() {
