@@ -188,7 +188,6 @@ h2 {
     top: 50%;
     background-color: black;
     border: 2px solid white;
-    height: 30%;
     width: 30%;
     transform: translateY(-50%) translateX(-50%);
     visibility: visible;
@@ -209,7 +208,6 @@ h2 {
     top: 50%;
     background-color: black;
     border: 2px solid white;
-    height: 30%;
     width: 40%;
     transform: translateY(-50%) translateX(-50%);
     visibility: visible;
