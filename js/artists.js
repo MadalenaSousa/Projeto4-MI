@@ -304,6 +304,8 @@ function draw() {
 
 
 class waveArtist {
+    alfa;
+    yCentro;
     constructor(name, color, divisoes, largura, x, y) {
         this.name = name;
         this.color = color;
@@ -315,10 +317,17 @@ class waveArtist {
 
 
     display() {
-        this.onda();
+        this.alfa=0;
+        this.yCentro=this.y - ((2 * (this.largura / 2)) / 3);
         if (dist(mouseX, mouseY, this.x, this.y - (this.largura / 3)) <= this.largura / 6) {
             this.balao();
+            this.alfa=this.alfa+PI/56;
+            this.y= this.y+2*sin(this.alfa);
+            this.x=this.x+2*cos(this.alfa);
+
         }
+        this.onda();
+
     }
 
     onda() {
@@ -357,7 +366,8 @@ class waveArtist {
         textAlign(LEFT);
         noStroke();
         fill(255, 255 - this.color, 255);
-        text(this.name, (width - (width / 26)) - (this.name.length * 6.5), this.y - 20, 136);
+//        text(this.name, (this.x-this.largura - (this.name.length * 6.5)), this.y - 10, 136);
+        text(this.name, (this.x-this.largura/4), this.y - 10, 136);
 
     }
 
