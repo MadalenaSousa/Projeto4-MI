@@ -1,8 +1,11 @@
 let user, artists, totalArtists, topArtists;
-let x;
 let waves = [];
 let newWave;
 let popularity = [];
+let followers = [];
+let speed = [];
+let positivity = [];
+let danceability = [];
 let remove;
 
 const client = new DeepstreamClient('localhost:6020');
@@ -77,6 +80,11 @@ function setup() {
 
     for (let i = 0; i < totalArtists; i++) {
         popularity.push(artists[i].popularity);
+        danceability.push(artists[i].top_tracks_average_features.danceability);
+        followers.push(artists[i].followers.total);
+        speed.push(artists[i].top_tracks_average_features.speed);
+        positivity.push(artists[i].top_tracks_average_features.positivity);
+
     }
 
     recordList = client.record.getList('all-artists');
@@ -93,7 +101,7 @@ function setup() {
             for (let i = 0; i < recordList.getEntries().length; i++) {
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
-                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('y'));
+                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), recordsOnList[i].get('x'), recordsOnList[i].get('y'));
                 });
             }
         }
@@ -118,8 +126,10 @@ function setup() {
                         user: user.name,
                         artist: artists[i].name,
                         color: map(artists[i].popularity, min(popularity), max(popularity), 0, 255),
-                        divisoes: map(artists[i].followers.total, 1, 60000000, 3, 10),
-                        y: map(i, 0, totalArtists, windowHeight / 3, windowHeight - (windowHeight / 50))
+                        divisoes: map(artists[i].top_tracks_average_features.danceability,  min(danceability), max(danceability), 3, 10),
+                        largura: map(artists[i].followers.total, min(followers), max(followers), 100, 400),
+                        x: map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 125, windowWidth - (windowWidth / 26)-375),
+                        y: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 250, windowHeight - 50)
 
                     });
 
@@ -158,8 +168,8 @@ function setup() {
     });
 }
 
-function addNewWave(name, color, divisoes, y) {
-    newWave = new waveArtist(name, color, divisoes, y);
+function addNewWave(name, color, divisoes, largura, x, y) {
+    newWave = new waveArtist(name, color, divisoes, largura, x, y);
     waves.push(newWave);
     console.log(waves);
 }
@@ -291,45 +301,43 @@ function draw() {
 
 
 class waveArtist {
-    x;
-
-    constructor(name, color, divisoes, y) {
+    constructor(name, color, divisoes, largura, x, y) {
         this.name = name;
         this.color = color;
         this.divisoes = divisoes;
+        this.largura = largura;
+        this.x = x;
         this.y = y;
     }
 
     display() {
-        this.x = 300;
-        this.numeroLinhas = 3;
         stroke(255, 255 - this.color, 255);
         fill(0);
         strokeWeight(2);
         stroke(255, 255 - this.color, 255);
         beginShape();
         fill(0);
-        vertex(this.x - 300, this.y - 0);
-        bezierVertex(this.x - 300, this.y - 0, this.x - (300 / 2) - (300 * (1 / 12)), this.y - 0, this.x - (300 / 2), this.y - ((4 / 15) * 150));
-        bezierVertex(this.x - (300 / 2) + (1 / 30) * 300, this.y - ((4 / 15) * 150) - ((1 / 10) * 150), this.x - (4 * (300/ 15)), this.y - 150 , this.x - 0, this.y - 150);
-        bezierVertex(this.x + 60, this.y - 150, this.x + 60, this.y - 50, this.x - 0, this.y - 50);
-        bezierVertex(this.x - (2 * (300 / 15)), this.y - 50, this.x - (2 * (300 / 15)), this.y - ((2 * 150) / 3), this.x - 0, this.y - ((2 * 150) / 3));
-        bezierVertex(this.x - (2 * ((300 - (this.divisoes) * (1800 / (this.divisoes * 7))) / 15)), this.y - ((2 * 150) / 3),this.x - (2 * ((300 - (this.divisoes) * (1800 / (this.divisoes * 7))) / 15)), this.y - 50 - ((this.divisoes) * (150 / (this.divisoes * 3))),this.x - 0, this.y - 50 - ((this.divisoes) * (150 / (this.divisoes * 3))));
-        bezierVertex((this.x + 60) - (((6 * 300) / 30) / this.divisoes) * (this.divisoes), this.y - 50 - ((this.divisoes) * (150 / (this.divisoes * 3))),(this.x + 60) - (((6 * 300) / 30) / this.divisoes) * (this.divisoes), this.y - (150 - (this.divisoes) * (150 / (this.divisoes * 3))),this.x - 0, this.y - (150 - (this.divisoes) * (150 / (this.divisoes * 3))));
-        bezierVertex(this.x - (4 * ((300 - (this.divisoes) * (1800 / (this.divisoes * 7))) / 15)), this.y - (150 - (this.divisoes) * (150 / (this.divisoes * 3))),(this.x - (300 / 2) + ((this.divisoes) * (((3 / 10) * 300) / this.divisoes))) + ((1 / 30) * 300), (this.y - ((4 / 15) * 150)) - ((1 / 10) * 150),this.x - (300 / 2) + ((this.divisoes) * (((3 / 10) * 300) / this.divisoes)), this.y - ((4 / 15) * 150));
-        bezierVertex( (this.x - (300 / 2) + ((this.divisoes) * (((3 / 10) * 300) / this.divisoes))) - (300 * (1 / 12)), this.y - 0,(this.x - 300) + ((this.divisoes) * (((3 / 5) * 300) / this.divisoes)), this.y - 0,(this.x - 300) + ((this.divisoes) * (((3 / 5) * 300) / this.divisoes)), this.y - 0);
-        vertex(this.x - 300, this.y - 0);
+        vertex(this.x - this.largura, this.y - 0);
+        bezierVertex(this.x - this.largura, this.y - 0, this.x - (this.largura / 2) - (this.largura * (1 / 12)), this.y - 0, this.x - (this.largura / 2), this.y - ((4 / 15) * (this.largura / 2)));
+        bezierVertex(this.x - (this.largura / 2) + (1 / 30) * this.largura, this.y - ((4 / 15) * (this.largura / 2)) - ((1 / 10) * (this.largura / 2)), this.x - (4 * (this.largura / 15)), this.y - (this.largura / 2), this.x - 0, this.y - (this.largura / 2));
+        bezierVertex(this.x + (this.largura / 5), this.y - (this.largura / 2), this.x + (this.largura / 5), this.y - (this.largura / 6), this.x - 0, this.y - (this.largura / 6));
+        bezierVertex(this.x - (2 * (this.largura / 15)), this.y - (this.largura / 6), this.x - (2 * (this.largura / 15)), this.y - ((2 * (this.largura / 2)) / 3), this.x - 0, this.y - ((2 * (this.largura / 2)) / 3));
+        bezierVertex(this.x - (2 * ((this.largura - (this.divisoes) * ((6 * this.largura) / (this.divisoes * 7))) / 15)), this.y - ((2 * (this.largura / 2)) / 3), this.x - (2 * ((this.largura - (this.divisoes) * ((6 * this.largura) / (this.divisoes * 7))) / 15)), this.y - (this.largura / 6) - ((this.divisoes) * ((this.largura / 2) / (this.divisoes * 3))), this.x - 0, this.y - (this.largura / 6) - ((this.divisoes) * ((this.largura / 2) / (this.divisoes * 3))));
+        bezierVertex((this.x + (this.largura / 5)) - (((6 * this.largura) / 30) / this.divisoes) * (this.divisoes), this.y - (this.largura / 6) - ((this.divisoes) * ((this.largura / 2) / (this.divisoes * 3))), (this.x + (this.largura / 5)) - (((6 * this.largura) / 30) / this.divisoes) * (this.divisoes), this.y - ((this.largura / 2) - (this.divisoes) * ((this.largura / 2) / (this.divisoes * 3))), this.x - 0, this.y - ((this.largura / 2) - (this.divisoes) * ((this.largura / 2) / (this.divisoes * 3))));
+        bezierVertex(this.x - (4 * ((this.largura - (this.divisoes) * ((6 * this.largura) / (this.divisoes * 7))) / 15)), this.y - ((this.largura / 2) - (this.divisoes) * ((this.largura / 2) / (this.divisoes * 3))), (this.x - (this.largura / 2) + ((this.divisoes) * (((3 / 10) * this.largura) / this.divisoes))) + ((1 / 30) * this.largura), (this.y - ((4 / 15) * (this.largura / 2))) - ((1 / 10) * (this.largura / 2)), this.x - (this.largura / 2) + ((this.divisoes) * (((3 / 10) * this.largura) / this.divisoes)), this.y - ((4 / 15) * (this.largura / 2)));
+        bezierVertex((this.x - (this.largura / 2) + ((this.divisoes) * (((3 / 10) * this.largura) / this.divisoes))) - (this.largura * (1 / 12)), this.y - 0, (this.x - this.largura) + ((this.divisoes) * (((3 / 5) * this.largura) / this.divisoes)), this.y - 0, (this.x - this.largura) + ((this.divisoes) * (((3 / 5) * this.largura) / this.divisoes)), this.y - 0);
+        vertex(this.x - this.largura, this.y - 0);
         endShape();
         noFill();
 
         for (let i = 0; i < this.divisoes; i++) {
             strokeWeight(2);
             beginShape();
-            vertex((this.x - 300) + (i * (((3 / 5) * 300) / this.divisoes)), this.y - 0);
-            bezierVertex((this.x - 300) + (i * (((3 / 5) * 300) / this.divisoes)), this.y - 0, (this.x - (300 / 2) + (i * (((3 / 10) * 300) / this.divisoes))) - (300 * (1 / 12)), this.y - 0, this.x - (300 / 2) + (i * (((3 / 10) * 300) / this.divisoes)), this.y - ((4 / 15) * 150));
-            bezierVertex((this.x - (300 / 2) + (i * (((3 / 10) * 300) / this.divisoes))) + ((1 / 30) * 300), (this.y - ((4 / 15) * 150)) - ((1 / 10) * 150), this.x - (4 * ((300 - i * (1800 / (this.divisoes * 7))) / 15)), this.y - (150 - i * (150 / (this.divisoes * 3))), this.x - 0, this.y - (150 - i * (150 / (this.divisoes * 3))));
-            bezierVertex((this.x + 60) - (((6 * 300) / 30) / this.divisoes) * i, this.y - (150 - i * (150 / (this.divisoes * 3))), ((this.x + 60) - (((6 * 300) / 30) / this.divisoes) * i), this.y - 50 - (i * (150 / (this.divisoes * 3))), this.x - 0, this.y - 50 - (i * (150 / (this.divisoes * 3))));
-            bezierVertex(this.x - (2 * ((300 - i * (1800 / (this.divisoes * 7))) / 15)), this.y - 50 - (i * (150 / (this.divisoes * 3))), this.x - (2 * ((300 - i * (1800 / (this.divisoes * 7))) / 15)), this.y - ((2 * 150) / 3), this.x - 0, this.y - ((2 * 150) / 3));
+            vertex((this.x - this.largura) + (i * (((3 / 5) * this.largura) / this.divisoes)), this.y - 0);
+            bezierVertex((this.x - this.largura) + (i * (((3 / 5) * this.largura) / this.divisoes)), this.y - 0, (this.x - (this.largura / 2) + (i * (((3 / 10) * this.largura) / this.divisoes))) - (this.largura * (1 / 12)), this.y - 0, this.x - (this.largura / 2) + (i * (((3 / 10) * this.largura) / this.divisoes)), this.y - ((4 / 15) * (this.largura / 2)));
+            bezierVertex((this.x - (this.largura / 2) + (i * (((3 / 10) * this.largura) / this.divisoes))) + ((1 / 30) * this.largura), (this.y - ((4 / 15) * (this.largura / 2))) - ((1 / 10) * (this.largura / 2)), this.x - (4 * ((this.largura - i * ((6 * this.largura) / (this.divisoes * 7))) / 15)), this.y - ((this.largura / 2) - i * ((this.largura / 2) / (this.divisoes * 3))), this.x - 0, this.y - ((this.largura / 2) - i * ((this.largura / 2) / (this.divisoes * 3))));
+            bezierVertex((this.x + (this.largura / 5)) - (((6 * this.largura) / 30) / this.divisoes) * i, this.y - ((this.largura / 2) - i * ((this.largura / 2) / (this.divisoes * 3))), ((this.x + (this.largura / 5)) - (((6 * this.largura) / 30) / this.divisoes) * i), this.y - (this.largura / 6) - (i * ((this.largura / 2) / (this.divisoes * 3))), this.x - 0, this.y - (this.largura / 6) - (i * ((this.largura / 2) / (this.divisoes * 3))));
+            bezierVertex(this.x - (2 * ((this.largura - i * ((6 * this.largura) / (this.divisoes * 7))) / 15)), this.y - (this.largura / 6) - (i * ((this.largura / 2) / (this.divisoes * 3))), this.x - (2 * ((this.largura - i * ((6 * this.largura) / (this.divisoes * 7))) / 15)), this.y - ((2 * (this.largura / 2)) / 3), this.x - 0, this.y - ((2 * (this.largura / 2)) / 3));
             endShape();
         }
 
