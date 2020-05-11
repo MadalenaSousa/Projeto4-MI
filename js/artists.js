@@ -19,11 +19,11 @@ function preload() {
 function setup() {
     createCanvas(windowWidth - windowWidth / 6, windowHeight);
     client.login({username: user.name}, (success, data) => {
-        if(success) {
+        if (success) {
             console.log("User logged in successfully");
             client.record.has(user.name, function (error, hasRecord) {
                 console.log(error);
-                if(hasRecord === false) {
+                if (hasRecord === false) {
                     console.log("Record of this user doesnt exist, it will be created");
                     personRecord = client.record.getRecord(user.name);
                     personRecord.set({
@@ -42,7 +42,7 @@ function setup() {
     });
 
     client.presence.getAll((error, clients) => {
-        for(let i = 0; i < clients.length; i++){
+        for (let i = 0; i < clients.length; i++) {
             console.log('Clients present on login: ' + clients);
             clientsRecords[i] = client.record.getRecord(clients[i]);
             clientsRecords[i].subscribe(function () {
@@ -52,11 +52,11 @@ function setup() {
     });
 
     client.presence.subscribe((username, isLoggedIn) => {
-        if(isLoggedIn){
+        if (isLoggedIn) {
             console.log('A new client logged in');
             clearArray(clientsRecords);
             client.presence.getAll((error, clients) => {
-                for(let i = 0; i < clients.length; i++){
+                for (let i = 0; i < clients.length; i++) {
                     console.log('Updated clients list: ' + clients);
                     clientsRecords[i] = client.record.getRecord(clients[i]);
                     clientsRecords[i].subscribe(function () {
@@ -248,7 +248,7 @@ function closeArtistRoomConnection() {
     let allRecords = [];
     let recordsToRemove = [];
 
-    for(let i = 0; i < recordList.getEntries().length; i++) {
+    for (let i = 0; i < recordList.getEntries().length; i++) {
         allRecords[i] = client.record.getRecord(recordList.getEntries()[i]);
         allRecords[i].whenReady(function () {
             console.log('Record to delete: ' + allRecords[i].get('artist') + ' Owner of the record: ' + allRecords[i].get('user'));
@@ -258,10 +258,10 @@ function closeArtistRoomConnection() {
         });
     }
 
-    if(recordsToRemove.length === 0) {
+    if (recordsToRemove.length === 0) {
         client.close();
     } else {
-        for(let i = 0; i < recordsToRemove.length; i++) {
+        for (let i = 0; i < recordsToRemove.length; i++) {
             recordList.removeEntry(recordsToRemove[i].get('artist'));
             client.record.getRecord(recordsToRemove[i].get('artist')).delete();
         }
@@ -272,7 +272,7 @@ function closeArtistRoomConnection() {
     }
 
     client.on('connectionStateChanged', connectionState => {
-        if(connectionState === 'CLOSED') {
+        if (connectionState === 'CLOSED') {
             console.log('Connection state changed to: ' + connectionState + ', you will be redirected to homepage');
             document.location = './homepage.php';
         }
@@ -292,6 +292,7 @@ function draw() {
 
 class waveArtist {
     x;
+
     constructor(name, color, divisoes, y) {
         this.name = name;
         this.color = color;
@@ -305,133 +306,29 @@ class waveArtist {
         stroke(255, 255 - this.color, 255);
         fill(0);
         strokeWeight(2);
-
-
-        /* beginShape();
-         vertex(this.x-this.l, this.y-0);
-         bezierVertex(this.x-this.l, this.y-0,this.l/3, this.y-0, this.l/2, this.y-(this.a/3));
-         bezierVertex(2*(this.l/3), this.y-(2*(this.a/3)), this.x-(4*(this.l/15)),this.y-this.a, this.x-0, this.y-this.a);
-         bezierVertex(this.x+(4*(this.l/15)), this.y-this.a, this.x+(4*(this.l/15)), this.y-(this.a/3), this.x-0, this.y-(this.a/3));
-         bezierVertex(this.x-(2*(this.l/15)), this.y-(this.a/3), this.x-(2*(this.l/15)), this.y-(2*(this.a/3)), this.x-0, this.y-(2*(this.a/3)));
-         endShape();*/
-
-       /* beginShape();
-
-        vertex((this.x - 300), this.y - 0);
-        bezierVertex(this.x - 300, this.y - 0, 100, this.y - 0, 300 / 2, this.y - (150 / 3));
-        bezierVertex(200, this.y - (2 * (150 / 3)), this.x - (4 * (300 / 15)), this.y - 150, this.x - 0, this.y - 150);
+        stroke(255, 255 - this.color, 255);
+        beginShape();
+        fill(0);
+        vertex(this.x - 300, this.y - 0);
+        bezierVertex(this.x - 300, this.y - 0, this.x - (300 / 2) - (300 * (1 / 12)), this.y - 0, this.x - (300 / 2), this.y - ((4 / 15) * 150));
+        bezierVertex(this.x - (300 / 2) + (1 / 30) * 300, this.y - ((4 / 15) * 150) - ((1 / 10) * 150), this.x - (4 * (300/ 15)), this.y - 150 , this.x - 0, this.y - 150);
         bezierVertex(this.x + 60, this.y - 150, this.x + 60, this.y - 50, this.x - 0, this.y - 50);
         bezierVertex(this.x - (2 * (300 / 15)), this.y - 50, this.x - (2 * (300 / 15)), this.y - ((2 * 150) / 3), this.x - 0, this.y - ((2 * 150) / 3));
-        bezierVertex(this.x - (2 * ((300 - (this.numeroLinhas - 1) * (1800 / (this.numeroLinhas * 7))) / 15)), this.y - ((2 * 150) / 3), this.x - (2 * ((300 - (this.numeroLinhas - 1) * (1800 / (this.numeroLinhas * 7))) / 15)), this.y - 50 - ((this.numeroLinhas - 1) * (150 / (this.numeroLinhas * 3))), this.x - 0, this.y - 50 - ((this.numeroLinhas - 1) * (150 / (this.numeroLinhas * 3))));
-        bezierVertex(((this.x + 60) - (((6 * 300) / 30) / this.numeroLinhas) * (this.numeroLinhas - 1)), this.y - 50 - ((this.numeroLinhas - 1) * (150 / (this.numeroLinhas * 3))), (this.x + 60) - (((6 * 300) / 30) / this.numeroLinhas) * (this.numeroLinhas - 1), this.y - (150 - (this.numeroLinhas - 1) * (150 / (this.numeroLinhas * 3))), this.x - 0, this.y - (150 - (this.numeroLinhas - 1) * (150 / (this.numeroLinhas * 3))));
-        bezierVertex(this.x - (4 * ((300 - (this.numeroLinhas - 1) * (1800 / (this.numeroLinhas * 7))) / 15)), this.y - (150 - (this.numeroLinhas - 1) * (150 / (this.numeroLinhas * 3))), 200 + (this.numeroLinhas - 1) * 10, this.y - (2 * ((150 - (this.numeroLinhas - 1) * (150 / (this.numeroLinhas * 3))) / 3)), 300 / 2 + ((((2 / 6) * 300) / this.numeroLinhas) * (this.numeroLinhas - 1)), this.y - ((150 - (this.numeroLinhas - 1) * (150 / (this.numeroLinhas * 3))) / 3));
-        bezierVertex(100 + (this.numeroLinhas - 1) * 22, this.y - 0, this.x - 300 + (this.numeroLinhas - 1) * (1800 / (this.numeroLinhas * 7)), this.y - 0, (this.x - 300) + ((this.numeroLinhas - 1) * (1800 / (this.numeroLinhas * 7))), this.y - 0);
+        bezierVertex(this.x - (2 * ((300 - (this.divisoes) * (1800 / (this.divisoes * 7))) / 15)), this.y - ((2 * 150) / 3),this.x - (2 * ((300 - (this.divisoes) * (1800 / (this.divisoes * 7))) / 15)), this.y - 50 - ((this.divisoes) * (150 / (this.divisoes * 3))),this.x - 0, this.y - 50 - ((this.divisoes) * (150 / (this.divisoes * 3))));
+        bezierVertex((this.x + 60) - (((6 * 300) / 30) / this.divisoes) * (this.divisoes), this.y - 50 - ((this.divisoes) * (150 / (this.divisoes * 3))),(this.x + 60) - (((6 * 300) / 30) / this.divisoes) * (this.divisoes), this.y - (150 - (this.divisoes) * (150 / (this.divisoes * 3))),this.x - 0, this.y - (150 - (this.divisoes) * (150 / (this.divisoes * 3))));
+        bezierVertex(this.x - (4 * ((300 - (this.divisoes) * (1800 / (this.divisoes * 7))) / 15)), this.y - (150 - (this.divisoes) * (150 / (this.divisoes * 3))),(this.x - (300 / 2) + ((this.divisoes) * (((3 / 10) * 300) / this.divisoes))) + ((1 / 30) * 300), (this.y - ((4 / 15) * 150)) - ((1 / 10) * 150),this.x - (300 / 2) + ((this.divisoes) * (((3 / 10) * 300) / this.divisoes)), this.y - ((4 / 15) * 150));
+        bezierVertex( (this.x - (300 / 2) + ((this.divisoes) * (((3 / 10) * 300) / this.divisoes))) - (300 * (1 / 12)), this.y - 0,(this.x - 300) + ((this.divisoes) * (((3 / 5) * 300) / this.divisoes)), this.y - 0,(this.x - 300) + ((this.divisoes) * (((3 / 5) * 300) / this.divisoes)), this.y - 0);
         vertex(this.x - 300, this.y - 0);
-
-
         endShape();
-*/
-        for (let i = 0; i < this.numeroLinhas; i++) {
-            noFill();
-            line(0,this.y-0,width, this.y-0);
-            beginShape();
-            vertex((this.x - 300) + (i * (((3/5)*300)/this.numeroLinhas)), this.y - 0);
-            bezierVertex((this.x - 300) + (i * (((3/5)*300)/this.numeroLinhas)), this.y - 0, (this.x-(300/ 2) + (i*(((3/10)*300)/this.numeroLinhas)))-(300*(1/12)), this.y-0, this.x-(300/ 2) + (i*(((3/10)*300)/this.numeroLinhas)), this.y - ((4/15)*150));
-            bezierVertex((this.x-(300/ 2) + (i*(((3/10)*300)/this.numeroLinhas)))+((1/30)*300), (this.y - ((4/15)*150))-((1/10)*150), this.x - (4 * ((300 - i * (1800 / (this.numeroLinhas * 7))) / 15)), this.y - (150 - i * (150 / (this.numeroLinhas * 3))), this.x - 0, this.y - (150 - i * (150 / (this.numeroLinhas * 3))));
-            bezierVertex(((this.x + 60) - (((6 * 300) / 30) / this.numeroLinhas) * i), this.y - (150 - i * (150 / (this.numeroLinhas * 3))), ((this.x + 60) - (((6 * 300) / 30) / this.numeroLinhas) * i), this.y - 50 - (i * (150 / (this.numeroLinhas * 3))), this.x - 0, this.y - 50 - (i * (150 / (this.numeroLinhas * 3))));
-            bezierVertex(this.x - (2 * ((300 - i * (1800 / (this.numeroLinhas * 7))) / 15)), this.y - 50 - (i * (150 / (this.numeroLinhas * 3))), this.x - (2 * ((300 - i * (1800 / (this.numeroLinhas * 7))) / 15)), this.y - ((2 * 150) / 3), this.x - 0, this.y - ((2 * 150) / 3));
-            endShape();
-        }
-
-
-        /*
-        beginShape();
-        vertex(0, this.y);
-        bezierVertex(100, 280, this.x-60, this.y, this.x-40, this.y-20);
-        bezierVertex(this.x-40, this.y-18, this.x-30, this.y-40, this.x, this.y-40);
-        bezierVertex(this.x+60, this.y-40, this.x+60, this.y+40, this.x, this.y+40);
-        bezierVertex(this.x-30, this.y+40, this.x-30, this.y, this.x, this.y);
-        endShape();
-
-        beginShape();
-        vertex(100, this.y);
-        bezierVertex(130, 280, this.x-50, this.y, this.x-30, this.y-20);
-        bezierVertex(this.x-30, this.y-20, this.x-20, this.y-30, this.x, this.y-30);
-        bezierVertex(this.x+40, this.y-30, this.x+40, this.y+30, this.x, this.y+30);
-        bezierVertex(this.x-15, this.y+30, this.x-20, this.y, this.x, this.y);
-        endShape();
-
-        beginShape();
-        vertex(200, this.y);
-        bezierVertex(160, 280, this.x-40, this.y, this.x-20, this.y-20);
-        bezierVertex(this.x-20, this.y-22, this.x-10, this.y-20, this.x, this.y-20);
-        bezierVertex(this.x+20, this.y-20, this.x+20, this.y+20, this.x, this.y+20);
-        bezierVertex(this.x, this.y+20, this.x-10, this.y, this.x, this.y);
-        endShape();*/
-        /*
-        for (let g = 0; g < this.divisoes; g++) {
-
-            //começa no 140
-            if (g === 0) {
-                this.x = 140;
-            } else {
-                this.x = 140 + g * ((windowWidth - 200) / this.divisoes);
-            }
-
-            stroke(255,255-this.color, 255);
-
-            noFill();
-/*
-            //se for par arco para cima
-            if (g % 2 === 0) {
-                beginShape();
-                vertex(this.x, this.y);
-                bezierVertex(this.x, this.y - 50, this.x + ((windowWidth - 200) / this.divisoes), this.y - 50, this.x + ((windowWidth - 200) / this.divisoes), this.y);
-                endShape();
-            }
-
-            //se não for par arco para baixo
-            else {
-                beginShape();
-                vertex(this.x, this.y);
-                bezierVertex(this.x, this.y + 50, this.x + ((windowWidth - 200) / this.divisoes), this.y + 50, this.x + ((windowWidth - 200) / this.divisoes), this.y);
-                endShape();
-            }
-            }
-         */
-
-
-        textAlign(LEFT);
-        noStroke();
-        fill(255, 255 - this.color, 255);
-        text(this.name, (width-(width/4.5))-( this.name.length*7), this.y - 20, 136);
-        /*
-                stroke(255, 255 - this.color, 255);
-               /* beginShape();
-                fill(0);
-                vertex(this.x - 300, this.y - 0);
-                bezierVertex(this.x - 300, this.y - 0, this.x - (300 / 2) - (300 * (1 / 12)), this.y - 0, this.x - (300 / 2), this.y - ((4 / 15) * 150));
-                bezierVertex(this.x - (300 / 2) + ((1 / 30) * 300), (this.y - ((4 / 15) * 150)) - ((1 / 10) * 150), this.x - (4 * (300/ 15)), this.y - 150, this.x - 0, this.y - 150);
-                bezierVertex(this.x + 60, this.y - 150, this.x + 60, this.y - 50, this.x - 0, this.y - 50);
-                bezierVertex(this.x - (2 * (300 / 15)), this.y - 50, this.x - (2 * (300 / 15)), this.y - ((2 * 150) / 3), this.x - 0, this.y - ((2 * 150) / 3));
-                bezierVertex(this.x - (2 * ((300 - (this.divisoes - 1) * (1800 / (this.divisoes * 7))) / 15)), this.y - ((2 * 150) / 3), this.x - (2 * ((300 - (this.divisoes - 1) * (1800 / (this.divisoes * 7))) / 15)), this.y - 50 - ((this.divisoes - 1) * (150 / (this.divisoes * 3))), this.x - 0, this.y - 50 - ((this.divisoes - 1) * (150 / (this.divisoes * 3))));
-                bezierVertex(((this.x + 60) - (((6 * 300) / 30) / this.divisoes) * (this.divisoes - 1)), this.y - 50 - ((this.divisoes - 1) * (150 / (this.divisoes * 3))), (this.x + 60) - (((6 * 300) / 30) / this.divisoes) * (this.divisoes - 1), this.y - (150 - (this.divisoes - 1) * (150 / (this.divisoes * 3))), this.x - 0, this.y - (150 - (this.divisoes - 1) * (150 / (this.divisoes * 3))));
-                bezierVertex(this.x - (4 * ((300 - (this.divisoes - 1) * (1800 / (this.divisoes * 7))) / 15)), this.y - (150 - (this.divisoes - 1) * (150 / (this.divisoes * 3))), (this.x - (300 / 2) + (this.divisoes * (((3 / 10) * 300) / this.divisoes))) + ((1 / 30) * 300), (this.y - ((4 / 15) * 150)) - ((1 / 10) * 150), this.x - (300 / 2) + ((this.divisoes - 1) * (((3 / 10) * 300) / this.divisoes)), this.y - ((4 / 15) * 150));
-                bezierVertex((this.x - (300 / 2) + ((this.divisoes - 1) * (((3 / 10) * 300) / this.divisoes))) - (300 * (1 / 12)), this.y - 0, (this.x - 300) + ((this.divisoes - 1) * (((3 / 5) * 300) / this.divisoes)), this.y - 0, (this.x - 300) + ((this.divisoes - 1) * (((3 / 5) * 300) / this.divisoes)), this.y - 0);
-                vertex(this.x - 300, this.y - 0);
-                endShape();
-                noFill();
-        */  /*      noFill();
+        noFill();
 
         for (let i = 0; i < this.divisoes; i++) {
-            strokeWeight(1.8);
-            line(0, this.y - 0, width, this.y - 0);
             strokeWeight(2);
             beginShape();
             vertex((this.x - 300) + (i * (((3 / 5) * 300) / this.divisoes)), this.y - 0);
             bezierVertex((this.x - 300) + (i * (((3 / 5) * 300) / this.divisoes)), this.y - 0, (this.x - (300 / 2) + (i * (((3 / 10) * 300) / this.divisoes))) - (300 * (1 / 12)), this.y - 0, this.x - (300 / 2) + (i * (((3 / 10) * 300) / this.divisoes)), this.y - ((4 / 15) * 150));
             bezierVertex((this.x - (300 / 2) + (i * (((3 / 10) * 300) / this.divisoes))) + ((1 / 30) * 300), (this.y - ((4 / 15) * 150)) - ((1 / 10) * 150), this.x - (4 * ((300 - i * (1800 / (this.divisoes * 7))) / 15)), this.y - (150 - i * (150 / (this.divisoes * 3))), this.x - 0, this.y - (150 - i * (150 / (this.divisoes * 3))));
-            bezierVertex(((this.x + 60) - (((6 * 300) / 30) / this.divisoes) * i), this.y - (150 - i * (150 / (this.divisoes * 3))), ((this.x + 60) - (((6 * 300) / 30) / this.divisoes) * i), this.y - 50 - (i * (150 / (this.divisoes * 3))), this.x - 0, this.y - 50 - (i * (150 / (this.divisoes * 3))));
+            bezierVertex((this.x + 60) - (((6 * 300) / 30) / this.divisoes) * i, this.y - (150 - i * (150 / (this.divisoes * 3))), ((this.x + 60) - (((6 * 300) / 30) / this.divisoes) * i), this.y - 50 - (i * (150 / (this.divisoes * 3))), this.x - 0, this.y - 50 - (i * (150 / (this.divisoes * 3))));
             bezierVertex(this.x - (2 * ((300 - i * (1800 / (this.divisoes * 7))) / 15)), this.y - 50 - (i * (150 / (this.divisoes * 3))), this.x - (2 * ((300 - i * (1800 / (this.divisoes * 7))) / 15)), this.y - ((2 * 150) / 3), this.x - 0, this.y - ((2 * 150) / 3));
             endShape();
         }
@@ -440,7 +337,7 @@ class waveArtist {
         noStroke();
         fill(255, 255 - this.color, 255);
         text(this.name, (width - (width / 26)) - (this.name.length * 6.5), this.y - 20, 136);
-*/
+
     }
 }
 
