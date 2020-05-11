@@ -290,6 +290,7 @@ function closeArtistRoomConnection() {
 }
 
 function draw() {
+
     background(0);
 
     if (waves.length > 0) {
@@ -310,7 +311,9 @@ class waveArtist {
         this.y = y;
     }
 
+
     display() {
+
         stroke(255, 255 - this.color, 255);
         fill(0);
         strokeWeight(2);
@@ -328,6 +331,10 @@ class waveArtist {
         bezierVertex((this.x - (this.largura / 2) + ((this.divisoes) * (((3 / 10) * this.largura) / this.divisoes))) - (this.largura * (1 / 12)), this.y - 0, (this.x - this.largura) + ((this.divisoes) * (((3 / 5) * this.largura) / this.divisoes)), this.y - 0, (this.x - this.largura) + ((this.divisoes) * (((3 / 5) * this.largura) / this.divisoes)), this.y - 0);
         vertex(this.x - this.largura, this.y - 0);
         endShape();
+
+
+
+
         noFill();
 
         for (let i = 0; i < this.divisoes; i++) {
@@ -347,5 +354,39 @@ class waveArtist {
         text(this.name, (width - (width / 26)) - (this.name.length * 6.5), this.y - 20, 136);
 
     }
+    balao() {
+        fill(0);
+        strokeWeight(2);
+        stroke(this.color);
+        beginShape();
+        vertex(this.x, this.y - 210);
+        vertex(this.x + 130, this.y - 210);
+        vertex(this.x + 130, this.y - 50);
+        vertex(this.x + 30, this.y - 50);
+        vertex(this.x + 20, this.y - 25);
+        vertex(this.x + 10, this.y - 50);
+        vertex(this.x, this.y - 50);
+        endShape(CLOSE);
+
+        noStroke();
+        fill(this.color);
+        textStyle(BOLD);
+        textSize(12);
+        text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y - 190);
+        textStyle(NORMAL);
+        text("Danceability: ", this.x + 10, this.y - 150);
+        text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 130);
+        text("Loudness: ", this.x + 10, this.y - 110);
+        text("Speed: ", this.x + 10, this.y - 90);
+
+        fill(0);
+        stroke(this.c);
+        rect(this.x + 10, this.y - 80, 110, 20);
+        noStroke();
+        fill(this.c);
+        textSize(10);
+        text("Add to Favorites ", this.x + 30, this.y - 65);
+    }
+
 }
 
