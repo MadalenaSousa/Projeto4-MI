@@ -8,6 +8,7 @@ body {
     height: 100%;
     text-align: center;
     display: grid;
+    overflow: hidden;
 }
 
 body * {
@@ -19,6 +20,38 @@ canvas {
     z-index: -1;
     margin: 0;
     font-family: "Helvetica", sans-serif;
+}
+
+.login {
+    width: 40%;
+    height: fit-content;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-55%);
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+    padding: 3%;
+}
+
+.login .unit {
+    text-align: left;
+}
+
+.login .titulo {
+    font-size: 2vw;
+}
+
+.login .option {
+    margin: 0;
+}
+
+.login .option:hover {
+    font-weight: bolder;
+    color: black;
+    background-color: white;
+    border: 2px solid white;
 }
 
 .button {
@@ -35,56 +68,94 @@ canvas {
 }
 
 a {
-    display: inline-block;
     margin: 1%;
     text-align: center;
+    text-decoration: none;
+}
+
+.all-categories {
+    width: 80%;
+    height: 70%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-55%);
+}
+
+.category {
+    display: inline-block;
+    position: relative;
+    width: calc(100% / 4);
+    height: fit-content;
+    margin: 2%;
+    border: 2px solid white;
+    padding: 2%;
+}
+
+.category img {
+    width: 100%;
+}
+
+.all-categories .category:first-child .titulo {
+    color: cyan;
+}
+
+.all-categories .category:nth-child(2) .titulo {
+    color: yellow;
+}
+
+.all-categories .category:last-child .titulo {
+    color: magenta;
+}
+
+.category .playlist-room:hover {
+    background-color: cyan;
+    color: black;
+    font-weight: bolder;
+    border: 2px solid cyan;
+}
+
+.category .song-room:hover {
+    background-color: yellow;
+    color: black;
+    font-weight: bolder;
+    border: 2px solid yellow;
+}
+
+.category .artist-room:hover {
+    background-color: magenta;
+    color: black;
+    font-weight: bolder;
+    border: 2px solid magenta;
 }
 
 .option {
-    display: inline-block;
-    width: 20vw;
-    border: 1px solid white;
+    border: 2px solid white;
     color: white;
 
-    font-size: 24pt;
+    font-size: 1vw;
     font-weight: bolder;
 
     padding: 1%;
     margin: 3%;
 }
 
-.option:hover {
-    border: 1px solid cyan;
-    color: cyan;
-}
-
-.loader {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-    color: white;
-    top: 0;
-    left: 0;
-    text-align: center;
-    opacity: 0;
-    visibility: hidden;
-}
-
-.hidden {
-    animation: fade 5s;
-}
-
-@keyframes fade {
-    100% {
-        opacity: 1;
-        visibility: visible;
-    }
-}
-
 .titulo {
     font-weight: bolder;
-    font-size: 24px;
+    font-size: 1.5vw;
+    display: inline-block;
+}
+
+.leave {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    bottom: 2%;
+}
+
+.leave:hover {
+    color: yellow;
+    cursor: pointer;
 }
 
 .list-people, .list-songs, .list-playlists {
@@ -103,11 +174,70 @@ a {
     color: white;
     border: 2px solid white;
     height: 100%;
+    width: 20%;
     padding: 30px;
 }
 
-.menu div {
-    margin-bottom: 15px;
+h2 {
+    margin: 0;
+}
+
+.logout {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background-color: black;
+    border: 2px solid white;
+    width: 30%;
+    transform: translateY(-50%) translateX(-50%);
+    visibility: visible;
+}
+
+.logout .unit {
+    margin: 8%;
+    font-size: 12pt;
+}
+
+.logout .menu-option {
+    margin-bottom: 5%;
+}
+
+.share {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background-color: black;
+    border: 2px solid white;
+    width: 40%;
+    transform: translateY(-50%) translateX(-50%);
+    visibility: visible;
+}
+
+.share .unit {
+    margin: 5%;
+}
+
+.share .menu-option {
+    display: inline-block;
+    margin: 0.5%;
+}
+
+.close-share {
+    display: inline-block;
+    position: absolute;
+    right: 3%;
+    top: 5%;
+    cursor: pointer;
+}
+
+.close-share:hover {
+    color: yellow;
+    cursor: pointer;
+}
+
+.unit {
+    margin-bottom: 5%;
+    position: relative;
 }
 
 .menu-option {
@@ -159,11 +289,21 @@ a {
 }
 
 .song, .artist, .playlist {
-
     cursor: pointer;
+    display: inline-block;
 }
 
 .song:hover {
+    color: yellow;
+}
+
+.remove {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+}
+
+.remove:hover {
     color: yellow;
 }
 
@@ -173,4 +313,18 @@ a {
 
 .artist:hover {
     color: magenta;
+}
+
+.user .username {
+    display: inline-block;
+    margin-left: 10px;
+    transform: translateY(-50%);
+}
+
+.user img {
+    border-radius: 50%;
+}
+
+.hide {
+    visibility: hidden;
 }

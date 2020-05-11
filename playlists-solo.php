@@ -19,7 +19,6 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
     <script src="p5/addons/p5.sound.js"></script>
 
     <script src="https://cdn.deepstream.io/js/client/latest/ds.min.js"></script>
-
 </head>
 <body>
 
@@ -31,16 +30,14 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <div class="leave">Leave Room</div>
     </div>
     <div>
-        People in the Room
-        <div  class="list-people unit">
+        You are the only person in the room
+        <div class="list-people unit">
         </div>
         <div>
-            <!--div class="menu-option unit from-playlist">MY PLAYLIST SONGS</div-->
-            <div class="menu-option unit top-songs">MY TOP SONGS</div>
-            Choose a song to add to the artboard
-            <div class="list-songs unit">
+            Choose a playlist to add to the artboard
+            <div class="menu-option unit">MY PLAYLISTS</div>
+            <div class="list-playlists unit">
             </div>
-            <div class="menu-option unit">GENERATE PLAYLIST</div>
             <div class="menu-option unit share-button">SAVE ART AND SHARE</div>
         </div>
     </div>
@@ -86,7 +83,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         </div>
     </div>
 </div>
-
-<script src="js/tracks.js"></script>
+<script src="js/playlists-solo.js"></script>
 </body>
 </html>
+

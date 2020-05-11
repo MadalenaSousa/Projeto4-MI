@@ -3,14 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Music Taste Visualiser | Login</title>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <script src="p5/p5.js"></script>
+    <script src="p5/addons/p5.sound.js"></script>
 </head>
-<body style="background-color: black; height: 100vh">
+<body style="background-color: black; height: 100vh; overflow: hidden">
 
-<a href="php/loginSpotify.php" style="text-decoration: none; position: absolute; top: 50%; left: 50%; transform: translateY(-100%) translateX(-50%);">
-    <div style="color: white; height: 15vh; width: 30vw; text-align: center; font-size: 2vw; font-family: sans-serif; font-weight: bolder; border: 1px solid white">
-        <span style="position: relative; top: 30%;">Login to Your Spotify</span>
+<div class="login">
+    <div class="titulo unit">WELCOME!</div>
+    <div class="unit"><b>Welcome to Music Taste Visualizer!</b><br><br>
+        Here you can listen to music with your eyes!
+        Using shapes and lines and data provided by the spotify API,
+        we build shapes based on the characteristic of your favorite playlists,
+        songs and artists. You can also join your friends and create a personalized artboard
+        or you can even join the comun room and contribute to the artboard with you music!<br><br>
+        Login to your spotify to get started!
     </div>
-</a>
+    <a href="php/loginSpotify.php">
+        <div class="option">
+            Login to Your Spotify
+        </div>
+    </a>
+</div>
 
+<script src="js/login.js"></script>
 </body>
 </html>

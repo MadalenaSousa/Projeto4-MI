@@ -8,7 +8,7 @@ $user = $api->me();
 //Guardar dados dos top artistas do utilizador loggado
 
 $artists = $api->getMyTop("artists", ['limit' => 10]);
-$artistsFile = "artists-object.json";
+$artistsFile = $user->id . "-artists-object.json";
 $artistObject = array();
 $trackIds = array();
 
@@ -57,5 +57,11 @@ foreach ($artists->items as $artist) {
 $artistData = json_encode($artistObject);
 file_put_contents($artistsFile, $artistData);
 
-header('Location: ../artists.php');
+if($_GET['type'] == 'public') {
+    header('Location: ../artists.php');
+} else if($_GET['type'] == 'solo'){
+    header('Location: ../artists-solo.php');
+} else {
+    echo 'PAGE NOT AVAILABLE';
+}
 

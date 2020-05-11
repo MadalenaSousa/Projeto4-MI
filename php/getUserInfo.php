@@ -10,7 +10,7 @@ $api = $_SESSION['api_obj'];
 //Guardar dados do utilizador loggado
 
 $user = $api->me();
-$userFile = "user-object.json";
+$userFile = $user->id . "-user-object.json";
 
 $userObject = array(
     "name" => $user->display_name,
@@ -23,7 +23,7 @@ $userObject = array(
 );
 
 $userData = json_encode($userObject);
-$_SESSION['userData'] = $userData;
+$_SESSION['userData'] = $user->id;
 
 file_put_contents($userFile, $userData);
 

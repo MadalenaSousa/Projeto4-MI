@@ -1,5 +1,6 @@
 <?php
 session_start();
+$session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 ?>
 
 <!DOCTYPE html>
@@ -10,66 +11,75 @@ session_start();
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
+    <script type="text/javascript">
+        var userid = '<?php echo $session_value;?>';
+    </script>
+
     <script src="p5/p5.js"></script>
     <script src="p5/addons/p5.sound.js"></script>
 </head>
 <body style="background-color: black">
 
-<div>
-    PLAYLISTS ROOM
-    <a href="php/getPlaylistsInfo.php">
-        <div class="option">
-            PUBLIC ROOM
-        </div>
-    </a>
-    <a href="#">
-        <div class="option">
-            WITH FRIENDS
-        </div>
-    </a>
-    <a href="php/getPlaylistsInfo.php">
-        <div class="option">
-            ONLY ME
-        </div>
-    </a>
-</div>
+<div class="all-categories">
+    <div class="category">
+        <div class="titulo unit">PLAYLISTS ROOM</div>
+        <div><img src="icons/playlist-room.png"></div>
+        <a href="php/getPlaylistsInfo.php?type=public">
+            <div class="option playlist-room">
+                PUBLIC ROOM
+            </div>
+        </a>
+        <a href="php/getPlaylistsInfo.php?type=friends">
+            <div class="option playlist-room">
+                WITH FRIENDS
+            </div>
+        </a>
+        <a href="php/getPlaylistsInfo.php?type=solo">
+            <div class="option playlist-room">
+                ONLY ME
+            </div>
+        </a>
+    </div>
 
-<div>
-    SONGS ROOM
-    <a href="php/getTracksInfo.php">
-        <div class="option">
-            PUBLIC ROOM
-        </div>
-    </a>
-    <a href="#">
-        <div class="option">
-            WITH FRIENDS
-        </div>
-    </a>
-    <a href="php/getTracksInfo.php">
-        <div class="option">
-            ONLY ME
-        </div>
-    </a>
-</div>
+    <div class="category">
+        <div class="titulo unit">SONGS ROOM</div>
+        <div><img src="icons/song-room.png"></div>
+        <a href="php/getTracksInfo.php?type=public">
+            <div class="option song-room">
+                PUBLIC ROOM
+            </div>
+        </a>
+        <a href="php/getTracksInfo.php?type=friends">
+            <div class="option song-room">
+                WITH FRIENDS
+            </div>
+        </a>
+        <a href="php/getTracksInfo.php?type=solo">
+            <div class="option song-room">
+                ONLY ME
+            </div>
+        </a>
+    </div>
 
-<div>
-    ARTISTS ROOM
-    <a href="php/getArtistsInfo.php">
-        <div class="option">
-            PUBLIC ROOM
-        </div>
-    </a>
-    <a href="#">
-        <div class="option">
-            WITH FRIENDS
-        </div>
-    </a>
-    <a href="php/getArtistsInfo.php">
-        <div class="option">
-            ONLY ME
-        </div>
-    </a>
+    <div class="category">
+        <div class="titulo unit">ARTISTS ROOM</div>
+        <div><img src="icons/artist-room.png"></div>
+        <a href="php/getArtistsInfo.php?type=public">
+            <div class="option artist-room">
+                PUBLIC ROOM
+            </div>
+        </a>
+        <a href="php/getArtistsInfo.php?type=friends">
+            <div class="option artist-room">
+                WITH FRIENDS
+            </div>
+        </a>
+        <a href="php/getArtistsInfo.php?type=solo">
+            <div class="option artist-room">
+                ONLY ME
+            </div>
+        </a>
+    </div>
 </div>
 
 </body>

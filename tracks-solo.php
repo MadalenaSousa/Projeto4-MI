@@ -31,12 +31,12 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <div class="leave">Leave Room</div>
     </div>
     <div>
-        People in the Room
+        You are the only person in the room
         <div  class="list-people unit">
         </div>
         <div>
-            <!--div class="menu-option unit from-playlist">MY PLAYLIST SONGS</div-->
-            <div class="menu-option unit top-songs">MY TOP SONGS</div>
+            <div class="menu-option unit">MY PLAYLIST SONGS</div>
+            <div class="menu-option unit">MY TOP SONGS</div>
             Choose a song to add to the artboard
             <div class="list-songs unit">
             </div>
@@ -87,6 +87,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
     </div>
 </div>
 
-<script src="js/tracks.js"></script>
+<script src="js/tracks-solo.js"></script>
 </body>
 </html>
+
