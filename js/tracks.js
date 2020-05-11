@@ -6,6 +6,14 @@ let remove;
 
 let allLoudness = [];
 
+let allBarsTotal = [];
+let allBeatsTotal = [];
+let allTatumsTotal = [];
+
+let allBarsDuration = [];
+let allBeatsDuration = [];
+let allTatumsDuration = [];
+
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
 let personRecord;
@@ -92,7 +100,9 @@ function setup() {
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
                     addNewFlower(recordsOnList[i].get('song'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
-                        recordsOnList[i].get('energy'), recordsOnList[i].get('energy'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'), recordsOnList[i].get('user'));
+                        recordsOnList[i].get('energy'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'), recordsOnList[i].get('user'),
+                        recordsOnList[i].get('nBars'), recordsOnList[i].get('nBeats'), recordsOnList[i].get('nTatums'),
+                        recordsOnList[i].get('rBars'), recordsOnList[i].get('rBeats'), recordsOnList[i].get('rTatums'), recordsOnList[i].get('mode'));
                 });
             }
         }
@@ -100,6 +110,14 @@ function setup() {
 
     for(let i = 0; i < totalSongs; i++) {
         allLoudness[i] = getAudioFeatures(i).loudness;
+
+        allBarsTotal[i] = getAudioAnalysis(i).bars.total;
+        allBeatsTotal[i] = getAudioAnalysis(i).beats.total;
+        allTatumsTotal[i] = getAudioAnalysis(i).tatums.total;
+
+        allBarsDuration[i] = getAudioAnalysis(i).bars.average_duration;
+        allBeatsDuration[i] = getAudioAnalysis(i).beats.average_duration;
+        allTatumsDuration[i] = getAudioAnalysis(i).tatums.average_duration;
     }
 
     for (let i = 0; i < totalSongs; i++) {
@@ -112,7 +130,6 @@ function setup() {
         });
 
         document.querySelectorAll(".song")[i].addEventListener("click", function () {
-            console.log("Clicou na música " + songs[i].name);
             client.record.has(songs[i].name, function (error, hasRecord) {
                 if (hasRecord === false) {
                     console.log('doesnt have record with name: ' + songs[i].name + ", can create it");
@@ -121,15 +138,26 @@ function setup() {
                         user: user.name,
                         song: songs[i].name,
                         x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
-                        y: map(allLoudness[i], min(allLoudness), max(allLoudness), 0, height),
+                        y: map(allLoudness[i], min(allLoudness), max(allLoudness), height, 0),
                         raio: (songs[i].duration / 3),
                         color: map(getAudioFeatures(i).positivity, 0, 1, 0, 255),
                         energy: getAudioFeatures(i).energy * 5,
                         artist: songs[i].artists,
-                        url: songs[i].preview_url
+                        url: songs[i].preview_url,
+                        nBars: getAudioAnalysis(i).bars.total / 30, //ISTO TÁ MUITA FEIO -> CORRIGIR RAPIDEX
+                        nBeats: getAudioAnalysis(i).beats.total / 50,
+                        nTatums: getAudioAnalysis(i).tatums.total / 50,
+                        rBars: getAudioAnalysis(i).bars.average_duration * 10,
+                        rBeats: getAudioAnalysis(i).beats.average_duration * 120,
+                        rTatums: getAudioAnalysis(i).tatums.average_duration * 200,
+                        mode: songs[i].mode
                     });
 
                     recordList.addEntry(songs[i].name);
+
+                    record[i].whenReady(function () {
+                        console.log(record[i]);
+                    });
 
                     console.log("NOVA LISTA: " + recordList.getEntries());
                 } else {
@@ -163,8 +191,8 @@ function setup() {
     });
 }
 
-function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist, owner) {
-    newFlower = new flowerSong(name, x, y, raio, color, shakeX, shakeY, url, artist, owner);
+function addNewFlower(name, x, y, raio, color, energy, url, artist, owner, nBars, nBeats, nTatums, rBars, rBeats, rTatums, mode) {
+    newFlower = new flowerSong(name, x, y, raio, color, energy, url, artist, owner, nBars, nBeats, nTatums, rBars, rBeats, rTatums, mode);
     flowers.push(newFlower);
     console.log("LISTA DE FLORES ATUAL: " + flowers);
 }
@@ -318,6 +346,10 @@ function getAudioFeatures(index) {
     return songs[index].audio_features;
 }
 
+function getAudioAnalysis(index) {
+    return songs[index].audio_analysis;
+}
+
 class flowerSong {
     c;
     randomX;
@@ -325,16 +357,23 @@ class flowerSong {
     musicOn;
     sound;
 
-    constructor(name, x, y, raio, color, shakeX, shakeY, url, artist, owner) {
+    constructor(name, x, y, raio, color, energy, url, artist, owner, nBars, nBeats, nTatums, rBars, rBeats, rTatums, mode) {
         this.name = name;
         this.x = x;
         this.y = y;
         this.raio = raio;
         this.color  = color;
-        this.shakeX = shakeX;
-        this.shakeY = shakeY;
+        this.shakeX = energy;
+        this.shakeY = energy;
         this.artist = artist;
         this.owner = owner;
+        this.nBars = nBars;
+        this.nBeats = nBeats;
+        this.nTatums = nTatums;
+        this.rBars = rBars;
+        this.rBeats = rBeats;
+        this.rTatums = rTatums;
+        this.mode = mode;
 
         this.sound = new Audio(url);
         this.musicOn = false;
@@ -358,9 +397,7 @@ class flowerSong {
         }
 
         stroke(this.c);
-        for (let i = 0; i < 4; i++) {
-            this.flor(this.x + this.randomX, this.y + this.randomY, 10, 60-i*15, 65-i*15);
-        }
+        this.flor(this.x + this.randomX, this.y + this.randomY, this.nBars, this.nBeats, this.nTatums, this.rBars, this.rBeats, this.rTatums);
 
         noStroke();
         fill(this.c);
@@ -382,16 +419,71 @@ class flowerSong {
         }
     }
 
-    flor(x, y, nVert, rG, rP) {
-        strokeWeight(2);
-        noFill();
-        let alpha = TWO_PI/nVert;
-        beginShape();
-            for (let i = 0; i <= nVert+1; i++) {
-            curveVertex(x+rG*cos(i*alpha), y+rG*sin(i*alpha));
-            curveVertex(x+rP*cos(i*alpha+alpha/2), y+rP*sin(i*alpha+alpha/2));
+    flor(x, y, nBars, nBeats, nTatums, rBars, rBeats, rTatums, mode) {
+        strokeWeight(1);
+        fill(0);
+
+
+
+        let delta = -TWO_PI/(nBeats*2);
+        let rPBeats = rBeats/2;
+        for(let i = 0; i < nBeats*2; i++){
+            let anchor1x = this.x;
+            let anchor1y = this.y;
+            let ctrl1x = this.x + rPBeats * cos((i-1)*delta);
+            let ctrl1y = this.y + rPBeats * sin((i-1)*delta);
+            let ctrl2x = this.x + rPBeats * cos((i+1)*delta);
+            let ctrl2y = this.y + rPBeats * sin((i+1)*delta);
+            let anchor2x = this.x + rBeats * cos(i*delta);
+            let anchor2y = this.y + rBeats * sin(i*delta);
+
+            if(i%2 === 0) {
+                bezier(anchor1x, anchor1y, ctrl1x, ctrl1y, ctrl1x, ctrl1y, anchor2x, anchor2y);
+                bezier(anchor1x, anchor1y, ctrl2x, ctrl2y, ctrl2x, ctrl2y, anchor2x, anchor2y);
             }
-        endShape();
+        }
+
+        let echo = -TWO_PI/(nTatums*2);
+        let rPTatums = rTatums/2;
+        for(let i = 0; i < nTatums*2; i++){
+            let anchor1x = this.x;
+            let anchor1y = this.y;
+            let ctrl1x = this.x + rPTatums * cos((i-1)*echo);
+            let ctrl1y = this.y + rPTatums * sin((i-1)*echo);
+            let ctrl2x = this.x + rPTatums * cos((i+1)*echo);
+            let ctrl2y = this.y + rPTatums * sin((i+1)*echo);
+            let anchor2x = this.x + rTatums * cos(i*echo);
+            let anchor2y = this.y + rTatums * sin(i*echo);
+
+            if(i%2 === 0) {
+                bezier(anchor1x, anchor1y, ctrl1x, ctrl1y, ctrl1x, ctrl1y, anchor2x, anchor2y);
+                bezier(anchor1x, anchor1y, ctrl2x, ctrl2y, ctrl2x, ctrl2y, anchor2x, anchor2y);
+            }
+        }
+
+        let alpha = -TWO_PI/(nBars*2);
+        let rPBars = rBars/2;
+        for(let i = 0; i < nBars*2; i++){
+            let anchor1x = this.x;
+            let anchor1y = this.y;
+            let ctrl1x = this.x + rPBars * cos((i-1)*alpha);
+            let ctrl1y = this.y + rPBars * sin((i-1)*alpha);
+            let ctrl2x = this.x + rPBars * cos((i+1)*alpha);
+            let ctrl2y = this.y + rPBars * sin((i+1)*alpha);
+            let anchor2x = this.x + rBars * cos(i*alpha);
+            let anchor2y = this.y + rBars * sin(i*alpha);
+
+            if(i%2 === 0) {
+                bezier(anchor1x, anchor1y, ctrl1x, ctrl1y, ctrl1x, ctrl1y, anchor2x, anchor2y);
+                bezier(anchor1x, anchor1y, ctrl2x, ctrl2y, ctrl2x, ctrl2y, anchor2x, anchor2y);
+            }
+        }
+
+        if(this.mode === 1) {
+            line(this.x, this.y, this.x, height);
+        } else if(this.mode === 0){
+            line(this.x, this.y, this.x, 0);
+        }
     }
 
     balao() {
@@ -417,7 +509,7 @@ class flowerSong {
         text("Energy: " + map(this.shakeX, 0, 5, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 170);
         text("Danceability: ", this.x + 10, this.y - 150);
         text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 130);
-        text("Loudness: ", this.x + 10, this.y - 110);
+        text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 110);
         text("Speed: ", this.x + 10, this.y - 90);
 
         fill(0);
