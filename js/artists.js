@@ -6,6 +6,7 @@ let followers = [];
 let speed = [];
 let positivity = [];
 let danceability = [];
+let loudness=[];
 let remove;
 
 const client = new DeepstreamClient('localhost:6020');
@@ -84,6 +85,7 @@ function setup() {
         followers.push(artists[i].followers.total);
         speed.push(artists[i].top_tracks_average_features.speed);
         positivity.push(artists[i].top_tracks_average_features.positivity);
+        loudness.push(artists[i].top_tracks_average_features.loudness);
 
     }
 
@@ -126,9 +128,9 @@ function setup() {
                         user: user.name,
                         artist: artists[i].name,
                         color: map(artists[i].popularity, min(popularity), max(popularity), 0, 255),
-                        divisoes: map(artists[i].top_tracks_average_features.danceability,  min(danceability), max(danceability), 3, 10),
+                        divisoes: map(artists[i].top_tracks_average_features.danceability, min(danceability), max(danceability), 3, 10),
                         largura: map(artists[i].followers.total, min(followers), max(followers), 100, 400),
-                        x: map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 125, windowWidth - (windowWidth / 26)-375),
+                        x: map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 125, windowWidth - (windowWidth / 26) - 375),
                         y: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 250, windowHeight - 50)
 
                     });
@@ -313,7 +315,13 @@ class waveArtist {
 
 
     display() {
+        this.onda();
+        if (dist(mouseX, mouseY, this.x, this.y - (this.largura / 3)) <= this.largura / 6) {
+            this.balao();
+        }
+    }
 
+    onda() {
         stroke(255, 255 - this.color, 255);
         fill(0);
         strokeWeight(2);
@@ -331,8 +339,6 @@ class waveArtist {
         bezierVertex((this.x - (this.largura / 2) + ((this.divisoes) * (((3 / 10) * this.largura) / this.divisoes))) - (this.largura * (1 / 12)), this.y - 0, (this.x - this.largura) + ((this.divisoes) * (((3 / 5) * this.largura) / this.divisoes)), this.y - 0, (this.x - this.largura) + ((this.divisoes) * (((3 / 5) * this.largura) / this.divisoes)), this.y - 0);
         vertex(this.x - this.largura, this.y - 0);
         endShape();
-
-
 
 
         noFill();
@@ -354,39 +360,43 @@ class waveArtist {
         text(this.name, (width - (width / 26)) - (this.name.length * 6.5), this.y - 20, 136);
 
     }
+
     balao() {
-        fill(0);
-        strokeWeight(2);
-        stroke(this.color);
-        beginShape();
-        vertex(this.x, this.y - 210);
-        vertex(this.x + 130, this.y - 210);
-        vertex(this.x + 130, this.y - 50);
-        vertex(this.x + 30, this.y - 50);
-        vertex(this.x + 20, this.y - 25);
-        vertex(this.x + 10, this.y - 50);
-        vertex(this.x, this.y - 50);
-        endShape(CLOSE);
+        for (let i = 0; i < totalArtists; i++) {
 
-        noStroke();
-        fill(this.color);
-        textStyle(BOLD);
-        textSize(12);
-        text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y - 190);
-        textStyle(NORMAL);
-        text("Danceability: ", this.x + 10, this.y - 150);
-        text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 130);
-        text("Loudness: ", this.x + 10, this.y - 110);
-        text("Speed: ", this.x + 10, this.y - 90);
+            fill(0);
+            strokeWeight(2);
+            stroke(255, 255 - this.color, 255);
+            beginShape();
+            vertex(this.x - 0, this.y - ((2 * (this.largura / 2)) / 3) - 180);
+            vertex(this.x + 130, this.y - ((2 * (this.largura / 2)) / 3) - 180);
+            vertex(this.x + 130, this.y - ((2 * (this.largura / 2)) / 3) - 20);
+            vertex(this.x + 30, this.y - ((2 * (this.largura / 2)) / 3)-20);
+            vertex(this.x, this.y - ((2 * (this.largura / 2)) / 3));
+            vertex(this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 20);
+            vertex(this.x, this.y - ((2 * (this.largura / 2)) / 3) - 20);
+            endShape(CLOSE);
+            noStroke();
 
-        fill(0);
-        stroke(this.c);
-        rect(this.x + 10, this.y - 80, 110, 20);
-        noStroke();
-        fill(this.c);
-        textSize(10);
-        text("Add to Favorites ", this.x + 30, this.y - 65);
+            fill(255, 255 - this.color, 255);
+            textStyle(BOLD);
+            textSize(12);
+            text("Added by ", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 155);
+            textStyle(NORMAL);
+            text("Danceability: " + map(positivity[i], 0, 1, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
+            text("Positivity: " + map(positivity[i], 0, 1, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
+            text("Loudness: " + map(loudness[i], -60, 0, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
+            text("Speed: " + map(speed[i], 0, 200, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
+
+            fill(0);
+            stroke(255, 255 - this.color, 255);
+            rect(this.x + 10, (this.y - ((2 * (this.largura / 2)) / 3)) - 50, 110, 20);
+            noStroke();
+            fill(255, 255 - this.color, 255);
+            textSize(10);
+            text("Add to Favorites ", this.x + 30, (this.y - ((2 * (this.largura / 2)) / 3)) - 37);
+        }
+
     }
-
 }
 
