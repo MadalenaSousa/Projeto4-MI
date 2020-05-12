@@ -83,7 +83,8 @@ foreach ($songs->items as $song) {
         "popularity" => $song->popularity,
         "preview_url" => $song->preview_url,
         "duration" => $song->duration_ms/1000,
-        "mode" => $trackAnalysis->track->mode
+        "mode" => $trackAnalysis->track->mode,
+        "type" => $trackAnalysis->track->key
     );
 
     array_push($topSongObject, $singleTopSong);

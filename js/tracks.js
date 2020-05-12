@@ -3,6 +3,7 @@ let fromPlaylist = false;
 let flowers = [];
 let newFlower;
 let remove;
+let check = false;
 
 let allLoudness = [];
 
@@ -102,7 +103,7 @@ function setup() {
                     addNewFlower(recordsOnList[i].get('song'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
                         recordsOnList[i].get('energy'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'), recordsOnList[i].get('user'),
                         recordsOnList[i].get('nBars'), recordsOnList[i].get('nBeats'), recordsOnList[i].get('nTatums'),
-                        recordsOnList[i].get('rBars'), recordsOnList[i].get('rBeats'), recordsOnList[i].get('rTatums'), recordsOnList[i].get('mode'));
+                        recordsOnList[i].get('rBars'), recordsOnList[i].get('rBeats'), recordsOnList[i].get('rTatums'), recordsOnList[i].get('mode'), recordsOnList[i].get('type'));
                 });
             }
         }
@@ -144,13 +145,14 @@ function setup() {
                         energy: getAudioFeatures(i).energy * 5,
                         artist: songs[i].artists,
                         url: songs[i].preview_url,
-                        nBars: getAudioAnalysis(i).bars.total / 30, //ISTO TÁ MUITA FEIO -> CORRIGIR RAPIDEX
-                        nBeats: getAudioAnalysis(i).beats.total / 50,
-                        nTatums: getAudioAnalysis(i).tatums.total / 50,
-                        rBars: getAudioAnalysis(i).bars.average_duration * 10,
-                        rBeats: getAudioAnalysis(i).beats.average_duration * 120,
-                        rTatums: getAudioAnalysis(i).tatums.average_duration * 200,
-                        mode: songs[i].mode
+                        nBars: map(allBarsTotal[i], min(allBarsTotal), max(allBarsTotal), 3, 10),
+                        nBeats: map(allBeatsTotal[i], min(allBeatsTotal), max(allBeatsTotal), 3, 10),
+                        nTatums: map(allTatumsTotal[i], min(allTatumsTotal), max(allTatumsTotal), 3, 10),
+                        rBars: map(allBarsDuration[i], min(allBarsDuration), max(allBarsDuration), 50, 80),
+                        rBeats: map(allBeatsDuration[i], min(allBeatsDuration), max(allBeatsDuration), 40, 70),
+                        rTatums: map(allTatumsDuration[i], min(allTatumsDuration), max(allTatumsDuration), 30, 60),
+                        mode: songs[i].mode,
+                        type: songs[i].type
                     });
 
                     recordList.addEntry(songs[i].name);
@@ -191,8 +193,8 @@ function setup() {
     });
 }
 
-function addNewFlower(name, x, y, raio, color, energy, url, artist, owner, nBars, nBeats, nTatums, rBars, rBeats, rTatums, mode) {
-    newFlower = new flowerSong(name, x, y, raio, color, energy, url, artist, owner, nBars, nBeats, nTatums, rBars, rBeats, rTatums, mode);
+function addNewFlower(name, x, y, raio, color, energy, url, artist, owner, nBars, nBeats, nTatums, rBars, rBeats, rTatums, mode, type) {
+    newFlower = new flowerSong(name, x, y, raio, color, energy, url, artist, owner, nBars, nBeats, nTatums, rBars, rBeats, rTatums, mode, type);
     flowers.push(newFlower);
     console.log("LISTA DE FLORES ATUAL: " + flowers);
 }
@@ -357,7 +359,7 @@ class flowerSong {
     musicOn;
     sound;
 
-    constructor(name, x, y, raio, color, energy, url, artist, owner, nBars, nBeats, nTatums, rBars, rBeats, rTatums, mode) {
+    constructor(name, x, y, raio, color, energy, url, artist, owner, nBars, nBeats, nTatums, rBars, rBeats, rTatums, mode, type) {
         this.name = name;
         this.x = x;
         this.y = y;
@@ -374,6 +376,7 @@ class flowerSong {
         this.rBeats = rBeats;
         this.rTatums = rTatums;
         this.mode = mode;
+        this.type = type;
 
         this.sound = new Audio(url);
         this.musicOn = false;
@@ -384,6 +387,7 @@ class flowerSong {
             this.c = color(255, 255, 255 - this.color);
             this.randomX = random(-this.shakeX, this.shakeX);
             this.randomY = random(-this.shakeY, this.shakeY);
+            console.log("entrou");
         } else {
             this.c = color(255);
             this.randomX = 0;
@@ -397,7 +401,7 @@ class flowerSong {
         }
 
         stroke(this.c);
-        this.flor(this.x + this.randomX, this.y + this.randomY, this.nBars, this.nBeats, this.nTatums, this.rBars, this.rBeats, this.rTatums);
+        this.flor(this.x + this.randomX, this.y + this.randomY, this.nBars, this.nBeats, this.nTatums, this.rBars, this.rBeats, this.rTatums, this.mode, this.type);
 
         noStroke();
         fill(this.c);
@@ -419,70 +423,85 @@ class flowerSong {
         }
     }
 
-    flor(x, y, nBars, nBeats, nTatums, rBars, rBeats, rTatums, mode) {
-        strokeWeight(1);
+    flor(x, y, nBars, nBeats, nTatums, rBars, rBeats, rTatums, mode, type) {
+        strokeWeight(2);
         fill(0);
 
-
-
-        let delta = -TWO_PI/(nBeats*2);
-        let rPBeats = rBeats/2;
-        for(let i = 0; i < nBeats*2; i++){
-            let anchor1x = this.x;
-            let anchor1y = this.y;
-            let ctrl1x = this.x + rPBeats * cos((i-1)*delta);
-            let ctrl1y = this.y + rPBeats * sin((i-1)*delta);
-            let ctrl2x = this.x + rPBeats * cos((i+1)*delta);
-            let ctrl2y = this.y + rPBeats * sin((i+1)*delta);
-            let anchor2x = this.x + rBeats * cos(i*delta);
-            let anchor2y = this.y + rBeats * sin(i*delta);
-
-            if(i%2 === 0) {
-                bezier(anchor1x, anchor1y, ctrl1x, ctrl1y, ctrl1x, ctrl1y, anchor2x, anchor2y);
-                bezier(anchor1x, anchor1y, ctrl2x, ctrl2y, ctrl2x, ctrl2y, anchor2x, anchor2y);
-            }
-        }
-
-        let echo = -TWO_PI/(nTatums*2);
-        let rPTatums = rTatums/2;
-        for(let i = 0; i < nTatums*2; i++){
-            let anchor1x = this.x;
-            let anchor1y = this.y;
-            let ctrl1x = this.x + rPTatums * cos((i-1)*echo);
-            let ctrl1y = this.y + rPTatums * sin((i-1)*echo);
-            let ctrl2x = this.x + rPTatums * cos((i+1)*echo);
-            let ctrl2y = this.y + rPTatums * sin((i+1)*echo);
-            let anchor2x = this.x + rTatums * cos(i*echo);
-            let anchor2y = this.y + rTatums * sin(i*echo);
-
-            if(i%2 === 0) {
-                bezier(anchor1x, anchor1y, ctrl1x, ctrl1y, ctrl1x, ctrl1y, anchor2x, anchor2y);
-                bezier(anchor1x, anchor1y, ctrl2x, ctrl2y, ctrl2x, ctrl2y, anchor2x, anchor2y);
-            }
-        }
-
-        let alpha = -TWO_PI/(nBars*2);
-        let rPBars = rBars/2;
-        for(let i = 0; i < nBars*2; i++){
-            let anchor1x = this.x;
-            let anchor1y = this.y;
-            let ctrl1x = this.x + rPBars * cos((i-1)*alpha);
-            let ctrl1y = this.y + rPBars * sin((i-1)*alpha);
-            let ctrl2x = this.x + rPBars * cos((i+1)*alpha);
-            let ctrl2y = this.y + rPBars * sin((i+1)*alpha);
-            let anchor2x = this.x + rBars * cos(i*alpha);
-            let anchor2y = this.y + rBars * sin(i*alpha);
-
-            if(i%2 === 0) {
-                bezier(anchor1x, anchor1y, ctrl1x, ctrl1y, ctrl1x, ctrl1y, anchor2x, anchor2y);
-                bezier(anchor1x, anchor1y, ctrl2x, ctrl2y, ctrl2x, ctrl2y, anchor2x, anchor2y);
-            }
-        }
-
-        if(this.mode === 1) {
+        if(mode === 1) {
             line(this.x, this.y, this.x, height);
-        } else if(this.mode === 0){
+        } else if(mode === 0){
             line(this.x, this.y, this.x, 0);
+        }
+
+        if(type === 0 || type === 1) {
+            let alpha = -TWO_PI/(nBars*2);
+            let rPBars = rBars/2;
+            let theta = -TWO_PI/(nBeats*2);
+            let rPBeats = rBeats/8;
+            for(let i = 0; i < nBars*2; i++) {
+                let xB = this.x  + rPBars * cos(i*alpha);
+                let yB = this.y  + rPBars * sin(i*alpha);
+                line(this.x, this.y, xB, yB);
+
+                for(let z = 0; z < nBeats*2; z++) {
+                    let xb = xB  + rPBeats * cos(z*theta);
+                    let yb = yB  + rPBeats * sin(z*theta);
+                    line(xB, yB, xb, yb);
+                }
+            }
+        } else if(type === 2 || type === 3) {
+            let alpha = -TWO_PI / (nBars * 2);
+            let rPBars = rBars / 2;
+            for (let i = 0; i < nBars * 2; i++) {
+                let anchor1x = this.x;
+                let anchor1y = this.y;
+                let ctrl1x = this.x + rPBars * cos((i - 1) * alpha);
+                let ctrl1y = this.y + rPBars * sin((i - 1) * alpha);
+                let ctrl2x = this.x + rPBars * cos((i + 1) * alpha);
+                let ctrl2y = this.y + rPBars * sin((i + 1) * alpha);
+                let anchor2x = this.x + rBars * cos(i * alpha);
+                let anchor2y = this.y + rBars * sin(i * alpha);
+
+                if (i % 2 === 0) {
+                    bezier(anchor1x, anchor1y, ctrl1x, ctrl1y, ctrl1x, ctrl1y, anchor2x, anchor2y);
+                    bezier(anchor1x, anchor1y, ctrl2x, ctrl2y, ctrl2x, ctrl2y, anchor2x, anchor2y);
+                }
+            }
+
+            let delta = -TWO_PI / (nBeats * 2);
+            let rPBeats = rBeats / 2;
+            for (let i = 0; i < nBeats * 2; i++) {
+                let anchor1x = this.x;
+                let anchor1y = this.y;
+                let anchor2x = this.x + rBeats * cos(i * delta);
+                let anchor2y = this.y + rBeats * sin(i * delta);
+
+                let ctrl1x = this.x + rPBeats * cos((i - 1) * delta);
+                let ctrl1y = this.y + rPBeats * sin((i - 1) * delta);
+                let ctrl2x = this.x + rPBeats * cos((i + 1) * delta);
+                let ctrl2y = this.y + rPBeats * sin((i + 1) * delta);
+
+
+                if (i % 2 === 0) {
+                    bezier(anchor1x, anchor1y, ctrl1x, ctrl1y, ctrl1x, ctrl1y, anchor2x, anchor2y);
+                    bezier(anchor1x, anchor1y, ctrl2x, ctrl2y, ctrl2x, ctrl2y, anchor2x, anchor2y);
+                }
+            }
+        } else if(type === 4) {
+        } else if(type === 5 || type === 6) {
+        } else if(type === 7 || type === 8) {
+        } else if(type === 9 || type === 10) {
+            let k = 5 / 3;
+            beginShape();
+            fill(0);
+            for (var a = 0; a < TWO_PI * 3; a += 0.02) {
+                var r = rBars * 1.5 * cos(k * a);
+                var xB = this.x + r * cos(a);
+                var yB = this.y + r * sin(a);
+                vertex(xB, yB);
+            }
+            endShape(CLOSE);
+        } else if(type === 11) {
         }
     }
 
