@@ -6,7 +6,10 @@ let followers = [];
 let speed = [];
 let positivity = [];
 let danceability = [];
+let loudness = [];
+let energy = [];
 let remove;
+let alfa = 0;
 
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
@@ -84,6 +87,8 @@ function setup() {
         followers.push(artists[i].followers.total);
         speed.push(artists[i].top_tracks_average_features.speed);
         positivity.push(artists[i].top_tracks_average_features.positivity);
+        loudness.push(artists[i].top_tracks_average_features.loudness);
+        energy.push(artists[i].top_tracks_average_features.energy);
 
     }
 
@@ -101,7 +106,7 @@ function setup() {
             for (let i = 0; i < recordList.getEntries().length; i++) {
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
-                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), recordsOnList[i].get('x'), recordsOnList[i].get('y'));
+                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('shake'));
                 });
             }
         }
@@ -126,10 +131,11 @@ function setup() {
                         user: user.name,
                         artist: artists[i].name,
                         color: map(artists[i].popularity, min(popularity), max(popularity), 0, 255),
-                        divisoes: map(artists[i].top_tracks_average_features.danceability,  min(danceability), max(danceability), 3, 10),
+                        divisoes: map(artists[i].top_tracks_average_features.danceability, min(danceability), max(danceability), 3, 10),
                         largura: map(artists[i].followers.total, min(followers), max(followers), 100, 400),
-                        x: map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 125, windowWidth - (windowWidth / 26)-375),
-                        y: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 250, windowHeight - 50)
+                        x: map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 125, windowWidth - (windowWidth / 26) - 375),
+                        y: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 250, windowHeight - 50),
+                        shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 0.1, 0.6)
 
                     });
 
@@ -168,8 +174,8 @@ function setup() {
     });
 }
 
-function addNewWave(name, color, divisoes, largura, x, y) {
-    newWave = new waveArtist(name, color, divisoes, largura, x, y);
+function addNewWave(name, color, divisoes, largura, x, y, shake) {
+    newWave = new waveArtist(name, color, divisoes, largura, x, y, shake);
     waves.push(newWave);
     console.log(waves);
 }
@@ -290,8 +296,9 @@ function closeArtistRoomConnection() {
 }
 
 function draw() {
-    background(0);
 
+    background(0);
+    alfa = alfa + PI / 56;
     if (waves.length > 0) {
         for (let i = 0; i < waves.length; i++) {
             waves[i].display();
@@ -301,16 +308,30 @@ function draw() {
 
 
 class waveArtist {
-    constructor(name, color, divisoes, largura, x, y) {
+
+    constructor(name, color, divisoes, largura, x, y, shake) {
         this.name = name;
         this.color = color;
         this.divisoes = divisoes;
         this.largura = largura;
         this.x = x;
         this.y = y;
+        this.shake = shake;
     }
 
+
     display() {
+
+        this.onda();
+        if (dist(mouseX, mouseY, this.x, this.y - (this.largura / 3)) <= this.largura / 6) {
+            this.balao();
+            this.y = this.y + this.shake * sin(alfa);
+            this.x = this.x + this.shake * cos(alfa);
+        }
+
+    }
+
+    onda() {
         stroke(255, 255 - this.color, 255);
         fill(0);
         strokeWeight(2);
@@ -328,6 +349,8 @@ class waveArtist {
         bezierVertex((this.x - (this.largura / 2) + ((this.divisoes) * (((3 / 10) * this.largura) / this.divisoes))) - (this.largura * (1 / 12)), this.y - 0, (this.x - this.largura) + ((this.divisoes) * (((3 / 5) * this.largura) / this.divisoes)), this.y - 0, (this.x - this.largura) + ((this.divisoes) * (((3 / 5) * this.largura) / this.divisoes)), this.y - 0);
         vertex(this.x - this.largura, this.y - 0);
         endShape();
+
+
         noFill();
 
         for (let i = 0; i < this.divisoes; i++) {
@@ -344,7 +367,46 @@ class waveArtist {
         textAlign(LEFT);
         noStroke();
         fill(255, 255 - this.color, 255);
-        text(this.name, (width - (width / 26)) - (this.name.length * 6.5), this.y - 20, 136);
+//        text(this.name, (this.x-this.largura - (this.name.length * 6.5)), this.y - 10, 136);
+        text(this.name, (this.x - this.largura / 4), this.y - 10, 136);
+
+    }
+
+    balao() {
+        for (let i = 0; i < totalArtists; i++) {
+
+            fill(0);
+            strokeWeight(2);
+            stroke(255, 255 - this.color, 255);
+            beginShape();
+            vertex(this.x - 0, this.y - ((2 * (this.largura / 2)) / 3) - 180);
+            vertex(this.x + 130, this.y - ((2 * (this.largura / 2)) / 3) - 180);
+            vertex(this.x + 130, this.y - ((2 * (this.largura / 2)) / 3) - 20);
+            vertex(this.x + 30, this.y - ((2 * (this.largura / 2)) / 3) - 20);
+            vertex(this.x, this.y - ((2 * (this.largura / 2)) / 3));
+            vertex(this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 20);
+            vertex(this.x, this.y - ((2 * (this.largura / 2)) / 3) - 20);
+            endShape(CLOSE);
+            noStroke();
+
+            fill(255, 255 - this.color, 255);
+            textStyle(BOLD);
+            textSize(12);
+            text("Added by ", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 155);
+            textStyle(NORMAL);
+            text("Danceability: " + map(positivity[i], 0, 1, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
+            text("Positivity: " + map(positivity[i], 0, 1, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
+            text("Loudness: " + map(loudness[i], -60, 0, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
+            text("Speed: " + map(speed[i], 0, 200, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
+
+            fill(0);
+            stroke(255, 255 - this.color, 255);
+            rect(this.x + 10, (this.y - ((2 * (this.largura / 2)) / 3)) - 50, 110, 20);
+            noStroke();
+            fill(255, 255 - this.color, 255);
+            textSize(10);
+            text("Add to Favorites ", this.x + 30, (this.y - ((2 * (this.largura / 2)) / 3)) - 37);
+        }
 
     }
 }
