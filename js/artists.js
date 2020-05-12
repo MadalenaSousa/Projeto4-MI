@@ -6,8 +6,10 @@ let followers = [];
 let speed = [];
 let positivity = [];
 let danceability = [];
-let loudness=[];
+let loudness = [];
+let energy = [];
 let remove;
+let alfa = 0;
 
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
@@ -86,6 +88,7 @@ function setup() {
         speed.push(artists[i].top_tracks_average_features.speed);
         positivity.push(artists[i].top_tracks_average_features.positivity);
         loudness.push(artists[i].top_tracks_average_features.loudness);
+        energy.push(artists[i].top_tracks_average_features.energy);
 
     }
 
@@ -103,7 +106,7 @@ function setup() {
             for (let i = 0; i < recordList.getEntries().length; i++) {
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
-                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), recordsOnList[i].get('x'), recordsOnList[i].get('y'));
+                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('shake'));
                 });
             }
         }
@@ -131,7 +134,8 @@ function setup() {
                         divisoes: map(artists[i].top_tracks_average_features.danceability, min(danceability), max(danceability), 3, 10),
                         largura: map(artists[i].followers.total, min(followers), max(followers), 100, 400),
                         x: map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 125, windowWidth - (windowWidth / 26) - 375),
-                        y: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 250, windowHeight - 50)
+                        y: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 250, windowHeight - 50),
+                        shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 0.1, 0.6)
 
                     });
 
@@ -170,8 +174,8 @@ function setup() {
     });
 }
 
-function addNewWave(name, color, divisoes, largura, x, y) {
-    newWave = new waveArtist(name, color, divisoes, largura, x, y);
+function addNewWave(name, color, divisoes, largura, x, y, shake) {
+    newWave = new waveArtist(name, color, divisoes, largura, x, y, shake);
     waves.push(newWave);
     console.log(waves);
 }
@@ -294,7 +298,7 @@ function closeArtistRoomConnection() {
 function draw() {
 
     background(0);
-
+    alfa = alfa + PI / 56;
     if (waves.length > 0) {
         for (let i = 0; i < waves.length; i++) {
             waves[i].display();
@@ -304,29 +308,26 @@ function draw() {
 
 
 class waveArtist {
-    alfa;
-    yCentro;
-    constructor(name, color, divisoes, largura, x, y) {
+
+    constructor(name, color, divisoes, largura, x, y, shake) {
         this.name = name;
         this.color = color;
         this.divisoes = divisoes;
         this.largura = largura;
         this.x = x;
         this.y = y;
+        this.shake = shake;
     }
 
 
     display() {
-        this.alfa=0;
-        this.yCentro=this.y - ((2 * (this.largura / 2)) / 3);
         if (dist(mouseX, mouseY, this.x, this.y - (this.largura / 3)) <= this.largura / 6) {
             this.balao();
-            this.alfa=this.alfa+PI/56;
-            this.y= this.y+2*sin(this.alfa);
-            this.x=this.x+2*cos(this.alfa);
-
+            this.y = this.y + this.shake * sin(alfa);
+            this.x = this.x + this.shake * cos(alfa);
         }
         this.onda();
+
 
     }
 
@@ -367,7 +368,7 @@ class waveArtist {
         noStroke();
         fill(255, 255 - this.color, 255);
 //        text(this.name, (this.x-this.largura - (this.name.length * 6.5)), this.y - 10, 136);
-        text(this.name, (this.x-this.largura/4), this.y - 10, 136);
+        text(this.name, (this.x - this.largura / 4), this.y - 10, 136);
 
     }
 
@@ -381,7 +382,7 @@ class waveArtist {
             vertex(this.x - 0, this.y - ((2 * (this.largura / 2)) / 3) - 180);
             vertex(this.x + 130, this.y - ((2 * (this.largura / 2)) / 3) - 180);
             vertex(this.x + 130, this.y - ((2 * (this.largura / 2)) / 3) - 20);
-            vertex(this.x + 30, this.y - ((2 * (this.largura / 2)) / 3)-20);
+            vertex(this.x + 30, this.y - ((2 * (this.largura / 2)) / 3) - 20);
             vertex(this.x, this.y - ((2 * (this.largura / 2)) / 3));
             vertex(this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 20);
             vertex(this.x, this.y - ((2 * (this.largura / 2)) / 3) - 20);
