@@ -139,7 +139,7 @@ function setup() {
                         user: user.name,
                         song: songs[i].name,
                         x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
-                        y: map(allLoudness[i], min(allLoudness), max(allLoudness), height, 0),
+                        y: map(allLoudness[i], min(allLoudness), max(allLoudness), height - 200, 200),
                         raio: (songs[i].duration / 3),
                         color: map(getAudioFeatures(i).positivity, 0, 1, 0, 255),
                         energy: getAudioFeatures(i).energy * 5,
@@ -427,6 +427,10 @@ class flowerSong {
         strokeWeight(2);
         fill(0);
 
+        let n = 2;
+        let d = 9;
+        let k = n / d;
+
         if(mode === 1) {
             line(this.x, this.y, this.x, height);
         } else if(mode === 0){
@@ -488,20 +492,70 @@ class flowerSong {
                 }
             }
         } else if(type === 4) { //MI
-        } else if(type === 5 || type === 6) { //FA + F#
-        } else if(type === 7 || type === 8) { //SOL + SOL#
-        } else if(type === 9 || type === 10) { //LÁ + LÁ#
-            let k = 5 / 3;
+            n = 2;
+            d = 9;
+            k = n / d;
             beginShape();
             fill(0);
-            for (var a = 0; a < TWO_PI * 3; a += 0.02) {
-                var r = rBars * 1.5 * cos(k * a);
-                var xB = this.x + r * cos(a);
-                var yB = this.y + r * sin(a);
+            for (let a = 0; a < TWO_PI * d; a += 0.02) {
+                let r = rBars * cos(k * a);
+                let xB = this.x + r * cos(a);
+                let yB = this.y + r * sin(a);
+                vertex(xB, yB);
+            }
+            endShape(CLOSE);
+        } else if(type === 5 || type === 6) { //FA + F#
+            n = 4;
+            d = 1;
+            k = n / d;
+            beginShape();
+            fill(0);
+            for (let c = 0; c < TWO_PI * d; c += 0.02) {
+                let r = rBars * cos(k * c);
+                let xB = this.x + r * cos(c);
+                let yB = this.y + r * sin(c);
+                vertex(xB, yB);
+            }
+            endShape(CLOSE);
+        } else if(type === 7 || type === 8) { //SOL + SOL#
+            n = 7;
+            d = 5;
+            k = n / d;
+            beginShape();
+            fill(0);
+            for (let e = 0; e < TWO_PI * e; a += 0.02) {
+                let r = rBars * cos(k * e);
+                let xB = this.x + r * cos(e);
+                let yB = this.y + r * sin(e);
+                vertex(xB, yB);
+            }
+            endShape(CLOSE);
+        } else if(type === 9 || type === 10) { //LÁ + LÁ#
+            n = 7;
+            d = 2;
+            k = n / d;
+            beginShape();
+            fill(0);
+            for (let f = 0; f < TWO_PI * d; f += 0.02) {
+                let r = rBars * cos(k * f);
+                let xB = this.x + r * cos(f);
+                let yB = this.y + r * sin(f);
                 vertex(xB, yB);
             }
             endShape(CLOSE);
         } else if(type === 11) { //SI
+            n = 7;
+            d = 8;
+            k = n / d;
+            beginShape();
+            fill(0);
+            for (let g = 0; g < TWO_PI * d; g += 0.02) {
+                let r = rBars * cos(k * g);
+                let xB = this.x + r * cos(g);
+                let yB = this.y + r * sin(g);
+                vertex(xB, yB);
+            }
+            endShape(CLOSE);
         }
     }
 
