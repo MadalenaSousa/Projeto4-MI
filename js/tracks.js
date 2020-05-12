@@ -3,8 +3,17 @@ let fromPlaylist = false;
 let flowers = [];
 let newFlower;
 let remove;
+let check = false;
 
 let allLoudness = [];
+
+let allBarsTotal = [];
+let allBeatsTotal = [];
+let allTatumsTotal = [];
+
+let allBarsDuration = [];
+let allBeatsDuration = [];
+let allTatumsDuration = [];
 
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
@@ -92,7 +101,9 @@ function setup() {
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
                     addNewFlower(recordsOnList[i].get('song'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
-                        recordsOnList[i].get('energy'), recordsOnList[i].get('energy'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'), recordsOnList[i].get('user'));
+                        recordsOnList[i].get('energy'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'), recordsOnList[i].get('user'),
+                        recordsOnList[i].get('nBars'), recordsOnList[i].get('nBeats'), recordsOnList[i].get('nTatums'),
+                        recordsOnList[i].get('rBars'), recordsOnList[i].get('rBeats'), recordsOnList[i].get('rTatums'), recordsOnList[i].get('mode'), recordsOnList[i].get('type'));
                 });
             }
         }
@@ -100,6 +111,14 @@ function setup() {
 
     for(let i = 0; i < totalSongs; i++) {
         allLoudness[i] = getAudioFeatures(i).loudness;
+
+        allBarsTotal[i] = getAudioAnalysis(i).bars.total;
+        allBeatsTotal[i] = getAudioAnalysis(i).beats.total;
+        allTatumsTotal[i] = getAudioAnalysis(i).tatums.total;
+
+        allBarsDuration[i] = getAudioAnalysis(i).bars.average_duration;
+        allBeatsDuration[i] = getAudioAnalysis(i).beats.average_duration;
+        allTatumsDuration[i] = getAudioAnalysis(i).tatums.average_duration;
     }
 
     for (let i = 0; i < totalSongs; i++) {
@@ -112,7 +131,6 @@ function setup() {
         });
 
         document.querySelectorAll(".song")[i].addEventListener("click", function () {
-            console.log("Clicou na música " + songs[i].name);
             client.record.has(songs[i].name, function (error, hasRecord) {
                 if (hasRecord === false) {
                     console.log('doesnt have record with name: ' + songs[i].name + ", can create it");
@@ -121,15 +139,27 @@ function setup() {
                         user: user.name,
                         song: songs[i].name,
                         x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
-                        y: map(allLoudness[i], min(allLoudness), max(allLoudness), 0, height),
+                        y: map(allLoudness[i], min(allLoudness), max(allLoudness), height - 200, 200),
                         raio: (songs[i].duration / 3),
                         color: map(getAudioFeatures(i).positivity, 0, 1, 0, 255),
                         energy: getAudioFeatures(i).energy * 5,
                         artist: songs[i].artists,
-                        url: songs[i].preview_url
+                        url: songs[i].preview_url,
+                        nBars: map(allBarsTotal[i], min(allBarsTotal), max(allBarsTotal), 3, 10),
+                        nBeats: map(allBeatsTotal[i], min(allBeatsTotal), max(allBeatsTotal), 3, 10),
+                        nTatums: map(allTatumsTotal[i], min(allTatumsTotal), max(allTatumsTotal), 3, 10),
+                        rBars: map(allBarsDuration[i], min(allBarsDuration), max(allBarsDuration), 50, 80),
+                        rBeats: map(allBeatsDuration[i], min(allBeatsDuration), max(allBeatsDuration), 40, 70),
+                        rTatums: map(allTatumsDuration[i], min(allTatumsDuration), max(allTatumsDuration), 30, 60),
+                        mode: songs[i].mode,
+                        type: songs[i].type
                     });
 
                     recordList.addEntry(songs[i].name);
+
+                    record[i].whenReady(function () {
+                        console.log(record[i]);
+                    });
 
                     console.log("NOVA LISTA: " + recordList.getEntries());
                 } else {
@@ -163,8 +193,8 @@ function setup() {
     });
 }
 
-function addNewFlower(name, x, y, raio, color, shakeX, shakeY, url, artist, owner) {
-    newFlower = new flowerSong(name, x, y, raio, color, shakeX, shakeY, url, artist, owner);
+function addNewFlower(name, x, y, raio, color, energy, url, artist, owner, nBars, nBeats, nTatums, rBars, rBeats, rTatums, mode, type) {
+    newFlower = new flowerSong(name, x, y, raio, color, energy, url, artist, owner, nBars, nBeats, nTatums, rBars, rBeats, rTatums, mode, type);
     flowers.push(newFlower);
     console.log("LISTA DE FLORES ATUAL: " + flowers);
 }
@@ -318,6 +348,10 @@ function getAudioFeatures(index) {
     return songs[index].audio_features;
 }
 
+function getAudioAnalysis(index) {
+    return songs[index].audio_analysis;
+}
+
 class flowerSong {
     c;
     randomX;
@@ -325,16 +359,24 @@ class flowerSong {
     musicOn;
     sound;
 
-    constructor(name, x, y, raio, color, shakeX, shakeY, url, artist, owner) {
+    constructor(name, x, y, raio, color, energy, url, artist, owner, nBars, nBeats, nTatums, rBars, rBeats, rTatums, mode, type) {
         this.name = name;
         this.x = x;
         this.y = y;
         this.raio = raio;
         this.color  = color;
-        this.shakeX = shakeX;
-        this.shakeY = shakeY;
+        this.shakeX = energy;
+        this.shakeY = energy;
         this.artist = artist;
         this.owner = owner;
+        this.nBars = nBars;
+        this.nBeats = nBeats;
+        this.nTatums = nTatums;
+        this.rBars = rBars;
+        this.rBeats = rBeats;
+        this.rTatums = rTatums;
+        this.mode = mode;
+        this.type = type;
 
         this.sound = new Audio(url);
         this.musicOn = false;
@@ -345,6 +387,7 @@ class flowerSong {
             this.c = color(255, 255, 255 - this.color);
             this.randomX = random(-this.shakeX, this.shakeX);
             this.randomY = random(-this.shakeY, this.shakeY);
+            console.log("entrou");
         } else {
             this.c = color(255);
             this.randomX = 0;
@@ -358,9 +401,7 @@ class flowerSong {
         }
 
         stroke(this.c);
-        for (let i = 0; i < 4; i++) {
-            this.flor(this.x + this.randomX, this.y + this.randomY, 10, 60-i*15, 65-i*15);
-        }
+        this.flor(this.x + this.randomX, this.y + this.randomY, this.nBars, this.nBeats, this.nTatums, this.rBars, this.rBeats, this.rTatums, this.mode, this.type);
 
         noStroke();
         fill(this.c);
@@ -382,16 +423,140 @@ class flowerSong {
         }
     }
 
-    flor(x, y, nVert, rG, rP) {
+    flor(x, y, nBars, nBeats, nTatums, rBars, rBeats, rTatums, mode, type) {
         strokeWeight(2);
-        noFill();
-        let alpha = TWO_PI/nVert;
-        beginShape();
-            for (let i = 0; i <= nVert+1; i++) {
-            curveVertex(x+rG*cos(i*alpha), y+rG*sin(i*alpha));
-            curveVertex(x+rP*cos(i*alpha+alpha/2), y+rP*sin(i*alpha+alpha/2));
+        fill(0);
+
+        let n = 2;
+        let d = 9;
+        let k = n / d;
+
+        if(mode === 1) {
+            line(this.x, this.y, this.x, height);
+        } else if(mode === 0){
+            line(this.x, this.y, this.x, 0);
+        }
+
+        if(type === 0 || type === 1) { //DO + DO#
+            let alpha = -TWO_PI/(nBars*2);
+            let rPBars = rBars/2;
+            let theta = -TWO_PI/(nBeats*2);
+            let rPBeats = rBeats/8;
+            for(let i = 0; i < nBars*2; i++) {
+                let xB = this.x  + rPBars * cos(i*alpha);
+                let yB = this.y  + rPBars * sin(i*alpha);
+                line(this.x, this.y, xB, yB);
+
+                for(let z = 0; z < nBeats*2; z++) {
+                    let xb = xB  + rPBeats * cos(z*theta);
+                    let yb = yB  + rPBeats * sin(z*theta);
+                    line(xB, yB, xb, yb);
+                }
             }
-        endShape();
+        } else if(type === 2 || type === 3) { //RE + RE#
+            let alpha = -TWO_PI / (nBars * 2);
+            let rPBars = rBars / 2;
+            for (let i = 0; i < nBars * 2; i++) {
+                let anchor1x = this.x;
+                let anchor1y = this.y;
+                let ctrl1x = this.x + rPBars * cos((i - 1) * alpha);
+                let ctrl1y = this.y + rPBars * sin((i - 1) * alpha);
+                let ctrl2x = this.x + rPBars * cos((i + 1) * alpha);
+                let ctrl2y = this.y + rPBars * sin((i + 1) * alpha);
+                let anchor2x = this.x + rBars * cos(i * alpha);
+                let anchor2y = this.y + rBars * sin(i * alpha);
+
+                if (i % 2 === 0) {
+                    bezier(anchor1x, anchor1y, ctrl1x, ctrl1y, ctrl1x, ctrl1y, anchor2x, anchor2y);
+                    bezier(anchor1x, anchor1y, ctrl2x, ctrl2y, ctrl2x, ctrl2y, anchor2x, anchor2y);
+                }
+            }
+
+            let delta = -TWO_PI / (nBeats * 2);
+            let rPBeats = rBeats / 2;
+            for (let i = 0; i < nBeats * 2; i++) {
+                let anchor1x = this.x;
+                let anchor1y = this.y;
+                let anchor2x = this.x + rBeats * cos(i * delta);
+                let anchor2y = this.y + rBeats * sin(i * delta);
+
+                let ctrl1x = this.x + rPBeats * cos((i - 1) * delta);
+                let ctrl1y = this.y + rPBeats * sin((i - 1) * delta);
+                let ctrl2x = this.x + rPBeats * cos((i + 1) * delta);
+                let ctrl2y = this.y + rPBeats * sin((i + 1) * delta);
+
+
+                if (i % 2 === 0) {
+                    bezier(anchor1x, anchor1y, ctrl1x, ctrl1y, ctrl1x, ctrl1y, anchor2x, anchor2y);
+                    bezier(anchor1x, anchor1y, ctrl2x, ctrl2y, ctrl2x, ctrl2y, anchor2x, anchor2y);
+                }
+            }
+        } else if(type === 4) { //MI
+            n = 2;
+            d = 9;
+            k = n / d;
+            beginShape();
+            fill(0);
+            for (let a = 0; a < TWO_PI * d; a += 0.02) {
+                let r = rBars * cos(k * a);
+                let xB = this.x + r * cos(a);
+                let yB = this.y + r * sin(a);
+                vertex(xB, yB);
+            }
+            endShape(CLOSE);
+        } else if(type === 5 || type === 6) { //FA + F#
+            n = 4;
+            d = 1;
+            k = n / d;
+            beginShape();
+            fill(0);
+            for (let c = 0; c < TWO_PI * d; c += 0.02) {
+                let r = rBars * cos(k * c);
+                let xB = this.x + r * cos(c);
+                let yB = this.y + r * sin(c);
+                vertex(xB, yB);
+            }
+            endShape(CLOSE);
+        } else if(type === 7 || type === 8) { //SOL + SOL#
+            n = 7;
+            d = 5;
+            k = n / d;
+            beginShape();
+            fill(0);
+            for (let e = 0; e < TWO_PI * e; a += 0.02) {
+                let r = rBars * cos(k * e);
+                let xB = this.x + r * cos(e);
+                let yB = this.y + r * sin(e);
+                vertex(xB, yB);
+            }
+            endShape(CLOSE);
+        } else if(type === 9 || type === 10) { //LÁ + LÁ#
+            n = 7;
+            d = 2;
+            k = n / d;
+            beginShape();
+            fill(0);
+            for (let f = 0; f < TWO_PI * d; f += 0.02) {
+                let r = rBars * cos(k * f);
+                let xB = this.x + r * cos(f);
+                let yB = this.y + r * sin(f);
+                vertex(xB, yB);
+            }
+            endShape(CLOSE);
+        } else if(type === 11) { //SI
+            n = 7;
+            d = 8;
+            k = n / d;
+            beginShape();
+            fill(0);
+            for (let g = 0; g < TWO_PI * d; g += 0.02) {
+                let r = rBars * cos(k * g);
+                let xB = this.x + r * cos(g);
+                let yB = this.y + r * sin(g);
+                vertex(xB, yB);
+            }
+            endShape(CLOSE);
+        }
     }
 
     balao() {
@@ -417,7 +582,7 @@ class flowerSong {
         text("Energy: " + map(this.shakeX, 0, 5, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 170);
         text("Danceability: ", this.x + 10, this.y - 150);
         text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 130);
-        text("Loudness: ", this.x + 10, this.y - 110);
+        text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 110);
         text("Speed: ", this.x + 10, this.y - 90);
 
         fill(0);

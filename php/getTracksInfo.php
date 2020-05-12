@@ -11,9 +11,32 @@ $topSongsFile = $user->id . "-top-songs-object.json";
 $songs = $api->getMyTop("tracks", ['limit' => 10]);
 $topSongObject = array();
 $trackIds = array();
+$songbarsduration = array();
+$songbeatsduration = array();
+$songtatumsduration = array();
 
 foreach ($songs->items as $track) {
     array_push($trackIds, $track->id);
+    $trackAnalysis = $api->getAudioAnalysis($track->id);
+
+    $barsduration = 0;
+    $beatsduration = 0;
+    $tatumsduration = 0;
+    for($i = 0; $i < count($trackAnalysis->bars); $i++){
+        $barsduration = $barsduration + $trackAnalysis->bars[$i]->duration;
+    }
+
+    for($i = 0; $i < count($trackAnalysis->beats); $i++){
+        $beatsduration = $beatsduration + $trackAnalysis->beats[$i]->duration;
+    }
+
+    for($i = 0; $i < count($trackAnalysis->tatums); $i++){
+        $tatumsduration = $tatumsduration + $trackAnalysis->tatums[$i]->duration;
+    }
+
+    array_push($songbarsduration, $barsduration);
+    array_push($songbeatsduration, $beatsduration);
+    array_push($songtatumsduration, $tatumsduration);
 }
 
 $z = -1;
@@ -25,20 +48,24 @@ foreach ($songs->items as $song) {
 
     $singleTopSong = array(
         "audio_analysis" => array(
+            "sections" => array(
+                "total" => count($trackAnalysis->sections),
+                "average_duration" => ""
+            ),
             "bars" => array(
                 "total" => count($trackAnalysis->bars),
-                "average_duration" => ""
+                "average_duration" => $songbarsduration[$z]/count($trackAnalysis->bars),
             ),
             "beats" => array(
                 "total" => count($trackAnalysis->beats),
-                "average_duration" => ""
-            ),
-            "segments" => array(
-                "total" => count($trackAnalysis->segments),
-                "average_duration" => ""
+                "average_duration" => $songbeatsduration[$z]/count($trackAnalysis->beats)
             ),
             "tatums" => array(
                 "total" => count($trackAnalysis->tatums),
+                "average_duration" => $songtatumsduration[$z]/count($trackAnalysis->tatums)
+            ),
+            "segments" => array(
+                "total" => count($trackAnalysis->segments),
                 "average_duration" => ""
             ),
         ),
@@ -55,7 +82,9 @@ foreach ($songs->items as $song) {
         "album" => $song->album->name,
         "popularity" => $song->popularity,
         "preview_url" => $song->preview_url,
-        "duration" => $track->duration_ms/1000
+        "duration" => $song->duration_ms/1000,
+        "mode" => $trackAnalysis->track->mode,
+        "type" => $trackAnalysis->track->key
     );
 
     array_push($topSongObject, $singleTopSong);
