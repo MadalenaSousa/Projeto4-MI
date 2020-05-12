@@ -433,7 +433,7 @@ class flowerSong {
             line(this.x, this.y, this.x, 0);
         }
 
-        if(type === 0 || type === 1) {
+        if(type === 0 || type === 1) { //DO + DO#
             let alpha = -TWO_PI/(nBars*2);
             let rPBars = rBars/2;
             let theta = -TWO_PI/(nBeats*2);
@@ -449,7 +449,7 @@ class flowerSong {
                     line(xB, yB, xb, yb);
                 }
             }
-        } else if(type === 2 || type === 3) {
+        } else if(type === 2 || type === 3) { //RE + RE#
             let alpha = -TWO_PI / (nBars * 2);
             let rPBars = rBars / 2;
             for (let i = 0; i < nBars * 2; i++) {
@@ -487,10 +487,10 @@ class flowerSong {
                     bezier(anchor1x, anchor1y, ctrl2x, ctrl2y, ctrl2x, ctrl2y, anchor2x, anchor2y);
                 }
             }
-        } else if(type === 4) {
-        } else if(type === 5 || type === 6) {
-        } else if(type === 7 || type === 8) {
-        } else if(type === 9 || type === 10) {
+        } else if(type === 4) { //MI
+        } else if(type === 5 || type === 6) { //FA + F#
+        } else if(type === 7 || type === 8) { //SOL + SOL#
+        } else if(type === 9 || type === 10) { //LÁ + LÁ#
             let k = 5 / 3;
             beginShape();
             fill(0);
@@ -501,7 +501,7 @@ class flowerSong {
                 vertex(xB, yB);
             }
             endShape(CLOSE);
-        } else if(type === 11) {
+        } else if(type === 11) { //SI
         }
     }
 
