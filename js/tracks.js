@@ -404,7 +404,7 @@ class flowerSong {
         }
 
         stroke(this.c);
-        this.flor(this.x + this.randomX, this.y + this.randomY, this.nBeats, this.rBeats, this.mode, this.type);
+        this.flor(this.x, this.y, this.nBeats, this.rBeats, this.mode, this.type);
 
         noStroke();
         fill(this.c);
@@ -437,7 +437,9 @@ class flowerSong {
         let alpha = 0;
         let theta = 0;
 
-        if(mode === 1) {  // linha + algulo das flores
+
+        //LINHA + ORIENTAÇÃO DAS FLORES
+        if(mode === 1) {
             line(this.x, this.y, this.x, height);
             alpha = -PI/(nBeats*2);
             theta = -TWO_PI/(nBeats*2);
@@ -459,7 +461,7 @@ class flowerSong {
                 let r = rBeats * 2 * cos(k * a);
                 let xB = x + r * cos(a);
                 let yB = y + r * sin(a);
-                vertex(xB, yB);
+                vertex(xB + this.randomX, yB + this.randomY);
             }
             endShape(CLOSE);
 
@@ -475,37 +477,37 @@ class flowerSong {
                 let r = rBeats * 2 * cos(k * a);
                 let xB = x + r * cos(a);
                 let yB = y + r * sin(a);
-                vertex(xB, yB);
+                vertex(xB + this.randomX, yB + this.randomY);
             }
             endShape(CLOSE);
 
         //DENDILION WITH SEED
         } else if(type === 4) { //1 musica
             for(let i = 0; i < this.numberSections; i++) {
-                let xS = x  + rBeats * 2 * cos(i*theta);
-                let yS = y  + rBeats * 2 * sin(i*theta);
-                line(x, y, xS, yS);
+                let xS = x  + rBeats * 2 * cos(i*alpha);
+                let yS = y  + rBeats * 2 * sin(i*alpha);
+                line(x, y, xS + this.randomX, yS + this.randomY);
 
                 for(let z = 0; z < nBeats*2; z++) {
                     let xB = xS  + (rBeats/2) * cos(z*theta);
                     let yB = yS  + (rBeats/2) * sin(z*theta);
-                    line(xS, yS, xB, yB);
+                    line(xS, yS, xB + this.randomX, yB + this.randomY);
                     fill(255);
-                    ellipse(xB, yB, 5, 5);
+                    ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
                 }
             }
 
         //DENDILION WITHOUT SEED
         } else if(type === 5 || type === 6) {
             for(let i = 0; i < this.numberSections; i++) {
-                let xS = x  + rBeats * cos(i*theta);
-                let yS = y  + rBeats * sin(i*theta);
-                line(x, y, xS, yS);
+                let xS = x  + rBeats * 2 * cos(i*alpha);
+                let yS = y  + rBeats * 2 * sin(i*alpha);
+                line(x, y, xS + this.randomX, yS + this.randomY);
 
                 for(let z = 0; z < nBeats*2; z++) {
                     let xB = xS  + (rBeats/3) * cos(z*theta);
                     let yB = yS  + (rBeats/3) * sin(z*theta);
-                    line(xS, yS, xB, yB);
+                    line(xS, yS, xB + this.randomX, yB + this.randomY);
                 }
             }
 
@@ -518,9 +520,9 @@ class flowerSong {
             beginShape();
             for (let a = 0; a < TWO_PI * d; a += 0.02) {
                 let r = rBeats * cos(k * a);
-                let xB = this.x + r * cos(a);
-                let yB = this.y + r * sin(a);
-                vertex(xB, yB);
+                let xB = x + r * cos(a);
+                let yB = y + r * sin(a);
+                vertex(xB + this.randomX, yB + this.randomY);
             }
             endShape(CLOSE);
 
@@ -529,13 +531,13 @@ class flowerSong {
             for(let i = 0; i < nBeats*2; i++) {
                 let xB = x  + rBeats * cos(i*alpha);
                 let yB = y  + rBeats * sin(i*alpha);
-                line(x, y, xB, yB);
+                line(x, y, xB + this.randomX, yB + this.randomY);
                 fill(255);
-                ellipse(xB, yB, 5, 5);
+                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
             }
 
             for (let c = 0; c < this.curves.length; c++) {
-                this.curves[c].display();
+                this.curves[c].display(this.randomX, this.randomY);
             }
 
         //RANDOM PETALS (FULLY OPEN)
@@ -543,13 +545,13 @@ class flowerSong {
             for(let i = 0; i < nBeats*2; i++) {
                 let xB = x  + rBeats * cos(i*alpha);
                 let yB = y  + rBeats * sin(i*alpha);
-                line(x, y, xB, yB);
+                line(x, y, xB + this.randomX, yB + this.randomY);
                 fill(255);
-                ellipse(xB, yB, 5, 5);
+                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
             }
 
             for (let c = 0; c < this.curves.length; c++) {
-                this.curves[c].display();
+                this.curves[c].display(this.randomX, this.randomY);
             }
         }
     }
@@ -599,11 +601,11 @@ class randFlower {
         this.mode = mode;
         for (let i = 0; i < this.linenum; i++) {
             if(this.mode === 0) {
-                this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), -PI, -TWO_PI); //maior/menor //tempo da section
+                this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), -PI, -TWO_PI); //maior/menor //tempo (speed) da section
             } else {
                 this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), PI, TWO_PI);
             }
-            this.d = map(arraySectionLoudness[i], min(arraySectionLoudness), max(arraySectionLoudness), 100, 150); //loudness da section
+            this.d = map(arraySectionLoudness[i], min(arraySectionLoudness), max(arraySectionLoudness), 80, 120); //loudness da section
             this.hy = sin(this.theta);
             this.hx = cos(this.theta);
             this.ex = this.d * this.hx + this.x;
@@ -642,9 +644,9 @@ class Curve { //preenchimento
         this.controlPt = p5.Vector.add(this.midPt, this.cross);
     }
 
-    display() {
+    display(randX, randY) {
         noFill();
         strokeWeight(2);
-        bezier(this.one.x, this.one.y, this.controlPt.x, this.controlPt.y, this.controlPt.x, this.controlPt.y, this.two.x, this.two.y);
+        bezier(this.one.x, this.one.y, this.controlPt.x, this.controlPt.y, this.controlPt.x, this.controlPt.y, this.two.x + randX, this.two.y + randY);
     }
 }
