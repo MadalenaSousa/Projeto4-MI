@@ -75,6 +75,7 @@ function setup() {
                         numtracks: userPlaylists[i].tracks.total,
                         resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
                         tam: map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 20, 80), //tamanho
+                        //tam: map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 20, 80), //tamanho
                         round: map(userPlaylists[i].average_features.energy, 0.0, 1.0, 30, 0), //quanto maior o valor, mais espalmada
                         nAmp: map(userPlaylists[i].average_features.loudness, -60, 0, 0.3, 1), // valor=1 -> redonda
                         t: 0,
@@ -244,6 +245,41 @@ class classMountain {
             textSize(12);
             text(this.name, this.px, this.py);
 
+            //caixa de informação
+            fill(0);
+            strokeWeight(2);
+            stroke(this.c);
+            beginShape();
+            vertex(this.px, this.py - 230);
+            vertex(this.px + 130, this.py - 230);
+            vertex(this.px + 130, this.py - 50);
+            vertex(this.px + 30, this.py - 50);
+            vertex(this.px + 20, this.py - 25);
+            vertex(this.px + 10, this.py - 50);
+            vertex(this.px, this.py - 50);
+            endShape(CLOSE);
+
+            noStroke();
+            fill(this.c);
+            textStyle(BOLD);
+            textSize(12);
+            //text("Added by " + split(this.owner, ' ')[0], this.px + 10, this.py - 210);
+            textStyle(NORMAL);
+            text("Energy: " + map(this.round, 30,0, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 190);
+            text("Danceability: " + map(this.tChange, 0.01, 0.06, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 170);
+            text("Positivity: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 150);
+            text("Loudness: " + map(this.nAmp, 0.3, 1, -60, 0).toFixed(1), this.px + 10, this.py - 130);
+            text("Speed: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 110);
+            text("Musics: " + this.numtracks, this.px + 10, this.py - 90);
+
+            fill(0);
+            stroke(this.c);
+            rect(this.px + 10, this.py - 80, 110, 20);
+            noStroke();
+            fill(this.c);
+            textSize(10);
+            text("Add to Favorites ", this.px + 30, this.py - 65);
+
         } else {
             this.c = color(255);
         }
@@ -251,7 +287,18 @@ class classMountain {
         //desenho
         stroke(this.c);
         strokeWeight(1);
-        fill(0);
+        noFill();
+
+        if (this.numtracks <= 30) {
+            this.tam = map(this.numtracks, 0, 20, 20, 40);
+        }
+        else if((this.numtracks > 30) && (this.numtracks <= 60)) {
+            this.tam = map(this.numtracks, 31, 60, 40, 60);
+        }
+        else if((this.numtracks > 60) && (this.numtracks <= 100)) {
+            this.tam = map(this.numtracks, 61, 100, 60, 80);
+        }
+        else if(this.numtracks > 100) this.tam = 85;
 
         for (let b=1; b<=(this.tam)/10; b++) {
             beginShape();
