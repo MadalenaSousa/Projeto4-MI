@@ -75,10 +75,14 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
             <div><img src="icons/instagram.png"></div>
             <div>Instagram</div>
         </div>
-        <div class="menu-option">
+        <a class="menu-option"
+            target="popup"
+
+            onclick="window.open('https://twitter.com/intent/tweet?image=,'popup','width=600,height=400'); return false;">
             <div><img src="icons/twitter.png"></div>
             <div>Twitter</div>
-        </div>
+
+        </a>
         <div class="menu-option download">
             <div><img src="icons/download.png"></div>
             <div>Download</div>

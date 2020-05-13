@@ -170,8 +170,24 @@ function setup() {
 
     document.querySelector('.download').addEventListener('click', function () {
         console.log('Canvas will be downloaded');
-        saveCanvas('public-artists-artboard.png');
+        resizeCanvas();
     });
+
+    function resizeCanvas() {
+        canvas.width = 1000;
+        canvas.height = 1000;
+        draw();
+
+        // Redraw everything after resizing the window
+        saveCanvas('public-artists-artboard.png');
+       /* canvas.width = 2000;
+        canvas.height = 1200;*/
+        canvas.width = 100-100/6;
+        canvas.height = 100;
+        draw();
+
+    }
+
 }
 
 function addNewWave(name, color, divisoes, largura, x, y, shake) {
@@ -321,13 +337,13 @@ class waveArtist {
 
 
     display() {
+
+        this.onda();
         if (dist(mouseX, mouseY, this.x, this.y - (this.largura / 3)) <= this.largura / 6) {
             this.balao();
             this.y = this.y + this.shake * sin(alfa);
             this.x = this.x + this.shake * cos(alfa);
         }
-        this.onda();
-
 
     }
 
@@ -394,7 +410,7 @@ class waveArtist {
             textSize(12);
             text("Added by ", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 155);
             textStyle(NORMAL);
-            text("Danceability: " + map(positivity[i], 0, 1, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
+            text("Danceability: " + map(danceability[i], 0, 1, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
             text("Positivity: " + map(positivity[i], 0, 1, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
             text("Loudness: " + map(loudness[i], -60, 0, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
             text("Speed: " + map(speed[i], 0, 200, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
