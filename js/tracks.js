@@ -451,7 +451,7 @@ class flowerSong {
 
 
         //SMALL DAISY
-        if(type === 0 || type === 1) { // 3 musicas
+        if(type === 0 || type === 1) { // DO + DO#
             n = this.numberSections;
             d = 1;
             k = n / d;
@@ -467,7 +467,7 @@ class flowerSong {
 
 
         //BIG DAISY
-        } else if(type === 2 || type === 3) { //1 musica
+        } else if(type === 2 || type === 3) { // RE + RE#
             n = this.numberSections + 2;
             d = this.numberSections;
             k = n / d;
@@ -482,7 +482,7 @@ class flowerSong {
             endShape(CLOSE);
 
         //DENDILION WITH SEED
-        } else if(type === 4) { //1 musica
+        } else if(type === 4) { // MI
             for(let i = 0; i < this.numberSections; i++) {
                 let xS = x  + rBeats * 2 * cos(i*alpha);
                 let yS = y  + rBeats * 2 * sin(i*alpha);
@@ -498,7 +498,7 @@ class flowerSong {
             }
 
         //DENDILION WITHOUT SEED
-        } else if(type === 5 || type === 6) {
+        } else if(type === 5 || type === 6) { //FA + FA#
             for(let i = 0; i < this.numberSections; i++) {
                 let xS = x  + rBeats * 2 * cos(i*alpha);
                 let yS = y  + rBeats * 2 * sin(i*alpha);
@@ -512,7 +512,7 @@ class flowerSong {
             }
 
         //ROSE
-        } else if(type === 7 || type === 8) {
+        } else if(type === 7 || type === 8) { //SOL + SOL#
             n = 1;
             d = this.numberSections;
             k = n / d;
@@ -527,7 +527,7 @@ class flowerSong {
             endShape(CLOSE);
 
         //RANDOM PETALS (HALF OPEN)
-        } else if(type === 9 || type === 10) { // 5 musicas
+        } else if(type === 9 || type === 10) { //LA + LA#
             for(let i = 0; i < nBeats*2; i++) {
                 let xB = x  + rBeats * cos(i*alpha);
                 let yB = y  + rBeats * sin(i*alpha);
@@ -541,7 +541,7 @@ class flowerSong {
             }
 
         //RANDOM PETALS (FULLY OPEN)
-        } else { //RAND PETALS
+        } else { //SI + ERROS
             for(let i = 0; i < nBeats*2; i++) {
                 let xB = x  + rBeats * cos(i*alpha);
                 let yB = y  + rBeats * sin(i*alpha);
