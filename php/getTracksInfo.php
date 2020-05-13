@@ -46,15 +46,26 @@ foreach ($songs->items as $song) {
     $trackFeatures = $api->getAudioFeatures($trackIds)->audio_features;
     $trackAnalysis = $api->getAudioAnalysis($song->id);
 
+    $sectionDuration = array();
+    $sectionLoudness = array();
+    $sectionTempo = array();
+    for($i = 0; $i < count($trackAnalysis->sections); $i++) {
+       array_push($sectionDuration, $trackAnalysis->sections[$i]->duration);
+       array_push($sectionLoudness, $trackAnalysis->sections[$i]->loudness);
+       array_push($sectionTempo, $trackAnalysis->sections[$i]->tempo);
+    }
+
     $singleTopSong = array(
         "audio_analysis" => array(
             "sections" => array(
                 "total" => count($trackAnalysis->sections),
-                "average_duration" => ""
+                "durations" => $sectionDuration,
+                "loudness" => $sectionLoudness,
+                "tempo" => $sectionTempo
             ),
             "bars" => array(
                 "total" => count($trackAnalysis->bars),
-                "average_duration" => $songbarsduration[$z]/count($trackAnalysis->bars),
+                "average_duration" => $songbarsduration[$z]/count($trackAnalysis->bars)
             ),
             "beats" => array(
                 "total" => count($trackAnalysis->beats),
