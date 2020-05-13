@@ -354,7 +354,7 @@ class classMountain {
             text("Energy: " + map(this.round, 30,0, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 190);
             text("Danceability: " + map(this.tChange, 0.01, 0.06, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 170);
             text("Positivity: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 150);
-            text("Loudness: " + map(this.nAmp, 0.3, 1, -60, 0).toFixed(1), this.px + 10, this.py - 130);
+            text("Loudness: " + map(this.nAmp, 0.3, 1, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 130);
             text("Speed: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 110);
             text("Musics: " + this.numtracks, this.px + 10, this.py - 90);
 
@@ -385,7 +385,7 @@ class classMountain {
             else if((this.numtracks > 60) && (this.numtracks <= 100)) {
                 this.tam = map(this.numtracks, 61, 100, 60, 80);
             }
-            else if(this.numtracks > 100) this.tam = 85;
+            else if(this.numtracks > 100) this.tam = 95;
 
 
             for (let b = 1; b <= (this.tam) / 10; b++) {

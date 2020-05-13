@@ -75,7 +75,6 @@ function setup() {
                         numtracks: userPlaylists[i].tracks.total,
                         resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
                         tam: map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 20, 80), //tamanho
-                        //tam: map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 20, 80), //tamanho
                         round: map(userPlaylists[i].average_features.energy, 0.0, 1.0, 30, 0), //quanto maior o valor, mais espalmada
                         nAmp: map(userPlaylists[i].average_features.loudness, -60, 0, 0.3, 1), // valor=1 -> redonda
                         t: 0,
@@ -218,7 +217,6 @@ class classMountain {
     nVal;
     x;
     y;
-    valor;
 
     constructor(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed) {
         this.name = name;
@@ -268,7 +266,7 @@ class classMountain {
             text("Energy: " + map(this.round, 30,0, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 190);
             text("Danceability: " + map(this.tChange, 0.01, 0.06, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 170);
             text("Positivity: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 150);
-            text("Loudness: " + map(this.nAmp, 0.3, 1, -60, 0).toFixed(1), this.px + 10, this.py - 130);
+            text("Loudness: " + map(this.nAmp, 0.3, 1, 0,100).toFixed(1)+ "%", this.px + 10, this.py - 130);
             text("Speed: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 110);
             text("Musics: " + this.numtracks, this.px + 10, this.py - 90);
 
@@ -298,7 +296,7 @@ class classMountain {
         else if((this.numtracks > 60) && (this.numtracks <= 100)) {
             this.tam = map(this.numtracks, 61, 100, 60, 80);
         }
-        else if(this.numtracks > 100) this.tam = 85;
+        else if(this.numtracks > 100) this.tam = 95;
 
         for (let b=1; b<=(this.tam)/10; b++) {
             beginShape();
