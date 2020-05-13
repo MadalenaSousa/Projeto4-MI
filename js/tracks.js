@@ -376,6 +376,7 @@ class flowerSong {
         this.type = type;
         this.nBeats = nBeats;
         this.rBeats = rBeats;
+        this.numberSections = numberSections;
 
         this.curves = [];
         this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, numberSections, mode);
@@ -434,20 +435,44 @@ class flowerSong {
         let k = n / d;
 
         let alpha = 0;
-        if(mode === 1) {
+        let theta = 0;
+
+        if(mode === 1) {  // linha + algulo das flores
             line(this.x, this.y, this.x, height);
             alpha = -PI/(nBeats*2);
+            theta = -PI/(nBeats*2);
         } else if(mode === 0){
             line(this.x, this.y, this.x, 0);
             alpha = PI/(nBeats*2);
+            theta = PI/(nBeats*2);
         }
-        
-        for(let i = 0; i < nBeats*2; i++) {
-            let xB = x  + rBeats * cos(i*alpha);
-            let yB = y  + rBeats * sin(i*alpha);
-            line(x, y, xB, yB);
-            fill(255);
-            ellipse(xB, yB, 5, 5);
+
+        if(mode === 0) {
+            for(let i = 0; i < nBeats*2; i++) {
+                let xB = x  + rBeats * cos(i*alpha);
+                let yB = y  + rBeats * sin(i*alpha);
+                line(x, y, xB, yB);
+                fill(255);
+                ellipse(xB, yB, 5, 5);
+            }
+
+            for (let c = 0; c < this.curves.length; c++) {
+                this.curves[c].display();
+            }
+        } else {
+            for(let i = 0; i < this.numberSections; i++) {
+                let xS = x  + rBeats * cos(i*theta);
+                let yS = y  + rBeats * sin(i*theta);
+                line(x, y, xS, yS);
+
+                for(let z = 0; z < nBeats*2; z++) {
+                    let xB = xS  + (rBeats/3) * cos(z*alpha);
+                    let yB = yS  + (rBeats/3) * sin(z*alpha);
+                    line(xS, yS, xB, yB);
+                    fill(255);
+                    ellipse(xB, yB, 3, 3);
+                }
+            }
         }
 
         /*if(type === 0 || type === 1) { //DO + DO#
@@ -507,9 +532,7 @@ class flowerSong {
         } else if(type === 4) { //MI*/
 
 
-            for (let c = 0; c < this.curves.length; c++) {
-                this.curves[c].display();
-            }
+
 
            /* n = 2;
             d = 9;
