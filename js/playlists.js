@@ -119,8 +119,8 @@ function setup() {
                     record[i].set({ //define o novo record
                         user: user.name,
                         playlist: userPlaylists[i].name,
-                        px: random(100, windowWidth-400),
-                        py: random(100, windowHeight-100),
+                        px: map(userPlaylists[i].average_features.speed, min(speed), max(speed), 125, windowWidth - 375),
+                        py: map(userPlaylists[i].average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
                         color: color(255),
                         numtracks: userPlaylists[i].tracks.total,
                         resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
@@ -371,6 +371,7 @@ class classMountain {
                 endShape(CLOSE);
             }
     }
+
     balao(){
         //caixa de informação
         fill(0);
