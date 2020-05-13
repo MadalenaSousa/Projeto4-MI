@@ -330,12 +330,6 @@ class classMountain {
             this.c = color(0, 200, 255);
             this.t += this.tChange;
 
-            //nome da playlist
-            noStroke();
-            fill(this.c);
-            textSize(12);
-            text(this.name, this.px, this.py);
-
         }
         else this.c = color(255);
 
@@ -361,7 +355,7 @@ class classMountain {
             }
             else if(this.numtracks > 100) this.tam = 95;
 
-
+            //fill(0);
             for (let b = 1; b <= (this.tam) / 10; b++) {
                 beginShape();
                 for (let a = -1; a <= 5; a += 5 / this.resolution) {
@@ -374,6 +368,12 @@ class classMountain {
                 }
                 endShape(CLOSE);
             }
+        //nome da playlist
+        textStyle(BOLD);
+        noStroke();
+        fill(this.c);
+        textSize(12);
+        text(this.name, this.px, this.py);
     }
 
     balao(){
