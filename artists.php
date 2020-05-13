@@ -82,10 +82,11 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
             <div>Twitter</div>
 
         </a>
-        <div class="menu-option download">
+        <a class="menu-option download" onclick="window.open('SquareArtists.php','popup','width=600,height=600');">
+
             <div><img src="icons/download.png"></div>
             <div>Download</div>
-        </div>
+        </a>
     </div>
 </div>
 

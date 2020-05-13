@@ -24,7 +24,7 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(windowWidth - windowWidth / 6, windowHeight);
+    createCanvas(600, 600);
     client.login({username: user.name}, (success, data) => {
         if (success) {
             console.log("User logged in successfully");
@@ -77,10 +77,6 @@ function setup() {
     artists = topArtists;
     totalArtists = Object.keys(artists).length;
 
-    createArtistDiv();
-    createUserDiv(user.name, user.profile_pic);
-    logoutPopUp();
-    sharePopUp();
 
     for (let i = 0; i < totalArtists; i++) {
         popularity.push(artists[i].popularity);
@@ -114,15 +110,7 @@ function setup() {
     });
 
     for (let i = 0; i < totalArtists; i++) {
-        recordList.subscribe(function () {
-            if (contains(recordList.getEntries(), artists[i].name)) {
-                remove[i].classList.remove('hide');
-            } else {
-                remove[i].classList.add('hide');
-            }
-        });
 
-        document.querySelectorAll(".artist")[i].addEventListener("click", function () {
             console.log("Clicou na música" + artists[i].name);
             client.record.has(artists[i].name, function (error, hasRecord) {
                 if (hasRecord === false) {
@@ -133,9 +121,9 @@ function setup() {
                         artist: artists[i].name,
                         color: map(artists[i].popularity, min(popularity), max(popularity), 0, 255),
                         divisoes: map(artists[i].top_tracks_average_features.danceability, min(danceability), max(danceability), 3, 10),
-                        largura: map(artists[i].followers.total, min(followers), max(followers), 100, 400),
-                        x: map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 125, windowWidth - (windowWidth / 26) - 375),
-                        y: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 250, windowHeight - 50),
+                        largura: map(artists[i].followers.total, min(followers), max(followers), 300/12, 300/3),
+                        x: map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 300/12+25, 300 -  300/20),
+                        y: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 25, 300 - 25),
                         shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 0.1, 0.6)
 
                     });
@@ -148,26 +136,8 @@ function setup() {
                 }
             });
 
-        });
-
-        remove[i].addEventListener("click", function () {
-            client.record.has(artists[i].name, function (error, hasRecord) {
-                if (hasRecord) {
-                    console.log('Has record with name: ' + artists[i].name + ', can delete it');
-
-                    recordList.removeEntry(artists[i].name);
-                    client.record.getRecord(artists[i].name).delete();
-
-                    console.log("NOVA LISTA: " + recordList.getEntries());
-                } else {
-                    console.log('Doesnt have record with name: ' + artists[i].name + ', cannot delete it');
-                }
-            });
-        });
-
     }
 
-    document.querySelector('.confirm-logout').addEventListener('click', closeArtistRoomConnection);
 
 
 }
@@ -197,9 +167,6 @@ function logoutPopUp() {
         document.querySelector('.logout').classList.toggle('hide');
     });
 
-    document.querySelector(".back").addEventListener('click', function () {
-        document.querySelector('.logout').classList.add('hide');
-    });
 }
 
 function sharePopUp() {
@@ -207,57 +174,6 @@ function sharePopUp() {
         document.querySelector('.share').classList.toggle('hide');
     });
 
-    document.querySelector(".close-share").addEventListener('click', function () {
-        document.querySelector('.share').classList.add('hide');
-    });
-
-}
-
-function createArtistDiv() {
-    for (let i = 0; i < totalArtists; i++) {
-        let song = document.createElement("div");
-
-        let nomeDiv = document.createElement("div");
-        let nome = document.createElement("span");
-
-        let remove = document.createElement("div");
-
-        nomeDiv.setAttribute("style", "margin: 0px");
-        nomeDiv.classList.add('artist');
-
-        nome.innerHTML = '<b>' + artists[i].name + '</b>';
-
-        nomeDiv.appendChild(nome);
-
-        remove.innerText = "x";
-        remove.classList.add("remove");
-        remove.setAttribute("style", "cursor: pointer; margin-left: 5px;");
-
-        song.classList.add('unit');
-
-        song.appendChild(nomeDiv);
-        song.appendChild(remove);
-        document.querySelector(".list-songs").appendChild(song);
-    }
-}
-
-function createUserDiv(name, profilepic) {
-    let userDiv = document.createElement('div');
-    let person = document.createElement('div');
-    let img = document.createElement('img');
-
-    img.setAttribute('src', profilepic);
-    img.setAttribute('width', '30px');
-    img.setAttribute('height', '30px');
-
-    person.innerText = name;
-    person.classList.add('username');
-
-    userDiv.classList.add('user');
-    userDiv.appendChild(img);
-    userDiv.appendChild(person);
-
-    document.querySelector(".list-people").appendChild(userDiv);
 }
 
 function desenho(){
@@ -306,56 +222,6 @@ function closeArtistRoomConnection() {
 }
 
 function draw() {
-    document.querySelector('.download').addEventListener('click', function () {
-        fill(0,255,255);
-        rect(0, 0, 100, 100);
-
-        console.log('Canvas will be downloaded');
-
-        canvasnova.classList.add("CanvasNova");
-        cruz.classList.add("cruz");
-
-        cruz.style.color = "white";
-        cruz.innerText = "X";
-        cruz.style.zIndex = "10000";
-        cruz.style.position = 'fixed';
-        cruz.style.width = 'fit-conten';
-        cruz.style.height = 'fit-conten';
-        cruz.style.left = '68%';
-        cruz.style.top = '12%';
-        cruz.style.cursor = "pointer";
-        cruz.style.display = "block";
-
-        //var ctx = canvas.getContext("2d");
-        canvasnova.style.background = "black";
-        canvasnova.style.outline = "2px solid white";
-        canvasnova.style.position = 'fixed';
-        canvasnova.style.left = '50%';
-        canvasnova.style.top = '50%';
-        canvasnova.style.width = '40%';
-        canvasnova.style.height = '80%';
-        canvasnova.style.zIndex = "auto";
-        canvasnova.style.transform = "translate(-50%, -50%)";
-        canvasnova.style.display = "block";
-
-        // ctx.fillRect(20, 20, 500, 500);
-        // ctx.fillStyle = "#FF0000";
-
-        document.body.appendChild(canvasnova);
-        document.body.appendChild(cruz);
-
-
-        canvasnova.script=desenho();
-
-    });
-
-    if (cruz.style.display==="block" || canvasnova.style.display==="block") {
-        document.querySelector(".cruz").addEventListener('click', function () {
-            document.querySelector('.cruz').style.display="none";
-            document.querySelector('.CanvasNova').style.display="none";
-
-        });
-    }
     background(0);
     alfa = alfa + PI / 56;
     if (waves.length > 0) {
@@ -382,11 +248,6 @@ class waveArtist {
     display() {
 
         this.onda();
-        if (dist(mouseX, mouseY, this.x, this.y - (this.largura / 3)) <= this.largura / 6) {
-            this.balao();
-            this.y = this.y + this.shake * sin(alfa);
-            this.x = this.x + this.shake * cos(alfa);
-        }
 
     }
 
@@ -431,42 +292,5 @@ class waveArtist {
 
     }
 
-    balao() {
-        for (let i = 0; i < totalArtists; i++) {
-
-            fill(0);
-            strokeWeight(2);
-            stroke(255, 255 - this.color, 255);
-            beginShape();
-            vertex(this.x - 0, this.y - ((2 * (this.largura / 2)) / 3) - 180);
-            vertex(this.x + 130, this.y - ((2 * (this.largura / 2)) / 3) - 180);
-            vertex(this.x + 130, this.y - ((2 * (this.largura / 2)) / 3) - 20);
-            vertex(this.x + 30, this.y - ((2 * (this.largura / 2)) / 3) - 20);
-            vertex(this.x, this.y - ((2 * (this.largura / 2)) / 3));
-            vertex(this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 20);
-            vertex(this.x, this.y - ((2 * (this.largura / 2)) / 3) - 20);
-            endShape(CLOSE);
-            noStroke();
-
-            fill(255, 255 - this.color, 255);
-            textStyle(BOLD);
-            textSize(12);
-            text("Added by ", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 155);
-            textStyle(NORMAL);
-            text("Danceability: " + map(danceability[i], 0, 1, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
-            text("Positivity: " + map(positivity[i], 0, 1, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
-            text("Loudness: " + map(loudness[i], -60, 0, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
-            text("Speed: " + map(speed[i], 0, 200, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
-
-            fill(0);
-            stroke(255, 255 - this.color, 255);
-            rect(this.x + 10, (this.y - ((2 * (this.largura / 2)) / 3)) - 50, 110, 20);
-            noStroke();
-            fill(255, 255 - this.color, 255);
-            textSize(10);
-            text("Add to Favorites ", this.x + 30, (this.y - ((2 * (this.largura / 2)) / 3)) - 37);
-        }
-
-    }
 }
 
