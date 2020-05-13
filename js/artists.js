@@ -130,11 +130,11 @@ function setup() {
                     record[i].set({ //defino o novo record
                         user: user.name,
                         artist: artists[i].name,
-                        color: map(artists[i].popularity, min(popularity), max(popularity), 0, 255),
+                        color: map(artists[i].positivity, min(positivity), max(positivity), 0, 255),
                         divisoes: map(artists[i].top_tracks_average_features.danceability, min(danceability), max(danceability), 3, 10),
-                        largura: map(artists[i].followers.total, min(followers), max(followers), 100, 400),
-                        x: map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 125, windowWidth - (windowWidth / 26) - 375),
-                        y: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 250, windowHeight - 50),
+                        largura: map(artists[i].popularity.total, min(popularity), max(popularity), 100, 400),
+                        x: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
+                        y: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
                         shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 0.1, 0.6)
 
                     });
