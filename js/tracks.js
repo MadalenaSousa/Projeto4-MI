@@ -440,33 +440,82 @@ class flowerSong {
         if(mode === 1) {  // linha + algulo das flores
             line(this.x, this.y, this.x, height);
             alpha = -PI/(nBeats*2);
-            theta = -PI/(nBeats*2);
+            theta = -TWO_PI/(nBeats*2);
         } else if(mode === 0){
             line(this.x, this.y, this.x, 0);
             alpha = PI/(nBeats*2);
-            theta = PI/(nBeats*2);
+            theta = TWO_PI/(nBeats*2);
         }
 
-        if(type === 0 || type === 1) { // 3 musicas //DENDILION
+
+        //SMALL DAISY
+        if(type === 0 || type === 1) { // 3 musicas
+            n = this.numberSections;
+            d = 1;
+            k = n / d;
+
+            beginShape();
+            for (let a = 0; a < TWO_PI * d; a += 0.02) {
+                let r = rBeats * 2 * cos(k * a);
+                let xB = x + r * cos(a);
+                let yB = y + r * sin(a);
+                vertex(xB, yB);
+            }
+            endShape(CLOSE);
+
+
+        //BIG DAISY
+        } else if(type === 2 || type === 3) { //1 musica
+            n = this.numberSections + 2;
+            d = this.numberSections;
+            k = n / d;
+
+            beginShape();
+            for (let a = 0; a < TWO_PI * d; a += 0.02) {
+                let r = rBeats * 2 * cos(k * a);
+                let xB = x + r * cos(a);
+                let yB = y + r * sin(a);
+                vertex(xB, yB);
+            }
+            endShape(CLOSE);
+
+        //DENDILION WITH SEED
+        } else if(type === 4) { //1 musica
+            for(let i = 0; i < this.numberSections; i++) {
+                let xS = x  + rBeats * 2 * cos(i*theta);
+                let yS = y  + rBeats * 2 * sin(i*theta);
+                line(x, y, xS, yS);
+
+                for(let z = 0; z < nBeats*2; z++) {
+                    let xB = xS  + (rBeats/2) * cos(z*theta);
+                    let yB = yS  + (rBeats/2) * sin(z*theta);
+                    line(xS, yS, xB, yB);
+                    fill(255);
+                    ellipse(xB, yB, 5, 5);
+                }
+            }
+
+        //DENDILION WITHOUT SEED
+        } else if(type === 5 || type === 6) {
             for(let i = 0; i < this.numberSections; i++) {
                 let xS = x  + rBeats * cos(i*theta);
                 let yS = y  + rBeats * sin(i*theta);
                 line(x, y, xS, yS);
 
                 for(let z = 0; z < nBeats*2; z++) {
-                    let xB = xS  + (rBeats/3) * cos(z*alpha);
-                    let yB = yS  + (rBeats/3) * sin(z*alpha);
+                    let xB = xS  + (rBeats/3) * cos(z*theta);
+                    let yB = yS  + (rBeats/3) * sin(z*theta);
                     line(xS, yS, xB, yB);
-                    fill(255);
-                    ellipse(xB, yB, 3, 3);
                 }
             }
-        } else if(type === 2 || type === 3) { //1 musica //ROSE MATH
-            n = 10;
-            d = 1;
+
+        //ROSE
+        } else if(type === 7 || type === 8) {
+            n = 1;
+            d = this.numberSections;
             k = n / d;
+
             beginShape();
-            fill(0);
             for (let a = 0; a < TWO_PI * d; a += 0.02) {
                 let r = rBeats * cos(k * a);
                 let xB = this.x + r * cos(a);
@@ -474,46 +523,9 @@ class flowerSong {
                 vertex(xB, yB);
             }
             endShape(CLOSE);
-        } else if(type === 4) { //1 musica //ROSE MATH
-            n = this.numberSections;
-            d = 1;
-            k = n / d;
-            beginShape();
-            fill(0);
-            for (let a = 0; a < TWO_PI * d; a += 0.02) {
-                let r = rBeats * cos(k * a);
-                let xB = x + r * cos(a);
-                let yB = y + r * sin(a);
-                vertex(xB, yB);
-            }
-            endShape(CLOSE);
-        } else if(type === 5 || type === 6) { //ROSE MATH
-            n = 10;
-            d = 1;
-            k = n / d;
-            beginShape();
-            fill(0);
-            for (let a = 0; a < TWO_PI * d; a += 0.02) {
-                let r = rBeats * cos(k * a);
-                let xB = this.x + r * cos(a);
-                let yB = this.y + r * sin(a);
-                vertex(xB, yB);
-            }
-            endShape(CLOSE);
-        } else if(type === 7 || type === 8) { //ROSE MATH
-            n = 10;
-            d = 1;
-            k = n / d;
-            beginShape();
-            fill(0);
-            for (let a = 0; a < TWO_PI * d; a += 0.02) {
-                let r = rBeats * cos(k * a);
-                let xB = this.x + r * cos(a);
-                let yB = this.y + r * sin(a);
-                vertex(xB, yB);
-            }
-            endShape(CLOSE);
-        } else if(type === 9 || type === 10) { // 5 musicas //PETALAS SOLTAS
+
+        //RANDOM PETALS (HALF OPEN)
+        } else if(type === 9 || type === 10) { // 5 musicas
             for(let i = 0; i < nBeats*2; i++) {
                 let xB = x  + rBeats * cos(i*alpha);
                 let yB = y  + rBeats * sin(i*alpha);
@@ -525,58 +537,21 @@ class flowerSong {
             for (let c = 0; c < this.curves.length; c++) {
                 this.curves[c].display();
             }
-        } else { //ROSE MATH
-            n = 10;
-            d = 1;
-            k = n / d;
-            beginShape();
-            fill(0);
-            for (let a = 0; a < TWO_PI * d; a += 0.02) {
-                let r = rBeats * cos(k * a);
-                let xB = this.x + r * cos(a);
-                let yB = this.y + r * sin(a);
-                vertex(xB, yB);
+
+        //RANDOM PETALS (FULLY OPEN)
+        } else { //RAND PETALS
+            for(let i = 0; i < nBeats*2; i++) {
+                let xB = x  + rBeats * cos(i*alpha);
+                let yB = y  + rBeats * sin(i*alpha);
+                line(x, y, xB, yB);
+                fill(255);
+                ellipse(xB, yB, 5, 5);
             }
-            endShape(CLOSE);
+
+            for (let c = 0; c < this.curves.length; c++) {
+                this.curves[c].display();
+            }
         }
-
-            /*let alpha = -TWO_PI / (nBars * 2);
-            let rPBars = rBars / 2;
-            for (let i = 0; i < nBars * 2; i++) {
-                let anchor1x = this.x;
-                let anchor1y = this.y;
-                let ctrl1x = this.x + rPBars * cos((i - 1) * alpha);
-                let ctrl1y = this.y + rPBars * sin((i - 1) * alpha);
-                let ctrl2x = this.x + rPBars * cos((i + 1) * alpha);
-                let ctrl2y = this.y + rPBars * sin((i + 1) * alpha);
-                let anchor2x = this.x + rBars * cos(i * alpha);
-                let anchor2y = this.y + rBars * sin(i * alpha);
-
-                if (i % 2 === 0) {
-                    bezier(anchor1x, anchor1y, ctrl1x, ctrl1y, ctrl1x, ctrl1y, anchor2x, anchor2y);
-                    bezier(anchor1x, anchor1y, ctrl2x, ctrl2y, ctrl2x, ctrl2y, anchor2x, anchor2y);
-                }
-            }
-
-            let delta = -TWO_PI / (nBeats * 2);
-            let rPBeats = rBeats / 2;
-            for (let i = 0; i < nBeats * 2; i++) {
-                let anchor1x = this.x;
-                let anchor1y = this.y;
-                let anchor2x = this.x + rBeats * cos(i * delta);
-                let anchor2y = this.y + rBeats * sin(i * delta);
-
-                let ctrl1x = this.x + rPBeats * cos((i - 1) * delta);
-                let ctrl1y = this.y + rPBeats * sin((i - 1) * delta);
-                let ctrl2x = this.x + rPBeats * cos((i + 1) * delta);
-                let ctrl2y = this.y + rPBeats * sin((i + 1) * delta);
-
-
-                if (i % 2 === 0) {
-                    bezier(anchor1x, anchor1y, ctrl1x, ctrl1y, ctrl1x, ctrl1y, anchor2x, anchor2y);
-                    bezier(anchor1x, anchor1y, ctrl2x, ctrl2y, ctrl2x, ctrl2y, anchor2x, anchor2y);
-                }
-            }*/
     }
 
     balao() {
