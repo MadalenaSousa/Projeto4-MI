@@ -95,7 +95,7 @@ function setup() {
                 recordsOnList[i].whenReady(function () {
                     addNewMountain (recordsOnList[i].get('playlist'), recordsOnList[i].get('px'), recordsOnList[i].get('py'), recordsOnList[i].get('numtracks'), recordsOnList[i].get('color'),
                         recordsOnList[i].get('resolution'), recordsOnList[i].get('tam'), recordsOnList[i].get('round'), recordsOnList[i].get('nAmp'),
-                        recordsOnList[i].get('t'), recordsOnList[i].get('tChange'), recordsOnList[i].get('nInt'), recordsOnList[i].get('nSeed'));
+                        recordsOnList[i].get('t'), recordsOnList[i].get('tChange'), recordsOnList[i].get('nInt'), recordsOnList[i].get('nSeed'), recordsOnList[i].get('user'));
                 });
             }
         }
@@ -349,7 +349,7 @@ class classMountain {
             fill(this.c);
             textStyle(BOLD);
             textSize(12);
-            //text("Added by " + split(this.owner, ' ')[0], this.px + 10, this.py - 210);
+            text("Added by " + split(this.owner, ' ')[0], this.px + 10, this.py - 210);
             textStyle(NORMAL);
             text("Energy: " + map(this.round, 30,0, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 190);
             text("Danceability: " + map(this.tChange, 0.01, 0.06, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 170);
