@@ -396,7 +396,7 @@ class waveArtist {
             textStyle(NORMAL);
             text("Danceability: " + map(positivity[i], 0, 1, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
             text("Positivity: " + map(positivity[i], 0, 1, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
-            text("Loudness: " + map(loudness[i], -60, 0, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
+            text("Loudness: " + map(this.y, 250, windowHeight - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
             text("Speed: " + map(speed[i], 0, 200, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
 
             fill(0);
