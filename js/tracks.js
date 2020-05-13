@@ -377,6 +377,7 @@ class flowerSong {
         this.nBeats = nBeats;
         this.rBeats = rBeats;
         this.numberSections = numberSections;
+        this.arraySectionDuration = arraySectionDuration;
 
         this.curves = [];
         this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode);
@@ -458,7 +459,7 @@ class flowerSong {
 
             beginShape();
             for (let a = 0; a < TWO_PI * d; a += 0.02) {
-                let r = rBeats * 2 * cos(k * a);
+                let r = map(avg(this.arraySectionDuration), min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(k * a);
                 let xB = x + r * cos(a);
                 let yB = y + r * sin(a);
                 vertex(xB + this.randomX, yB + this.randomY);
@@ -474,18 +475,19 @@ class flowerSong {
 
             beginShape();
             for (let a = 0; a < TWO_PI * d; a += 0.02) {
-                let r = rBeats * 2 * cos(k * a);
+                let r = map(avg(this.arraySectionDuration), min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(k * a);
                 let xB = x + r * cos(a);
                 let yB = y + r * sin(a);
                 vertex(xB + this.randomX, yB + this.randomY);
             }
             endShape(CLOSE);
 
+
         //DENDILION WITH SEED
         } else if(type === 4) { // MI
             for(let i = 0; i < this.numberSections; i++) {
-                let xS = x  + rBeats * 2 * cos(i*alpha);
-                let yS = y  + rBeats * 2 * sin(i*alpha);
+                let xS = x  + map(this.arraySectionDuration[i], min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(i*alpha);
+                let yS = y  + map(this.arraySectionDuration[i], min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * sin(i*alpha);
                 line(x, y, xS + this.randomX, yS + this.randomY);
 
                 for(let z = 0; z < nBeats*2; z++) {
@@ -497,11 +499,12 @@ class flowerSong {
                 }
             }
 
+
         //DENDILION WITHOUT SEED
         } else if(type === 5 || type === 6) { //FA + FA#
             for(let i = 0; i < this.numberSections; i++) {
-                let xS = x  + rBeats * 2 * cos(i*alpha);
-                let yS = y  + rBeats * 2 * sin(i*alpha);
+                let xS = x  + map(this.arraySectionDuration[i], min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(i*alpha);
+                let yS = y  + map(this.arraySectionDuration[i], min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * sin(i*alpha);
                 line(x, y, xS + this.randomX, yS + this.randomY);
 
                 for(let z = 0; z < nBeats*2; z++) {
@@ -511,6 +514,7 @@ class flowerSong {
                 }
             }
 
+
         //ROSE
         } else if(type === 7 || type === 8) { //SOL + SOL#
             n = 1;
@@ -519,12 +523,13 @@ class flowerSong {
 
             beginShape();
             for (let a = 0; a < TWO_PI * d; a += 0.02) {
-                let r = rBeats * cos(k * a);
+                let r = map(avg(this.arraySectionDuration), min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(k * a);
                 let xB = x + r * cos(a);
                 let yB = y + r * sin(a);
                 vertex(xB + this.randomX, yB + this.randomY);
             }
             endShape(CLOSE);
+
 
         //RANDOM PETALS (HALF OPEN)
         } else if(type === 9 || type === 10) { //LA + LA#
@@ -539,6 +544,7 @@ class flowerSong {
             for (let c = 0; c < this.curves.length; c++) {
                 this.curves[c].display(this.randomX, this.randomY);
             }
+
 
         //RANDOM PETALS (FULLY OPEN)
         } else { //SI + ERROS
@@ -649,4 +655,13 @@ class Curve { //preenchimento
         strokeWeight(2);
         bezier(this.one.x, this.one.y, this.controlPt.x, this.controlPt.y, this.controlPt.x, this.controlPt.y, this.two.x + randX, this.two.y + randY);
     }
+}
+
+function avg(array) {
+    let sum = 0;
+    for(let i = 0; i < array.length; i++) {
+        sum = sum + array[i];
+    }
+
+    return sum/array.length;
 }
