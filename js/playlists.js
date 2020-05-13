@@ -330,7 +330,7 @@ class classMountain {
         if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 2) {
             this.t += this.tChange;
         }
-        this.c = color(0, 200, 255 - this.color);
+        this.c = color(0, this.color-(this.color)/20, this.color);
         stroke(this.c);
 
         this.montanha();
