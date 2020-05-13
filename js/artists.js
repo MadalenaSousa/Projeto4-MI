@@ -10,7 +10,8 @@ let loudness = [];
 let energy = [];
 let remove;
 let alfa = 0;
-
+var canvasnova = document.createElement("CANVAS");
+var cruz = document.createElement("div");
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
 let personRecord;
@@ -169,26 +170,50 @@ function setup() {
     document.querySelector('.confirm-logout').addEventListener('click', closeArtistRoomConnection);
 
     document.querySelector('.download').addEventListener('click', function () {
+
         console.log('Canvas will be downloaded');
-        resizeCanvas();
+        for (let i = 0; i < waves.length; i++) {
+            waves[i].display();
+        }
+
+        canvasnova.classList.add("CanvasNova");
+        cruz.classList.add("cruz");
+
+        cruz.style.color = "white";
+        cruz.innerText = "X";
+        cruz.style.zIndex = "10000";
+        cruz.style.position = 'fixed';
+        cruz.style.width = 'fit-conten';
+        cruz.style.height = 'fit-conten';
+        cruz.style.left = '68%';
+        cruz.style.top = '12%';
+        cruz.style.cursor = "pointer";
+        cruz.style.display = "block";
+
+        // var ctx = canvas.getContext("2d");
+        canvasnova.style.background = "black";
+        canvasnova.style.outline = "2px solid white";
+        canvasnova.style.position = 'fixed';
+        canvasnova.style.left = '50%';
+        canvasnova.style.top = '50%';
+        canvasnova.style.width = '40%';
+        canvasnova.style.height = '80%';
+        canvasnova.style.zIndex = "auto";
+        canvasnova.style.transform = "translate(-50%, -50%)";
+        canvasnova.style.display = "block";
+
+        // ctx.fillRect(20, 20, 500, 500);
+        // ctx.fillStyle = "#FF0000";
+
+
+
+        document.body.appendChild(canvasnova);
+        document.body.appendChild(cruz);
+
     });
 
-    function resizeCanvas() {
-        canvas.width = 1000;
-        canvas.height = 1000;
-        draw();
-
-        // Redraw everything after resizing the window
-        saveCanvas('public-artists-artboard.png');
-       /* canvas.width = 2000;
-        canvas.height = 1200;*/
-        canvas.width = 100-100/6;
-        canvas.height = 100;
-        draw();
-
-    }
-
 }
+
 
 function addNewWave(name, color, divisoes, largura, x, y, shake) {
     newWave = new waveArtist(name, color, divisoes, largura, x, y, shake);
@@ -227,6 +252,7 @@ function sharePopUp() {
     document.querySelector(".close-share").addEventListener('click', function () {
         document.querySelector('.share').classList.add('hide');
     });
+
 }
 
 function createArtistDiv() {
@@ -312,7 +338,13 @@ function closeArtistRoomConnection() {
 }
 
 function draw() {
+    if (cruz.style.display==="block" || canvasnova.style.display==="block") {
+        document.querySelector(".cruz").addEventListener('click', function () {
+            document.querySelector('.cruz').style.display="none";
+            document.querySelector('.CanvasNova').style.display="none";
 
+        });
+    }
     background(0);
     alfa = alfa + PI / 56;
     if (waves.length > 0) {
