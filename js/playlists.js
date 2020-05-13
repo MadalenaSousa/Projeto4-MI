@@ -10,6 +10,8 @@ let clientsRecords = [];
 let recordList;
 
 let trackstotal=[];
+let speedX=[];
+let loudnessY=[];
 
 
 function preload() {
@@ -77,6 +79,8 @@ function setup() {
 
     for(let i = 0; i < totalPlaylists; i++) {
         trackstotal.push(userPlaylists[i].tracks.total);
+        speedX.push(userPlaylists[i].average_features.speed);
+        loudnessY.push(userPlaylists[i].average_features.loudness);
     }
 
     recordList = client.record.getList('all-playlists');
@@ -119,8 +123,8 @@ function setup() {
                     record[i].set({ //define o novo record
                         user: user.name,
                         playlist: userPlaylists[i].name,
-                        px: map(userPlaylists[i].average_features.speed, min(speed), max(speed), 125, windowWidth - 375),
-                        py: map(userPlaylists[i].average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
+                        px: map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 125, windowWidth - 375),
+                        py: map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 250, windowHeight - 50),
                         color: color(255),
                         numtracks: userPlaylists[i].tracks.total,
                         resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
