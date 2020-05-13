@@ -140,7 +140,7 @@ function setup() {
                         user: user.name,
                         song: songs[i].name,
                         x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
-                        y: map(allLoudness[i], min(allLoudness), max(allLoudness), height - 200, 200),
+                        y: map(allLoudness[i], min(allLoudness), max(allLoudness), height - 80, 80),
                         raio: (songs[i].duration / 3),
                         color: map(getAudioFeatures(i).positivity, 0, 1, 0, 255),
                         energy: getAudioFeatures(i).energy * 5,
