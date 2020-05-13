@@ -125,7 +125,7 @@ function setup() {
                         playlist: userPlaylists[i].name,
                         px: map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, windowWidth - 375),
                         py: map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 150, windowHeight - 110),
-                        color: color(255),
+                        color: map(userPlaylists[i].average_features.positivity, 0, 1.0, 0, 255),
                         numtracks: userPlaylists[i].tracks.total,
                         resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
                         tam: map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 20, 80), //tamanho
@@ -314,6 +314,7 @@ class classMountain {
         this.px = px;
         this.py = py;
         this.numtracks = numtracks;
+        this.color  = color;
         this.resolution  = resolution;
         this.tam  = tam;
         this.round  = round;
@@ -327,22 +328,17 @@ class classMountain {
 
     display() {
         if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 2) {
-            this.c = color(0, 200, 255);
             this.t += this.tChange;
-
         }
-        else this.c = color(255);
+        this.c = color(0, this.color-(this.color)/20, this.color);
+        stroke(this.c);
 
         this.montanha();
 
         if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 2) this.balao();
     }
-    montanha(){
-        //desenho
-        stroke(this.c);
-        strokeWeight(1);
-        noFill();
 
+    montanha(){
 
         if (this.numtracks <= 30) {
             this.tam = map(this.numtracks, 0, 30, 10, 30);
@@ -368,6 +364,9 @@ class classMountain {
         else if(this.numtracks > 600) this.tam = 105;
 
         //fill(0);
+        stroke(this.c);
+        strokeWeight(1);
+        noFill();
         for (let b = 1; b <= (this.tam) / 10; b++) {
             beginShape();
             for (let a = -1; a <= 5; a += 5 / this.resolution) {
