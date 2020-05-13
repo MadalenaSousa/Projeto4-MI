@@ -169,51 +169,15 @@ function setup() {
 
     document.querySelector('.confirm-logout').addEventListener('click', closeArtistRoomConnection);
 
-    document.querySelector('.download').addEventListener('click', function () {
-
-        console.log('Canvas will be downloaded');
-        for (let i = 0; i < waves.length; i++) {
-            waves[i].display();
-        }
-
-        canvasnova.classList.add("CanvasNova");
-        cruz.classList.add("cruz");
-
-        cruz.style.color = "white";
-        cruz.innerText = "X";
-        cruz.style.zIndex = "10000";
-        cruz.style.position = 'fixed';
-        cruz.style.width = 'fit-conten';
-        cruz.style.height = 'fit-conten';
-        cruz.style.left = '68%';
-        cruz.style.top = '12%';
-        cruz.style.cursor = "pointer";
-        cruz.style.display = "block";
-
-        // var ctx = canvas.getContext("2d");
-        canvasnova.style.background = "black";
-        canvasnova.style.outline = "2px solid white";
-        canvasnova.style.position = 'fixed';
-        canvasnova.style.left = '50%';
-        canvasnova.style.top = '50%';
-        canvasnova.style.width = '40%';
-        canvasnova.style.height = '80%';
-        canvasnova.style.zIndex = "auto";
-        canvasnova.style.transform = "translate(-50%, -50%)";
-        canvasnova.style.display = "block";
-
-        // ctx.fillRect(20, 20, 500, 500);
-        // ctx.fillStyle = "#FF0000";
-
-
-
-        document.body.appendChild(canvasnova);
-        document.body.appendChild(cruz);
-
-    });
 
 }
 
+function criarDesenho(){
+
+    for (let i = 0; i < waves.length; i++) {
+        waves[i].display();
+    }
+}
 
 function addNewWave(name, color, divisoes, largura, x, y, shake) {
     newWave = new waveArtist(name, color, divisoes, largura, x, y, shake);
@@ -338,6 +302,49 @@ function closeArtistRoomConnection() {
 }
 
 function draw() {
+    document.querySelector('.download').addEventListener('click', function () {
+        fill(0,255,255);
+        rect(0, 0, 100, 100);
+
+        console.log('Canvas will be downloaded');
+
+        canvasnova.classList.add("CanvasNova");
+        cruz.classList.add("cruz");
+
+        cruz.style.color = "white";
+        cruz.innerText = "X";
+        cruz.style.zIndex = "10000";
+        cruz.style.position = 'fixed';
+        cruz.style.width = 'fit-conten';
+        cruz.style.height = 'fit-conten';
+        cruz.style.left = '68%';
+        cruz.style.top = '12%';
+        cruz.style.cursor = "pointer";
+        cruz.style.display = "block";
+
+        //var ctx = canvas.getContext("2d");
+        canvasnova.style.background = "black";
+        canvasnova.style.outline = "2px solid white";
+        canvasnova.style.position = 'fixed';
+        canvasnova.style.left = '50%';
+        canvasnova.style.top = '50%';
+        canvasnova.style.width = '40%';
+        canvasnova.style.height = '80%';
+        canvasnova.style.zIndex = "auto";
+        canvasnova.style.transform = "translate(-50%, -50%)";
+        canvasnova.style.display = "block";
+
+        // ctx.fillRect(20, 20, 500, 500);
+        // ctx.fillStyle = "#FF0000";
+
+        document.body.appendChild(canvasnova);
+        document.body.appendChild(cruz);
+        fill(0,255,255);
+        rect(0, 0, 100, 100);
+
+
+    });
+
     if (cruz.style.display==="block" || canvasnova.style.display==="block") {
         document.querySelector(".cruz").addEventListener('click', function () {
             document.querySelector('.cruz').style.display="none";

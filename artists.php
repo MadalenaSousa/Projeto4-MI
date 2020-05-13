@@ -77,7 +77,6 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         </div>
         <a class="menu-option"
             target="popup"
-
             onclick="window.open('https://twitter.com/intent/tweet?text=Look%20at%20my%20sea%20of%20my%20Top%20Artists%20on%20Spotify','popup','width=600,height=400');">
             <div><img src="icons/twitter.png"></div>
             <div>Twitter</div>
