@@ -380,7 +380,7 @@ class flowerSong {
         this.arraySectionDuration = arraySectionDuration;
 
         this.curves = [];
-        this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode);
+        this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode, type);
 
         this.sound = new Audio(url);
         this.musicOn = false;
@@ -549,8 +549,8 @@ class flowerSong {
         //RANDOM PETALS (FULLY OPEN)
         } else { //SI + ERROS
             for(let i = 0; i < nBeats*2; i++) {
-                let xB = x  + rBeats * cos(i*alpha);
-                let yB = y  + rBeats * sin(i*alpha);
+                let xB = x  + rBeats * cos(i*theta);
+                let yB = y  + rBeats * sin(i*theta);
                 line(x, y, xB + this.randomX, yB + this.randomY);
                 fill(255);
                 ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
@@ -600,16 +600,24 @@ class flowerSong {
 
 class randFlower {
 
-    constructor(arraySectionTempo, arraySectionDuration, arraySectionLoudness, curves, x, y, linenum, mode) {
+    constructor(arraySectionTempo, arraySectionDuration, arraySectionLoudness, curves, x, y, linenum, mode, type) {
         this.x = x;
         this.y = y;
         this.linenum = linenum; //numero de sections
         this.mode = mode;
         for (let i = 0; i < this.linenum; i++) {
-            if(this.mode === 0) {
-                this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), -PI, -TWO_PI); //maior/menor //tempo (speed) da section
+            if(type === 9 || type === 10) {
+                if(this.mode === 0) {
+                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), -PI, -TWO_PI); //maior/menor //tempo (speed) da section
+                } else {
+                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), PI, TWO_PI);
+                }
             } else {
-                this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), PI, TWO_PI);
+                if(this.mode === 0) {
+                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), 0, TWO_PI); //maior/menor //tempo (speed) da section
+                } else {
+                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), TWO_PI, 0);
+                }
             }
             this.d = map(arraySectionLoudness[i], min(arraySectionLoudness), max(arraySectionLoudness), 80, 120); //loudness da section
             this.hy = sin(this.theta);
