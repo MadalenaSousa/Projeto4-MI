@@ -123,8 +123,8 @@ function setup() {
                     record[i].set({ //define o novo record
                         user: user.name,
                         playlist: userPlaylists[i].name,
-                        px: map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 125, windowWidth - 375),
-                        py: map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 250, windowHeight - 50),
+                        px: map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, windowWidth - 375),
+                        py: map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 150, windowHeight - 110),
                         color: color(255),
                         numtracks: userPlaylists[i].tracks.total,
                         resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
@@ -345,15 +345,27 @@ class classMountain {
 
 
             if (this.numtracks <= 30) {
-                this.tam = map(this.numtracks, 0, 20, 20, 40);
+                this.tam = map(this.numtracks, 0, 30, 10, 30);
             }
             else if((this.numtracks > 30) && (this.numtracks <= 60)) {
-                this.tam = map(this.numtracks, 31, 60, 40, 60);
+                this.tam = map(this.numtracks, 31, 60, 30, 50);
             }
-            else if((this.numtracks > 60) && (this.numtracks <= 100)) {
-                this.tam = map(this.numtracks, 61, 100, 60, 80);
+            else if((this.numtracks > 60) && (this.numtracks <= 90)) {
+                this.tam = map(this.numtracks, 61, 90, 50, 60);
             }
-            else if(this.numtracks > 100) this.tam = 95;
+            else if((this.numtracks > 90) && (this.numtracks <= 120)) {
+                this.tam = map(this.numtracks, 91, 120, 60, 70);
+            }
+            else if((this.numtracks > 120) && (this.numtracks <= 200)) {
+                this.tam = map(this.numtracks, 121, 200, 70, 80);
+            }
+            else if((this.numtracks > 200) && (this.numtracks <= 400)) {
+                this.tam = map(this.numtracks, 201, 400, 80, 90);
+            }
+            else if((this.numtracks > 400) && (this.numtracks <= 600)) {
+                this.tam = map(this.numtracks, 401, 600, 90, 100);
+            }
+            else if(this.numtracks > 600) this.tam = 105;
 
             //fill(0);
             for (let b = 1; b <= (this.tam) / 10; b++) {
