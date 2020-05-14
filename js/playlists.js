@@ -125,7 +125,7 @@ function setup() {
                         playlist: userPlaylists[i].name,
                         px: map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, windowWidth - 375),
                         py: map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 150, windowHeight - 110),
-                        color: map(userPlaylists[i].average_features.positivity, 0, 1.0, 0, 255),
+                        color: map(userPlaylists[i].average_features.positivity, 0, 1.0, 170, 230),
                         numtracks: userPlaylists[i].tracks.total,
                         resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
                         tam: map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 20, 80), //tamanho
@@ -330,7 +330,7 @@ class classMountain {
         if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 2) {
             this.t += this.tChange;
         }
-        this.c = color(0, this.color-(this.color)/20, this.color);
+        this.c = color(0, this.color, this.color);
         stroke(this.c);
 
         this.montanha();
