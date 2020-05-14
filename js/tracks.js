@@ -85,6 +85,7 @@ function setup() {
     createSongDiv();
     logoutPopUp();
     sharePopUp();
+    createPlaylistPopUp();
 
     recordList = client.record.getList('all-songs');
     remove = document.querySelectorAll(".remove");
@@ -266,6 +267,24 @@ function sharePopUp() {
     document.querySelector(".close-share").addEventListener('click', function () {
         document.querySelector('.share').classList.add('hide');
     });
+}
+
+function createPlaylistPopUp() {
+    document.querySelector(".create-button").addEventListener('click', function () {
+        document.querySelector('.create-playlist').classList.toggle('hide');
+    });
+
+    document.querySelector(".close-create").addEventListener('click', function () {
+        document.querySelector('.create-playlist').classList.add('hide');
+    });
+}
+
+function createPlaylistSongList(index) {
+    let songDiv = document.createElement('div');
+
+    songDiv.innerText = songs[index].name;
+
+    document.querySelector('.added-songs-list').appendChild(songDiv);
 }
 
 function createUserDiv(name, profilepic) {

@@ -40,7 +40,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
             Choose a song to add to the artboard
             <div class="list-songs unit">
             </div>
-            <div class="menu-option unit">GENERATE PLAYLIST</div>
+            <div class="menu-option unit create-button">GENERATE PLAYLIST</div>
             <div class="menu-option unit share-button">SAVE ART AND SHARE</div>
         </div>
     </div>
@@ -83,6 +83,37 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <div class="menu-option download">
             <div><img src="icons/download.png"></div>
             <div>Download</div>
+        </div>
+    </div>
+</div>
+
+<div class="create-playlist hide">
+    <div class="close-create">X</div>
+    <div class="unit">
+        <h2><b>Create a Playlist!</b></h2>
+    Here is an overview of the playlist you can create! Choose a name, a cover image and select the songs you want, after just click the create button and VOI LÁ!
+    </div>
+    <div class="unit">
+        <div class="menu-option">
+            <div><label><b>Playlist Name</b> <input type="text"></label></div>
+            <div class="added-songs-list">
+            </div>
+        </div>
+        <div class="menu-option">
+            <div><b>Cover Image</b></div>
+            <div>
+            </div>
+            <div>
+                Do you want to use this photo as playlist cover image? <br>
+                <label>Yes! <input type="checkbox"></label>
+                <label>No <input type="checkbox"></label>
+            </div>
+        </div>
+        <div class="menu-option">
+            <div><b>CREATE!</b></div>
+        </div>
+        <div class="menu-option close-create">
+            <div><b>CANCEL</b></div>
         </div>
     </div>
 </div>
