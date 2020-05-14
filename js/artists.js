@@ -130,9 +130,9 @@ function setup() {
                     record[i].set({ //defino o novo record
                         user: user.name,
                         artist: artists[i].name,
-                        color: map(artists[i].positivity, min(positivity), max(positivity), 0, 255),
+                        color: map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 0, 255),
                         divisoes: map(artists[i].top_tracks_average_features.danceability, min(danceability), max(danceability), 3, 10),
-                        largura: map(artists[i].popularity.total, min(popularity), max(popularity), 100, 400),
+                        largura: map(artists[i].popularity, min(popularity), max(popularity), 100, 400),
                         x: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
                         y: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
                         shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 0.1, 0.6)
@@ -323,11 +323,11 @@ class waveArtist {
     display() {
 
         this.onda();
-        if (dist(mouseX, mouseY, this.x, this.y - (this.largura / 3)) <= this.largura / 6) {
+        /*if (dist(mouseX, mouseY, this.x, this.y - (this.largura / 3)) <= this.largura / 6) {
             this.balao();
             this.y = this.y + this.shake * sin(alfa);
             this.x = this.x + this.shake * cos(alfa);
-        }
+        }*/
 
     }
 
@@ -373,7 +373,7 @@ class waveArtist {
     }
 
     balao() {
-        for (let i = 0; i < totalArtists; i++) {
+        /*for (let i = 0; i < totalArtists; i++) {
 
             fill(0);
             strokeWeight(2);
@@ -407,7 +407,7 @@ class waveArtist {
             textSize(10);
             text("Add to Favorites ", this.x + 30, (this.y - ((2 * (this.largura / 2)) / 3)) - 37);
         }
-
+*/
     }
 }
 
