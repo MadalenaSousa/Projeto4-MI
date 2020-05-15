@@ -106,7 +106,7 @@ function setup() {
             for (let i = 0; i < recordList.getEntries().length; i++) {
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
-                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('shake'));
+                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('shake'), recordsOnList[i].get('valorX'), recordsOnList[i].get('valorY'), recordsOnList[i].get('user'));
                 });
             }
         }
@@ -130,12 +130,14 @@ function setup() {
                     record[i].set({ //defino o novo record
                         user: user.name,
                         artist: artists[i].name,
-                        color: map(artists[i].popularity, min(popularity), max(popularity), 0, 255),
+                        color: map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 0, 255),
                         divisoes: map(artists[i].top_tracks_average_features.danceability, min(danceability), max(danceability), 3, 10),
-                        largura: map(artists[i].followers.total, min(followers), max(followers), 100, 400),
-                        x: map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 125, windowWidth - (windowWidth / 26) - 375),
-                        y: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 250, windowHeight - 50),
-                        shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 0.1, 0.6)
+                        largura: map(artists[i].popularity, min(popularity), max(popularity), 100, 400),
+                        x: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
+                        y: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
+                        shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 0.1, 0.6),
+                        valorX: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
+                        valorY: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50)
 
                     });
 
@@ -174,8 +176,8 @@ function setup() {
     });
 }
 
-function addNewWave(name, color, divisoes, largura, x, y, shake) {
-    newWave = new waveArtist(name, color, divisoes, largura, x, y, shake);
+function addNewWave(name, color, divisoes, largura, x, y, shake, valorX, valorY, owner) {
+    newWave = new waveArtist(name, color, divisoes, largura, x, y, shake, valorX, valorY, owner);
     waves.push(newWave);
     console.log(waves);
 }
@@ -309,7 +311,7 @@ function draw() {
 
 class waveArtist {
 
-    constructor(name, color, divisoes, largura, x, y, shake) {
+    constructor(name, color, divisoes, largura, x, y, shake, valorX, valorY, owner) {
         this.name = name;
         this.color = color;
         this.divisoes = divisoes;
@@ -317,6 +319,9 @@ class waveArtist {
         this.x = x;
         this.y = y;
         this.shake = shake;
+        this.valorX = valorX;
+        this.valorY = valorY;
+        this.owner = owner;
     }
 
 
@@ -392,12 +397,12 @@ class waveArtist {
             fill(255, 255 - this.color, 255);
             textStyle(BOLD);
             textSize(12);
-            text("Added by ", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 155);
+            text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 155);
             textStyle(NORMAL);
-            text("Danceability: " + map(positivity[i], 0, 1, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
-            text("Positivity: " + map(positivity[i], 0, 1, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
-            text("Loudness: " + map(loudness[i], -60, 0, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
-            text("Speed: " + map(speed[i], 0, 200, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
+            text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
+            text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
+            text("Loudness: " + map(this.valorY, 250, windowHeight - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
+            text("Speed: " + map(this.valorX, 125, windowWidth - (windowWidth / 26) - 375, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
 
             fill(0);
             stroke(255, 255 - this.color, 255);
