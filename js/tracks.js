@@ -143,6 +143,7 @@ function setup() {
                     record[i].set({
                         user: user.name,
                         song: songs[i].name,
+                        id: songs[i].id,
                         x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
                         y: map(allLoudness[i], min(allLoudness), max(allLoudness), height - 80, 80),
                         raio: (songs[i].duration / 3),
@@ -275,7 +276,17 @@ function sharePopUp() {
 function createPlaylistPopUp() {
     document.querySelector(".create-button").addEventListener('click', function () {
 
-        for() 
+        cleanCreatePlaylistList();
+        let totalSongs = document.createElement('input');
+        totalSongs.setAttribute('type', 'hidden');
+        totalSongs.setAttribute('name', 'songTotal');
+        totalSongs.setAttribute('value', recordList.getEntries().length);
+
+        document.querySelector('.create-playlist form').appendChild(totalSongs);
+
+        for(let i = 0; i < recordList.getEntries().length; i++) {
+            createPlaylistSongList(i);
+        }
 
         document.querySelector('.create-playlist').classList.toggle('hide');
     });
@@ -285,10 +296,36 @@ function createPlaylistPopUp() {
     });
 }
 
+function cleanCreatePlaylistList() {
+    let arrayDivs = document.querySelectorAll('.added-songs-list div');
+
+    for(let i = 0; i < arrayDivs.length; i++) {
+        arrayDivs[i].remove();
+    }
+}
+
 function createPlaylistSongList(index) {
     let songDiv = document.createElement('div');
 
-    songDiv.innerText = songs[index].name;
+    let songInput = document.createElement('input');
+    songInput.setAttribute('type', 'checkbox');
+    songInput.setAttribute('name', 'song' + index);
+    songInput.setAttribute('checked', 'true');
+
+    let songLabel = document.createElement('label');
+    songLabel.innerText = recordList.getEntries()[index];
+
+    let record = client.record.getRecord(recordList.getEntries()[index]);
+
+    let songId = document.createElement('input');
+    songId.setAttribute('type', 'hidden');
+    songId.setAttribute('name', 'songId' + index);
+    songId.setAttribute('value', record.get('id'));
+
+    songLabel.appendChild(songInput);
+
+    songDiv.appendChild(songLabel);
+    songDiv.appendChild(songId);
 
     document.querySelector('.added-songs-list').appendChild(songDiv);
 }

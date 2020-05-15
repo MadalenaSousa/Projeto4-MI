@@ -94,27 +94,27 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
     Here is an overview of the playlist you can create! Choose a name, a cover image and select the songs you want, after just click the create button and VOI LÁ!
     </div>
     <div class="unit">
-        <div class="menu-option">
-            <div><label><b>Playlist Name</b> <input type="text"></label></div>
-            <div class="added-songs-list">
+        <form method="post" action="php/createPlaylist.php">
+            <div class="create-unit">
+                <div><label><input placeholder="Playlist Name" type="text" name="playlistname" required></label></div>
+                <div class="added-songs-list">
+                    <div></div>
+                </div>
             </div>
-        </div>
-        <div class="menu-option">
-            <div><b>Cover Image</b></div>
-            <div>
+            <div class="create-unit">
+                <div>
+                </div>
+                <div>
+                    Do you want to use this photo as playlist cover image? <br>
+                    <label>Yes! <input type="checkbox"></label>
+                    <label>No <input type="checkbox"></label>
+                </div>
             </div>
-            <div>
-                Do you want to use this photo as playlist cover image? <br>
-                <label>Yes! <input type="checkbox"></label>
-                <label>No <input type="checkbox"></label>
+            <div class="create-unit">
+                <div><input type="submit" value="CREATE"></div>
+                <div class="close-create"><input type="button" name="cancel" onClick="window.location='tracks.php'" value="CANCEL"></div>
             </div>
-        </div>
-        <div class="menu-option">
-            <div><b>CREATE!</b></div>
-        </div>
-        <div class="menu-option close-create">
-            <div><b>CANCEL</b></div>
-        </div>
+        </form>
     </div>
 </div>
 
