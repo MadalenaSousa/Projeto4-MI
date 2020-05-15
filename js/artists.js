@@ -106,7 +106,7 @@ function setup() {
             for (let i = 0; i < recordList.getEntries().length; i++) {
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
-                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('shake'), recordsOnList[i].get('valorX'), recordsOnList[i].get('valorY'));
+                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('shake'), recordsOnList[i].get('valorX'), recordsOnList[i].get('valorY'), recordsOnList[i].get('user'));
                 });
             }
         }
@@ -176,8 +176,8 @@ function setup() {
     });
 }
 
-function addNewWave(name, color, divisoes, largura, x, y, shake, valorX, valorY) {
-    newWave = new waveArtist(name, color, divisoes, largura, x, y, shake, valorX, valorY);
+function addNewWave(name, color, divisoes, largura, x, y, shake, valorX, valorY, owner) {
+    newWave = new waveArtist(name, color, divisoes, largura, x, y, shake, valorX, valorY, owner);
     waves.push(newWave);
     console.log(waves);
 }
@@ -311,7 +311,7 @@ function draw() {
 
 class waveArtist {
 
-    constructor(name, color, divisoes, largura, x, y, shake, valorX, valorY) {
+    constructor(name, color, divisoes, largura, x, y, shake, valorX, valorY, owner) {
         this.name = name;
         this.color = color;
         this.divisoes = divisoes;
@@ -321,6 +321,7 @@ class waveArtist {
         this.shake = shake;
         this.valorX = valorX;
         this.valorY = valorY;
+        this.owner = owner;
     }
 
 
@@ -396,7 +397,7 @@ class waveArtist {
             fill(255, 255 - this.color, 255);
             textStyle(BOLD);
             textSize(12);
-            text("Added by ", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 155);
+            text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 155);
             textStyle(NORMAL);
             text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
             text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
