@@ -8,6 +8,8 @@ let positivity = [];
 let danceability = [];
 let loudness = [];
 let energy = [];
+let id = [];
+
 let remove;
 let alfa = 0;
 
@@ -89,6 +91,7 @@ function setup() {
         positivity.push(artists[i].top_tracks_average_features.positivity);
         loudness.push(artists[i].top_tracks_average_features.loudness);
         energy.push(artists[i].top_tracks_average_features.energy);
+        id.push(artists[i].id);
 
     }
 
@@ -106,7 +109,7 @@ function setup() {
             for (let i = 0; i < recordList.getEntries().length; i++) {
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
-                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('shake'), recordsOnList[i].get('valorX'), recordsOnList[i].get('valorY'), recordsOnList[i].get('user'));
+                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('shake'), recordsOnList[i].get('valorX'), recordsOnList[i].get('valorY'), recordsOnList[i].get('id'), recordsOnList[i].get('user'));
                 });
             }
         }
@@ -137,7 +140,8 @@ function setup() {
                         y: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
                         shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 0.1, 0.6),
                         valorX: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
-                        valorY: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50)
+                        valorY: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
+                        id: id[i]
 
                     });
 
@@ -176,8 +180,8 @@ function setup() {
     });
 }
 
-function addNewWave(name, color, divisoes, largura, x, y, shake, valorX, valorY, owner) {
-    newWave = new waveArtist(name, color, divisoes, largura, x, y, shake, valorX, valorY, owner);
+function addNewWave(name, color, divisoes, largura, x, y, shake, valorX, valorY, id, owner) {
+    newWave = new waveArtist(name, color, divisoes, largura, x, y, shake, valorX, valorY, id, owner);
     waves.push(newWave);
     console.log(waves);
 }
@@ -311,7 +315,7 @@ function draw() {
 
 class waveArtist {
 
-    constructor(name, color, divisoes, largura, x, y, shake, valorX, valorY, owner) {
+    constructor(name, color, divisoes, largura, x, y, shake, valorX, valorY, id, owner) {
         this.name = name;
         this.color = color;
         this.divisoes = divisoes;
@@ -321,18 +325,30 @@ class waveArtist {
         this.shake = shake;
         this.valorX = valorX;
         this.valorY = valorY;
+        this.id = id;
         this.owner = owner;
     }
 
 
     display() {
-
         this.onda();
         if (dist(mouseX, mouseY, this.x, this.y - (this.largura / 3)) <= this.largura / 6) {
             this.balao();
             this.y = this.y + this.shake * sin(alfa);
             this.x = this.x + this.shake * cos(alfa);
         }
+        if (this.valorY >= ((2 * (this.largura / 2)) / 3) + 180) {
+            if (mouseX > this.x && mouseX < this.x + 130 && mouseY > this.y - ((2 * (this.largura / 2)) / 3) - 180 && mouseY < this.y - ((2 * (this.largura / 2)) / 3) - 20) {
+                this.balao();
+            }
+        } else {
+            if (mouseX > this.x && mouseX < this.x + 130 && mouseY > this.y - ((2 * this.largura / 2) / 3) && mouseY < this.y - ((2 * this.largura / 2) / 3) + 180) {
+
+                this.balao();
+
+            }
+        }
+
 
     }
 
@@ -383,34 +399,80 @@ class waveArtist {
             fill(0);
             strokeWeight(2);
             stroke(255, 255 - this.color, 255);
-            beginShape();
-            vertex(this.x - 0, this.y - ((2 * (this.largura / 2)) / 3) - 180);
-            vertex(this.x + 130, this.y - ((2 * (this.largura / 2)) / 3) - 180);
-            vertex(this.x + 130, this.y - ((2 * (this.largura / 2)) / 3) - 20);
-            vertex(this.x + 30, this.y - ((2 * (this.largura / 2)) / 3) - 20);
-            vertex(this.x, this.y - ((2 * (this.largura / 2)) / 3));
-            vertex(this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 20);
-            vertex(this.x, this.y - ((2 * (this.largura / 2)) / 3) - 20);
-            endShape(CLOSE);
-            noStroke();
+            if (this.valorY >= ((2 * (this.largura / 2)) / 3) + 180) {
+                beginShape();
+                vertex(this.x - 0, this.y - ((2 * (this.largura / 2)) / 3) - 180);
+                vertex(this.x + 130, this.y - ((2 * (this.largura / 2)) / 3) - 180);
+                vertex(this.x + 130, this.y - ((2 * (this.largura / 2)) / 3) - 20);
+                vertex(this.x + 30, this.y - ((2 * (this.largura / 2)) / 3) - 20);
+                vertex(this.x, this.y - ((2 * (this.largura / 2)) / 3));
+                vertex(this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 20);
+                vertex(this.x, this.y - ((2 * (this.largura / 2)) / 3) - 20);
+                endShape(CLOSE);
 
-            fill(255, 255 - this.color, 255);
-            textStyle(BOLD);
-            textSize(12);
-            text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 155);
-            textStyle(NORMAL);
-            text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
-            text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
-            text("Loudness: " + map(this.valorY, 250, windowHeight - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
-            text("Speed: " + map(this.valorX, 125, windowWidth - (windowWidth / 26) - 375, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
+                noStroke();
 
-            fill(0);
-            stroke(255, 255 - this.color, 255);
-            rect(this.x + 10, (this.y - ((2 * (this.largura / 2)) / 3)) - 50, 110, 20);
-            noStroke();
-            fill(255, 255 - this.color, 255);
-            textSize(10);
-            text("Add to Favorites ", this.x + 30, (this.y - ((2 * (this.largura / 2)) / 3)) - 37);
+                fill(255, 255 - this.color, 255);
+                textStyle(BOLD);
+                textSize(12);
+                text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 155);
+                textStyle(NORMAL);
+                text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
+                text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
+                text("Loudness: " + map(this.valorY, 250, windowHeight - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
+                text("Speed: " + map(this.valorX, 125, windowWidth - (windowWidth / 26) - 375, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
+
+                fill(0);
+                stroke(255, 255 - this.color, 255);
+                rect(this.x + 10, (this.y - ((2 * (this.largura / 2)) / 3)) - 50, 110, 20);
+                noStroke();
+                fill(255, 255 - this.color, 255);
+                textSize(10);
+                text("Visit Artist's Page", this.x + 30, (this.y - ((2 * (this.largura / 2)) / 3)) - 37);
+
+                if (mouseIsPressed && mouseX > this.x + 10 && mouseX < this.x + 10 + 110 && mouseY > (this.y - ((2 * (this.largura / 2)) / 3)) - 50 && mouseY < (this.y - ((2 * (this.largura / 2)) / 3)) - 50 + 20) {
+                    window.open("https://open.spotify.com/artist/" + this.id, "_blank");
+                }
+
+            } else {
+                beginShape();
+                vertex(this.x - 0, this.y - ((2 * this.largura / 2) / 3) + 180);
+                vertex(this.x + 130, this.y - ((2 * this.largura / 2) / 3) + 180);
+                vertex(this.x + 130, this.y - ((2 * this.largura / 2) / 3) + 20);
+                vertex(this.x + 30, this.y - ((2 * this.largura / 2) / 3) + 20);
+                vertex(this.x, this.y - ((2 * this.largura / 2) / 3));
+                vertex(this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 20);
+                vertex(this.x, this.y - ((2 * this.largura / 2) / 3) + 20);
+                endShape(CLOSE);
+
+                noStroke();
+
+                fill(255, 255 - this.color, 255);
+                textStyle(BOLD);
+                textSize(12);
+                text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 45);
+                textStyle(NORMAL);
+                text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 130);
+                text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 110);
+                text("Loudness: " + map(this.valorY, 250, windowHeight - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 90);
+                text("Speed: " + map(this.valorX, 125, windowWidth - (windowWidth / 26) - 375, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 70);
+
+                fill(0);
+                stroke(255, 255 - this.color, 255);
+                rect(this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 150, 110, 20);
+                noStroke();
+                fill(255, 255 - this.color, 255);
+                textSize(10);
+                text("Visit Artist's Page", this.x + 30, this.y - ((2 * this.largura / 2) / 3) + 163);
+
+                if (mouseIsPressed && mouseX > this.x + 10 && mouseX < this.x + 10 + 110 && mouseY > (this.y - ((2 * this.largura / 2) / 3) + 150) && mouseY < (this.y - ((2 * this.largura / 2) / 3) + 150 + 20)) {
+                    window.open("https://open.spotify.com/artist/" + this.id, "_blank");
+                }
+
+
+            }
+
+
         }
 
     }
