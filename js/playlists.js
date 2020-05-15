@@ -418,7 +418,7 @@ class classMountain {
         text("Positivity: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 150 + (this.valor*7));
         text("Loudness: " + map(this.nAmp, 0.3, 1, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 130 + (this.valor*7));
         text("Speed: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 110 + (this.valor*7));
-        text("Musics: " + this.numtracks, this.px + 10, this.py - 90 + (this.valor*7));
+        text("Total musics: " + this.numtracks, this.px + 10, this.py - 90 + (this.valor*7));
 
         fill(0);
         stroke(this.c);
