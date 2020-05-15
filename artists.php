@@ -68,7 +68,9 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
     </div>
     <div class="unit">
         <div class="menu-option">
-            <div><img src="icons/facebook.png"></div>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=example.org" target="_blank">
+                <div><img src="icons/facebook.png"></div>
+            </a>
             <div>Facebook</div>
         </div>
         <div class="menu-option">
@@ -80,7 +82,9 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
             <div>Twitter</div>
         </div>
         <div class="menu-option download">
-            <div><img src="icons/download.png"></div>
+
+            <img src="icons/download.png">
+
             <div>Download</div>
         </div>
     </div>
