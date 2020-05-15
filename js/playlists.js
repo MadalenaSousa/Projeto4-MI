@@ -123,8 +123,8 @@ function setup() {
                     record[i].set({ //define o novo record
                         user: user.name,
                         playlist: userPlaylists[i].name,
-                        px: map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, windowWidth - 375),
-                        py: map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 150, windowHeight - 110),
+                        px: map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 150, windowWidth - 375),
+                        py: map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 150, windowHeight - 130),
                         color: map(userPlaylists[i].average_features.positivity, 0, 1.0, 170, 230),
                         numtracks: userPlaylists[i].tracks.total,
                         resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
