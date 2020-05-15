@@ -448,7 +448,7 @@ class flowerSong {
 
     flor(x, y, nBeats, rBeats, mode, type) {
         strokeWeight(2);
-        fill(0);
+        fill(255, 30);
 
         let n = 1;
         let d = 1;
@@ -461,16 +461,101 @@ class flowerSong {
         //LINHA + ORIENTAÇÃO DAS FLORES
         if(mode === 1) {
             line(this.x, this.y, this.x, height);
-            alpha = -PI/(nBeats*2);
-            theta = -TWO_PI/(nBeats*2);
+            //alpha = -PI/(nBeats*2);
+            theta = TWO_PI/(nBeats*2);
         } else if(mode === 0){
             line(this.x, this.y, this.x, 0);
-            alpha = PI/(nBeats*2);
+            //alpha = -PI/(nBeats*2);
             theta = TWO_PI/(nBeats*2);
         }
 
+        //OPÇÃO 4
+        /*if(mode === 1) {
+            for (let c = 0; c < this.curves.length; c++) {
+                this.curves[c].display(this.randomX, this.randomY);
+            }
 
-        //SMALL DAISY
+            //BEATS
+            for(let i = 0; i < nBeats*2; i++) {
+                let xB = x  + rBeats/1.5 * cos(i*theta);
+                let yB = y  + rBeats/1.5 * sin(i*theta);
+                line(x, y, xB + this.randomX, yB + this.randomY);
+                fill(255);
+                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
+            }
+        } else {
+            //SECTIONS
+            n = this.numberSections;
+            d = 1;
+            k = n / d;
+
+            beginShape();
+            for (let a = 0; a < TWO_PI * d; a += 0.02) {
+                let r = map(avg(this.arraySectionDuration), min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(k * a);
+                let xB = x + r * cos(a);
+                let yB = y + r * sin(a);
+                vertex(xB + this.randomX/2, yB + this.randomY/2);
+            }
+            endShape(CLOSE);
+
+            //BEATS
+            for(let i = 0; i < nBeats*2; i++) {
+                let xB = x  + rBeats/2 * cos(i*theta);
+                let yB = y  + rBeats/2 * sin(i*theta);
+                line(x, y, xB + this.randomX, yB + this.randomY);
+                fill(255);
+                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
+            }
+        }*/
+
+        //OPÇÃO 3
+        /*if(mode === 1) {
+            for (let c = 0; c < this.curves.length; c++) {
+                this.curves[c].display(this.randomX, this.randomY);
+            }
+
+            //BEATS
+            for(let i = 0; i < nBeats*2; i++) {
+                let xB = x  + rBeats/1.5 * cos(i*theta);
+                let yB = y  + rBeats/1.5 * sin(i*theta);
+                line(x, y, xB + this.randomX, yB + this.randomY);
+                fill(255);
+                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
+            }
+        } else {
+            for(let i = 0; i < this.numberSections; i++) {
+                let xS = x  + map(this.arraySectionDuration[i], min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(i*theta);
+                let yS = y  + map(this.arraySectionDuration[i], min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * sin(i*theta);
+                line(x, y, xS + this.randomX, yS + this.randomY);
+
+                //BEATS
+                for(let z = 0; z < nBeats*2; z++) {
+                    let xB = xS  + (rBeats/2) * cos(z*theta);
+                    let yB = yS  + (rBeats/2) * sin(z*theta);
+                    line(xS, yS, xB + this.randomX, yB + this.randomY);
+                    fill(255);
+                    ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
+                }
+            }
+        }*/
+
+        //OPÇÃO 2
+        //SECTIONS
+        for (let c = 0; c < this.curves.length; c++) {
+            this.curves[c].display(this.randomX, this.randomY);
+        }
+
+        //BEATS
+        for(let i = 0; i < nBeats*2; i++) {
+            let xB = x  + rBeats/1.5 * cos(i*theta);
+            let yB = y  + rBeats/1.5 * sin(i*theta);
+            line(x, y, xB + this.randomX, yB + this.randomY);
+            fill(255);
+            ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
+        }
+
+        //OPÇÃO 1
+        /*/SMALL DAISY
         if(type === 0 || type === 1) { // DO + DO#
 
             //SECTIONS
@@ -622,7 +707,7 @@ class flowerSong {
                 fill(255);
                 ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
             }
-        }
+        }*/
     }
 
     balao() {
@@ -669,19 +754,20 @@ class randFlower {
         this.linenum = linenum; //numero de sections
         this.mode = mode;
         for (let i = 0; i < this.linenum; i++) {
-            if(type === 9 || type === 10) {
+            this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), 0, arraySectionTempo[i]*TWO_PI);
+            /*if(type === 9 || type === 10) {
                 if(this.mode === 0) {
-                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), -PI, -TWO_PI); //maior/menor //tempo (speed) da section
+                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), 0, arraySectionTempo[i]*TWO_PI); //maior/menor //tempo (speed) da section
                 } else {
-                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), PI, TWO_PI);
+                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), arraySectionTempo[i]*TWO_PI, 0);
                 }
             } else {
                 if(this.mode === 0) {
-                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), 0, TWO_PI); //maior/menor //tempo (speed) da section
+                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), 0, arraySectionTempo[i]*TWO_PI); //maior/menor //tempo (speed) da section
                 } else {
-                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), TWO_PI, 0);
+                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), arraySectionTempo[i]*TWO_PI, 0);
                 }
-            }
+            }*/
             this.d = map(arraySectionLoudness[i], min(arraySectionLoudness), max(arraySectionLoudness), 80, 120); //loudness da section
             this.hy = sin(this.theta);
             this.hx = cos(this.theta);
@@ -701,7 +787,7 @@ class randFlower {
 
     display(){
         stroke(255);
-        strokeWeight(2);
+        strokeWeight(1);
 
         line(this.x, this.y, this.x, height);
     }
@@ -722,6 +808,7 @@ class Curve { //preenchimento
     }
 
     display(randX, randY) {
+        //fill(255, 30);
         noFill();
         strokeWeight(2);
         bezier(this.one.x, this.one.y, this.controlPt.x, this.controlPt.y, this.controlPt.x, this.controlPt.y, this.two.x + randX, this.two.y + randY);
