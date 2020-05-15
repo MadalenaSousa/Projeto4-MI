@@ -6,6 +6,7 @@ let remove;
 let check = false;
 
 let allLoudness = [];
+let allPositivity = [];
 
 let allBarsTotal = [];
 let allBeatsTotal = [];
@@ -112,6 +113,8 @@ function setup() {
     });
 
     for(let i = 0; i < totalSongs; i++) {
+        allPositivity[i] = getAudioFeatures(i).positivity;
+
         allLoudness[i] = getAudioFeatures(i).loudness;
 
         allBarsTotal[i] = getAudioAnalysis(i).bars.total;
@@ -143,7 +146,7 @@ function setup() {
                         x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
                         y: map(allLoudness[i], min(allLoudness), max(allLoudness), height - 80, 80),
                         raio: (songs[i].duration / 3),
-                        color: map(getAudioFeatures(i).positivity, 0, 1, 0, 255),
+                        color: map(allPositivity[i], min(allPositivity), max(allPositivity), 0, 255),
                         energy: getAudioFeatures(i).energy * 5,
                         artist: songs[i].artists,
                         url: songs[i].preview_url,
@@ -406,13 +409,12 @@ class flowerSong {
     }
 
     display() {
+        this.c = color(255, 255, 255 - this.color);
         if(dist(mouseX, mouseY, this.x, this.y) <= this.raio){
-            this.c = color(255, 255, 255 - this.color);
             this.randomX = random(-this.shakeX, this.shakeX);
             this.randomY = random(-this.shakeY, this.shakeY);
             console.log("entrou");
         } else {
-            this.c = color(255);
             this.randomX = 0;
             this.randomY = 0;
         }
@@ -447,7 +449,7 @@ class flowerSong {
     }
 
     flor(x, y, nBeats, rBeats, mode, type) {
-        strokeWeight(2);
+        strokeWeight(1);
         fill(255, 30);
 
         let n = 1;
@@ -810,7 +812,7 @@ class Curve { //preenchimento
     display(randX, randY) {
         //fill(255, 30);
         noFill();
-        strokeWeight(2);
+        strokeWeight(1);
         bezier(this.one.x, this.one.y, this.controlPt.x, this.controlPt.y, this.controlPt.x, this.controlPt.y, this.two.x + randX, this.two.y + randY);
     }
 }
