@@ -274,6 +274,9 @@ function sharePopUp() {
 
 function createPlaylistPopUp() {
     document.querySelector(".create-button").addEventListener('click', function () {
+
+        for() 
+
         document.querySelector('.create-playlist').classList.toggle('hide');
     });
 
@@ -471,46 +474,21 @@ class flowerSong {
             theta = TWO_PI/(nBeats*2);
         }
 
-        //OPÇÃO 4
-        /*if(mode === 1) {
-            for (let c = 0; c < this.curves.length; c++) {
-                this.curves[c].display(this.randomX, this.randomY);
-            }
+        //SECTIONS
+        for (let c = 0; c < this.curves.length; c++) {
+            this.curves[c].display(this.randomX, this.randomY);
+        }
 
-            //BEATS
-            for(let i = 0; i < nBeats*2; i++) {
-                let xB = x  + rBeats/1.5 * cos(i*theta);
-                let yB = y  + rBeats/1.5 * sin(i*theta);
-                line(x, y, xB + this.randomX, yB + this.randomY);
-                fill(255);
-                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
-            }
-        } else {
-            //SECTIONS
-            n = this.numberSections;
-            d = 1;
-            k = n / d;
+        //BEATS
+        for(let i = 0; i < nBeats*2; i++) {
+            let xB = x  + rBeats/1.5 * cos(i*theta);
+            let yB = y  + rBeats/1.5 * sin(i*theta);
+            line(x, y, xB + this.randomX, yB + this.randomY);
+            fill(255);
+            ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
+        }
 
-            beginShape();
-            for (let a = 0; a < TWO_PI * d; a += 0.02) {
-                let r = map(avg(this.arraySectionDuration), min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(k * a);
-                let xB = x + r * cos(a);
-                let yB = y + r * sin(a);
-                vertex(xB + this.randomX/2, yB + this.randomY/2);
-            }
-            endShape(CLOSE);
-
-            //BEATS
-            for(let i = 0; i < nBeats*2; i++) {
-                let xB = x  + rBeats/2 * cos(i*theta);
-                let yB = y  + rBeats/2 * sin(i*theta);
-                line(x, y, xB + this.randomX, yB + this.randomY);
-                fill(255);
-                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
-            }
-        }*/
-
-        //OPÇÃO 3
+        //OUTRA OPÇÃO
         /*if(mode === 1) {
             for (let c = 0; c < this.curves.length; c++) {
                 this.curves[c].display(this.randomX, this.randomY);
@@ -538,176 +516,6 @@ class flowerSong {
                     fill(255);
                     ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
                 }
-            }
-        }*/
-
-        //OPÇÃO 2
-        //SECTIONS
-        for (let c = 0; c < this.curves.length; c++) {
-            this.curves[c].display(this.randomX, this.randomY);
-        }
-
-        //BEATS
-        for(let i = 0; i < nBeats*2; i++) {
-            let xB = x  + rBeats/1.5 * cos(i*theta);
-            let yB = y  + rBeats/1.5 * sin(i*theta);
-            line(x, y, xB + this.randomX, yB + this.randomY);
-            fill(255);
-            ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
-        }
-
-        //OPÇÃO 1
-        /*/SMALL DAISY
-        if(type === 0 || type === 1) { // DO + DO#
-
-            //SECTIONS
-            n = this.numberSections;
-            d = 1;
-            k = n / d;
-
-            beginShape();
-            for (let a = 0; a < TWO_PI * d; a += 0.02) {
-                let r = map(avg(this.arraySectionDuration), min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(k * a);
-                let xB = x + r * cos(a);
-                let yB = y + r * sin(a);
-                vertex(xB + this.randomX/2, yB + this.randomY/2);
-            }
-            endShape(CLOSE);
-
-            //BEATS
-            for(let i = 0; i < nBeats*2; i++) {
-                let xB = x  + rBeats/2 * cos(i*theta);
-                let yB = y  + rBeats/2 * sin(i*theta);
-                line(x, y, xB + this.randomX, yB + this.randomY);
-                fill(255);
-                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
-            }
-
-
-        //BIG DAISY
-        } else if(type === 2 || type === 3) { // RE + RE#
-
-            //SECTIONS
-            n = this.numberSections + 2;
-            d = this.numberSections;
-            k = n / d;
-
-            beginShape();
-            for (let a = 0; a < TWO_PI * d; a += 0.02) {
-                let r = map(avg(this.arraySectionDuration), min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(k * a);
-                let xB = x + r * cos(a);
-                let yB = y + r * sin(a);
-                vertex(xB + this.randomX/2, yB + this.randomY/2);
-            }
-            endShape(CLOSE);
-
-            //BEATS
-            for(let i = 0; i < nBeats*2; i++) {
-                let xB = x  + rBeats/2 * cos(i*theta);
-                let yB = y  + rBeats/2 * sin(i*theta);
-                line(x, y, xB + this.randomX, yB + this.randomY);
-                fill(255);
-                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
-            }
-
-
-        //DENDILION WITH SEED
-        } else if(type === 4) { // MI
-
-            //SECTIONS
-            for(let i = 0; i < this.numberSections; i++) {
-                let xS = x  + map(this.arraySectionDuration[i], min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(i*alpha);
-                let yS = y  + map(this.arraySectionDuration[i], min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * sin(i*alpha);
-                line(x, y, xS + this.randomX, yS + this.randomY);
-
-                //BEATS
-                for(let z = 0; z < nBeats*2; z++) {
-                    let xB = xS  + (rBeats/2) * cos(z*theta);
-                    let yB = yS  + (rBeats/2) * sin(z*theta);
-                    line(xS, yS, xB + this.randomX, yB + this.randomY);
-                    fill(255);
-                    ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
-                }
-            }
-
-
-        //DENDILION WITHOUT SEED
-        } else if(type === 5 || type === 6) { //FA + FA#
-
-            //SECTIONS
-            for(let i = 0; i < this.numberSections; i++) {
-                let xS = x  + map(this.arraySectionDuration[i], min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(i*alpha);
-                let yS = y  + map(this.arraySectionDuration[i], min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * sin(i*alpha);
-                line(x, y, xS + this.randomX, yS + this.randomY);
-
-                //BEATS
-                for(let z = 0; z < nBeats*2; z++) {
-                    let xB = xS  + (rBeats/3) * cos(z*theta);
-                    let yB = yS  + (rBeats/3) * sin(z*theta);
-                    line(xS, yS, xB + this.randomX, yB + this.randomY);
-                }
-            }
-
-
-        //ROSE
-        } else if(type === 7 || type === 8) { //SOL + SOL#
-
-            //SECTIONS
-            n = 1;
-            d = this.numberSections;
-            k = n / d;
-
-            beginShape();
-            for (let a = 0; a < TWO_PI * d; a += 0.02) {
-                let r = map(avg(this.arraySectionDuration), min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(k * a);
-                let xB = x + r * cos(a);
-                let yB = y + r * sin(a);
-                vertex(xB + this.randomX/2, yB + this.randomY/2);
-            }
-            endShape(CLOSE);
-
-            //BEATS
-            for(let i = 0; i < nBeats*2; i++) {
-                let xB = x  + rBeats/2 * cos(i*theta);
-                let yB = y  + rBeats/2 * sin(i*theta);
-                line(x, y, xB + this.randomX, yB + this.randomY);
-                fill(255);
-                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
-            }
-
-
-        //RANDOM PETALS (HALF OPEN)
-        } else if(type === 9 || type === 10) { //LA + LA#
-
-            //SECTIONS
-            for (let c = 0; c < this.curves.length; c++) {
-                this.curves[c].display(this.randomX, this.randomY);
-            }
-
-            //BEATS
-            for(let i = 0; i < nBeats*2; i++) {
-                let xB = x  + rBeats * cos(i*alpha);
-                let yB = y  + rBeats * sin(i*alpha);
-                line(x, y, xB + this.randomX, yB + this.randomY);
-                fill(255);
-                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
-            }
-
-        //RANDOM PETALS (FULLY OPEN)
-        } else { //SI + ERROS
-
-            //SECTIONS
-            for (let c = 0; c < this.curves.length; c++) {
-                this.curves[c].display(this.randomX, this.randomY);
-            }
-
-            //BEATS
-            for(let i = 0; i < nBeats*2; i++) {
-                let xB = x  + rBeats * cos(i*theta);
-                let yB = y  + rBeats * sin(i*theta);
-                line(x, y, xB + this.randomX, yB + this.randomY);
-                fill(255);
-                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
             }
         }*/
     }
