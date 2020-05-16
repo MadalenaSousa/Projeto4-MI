@@ -138,7 +138,8 @@ function setup() {
                         largura: map(artists[i].popularity, min(popularity), max(popularity), 100, 400),
                         x: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
                         y: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
-                        shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 0.1, 0.6),
+                        // shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 0.1, 0.6),
+                        shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 1, 20),
                         valorX: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
                         valorY: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
                         id: id[i]
@@ -334,21 +335,23 @@ class waveArtist {
         this.onda();
         if (dist(mouseX, mouseY, this.x, this.y - (this.largura / 3)) <= this.largura / 6) {
             this.balao();
-            this.y = this.y + this.shake * sin(alfa);
-            this.x = this.x + this.shake * cos(alfa);
+            this.y = sin(alfa * this.shake);
+            this.x = cos(alfa * this.shake);
+        } else {
+            this.x = this.valorX;
+            this.y = this.valorY;
+
         }
+
         if (this.valorY >= ((2 * (this.largura / 2)) / 3) + 180) {
             if (mouseX > this.x && mouseX < this.x + 130 && mouseY > this.y - ((2 * (this.largura / 2)) / 3) - 180 && mouseY < this.y - ((2 * (this.largura / 2)) / 3) - 20) {
                 this.balao();
             }
-        } else {
-            if (mouseX > this.x && mouseX < this.x + 130 && mouseY > this.y - ((2 * this.largura / 2) / 3) && mouseY < this.y - ((2 * this.largura / 2) / 3) + 180) {
+        } else if (mouseX > this.x && mouseX < this.x + 130 && mouseY > this.y - ((2 * this.largura / 2) / 3) && mouseY < this.y - ((2 * this.largura / 2) / 3) + 180) {
 
-                this.balao();
+            this.balao();
 
-            }
         }
-
 
     }
 
