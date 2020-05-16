@@ -158,7 +158,6 @@ function setup() {
                         nBeats: map(allBeatsTotal[i], min(allBeatsTotal), max(allBeatsTotal), 3, 5),
                         rBeats: map(allBeatsDuration[i], min(allBeatsDuration), max(allBeatsDuration), 30, 50),
                         mode: songs[i].mode,
-                        type: songs[i].type
                     });
 
                     recordList.addEntry(songs[i].name);
@@ -199,8 +198,8 @@ function setup() {
     });
 }
 
-function addNewFlower(name, x, y, raio, color, energy, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode, type) {
-    newFlower = new flowerSong(name, x, y, raio, color, energy, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode, type);
+function addNewFlower(name, x, y, raio, color, energy, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
+    newFlower = new flowerSong(name, x, y, raio, color, energy, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode);
     flowers.push(newFlower);
     console.log("LISTA DE FLORES ATUAL: " + flowers);
 }
@@ -424,7 +423,7 @@ class flowerSong {
     randflower;
     curves;
 
-    constructor(name, x, y, raio, color, energy, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections,  mode, type) {
+    constructor(name, x, y, raio, color, energy, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections,  mode) {
         this.name = name;
         this.x = x;
         this.y = y;
@@ -435,14 +434,12 @@ class flowerSong {
         this.artist = artist;
         this.owner = owner;
         this.mode = mode;
-        this.type = type;
         this.nBeats = nBeats;
         this.rBeats = rBeats;
         this.numberSections = numberSections;
-        this.arraySectionDuration = arraySectionDuration;
 
         this.curves = [];
-        this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode, type);
+        this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode);
 
         this.sound = new Audio(url);
         this.musicOn = false;
@@ -488,17 +485,10 @@ class flowerSong {
         }
     }
 
-    flor(x, y, nBeats, rBeats, mode, type) {
+    flor(x, y, nBeats, rBeats, mode) {
         strokeWeight(1);
         fill(255, 30);
-
-        let n = 1;
-        let d = 1;
-        let k = n / d;
-
-        let alpha = 0;
         let theta = 0;
-
 
         //LINHA + ORIENTAÇÃO DAS FLORES
         if(mode === 1) {
@@ -524,37 +514,6 @@ class flowerSong {
             fill(255);
             ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
         }
-
-        //OUTRA OPÇÃO
-        /*if(mode === 1) {
-            for (let c = 0; c < this.curves.length; c++) {
-                this.curves[c].display(this.randomX, this.randomY);
-            }
-
-            //BEATS
-            for(let i = 0; i < nBeats*2; i++) {
-                let xB = x  + rBeats/1.5 * cos(i*theta);
-                let yB = y  + rBeats/1.5 * sin(i*theta);
-                line(x, y, xB + this.randomX, yB + this.randomY);
-                fill(255);
-                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
-            }
-        } else {
-            for(let i = 0; i < this.numberSections; i++) {
-                let xS = x  + map(this.arraySectionDuration[i], min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(i*theta);
-                let yS = y  + map(this.arraySectionDuration[i], min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * sin(i*theta);
-                line(x, y, xS + this.randomX, yS + this.randomY);
-
-                //BEATS
-                for(let z = 0; z < nBeats*2; z++) {
-                    let xB = xS  + (rBeats/2) * cos(z*theta);
-                    let yB = yS  + (rBeats/2) * sin(z*theta);
-                    line(xS, yS, xB + this.randomX, yB + this.randomY);
-                    fill(255);
-                    ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
-                }
-            }
-        }*/
     }
 
     balao() {
@@ -602,19 +561,6 @@ class randFlower {
         this.mode = mode;
         for (let i = 0; i < this.linenum; i++) {
             this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), 0, arraySectionTempo[i]*TWO_PI);
-            /*if(type === 9 || type === 10) {
-                if(this.mode === 0) {
-                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), 0, arraySectionTempo[i]*TWO_PI); //maior/menor //tempo (speed) da section
-                } else {
-                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), arraySectionTempo[i]*TWO_PI, 0);
-                }
-            } else {
-                if(this.mode === 0) {
-                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), 0, arraySectionTempo[i]*TWO_PI); //maior/menor //tempo (speed) da section
-                } else {
-                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), arraySectionTempo[i]*TWO_PI, 0);
-                }
-            }*/
             this.d = map(arraySectionLoudness[i], min(arraySectionLoudness), max(arraySectionLoudness), 80, 120); //loudness da section
             this.hy = sin(this.theta);
             this.hx = cos(this.theta);
