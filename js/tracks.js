@@ -287,6 +287,8 @@ function createPlaylistPopUp() {
             createPlaylistSongList(i);
         }
 
+        new p5(preview, window.document.getElementById('preview-create'));
+
         document.querySelector('.create-playlist').classList.toggle('hide');
     });
 
@@ -437,6 +439,9 @@ class flowerSong {
         this.nBeats = nBeats;
         this.rBeats = rBeats;
         this.numberSections = numberSections;
+        this.arraySectionTempo = arraySectionTempo;
+        this.arraySectionDuration = arraySectionDuration;
+        this.arraySectionLoudness = arraySectionLoudness;
 
         this.curves = [];
         this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode);
@@ -450,7 +455,6 @@ class flowerSong {
         if(dist(mouseX, mouseY, this.x, this.y) <= this.raio){
             this.randomX = random(-this.shakeX, this.shakeX);
             this.randomY = random(-this.shakeY, this.shakeY);
-            console.log("entrou");
         } else {
             this.randomX = 0;
             this.randomY = 0;
@@ -616,3 +620,19 @@ function avg(array) {
 
     return sum/array.length;
 }
+
+let preview = function(p) {
+    p.setup = function() {
+        p.createCanvas(100,100);
+    };
+
+    p.draw = function() {
+        p.background(200, 200, 40);
+        p.fill(255, 0, 255);
+
+        for(let i = 0; i < flowers.length; i++) {
+            flowers[i].display();
+            p.ellipse(50 + i*2, 50 - i*2, 20, 20);
+        }
+    }
+};
