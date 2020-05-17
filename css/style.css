@@ -84,6 +84,7 @@ a {
 
 .category {
     display: inline-block;
+    background-color: black;
     position: relative;
     width: calc(100% / 4);
     height: fit-content;
@@ -94,6 +95,7 @@ a {
 
 .category img {
     width: 100%;
+    border: 2px solid white;
 }
 
 .all-categories .category:first-child .titulo {

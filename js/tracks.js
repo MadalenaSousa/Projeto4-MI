@@ -289,8 +289,15 @@ function createPlaylistPopUp() {
 
         let canvas = document.getElementById('defaultCanvas0');
         let img = new Image(200, 200);
-        img.src = canvas.toDataURL();
+        img.src = canvas.toDataURL('image/jpeg', 0.01);
         document.querySelector('.preview').appendChild(img);
+
+        let playlistImg = document.createElement('input');
+        playlistImg.setAttribute('type', 'hidden');
+        playlistImg.setAttribute('name', 'playlistImg');
+        playlistImg.setAttribute('value', img.src);
+
+        document.querySelector('.create-playlist form').appendChild(playlistImg);
 
         document.querySelector('.create-playlist').classList.toggle('hide');
     });
@@ -491,7 +498,7 @@ class flowerSong {
     }
 
     flor(x, y, nBeats, rBeats, mode) {
-        strokeWeight(1);
+        strokeWeight(2);
         fill(255, 30);
         let theta = 0;
 
@@ -608,7 +615,7 @@ class Curve { //preenchimento
     display(randX, randY) {
         //fill(255, 30);
         noFill();
-        strokeWeight(1);
+        strokeWeight(2);
         bezier(this.one.x, this.one.y, this.controlPt.x, this.controlPt.y, this.controlPt.x, this.controlPt.y, this.two.x + randX, this.two.y + randY);
     }
 }

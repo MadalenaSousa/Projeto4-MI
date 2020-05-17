@@ -11,6 +11,8 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
+    <link rel="icon" href="icons/separador.png" type="image/png" sizes="16x16">
+
     <script type="text/javascript">
         var userid = '<?php echo $session_value;?>';
     </script>
@@ -43,7 +45,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
     <div class="category">
         <div class="titulo unit">SONGS ROOM</div>
-        <div><img src="icons/song-room.png"></div>
+        <div><img src="icons/songs-room.png"></div>
         <a href="php/getTracksInfo.php?type=public">
             <div class="option song-room">
                 PUBLIC ROOM
@@ -81,6 +83,6 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         </a>
     </div>
 </div>
-
+<script src="js/login.js"></script>
 </body>
 </html>
