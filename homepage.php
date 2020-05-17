@@ -31,11 +31,11 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
                 PUBLIC ROOM
             </div>
         </a>
-        <a href="php/getPlaylistsInfo.php?type=friends">
+        <!--a href="php/getPlaylistsInfo.php?type=friends">
             <div class="option playlist-room">
                 WITH FRIENDS
             </div>
-        </a>
+        </a-->
         <a href="php/getPlaylistsInfo.php?type=solo">
             <div class="option playlist-room">
                 ONLY ME
@@ -51,16 +51,16 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
                 PUBLIC ROOM
             </div>
         </a>
-        <a href="php/getTracksInfo.php?type=friends">
+        <!--a href="php/getTracksInfo.php?type=friends">
             <div class="option song-room">
                 WITH FRIENDS
             </div>
-        </a>
+        </a-->
         <a href="php/getTracksInfo.php?type=solo">
             <div class="option song-room">
                 ONLY ME
             </div>
-        </a>
+        </a-->
     </div>
 
     <div class="category">
@@ -71,11 +71,11 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
                 PUBLIC ROOM
             </div>
         </a>
-        <a href="php/getArtistsInfo.php?type=friends">
+        <!--a href="php/getArtistsInfo.php?type=friends">
             <div class="option artist-room">
                 WITH FRIENDS
             </div>
-        </a>
+        </a-->
         <a href="php/getArtistsInfo.php?type=solo">
             <div class="option artist-room">
                 ONLY ME
