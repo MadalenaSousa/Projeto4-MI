@@ -451,9 +451,14 @@ class flowerSong {
         this.rBeats = rBeats;
         this.numberSections = numberSections;
         this.arraySectionLoudness = arraySectionLoudness;
+        if(mode === 1) {
+            this.pY = height;
+        } else {
+            this.pY = 0;
+        }
 
         this.curves = [];
-        this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode);
+        this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, this.pY, this.numberSections, mode);
 
         this.sound = new Audio(url);
         this.musicOn = false;
@@ -476,7 +481,20 @@ class flowerSong {
         }
 
         stroke(this.c);
-        this.flor(this.x, this.y, this.nBeats, this.rBeats, this.mode, this.type);
+        if(this.mode === 1) {
+            if (this.pY > this.y) {
+                this.pY--;
+            } else {
+                this.pY = this.y;
+            }
+        } else {
+            if (this.pY < this.y) {
+                this.pY++;
+            } else {
+                this.pY = this.y;
+            }
+        }
+        this.flor(this.x, this.pY, this.nBeats, this.rBeats, this.mode, this.type);
 
         noStroke();
         fill(this.c);
@@ -505,11 +523,11 @@ class flowerSong {
 
         //LINHA + ORIENTAÇÃO DAS FLORES
         if(mode === 1) {
-            line(this.x, this.y, this.x, height);
+            line(x, y, x, height);
             //alpha = -PI/(nBeats*2);
             theta = TWO_PI/(nBeats*2);
         } else if(mode === 0){
-            line(this.x, this.y, this.x, 0);
+            line(x, y, x, 0);
             //alpha = -PI/(nBeats*2);
             theta = TWO_PI/(nBeats*2);
         }
@@ -621,7 +639,7 @@ class flowerSong {
 
 class randFlower {
 
-    constructor(arraySectionTempo, arraySectionDuration, arraySectionLoudness, curves, x, y, linenum, mode, type) {
+    constructor(arraySectionTempo, arraySectionDuration, arraySectionLoudness, curves, x, y, linenum, mode) {
         this.x = x;
         this.y = y;
         this.linenum = linenum; //numero de sections
@@ -640,18 +658,10 @@ class randFlower {
                 } else if(z === 1) {
                     this.bow = -map(arraySectionDuration[i], min(arraySectionDuration), max(arraySectionDuration), 20, 50);
                 }
-                curves.push(new Curve(this.x, this.y, this.ex, this.ey, this.bow));
+                curves.push(new Curve(x, y, this.ex, this.ey, this.bow));
             }
         }
     }
-
-    display(){
-        stroke(255);
-        strokeWeight(1);
-
-        line(this.x, this.y, this.x, height);
-    }
-
 }
 
 class Curve { //preenchimento
@@ -667,7 +677,7 @@ class Curve { //preenchimento
         this.controlPt = p5.Vector.add(this.midPt, this.cross);
     }
 
-    display(randX, randY) {
+    display(randX, randY, pY) {
         //fill(255, 30);
         noFill();
         strokeWeight(2);
