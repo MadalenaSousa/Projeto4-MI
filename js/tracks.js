@@ -7,6 +7,8 @@ let check = false;
 
 let allLoudness = [];
 let allPositivity = [];
+let allSpeed = [];
+let allDanceability = [];
 
 let allBarsTotal = [];
 let allBeatsTotal = [];
@@ -103,7 +105,7 @@ function setup() {
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
                     addNewFlower(recordsOnList[i].get('id'), recordsOnList[i].get('song'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
-                        recordsOnList[i].get('energy'), recordsOnList[i].get('speed'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'), recordsOnList[i].get('user'),
+                        recordsOnList[i].get('energy'), recordsOnList[i].get('speed'), recordsOnList[i].get('danceability'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'), recordsOnList[i].get('user'),
                         recordsOnList[i].get('tSections'), recordsOnList[i].get('dSections'), recordsOnList[i].get('lSections'),
                         recordsOnList[i].get('nBeats'), recordsOnList[i].get('rBeats'),recordsOnList[i].get('nSections'),
                         recordsOnList[i].get('mode'), recordsOnList[i].get('type'));
@@ -114,8 +116,9 @@ function setup() {
 
     for(let i = 0; i < totalSongs; i++) {
         allPositivity[i] = getAudioFeatures(i).positivity;
-
         allLoudness[i] = getAudioFeatures(i).loudness;
+        allSpeed[i] = getAudioFeatures(i).speed;
+        allDanceability[i] = getAudioFeatures(i).danceability;
 
         allBarsTotal[i] = getAudioAnalysis(i).bars.total;
         allBeatsTotal[i] = getAudioAnalysis(i).beats.total;
@@ -150,6 +153,7 @@ function setup() {
                         color: map(allPositivity[i], min(allPositivity), max(allPositivity), 0, 255),
                         energy: getAudioFeatures(i).energy * 5,
                         speed: getAudioFeatures(i).speed/5,
+                        danceability: allDanceability[i],
                         artist: songs[i].artists,
                         url: songs[i].preview_url,
                         nSections: getAudioAnalysis(i).sections.total,
@@ -199,8 +203,8 @@ function setup() {
     });
 }
 
-function addNewFlower(id, name, x, y, raio, color, energy, speed, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
-    newFlower = new flowerSong(id, name, x, y, raio, color, energy, speed, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode);
+function addNewFlower(id, name, x, y, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
+    newFlower = new flowerSong(id, name, x, y, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode);
     flowers.push(newFlower);
     console.log("LISTA DE FLORES ATUAL: " + flowers);
 }
@@ -436,7 +440,7 @@ class flowerSong {
     randflower;
     curves;
 
-    constructor(id, name, x, y, raio, color, energy, speed, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections,  mode) {
+    constructor(id, name, x, y, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections,  mode) {
         this.id = id;
         this.name = name;
         this.x = x;
@@ -445,7 +449,8 @@ class flowerSong {
         this.color  = color;
         this.shakeX = energy;
         this.shakeY = energy;
-        this.speed = speed,
+        this.speed = speed;
+        this.danceability = danceability;
         this.artist = artist;
         this.owner = owner;
         this.mode = mode;
@@ -453,7 +458,7 @@ class flowerSong {
         this.rBeats = rBeats;
         this.numberSections = numberSections;
         this.arraySectionLoudness = arraySectionLoudness;
-        this.pY = y;
+        this.pY = this.y;
 
         this.curves = [];
         this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode);
@@ -467,6 +472,24 @@ class flowerSong {
         if(dist(mouseX, mouseY, this.x, this.y) <= 120){
             this.randomX = random(-this.shakeX, this.shakeX);
             this.randomY = random(-this.shakeY, this.shakeY);
+
+            push();
+            translate(this.x, this.y);
+            rotate(PI/2);
+            if(this.mode === 1) {
+                translate(-this.x + 120, -this.y);
+            } else {
+                translate(-this.x - 120, -this.y);
+            }
+            noStroke();
+            fill(this.c);
+            textSize(14);
+            textStyle(BOLD);
+            text(this.name, this.x, this.y);
+            textSize(12);
+            textStyle(NORMAL);
+            text(this.artist, this.x, this.y + 10);
+            pop();
         } else {
             this.randomX = 0;
             this.randomY = 0;
@@ -480,15 +503,6 @@ class flowerSong {
 
         stroke(this.c);
         this.flor(this.x, this.y, this.nBeats, this.rBeats, this.mode);
-
-        noStroke();
-        fill(this.c);
-        textSize(12);
-        textStyle(BOLD);
-        text(this.name, this.x, this.y);
-        textSize(10);
-        textStyle(NORMAL);
-        text(this.artist, this.x, this.y + 10);
 
         if(dist(mouseX, mouseY, this.x, this.y) <= 120) {
             this.balao();
@@ -546,84 +560,84 @@ class flowerSong {
         stroke(this.c);
         if(this.y - 210 > 0) {
             beginShape();
-            vertex(this.x, this.y - 210);
-            vertex(this.x + 130, this.y - 210);
-            vertex(this.x + 130, this.y - 50);
+            vertex(this.x + 20, this.y - 210);
+            vertex(this.x + 150, this.y - 210);
+            vertex(this.x + 150, this.y - 50);
+            vertex(this.x + 50, this.y - 50);
+            vertex(this.x + 40, this.y - 25);
             vertex(this.x + 30, this.y - 50);
-            vertex(this.x + 20, this.y - 25);
-            vertex(this.x + 10, this.y - 50);
-            vertex(this.x, this.y - 50);
+            vertex(this.x + 20, this.y - 50);
             endShape(CLOSE);
 
             noStroke();
             fill(this.c);
             textStyle(BOLD);
             textSize(12);
-            text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y - 190);
+            text("Added by " + split(this.owner, ' ')[0], this.x + 30, this.y - 190);
             textStyle(NORMAL);
-            text("Energy: " + map(this.shakeX, 0, 5, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 170);
-            text("Danceability: ", this.x + 10, this.y - 150);
-            text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 130);
-            text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 110);
-            text("Speed: ", this.x + 10, this.y - 90);
+            text("Energy: " + map(this.shakeX, 0, 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 170);
+            text("Danceability: " + map(this.danceability, min(allDanceability), max(allDanceability), 0, 100).toFixed(1) + "%", this.x + 30, this.y - 150);
+            text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 130);
+            text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 110);
+            text("Speed: " + map(this.speed, min(allSpeed)/5, max(allSpeed)/5, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 90); //MAL MAPEADO
 
-            if(mouseX > this.x + 10 && mouseX < this.x + 120 && mouseY > this.y - 80 && mouseY < this.y - 60) {
+            if(mouseX > this.x + 30 && mouseX < this.x + 120 && mouseY > this.y - 80 && mouseY < this.y - 60) {
                 fill(this.c);
                 stroke(this.c);
-                rect(this.x + 10, this.y - 80, 110, 20);
+                rect(this.x + 30, this.y - 80, 110, 20);
                 noStroke();
                 fill(0);
                 textSize(10);
                 textStyle(BOLD);
-                text("Save Song", this.x + 40, this.y - 65);
+                text("SAVE SONG", this.x + 60, this.y - 65);
                 if(mouseIsPressed) {
                     window.location = 'php/addToMySongs.php?id=' + this.id;
                 }
             } else {
                 fill(0);
                 stroke(this.c);
-                rect(this.x + 10, this.y - 80, 110, 20);
+                rect(this.x + 30, this.y - 80, 110, 20);
                 noStroke();
                 fill(this.c);
                 textSize(10);
-                text("Save Song", this.x + 40, this.y - 65);
+                text("SAVE SONG", this.x + 60, this.y - 65);
             }
 
         } else {
             beginShape();
-            vertex(this.x, this.y + 50);
-            vertex(this.x + 10, this.y + 50);
-            vertex(this.x + 20, this.y + 25);
+            vertex(this.x + 20, this.y + 50);
             vertex(this.x + 30, this.y + 50);
-            vertex(this.x + 130, this.y + 50);
-            vertex(this.x + 130, this.y + 210);
-            vertex(this.x, this.y + 210);
+            vertex(this.x + 40, this.y + 25);
+            vertex(this.x + 50, this.y + 50);
+            vertex(this.x + 150, this.y + 50);
+            vertex(this.x + 150, this.y + 210);
+            vertex(this.x + 20, this.y + 210);
             endShape(CLOSE);
 
             noStroke();
             fill(this.c);
             textStyle(BOLD);
             textSize(12);
-            text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y + 70);
+            text("Added by " + split(this.owner, ' ')[0], this.x + 30, this.y + 70);
             textStyle(NORMAL);
-            text("Energy: " + map(this.shakeX, 0, 5, 0, 100).toFixed(1) + "%", this.x + 10, this.y + 90);
-            text("Danceability: ", this.x + 10, this.y + 110);
-            text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 10, this.y + 130);
-            text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 10, this.y  + 150);
-            text("Speed: ", this.x + 10, this.y + 170);
+            text("Energy: " + map(this.shakeX, 0, 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 90);
+            text("Danceability: " + map(this.danceability, min(allDanceability), max(allDanceability), 10, 100).toFixed(1) + "%", this.x + 30, this.y + 110);
+            text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 130);
+            text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 30, this.y  + 150);
+            text("Speed: " + map(this.speed, min(allSpeed)/5, max(allSpeed)/5, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 170);
 
-            if(mouseX > this.x + 10 && mouseX < this.x + 120 && mouseY > this.y + 180 && mouseX < this.y + 200) {
+            if(mouseX > this.x + 30 && mouseX < this.x + 120 && mouseY > this.y + 180 && mouseX < this.y + 200) {
                 fill(this.c);
             } else {
                 fill(0);
             }
             stroke(this.c);
-            rect(this.x + 10, this.y + 180, 110, 20);
+            rect(this.x + 30, this.y + 180, 110, 20);
 
             noStroke();
             fill(this.c);
             textSize(10);
-            text("Add to Favorites ", this.x + 30, this.y + 190);
+            text("SAVE SONG", this.x + 50, this.y + 190);
         }
 
 
