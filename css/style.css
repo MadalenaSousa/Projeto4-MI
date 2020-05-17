@@ -131,6 +131,10 @@ a {
     border: 2px solid magenta;
 }
 
+.category .option {
+    margin: 0;
+}
+
 .option {
     border: 2px solid white;
     color: white;

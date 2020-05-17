@@ -60,7 +60,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
             <div class="option song-room">
                 ONLY ME
             </div>
-        </a-->
+        </a>
     </div>
 
     <div class="category">
