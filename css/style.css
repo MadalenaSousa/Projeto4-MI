@@ -353,10 +353,3 @@ h2 {
     font-weight: bold;
     cursor: pointer;
 }
-
-.preview {
-    width: 30%;
-    height: 30%;
-    border: 2px solid white;
-    background-color: black;
-}
