@@ -6,6 +6,7 @@ let remove;
 let check = false;
 
 let allLoudness = [];
+let allPositivity = [];
 
 let allBarsTotal = [];
 let allBeatsTotal = [];
@@ -85,6 +86,7 @@ function setup() {
     createSongDiv();
     logoutPopUp();
     sharePopUp();
+    createPlaylistPopUp();
 
     recordList = client.record.getList('all-songs');
     remove = document.querySelectorAll(".remove");
@@ -100,7 +102,7 @@ function setup() {
             for(let i = 0; i < recordList.getEntries().length; i++){
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
-                    addNewFlower(recordsOnList[i].get('song'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
+                    addNewFlower(recordsOnList[i].get('id'), recordsOnList[i].get('song'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
                         recordsOnList[i].get('energy'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'), recordsOnList[i].get('user'),
                         recordsOnList[i].get('tSections'), recordsOnList[i].get('dSections'), recordsOnList[i].get('lSections'),
                         recordsOnList[i].get('nBeats'), recordsOnList[i].get('rBeats'),recordsOnList[i].get('nSections'),
@@ -111,6 +113,8 @@ function setup() {
     });
 
     for(let i = 0; i < totalSongs; i++) {
+        allPositivity[i] = getAudioFeatures(i).positivity;
+
         allLoudness[i] = getAudioFeatures(i).loudness;
 
         allBarsTotal[i] = getAudioAnalysis(i).bars.total;
@@ -139,10 +143,11 @@ function setup() {
                     record[i].set({
                         user: user.name,
                         song: songs[i].name,
+                        id: songs[i].id,
                         x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
                         y: map(allLoudness[i], min(allLoudness), max(allLoudness), height - 80, 80),
                         raio: (songs[i].duration / 3),
-                        color: map(getAudioFeatures(i).positivity, 0, 1, 0, 255),
+                        color: map(allPositivity[i], min(allPositivity), max(allPositivity), 0, 255),
                         energy: getAudioFeatures(i).energy * 5,
                         artist: songs[i].artists,
                         url: songs[i].preview_url,
@@ -153,7 +158,6 @@ function setup() {
                         nBeats: map(allBeatsTotal[i], min(allBeatsTotal), max(allBeatsTotal), 3, 5),
                         rBeats: map(allBeatsDuration[i], min(allBeatsDuration), max(allBeatsDuration), 30, 50),
                         mode: songs[i].mode,
-                        type: songs[i].type
                     });
 
                     recordList.addEntry(songs[i].name);
@@ -194,8 +198,8 @@ function setup() {
     });
 }
 
-function addNewFlower(name, x, y, raio, color, energy, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode, type) {
-    newFlower = new flowerSong(name, x, y, raio, color, energy, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode, type);
+function addNewFlower(id, name, x, y, raio, color, energy, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
+    newFlower = new flowerSong(id, name, x, y, raio, color, energy, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode);
     flowers.push(newFlower);
     console.log("LISTA DE FLORES ATUAL: " + flowers);
 }
@@ -266,6 +270,75 @@ function sharePopUp() {
     document.querySelector(".close-share").addEventListener('click', function () {
         document.querySelector('.share').classList.add('hide');
     });
+}
+
+function createPlaylistPopUp() {
+    document.querySelector(".create-button").addEventListener('click', function () {
+
+        cleanCreatePlaylistList();
+        let totalSongs = document.createElement('input');
+        totalSongs.setAttribute('type', 'hidden');
+        totalSongs.setAttribute('name', 'songTotal');
+        totalSongs.setAttribute('value', recordList.getEntries().length);
+
+        document.querySelector('.create-playlist form').appendChild(totalSongs);
+
+        for(let i = 0; i < recordList.getEntries().length; i++) {
+            createPlaylistSongList(i);
+        }
+
+        let canvas = document.getElementById('defaultCanvas0');
+        let img = new Image(200, 200);
+        img.src = canvas.toDataURL('image/jpeg', 0.01);
+        document.querySelector('.preview').appendChild(img);
+
+        let playlistImg = document.createElement('input');
+        playlistImg.setAttribute('type', 'hidden');
+        playlistImg.setAttribute('name', 'playlistImg');
+        playlistImg.setAttribute('value', img.src);
+
+        document.querySelector('.create-playlist form').appendChild(playlistImg);
+
+        document.querySelector('.create-playlist').classList.toggle('hide');
+    });
+
+    document.querySelector(".close-create").addEventListener('click', function () {
+        document.querySelector('.create-playlist').classList.add('hide');
+    });
+}
+
+function cleanCreatePlaylistList() {
+    let arrayDivs = document.querySelectorAll('.added-songs-list div');
+
+    for(let i = 0; i < arrayDivs.length; i++) {
+        arrayDivs[i].remove();
+    }
+}
+
+function createPlaylistSongList(index) {
+    let songDiv = document.createElement('div');
+
+    let songInput = document.createElement('input');
+    songInput.setAttribute('type', 'checkbox');
+    songInput.setAttribute('name', 'song' + index);
+    songInput.setAttribute('checked', 'true');
+
+    let songLabel = document.createElement('label');
+    songLabel.innerText = recordList.getEntries()[index];
+
+    let record = client.record.getRecord(recordList.getEntries()[index]);
+
+    let songId = document.createElement('input');
+    songId.setAttribute('type', 'hidden');
+    songId.setAttribute('name', 'songId' + index);
+    songId.setAttribute('value', record.get('id'));
+
+    songLabel.appendChild(songInput);
+
+    songDiv.appendChild(songLabel);
+    songDiv.appendChild(songId);
+
+    document.querySelector('.added-songs-list').appendChild(songDiv);
 }
 
 function createUserDiv(name, profilepic) {
@@ -362,7 +435,8 @@ class flowerSong {
     randflower;
     curves;
 
-    constructor(name, x, y, raio, color, energy, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections,  mode, type) {
+    constructor(id, name, x, y, raio, color, energy, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections,  mode) {
+        this.id = id;
         this.name = name;
         this.x = x;
         this.y = y;
@@ -373,27 +447,24 @@ class flowerSong {
         this.artist = artist;
         this.owner = owner;
         this.mode = mode;
-        this.type = type;
         this.nBeats = nBeats;
         this.rBeats = rBeats;
         this.numberSections = numberSections;
-        this.arraySectionDuration = arraySectionDuration;
+        this.arraySectionLoudness = arraySectionLoudness;
 
         this.curves = [];
-        this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode, type);
+        this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode);
 
         this.sound = new Audio(url);
         this.musicOn = false;
     }
 
     display() {
-        if(dist(mouseX, mouseY, this.x, this.y) <= this.raio){
-            this.c = color(255, 255, 255 - this.color);
+        this.c = color(255, 255, 255 - this.color);
+        if(dist(mouseX, mouseY, this.x, this.y) <= 120){
             this.randomX = random(-this.shakeX, this.shakeX);
             this.randomY = random(-this.shakeY, this.shakeY);
-            console.log("entrou");
         } else {
-            this.c = color(255);
             this.randomX = 0;
             this.randomY = 0;
         }
@@ -416,193 +487,45 @@ class flowerSong {
         textStyle(NORMAL);
         text(this.artist, this.x, this.y + 10);
 
-        if(dist(mouseX, mouseY, this.x, this.y) <= this.raio) {
+        if(dist(mouseX, mouseY, this.x, this.y) <= 120) {
             this.balao();
         }
     }
 
     playSong() {
-        if(dist(mouseX, mouseY, this.x, this.y) <= this.raio){
+        if(dist(mouseX, mouseY, this.x, this.y) <= this.raio ){
             this.musicOn = !this.musicOn;
         }
     }
 
-    flor(x, y, nBeats, rBeats, mode, type) {
+    flor(x, y, nBeats, rBeats, mode) {
         strokeWeight(2);
-        fill(0);
-
-        let n = 1;
-        let d = 1;
-        let k = n / d;
-
-        let alpha = 0;
+        fill(255, 30);
         let theta = 0;
-
 
         //LINHA + ORIENTAÇÃO DAS FLORES
         if(mode === 1) {
             line(this.x, this.y, this.x, height);
-            alpha = -PI/(nBeats*2);
-            theta = -TWO_PI/(nBeats*2);
+            //alpha = -PI/(nBeats*2);
+            theta = TWO_PI/(nBeats*2);
         } else if(mode === 0){
             line(this.x, this.y, this.x, 0);
-            alpha = PI/(nBeats*2);
+            //alpha = -PI/(nBeats*2);
             theta = TWO_PI/(nBeats*2);
         }
 
+        //SECTIONS
+        for (let c = 0; c < this.curves.length; c++) {
+            this.curves[c].display(this.randomX, this.randomY);
+        }
 
-        //SMALL DAISY
-        if(type === 0 || type === 1) { // DO + DO#
-
-            //SECTIONS
-            n = this.numberSections;
-            d = 1;
-            k = n / d;
-
-            beginShape();
-            for (let a = 0; a < TWO_PI * d; a += 0.02) {
-                let r = map(avg(this.arraySectionDuration), min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(k * a);
-                let xB = x + r * cos(a);
-                let yB = y + r * sin(a);
-                vertex(xB + this.randomX/2, yB + this.randomY/2);
-            }
-            endShape(CLOSE);
-
-            //BEATS
-            for(let i = 0; i < nBeats*2; i++) {
-                let xB = x  + rBeats/2 * cos(i*theta);
-                let yB = y  + rBeats/2 * sin(i*theta);
-                line(x, y, xB + this.randomX, yB + this.randomY);
-                fill(255);
-                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
-            }
-
-
-        //BIG DAISY
-        } else if(type === 2 || type === 3) { // RE + RE#
-
-            //SECTIONS
-            n = this.numberSections + 2;
-            d = this.numberSections;
-            k = n / d;
-
-            beginShape();
-            for (let a = 0; a < TWO_PI * d; a += 0.02) {
-                let r = map(avg(this.arraySectionDuration), min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(k * a);
-                let xB = x + r * cos(a);
-                let yB = y + r * sin(a);
-                vertex(xB + this.randomX/2, yB + this.randomY/2);
-            }
-            endShape(CLOSE);
-
-            //BEATS
-            for(let i = 0; i < nBeats*2; i++) {
-                let xB = x  + rBeats/2 * cos(i*theta);
-                let yB = y  + rBeats/2 * sin(i*theta);
-                line(x, y, xB + this.randomX, yB + this.randomY);
-                fill(255);
-                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
-            }
-
-
-        //DENDILION WITH SEED
-        } else if(type === 4) { // MI
-
-            //SECTIONS
-            for(let i = 0; i < this.numberSections; i++) {
-                let xS = x  + map(this.arraySectionDuration[i], min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(i*alpha);
-                let yS = y  + map(this.arraySectionDuration[i], min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * sin(i*alpha);
-                line(x, y, xS + this.randomX, yS + this.randomY);
-
-                //BEATS
-                for(let z = 0; z < nBeats*2; z++) {
-                    let xB = xS  + (rBeats/2) * cos(z*theta);
-                    let yB = yS  + (rBeats/2) * sin(z*theta);
-                    line(xS, yS, xB + this.randomX, yB + this.randomY);
-                    fill(255);
-                    ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
-                }
-            }
-
-
-        //DENDILION WITHOUT SEED
-        } else if(type === 5 || type === 6) { //FA + FA#
-
-            //SECTIONS
-            for(let i = 0; i < this.numberSections; i++) {
-                let xS = x  + map(this.arraySectionDuration[i], min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(i*alpha);
-                let yS = y  + map(this.arraySectionDuration[i], min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * sin(i*alpha);
-                line(x, y, xS + this.randomX, yS + this.randomY);
-
-                //BEATS
-                for(let z = 0; z < nBeats*2; z++) {
-                    let xB = xS  + (rBeats/3) * cos(z*theta);
-                    let yB = yS  + (rBeats/3) * sin(z*theta);
-                    line(xS, yS, xB + this.randomX, yB + this.randomY);
-                }
-            }
-
-
-        //ROSE
-        } else if(type === 7 || type === 8) { //SOL + SOL#
-
-            //SECTIONS
-            n = 1;
-            d = this.numberSections;
-            k = n / d;
-
-            beginShape();
-            for (let a = 0; a < TWO_PI * d; a += 0.02) {
-                let r = map(avg(this.arraySectionDuration), min(this.arraySectionDuration), max(this.arraySectionDuration), 60, 100) * cos(k * a);
-                let xB = x + r * cos(a);
-                let yB = y + r * sin(a);
-                vertex(xB + this.randomX/2, yB + this.randomY/2);
-            }
-            endShape(CLOSE);
-
-            //BEATS
-            for(let i = 0; i < nBeats*2; i++) {
-                let xB = x  + rBeats/2 * cos(i*theta);
-                let yB = y  + rBeats/2 * sin(i*theta);
-                line(x, y, xB + this.randomX, yB + this.randomY);
-                fill(255);
-                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
-            }
-
-
-        //RANDOM PETALS (HALF OPEN)
-        } else if(type === 9 || type === 10) { //LA + LA#
-
-            //SECTIONS
-            for (let c = 0; c < this.curves.length; c++) {
-                this.curves[c].display(this.randomX, this.randomY);
-            }
-
-            //BEATS
-            for(let i = 0; i < nBeats*2; i++) {
-                let xB = x  + rBeats * cos(i*alpha);
-                let yB = y  + rBeats * sin(i*alpha);
-                line(x, y, xB + this.randomX, yB + this.randomY);
-                fill(255);
-                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
-            }
-
-        //RANDOM PETALS (FULLY OPEN)
-        } else { //SI + ERROS
-
-            //SECTIONS
-            for (let c = 0; c < this.curves.length; c++) {
-                this.curves[c].display(this.randomX, this.randomY);
-            }
-
-            //BEATS
-            for(let i = 0; i < nBeats*2; i++) {
-                let xB = x  + rBeats * cos(i*theta);
-                let yB = y  + rBeats * sin(i*theta);
-                line(x, y, xB + this.randomX, yB + this.randomY);
-                fill(255);
-                ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
-            }
+        //BEATS
+        for(let i = 0; i < nBeats*2; i++) {
+            let xB = x  + rBeats/1.5 * cos(i*theta);
+            let yB = y  + rBeats/1.5 * sin(i*theta);
+            line(x, y, xB + this.randomX, yB + this.randomY);
+            fill(255);
+            ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
         }
     }
 
@@ -610,7 +533,8 @@ class flowerSong {
         fill(0);
         strokeWeight(2);
         stroke(this.c);
-        beginShape();
+        if(this.y - 210 > 0) {
+            beginShape();
             vertex(this.x, this.y - 210);
             vertex(this.x + 130, this.y - 210);
             vertex(this.x + 130, this.y - 50);
@@ -618,27 +542,80 @@ class flowerSong {
             vertex(this.x + 20, this.y - 25);
             vertex(this.x + 10, this.y - 50);
             vertex(this.x, this.y - 50);
-        endShape(CLOSE);
+            endShape(CLOSE);
 
-        noStroke();
-        fill(this.c);
-        textStyle(BOLD);
-        textSize(12);
-        text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y - 190);
-        textStyle(NORMAL);
-        text("Energy: " + map(this.shakeX, 0, 5, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 170);
-        text("Danceability: ", this.x + 10, this.y - 150);
-        text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 130);
-        text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 110);
-        text("Speed: ", this.x + 10, this.y - 90);
+            noStroke();
+            fill(this.c);
+            textStyle(BOLD);
+            textSize(12);
+            text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y - 190);
+            textStyle(NORMAL);
+            text("Energy: " + map(this.shakeX, 0, 5, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 170);
+            text("Danceability: ", this.x + 10, this.y - 150);
+            text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 130);
+            text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 10, this.y - 110);
+            text("Speed: ", this.x + 10, this.y - 90);
 
-        fill(0);
-        stroke(this.c);
-        rect(this.x + 10, this.y - 80, 110, 20);
-        noStroke();
-        fill(this.c);
-        textSize(10);
-        text("Add to Favorites ", this.x + 30, this.y - 65);
+            if(mouseX > this.x + 10 && mouseX < this.x + 120 && mouseY > this.y - 80 && mouseY < this.y - 60) {
+                fill(this.c);
+                stroke(this.c);
+                rect(this.x + 10, this.y - 80, 110, 20);
+                noStroke();
+                fill(0);
+                textSize(10);
+                textStyle(BOLD);
+                text("Save Song", this.x + 40, this.y - 65);
+                if(mouseIsPressed) {
+                    window.location = 'php/addToMySongs.php?id=' + this.id;
+                }
+            } else {
+                fill(0);
+                stroke(this.c);
+                rect(this.x + 10, this.y - 80, 110, 20);
+                noStroke();
+                fill(this.c);
+                textSize(10);
+                text("Save Song", this.x + 40, this.y - 65);
+            }
+
+        } else {
+            beginShape();
+            vertex(this.x, this.y + 50);
+            vertex(this.x + 10, this.y + 50);
+            vertex(this.x + 20, this.y + 25);
+            vertex(this.x + 30, this.y + 50);
+            vertex(this.x + 130, this.y + 50);
+            vertex(this.x + 130, this.y + 210);
+            vertex(this.x, this.y + 210);
+            endShape(CLOSE);
+
+            noStroke();
+            fill(this.c);
+            textStyle(BOLD);
+            textSize(12);
+            text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y + 70);
+            textStyle(NORMAL);
+            text("Energy: " + map(this.shakeX, 0, 5, 0, 100).toFixed(1) + "%", this.x + 10, this.y + 90);
+            text("Danceability: ", this.x + 10, this.y + 110);
+            text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 10, this.y + 130);
+            text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 10, this.y  + 150);
+            text("Speed: ", this.x + 10, this.y + 170);
+
+            if(mouseX > this.x + 10 && mouseX < this.x + 120 && mouseY > this.y + 180 && mouseX < this.y + 200) {
+                fill(this.c);
+            } else {
+                fill(0);
+            }
+            stroke(this.c);
+            rect(this.x + 10, this.y + 180, 110, 20);
+
+            noStroke();
+            fill(this.c);
+            textSize(10);
+            text("Add to Favorites ", this.x + 30, this.y + 190);
+        }
+
+
     }
 }
 
@@ -650,19 +627,7 @@ class randFlower {
         this.linenum = linenum; //numero de sections
         this.mode = mode;
         for (let i = 0; i < this.linenum; i++) {
-            if(type === 9 || type === 10) {
-                if(this.mode === 0) {
-                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), -PI, -TWO_PI); //maior/menor //tempo (speed) da section
-                } else {
-                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), PI, TWO_PI);
-                }
-            } else {
-                if(this.mode === 0) {
-                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), 0, TWO_PI); //maior/menor //tempo (speed) da section
-                } else {
-                    this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), TWO_PI, 0);
-                }
-            }
+            this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), 0, arraySectionTempo[i]*TWO_PI);
             this.d = map(arraySectionLoudness[i], min(arraySectionLoudness), max(arraySectionLoudness), 80, 120); //loudness da section
             this.hy = sin(this.theta);
             this.hx = cos(this.theta);
@@ -682,7 +647,7 @@ class randFlower {
 
     display(){
         stroke(255);
-        strokeWeight(2);
+        strokeWeight(1);
 
         line(this.x, this.y, this.x, height);
     }
@@ -703,6 +668,7 @@ class Curve { //preenchimento
     }
 
     display(randX, randY) {
+        //fill(255, 30);
         noFill();
         strokeWeight(2);
         bezier(this.one.x, this.one.y, this.controlPt.x, this.controlPt.y, this.controlPt.x, this.controlPt.y, this.two.x + randX, this.two.y + randY);

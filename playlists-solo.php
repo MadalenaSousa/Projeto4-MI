@@ -11,6 +11,8 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
+    <link rel="icon" href="icons/separador.png" type="image/png" sizes="16x16">
+
     <script type="text/javascript">
         var userid = '<?php echo $session_value;?>';
     </script>

@@ -26,8 +26,11 @@ if (isset($_GET['code'])) { //Se já autorizou, já tem acesso
             'user-read-playback-state',
             'user-top-read',
             'user-read-recently-played',
+            'user-library-modify',
 
             'playlist-read-private',
+            'playlist-modify-public',
+            'ugc-image-upload'
         ],
     ];
 

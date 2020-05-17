@@ -11,6 +11,8 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
+    <link rel="icon" href="icons/separador.png" type="image/png" sizes="16x16">
+
     <script type="text/javascript">
         var userid = '<?php echo $session_value;?>';
     </script>
@@ -29,11 +31,11 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
                 PUBLIC ROOM
             </div>
         </a>
-        <a href="php/getPlaylistsInfo.php?type=friends">
+        <!--a href="php/getPlaylistsInfo.php?type=friends">
             <div class="option playlist-room">
                 WITH FRIENDS
             </div>
-        </a>
+        </a-->
         <a href="php/getPlaylistsInfo.php?type=solo">
             <div class="option playlist-room">
                 ONLY ME
@@ -43,17 +45,17 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
     <div class="category">
         <div class="titulo unit">SONGS ROOM</div>
-        <div><img src="icons/song-room.png"></div>
+        <div><img src="icons/songs-room.png"></div>
         <a href="php/getTracksInfo.php?type=public">
             <div class="option song-room">
                 PUBLIC ROOM
             </div>
         </a>
-        <a href="php/getTracksInfo.php?type=friends">
+        <!--a href="php/getTracksInfo.php?type=friends">
             <div class="option song-room">
                 WITH FRIENDS
             </div>
-        </a>
+        </a-->
         <a href="php/getTracksInfo.php?type=solo">
             <div class="option song-room">
                 ONLY ME
@@ -69,11 +71,11 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
                 PUBLIC ROOM
             </div>
         </a>
-        <a href="php/getArtistsInfo.php?type=friends">
+        <!--a href="php/getArtistsInfo.php?type=friends">
             <div class="option artist-room">
                 WITH FRIENDS
             </div>
-        </a>
+        </a-->
         <a href="php/getArtistsInfo.php?type=solo">
             <div class="option artist-room">
                 ONLY ME
@@ -81,6 +83,6 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         </a>
     </div>
 </div>
-
+<script src="js/login.js"></script>
 </body>
 </html>
