@@ -18,4 +18,9 @@ for($i = 0; $i < $songTotal; $i++) {
     ]);
 }
 
+if($_POST['cover'] == 'use') {
+    $imageData = base64_encode($_POST['playlistImg']);
+    //$api->updatePlaylistImage($newPlaylist->id, $imageData);
+}
+
 header('Location: ../confirm-playlist-creation.php');

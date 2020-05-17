@@ -11,6 +11,8 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
+    <link rel="icon" href="icons/separador.png" type="image/png" sizes="16x16">
+
     <script type="text/javascript">
         var userid = '<?php echo $session_value;?>';
     </script>
@@ -103,11 +105,13 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
             </div>
             <div class="create-unit">
                 <div>
+                    Do you want to use this photo as playlist cover image? <br>
+                </div>
+                <div class="preview">
                 </div>
                 <div>
-                    Do you want to use this photo as playlist cover image? <br>
-                    <label>Yes! <input type="checkbox"></label>
-                    <label>No <input type="checkbox"></label>
+                    <label>Yes<input type="radio" name="cover" value="use"></label>
+                    <label>No<input type="radio" name="cover" value="dontuse"></label>
                 </div>
             </div>
             <div class="create-unit">

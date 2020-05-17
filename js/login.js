@@ -41,7 +41,7 @@ function renderWave() {
     for(let i = 0; i < 9; i++) {
         fill(cores[i%3 * 3], cores[(i%3 * 3) + 1], cores[(i%3 * 3) + 2]);
         for (let x = 0; x < yvalues.length; x++) {
-            ellipse(x * xspacing, (height - (i*200)) - yvalues[x], 2, 2);
+            ellipse(x * xspacing, (height - (i*200)) - yvalues[x], 3, 3);
         }
     }
 }
