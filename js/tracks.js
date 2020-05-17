@@ -287,6 +287,11 @@ function createPlaylistPopUp() {
             createPlaylistSongList(i);
         }
 
+        let canvas = document.getElementById('defaultCanvas0');
+        let img = new Image(200, 200);
+        img.src = canvas.toDataURL();
+        document.querySelector('.preview').appendChild(img);
+
         document.querySelector('.create-playlist').classList.toggle('hide');
     });
 

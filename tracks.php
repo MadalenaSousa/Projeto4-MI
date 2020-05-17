@@ -103,9 +103,11 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
             </div>
             <div class="create-unit">
                 <div>
+                    Do you want to use this photo as playlist cover image? <br>
+                </div>
+                <div class="preview">
                 </div>
                 <div>
-                    Do you want to use this photo as playlist cover image? <br>
                     <label>Yes! <input type="checkbox"></label>
                     <label>No <input type="checkbox"></label>
                 </div>
