@@ -95,7 +95,7 @@ foreach ($songs->items as $song) {
         "preview_url" => $song->preview_url,
         "duration" => $song->duration_ms/1000,
         "mode" => $trackAnalysis->track->mode,
-        "type" => $trackAnalysis->track->key
+        "overall_key" => $trackAnalysis->track->key
     );
 
     array_push($topSongObject, $singleTopSong);

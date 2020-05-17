@@ -202,7 +202,7 @@ h2 {
     margin-bottom: 5%;
 }
 
-.share {
+.share, .create-playlist {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -213,16 +213,16 @@ h2 {
     visibility: visible;
 }
 
-.share .unit {
+.share .unit, .create-playlist .unit {
     margin: 5%;
 }
 
-.share .menu-option {
+.share .menu-option, .create-playlist .menu-option {
     display: inline-block;
     margin: 0.5%;
 }
 
-.close-share {
+.close-share, .close-create {
     display: inline-block;
     position: absolute;
     right: 3%;
@@ -230,7 +230,7 @@ h2 {
     cursor: pointer;
 }
 
-.close-share:hover {
+.close-share:hover, .close-create:hover {
     color: yellow;
     cursor: pointer;
 }
@@ -327,4 +327,36 @@ h2 {
 
 .hide {
     visibility: hidden;
+}
+
+.create-unit {
+    display: inline-block;
+    width: 30%;
+    text-align: left;
+}
+
+.create-unit * {
+    margin-bottom: 3%;
+}
+
+.create-unit input {
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+    font-weight: bold;
+}
+
+.create-unit input:hover {
+    background-color: white;
+    color: black;
+    border: 2px solid white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.preview {
+    width: 30%;
+    height: 30%;
+    border: 2px solid white;
+    background-color: black;
 }

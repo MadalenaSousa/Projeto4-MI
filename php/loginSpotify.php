@@ -28,6 +28,7 @@ if (isset($_GET['code'])) { //Se já autorizou, já tem acesso
             'user-read-recently-played',
 
             'playlist-read-private',
+            'playlist-modify-public'
         ],
     ];
 
