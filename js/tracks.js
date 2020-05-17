@@ -103,7 +103,7 @@ function setup() {
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
                     addNewFlower(recordsOnList[i].get('id'), recordsOnList[i].get('song'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
-                        recordsOnList[i].get('energy'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'), recordsOnList[i].get('user'),
+                        recordsOnList[i].get('energy'), recordsOnList[i].get('speed'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'), recordsOnList[i].get('user'),
                         recordsOnList[i].get('tSections'), recordsOnList[i].get('dSections'), recordsOnList[i].get('lSections'),
                         recordsOnList[i].get('nBeats'), recordsOnList[i].get('rBeats'),recordsOnList[i].get('nSections'),
                         recordsOnList[i].get('mode'), recordsOnList[i].get('type'));
@@ -149,6 +149,7 @@ function setup() {
                         raio: (songs[i].duration / 3),
                         color: map(allPositivity[i], min(allPositivity), max(allPositivity), 0, 255),
                         energy: getAudioFeatures(i).energy * 5,
+                        speed: getAudioFeatures(i).speed/5,
                         artist: songs[i].artists,
                         url: songs[i].preview_url,
                         nSections: getAudioAnalysis(i).sections.total,
@@ -198,8 +199,8 @@ function setup() {
     });
 }
 
-function addNewFlower(id, name, x, y, raio, color, energy, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
-    newFlower = new flowerSong(id, name, x, y, raio, color, energy, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode);
+function addNewFlower(id, name, x, y, raio, color, energy, speed, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
+    newFlower = new flowerSong(id, name, x, y, raio, color, energy, speed, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode);
     flowers.push(newFlower);
     console.log("LISTA DE FLORES ATUAL: " + flowers);
 }
@@ -435,7 +436,7 @@ class flowerSong {
     randflower;
     curves;
 
-    constructor(id, name, x, y, raio, color, energy, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections,  mode) {
+    constructor(id, name, x, y, raio, color, energy, speed, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections,  mode) {
         this.id = id;
         this.name = name;
         this.x = x;
@@ -444,6 +445,7 @@ class flowerSong {
         this.color  = color;
         this.shakeX = energy;
         this.shakeY = energy;
+        this.speed = speed,
         this.artist = artist;
         this.owner = owner;
         this.mode = mode;
@@ -451,14 +453,10 @@ class flowerSong {
         this.rBeats = rBeats;
         this.numberSections = numberSections;
         this.arraySectionLoudness = arraySectionLoudness;
-        if(mode === 1) {
-            this.pY = height;
-        } else {
-            this.pY = 0;
-        }
+        this.pY = y;
 
         this.curves = [];
-        this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, this.pY, this.numberSections, mode);
+        this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode);
 
         this.sound = new Audio(url);
         this.musicOn = false;
@@ -481,20 +479,7 @@ class flowerSong {
         }
 
         stroke(this.c);
-        if(this.mode === 1) {
-            if (this.pY > this.y) {
-                this.pY--;
-            } else {
-                this.pY = this.y;
-            }
-        } else {
-            if (this.pY < this.y) {
-                this.pY++;
-            } else {
-                this.pY = this.y;
-            }
-        }
-        this.flor(this.x, this.pY, this.nBeats, this.rBeats, this.mode, this.type);
+        this.flor(this.x, this.y, this.nBeats, this.rBeats, this.mode);
 
         noStroke();
         fill(this.c);
@@ -523,12 +508,20 @@ class flowerSong {
 
         //LINHA + ORIENTAÇÃO DAS FLORES
         if(mode === 1) {
-            line(x, y, x, height);
-            //alpha = -PI/(nBeats*2);
+            if (this.pY < height) {
+                this.pY = this.pY + this.speed;
+            } else {
+                this.pY = height;
+            }
+            line(x, y, x, this.pY);
             theta = TWO_PI/(nBeats*2);
-        } else if(mode === 0){
-            line(x, y, x, 0);
-            //alpha = -PI/(nBeats*2);
+        } else {
+            if (this.pY > 0) {
+                this.pY = this.pY - this.speed;
+            } else {
+                this.pY = 0;
+            }
+            line(x, y, x, this.pY);
             theta = TWO_PI/(nBeats*2);
         }
 
@@ -677,10 +670,10 @@ class Curve { //preenchimento
         this.controlPt = p5.Vector.add(this.midPt, this.cross);
     }
 
-    display(randX, randY, pY) {
-        //fill(255, 30);
+    display(randX, randY) {
         noFill();
         strokeWeight(2);
+
         bezier(this.one.x, this.one.y, this.controlPt.x, this.controlPt.y, this.controlPt.x, this.controlPt.y, this.two.x + randX, this.two.y + randY);
     }
 }
