@@ -305,6 +305,7 @@ function createPlaylistPopUp() {
         let canvas = document.getElementById('defaultCanvas0');
         let img = new Image(200, 200);
         img.src = canvas.toDataURL('image/jpeg', 0.01);
+        localStorage.setItem(canvas, canvas.toDataURL());
         document.querySelector('.preview').appendChild(img);
 
         let playlistImg = document.createElement('input');
