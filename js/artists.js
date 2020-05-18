@@ -9,6 +9,8 @@ let danceability = [];
 let loudness = [];
 let energy = [];
 let id = [];
+var previewShare = document.createElement("div");
+var cruz = document.createElement("div");
 
 let remove;
 let alfa = 0;
@@ -138,7 +140,6 @@ function setup() {
                         largura: map(artists[i].popularity, min(popularity), max(popularity), 100, 400),
                         x: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
                         y: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
-                        // shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 0.1, 0.6),
                         shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 1, 2),
                         valorX: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
                         valorY: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
@@ -175,9 +176,38 @@ function setup() {
 
     document.querySelector('.confirm-logout').addEventListener('click', closeArtistRoomConnection);
 
+    /*   document.querySelector('.download').addEventListener('click', function () {
+           console.log('Canvas will be downloaded');
+           saveCanvas('public-artists-artboard.png');
+       });*/
+
     document.querySelector('.download').addEventListener('click', function () {
         console.log('Canvas will be downloaded');
-        saveCanvas('public-artists-artboard.png');
+        document.querySelector('.unit').classList.add('hide');
+        previewShare.classList.add("PreviewShare");
+        cruz.classList.add("cruz");
+        previewShare.style.outline = "outline: 2px solid white";
+        cruz.style.color = "white";
+        cruz.innerText = "X";
+        cruz.style.zIndex = "10000";
+        cruz.style.position = 'fixed';
+        cruz.style.width = 'fit-content';
+        cruz.style.height = 'fit-content';
+        cruz.style.left = '68%';
+        cruz.style.top = '12%';
+        cruz.style.cursor = "pointer";
+        cruz.style.display = "block";
+
+        document.body.appendChild(previewShare);
+        document.body.appendChild(cruz);
+
+        let canvas = document.getElementById('defaultCanvas0');
+        let img = new Image(500, 500); //crio uma imagem
+        img.src = canvas.toDataURL('image/jpeg', 0.01); //torno a src da imagem o canvas convertido num link
+
+        document.querySelector('.PreviewShare').appendChild(img); //faço append na div onde quero pôr o preview
+
+
     });
 }
 
@@ -303,6 +333,14 @@ function closeArtistRoomConnection() {
 }
 
 function draw() {
+
+    if (cruz.style.display === "block" || previewShare.style.display === "block") {
+        document.querySelector(".cruz").addEventListener('click', function () {
+            document.querySelector('.cruz').style.display = "none";
+            document.querySelector('.PreviewShare').style.display = "none";
+
+        });
+    }
 
     background(0);
     alfa = alfa + (PI / 56);
