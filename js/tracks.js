@@ -423,7 +423,13 @@ function draw() {
 
     if(flowers.length > 0) {
         for(let i = 0; i < flowers.length; i++) {
-                flowers[i].display();
+            flowers[i].display();
+        }
+
+        for(let i = 0; i < flowers.length; i++) {
+            if(dist(mouseX, mouseY, flowers[i].x, flowers[i].y) <= 120) {
+                flowers[i].balao();
+            }
         }
     }
 }
@@ -515,9 +521,7 @@ class flowerSong {
         stroke(this.c);
         this.flor(this.x, this.y, this.nBeats, this.rBeats, this.mode);
 
-        if(dist(mouseX, mouseY, this.x, this.y) <= 120) {
-            this.balao();
-        }
+
     }
 
     playSong() {
