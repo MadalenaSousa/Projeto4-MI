@@ -32,12 +32,13 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <div class="leave">Leave Room</div>
     </div>
     <div>
-        People in the Room
+
+        You are the only person in the room
         <div class="list-people unit">
         </div>
         <div>
             <div class="menu-option2">MY TOP ARTISTS</div>
-            Choose an artist to add to the artboard<br/>
+            Choose an artist to add to the artboard
 
             <div class="list-songs unit">
             </div>
@@ -80,9 +81,11 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
 
             <div><img src="icons/facebook.png"></div>
+
             <div>Facebook</div>
 
         </a>
+
 
         <a class="menu-option"
            target="popup"
@@ -104,3 +107,4 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 <script src="js/artists-solo.js"></script>
 </body>
 </html>
+
