@@ -32,7 +32,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <div class="leave">Leave Room</div>
     </div>
     <div>
-        People in the Room
+        You are the only person in the room
         <div class="list-people unit">
         </div>
         <div>
