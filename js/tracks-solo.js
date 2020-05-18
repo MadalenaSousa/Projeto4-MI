@@ -18,7 +18,7 @@ let allBeatsDuration = [];
 let allTatumsDuration = [];
 
 function preload() {
-    playlistSongs = loadJSON('php/' + userid +'-playlist-songs-object.json');
+    //playlistSongs = loadJSON('php/' + userid +'-playlist-songs-object.json');
     topSongs = loadJSON('php/' + userid + '-top-songs-object.json');
     user = loadJSON('php/' + userid + '-user-object.json');
 }
