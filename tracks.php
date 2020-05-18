@@ -99,10 +99,10 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <h2><b>Create a Playlist!</b></h2>
     Here is an overview of the playlist you can create! Choose a name, a cover image and select the songs you want, after just click the create button and VOI LÁ!
     </div>
-    <div class="unit">
-        <form method="post" action="php/createPlaylist.php">
+    <form method="post" action="php/createPlaylist.php">
+        <div class="unit">
             <div class="create-unit">
-                <div><label><input placeholder="Playlist Name" type="text" name="playlistname" required></label></div>
+                <div><label><input placeholder="Insert Playlist Name" type="text" name="playlistname" required></label></div>
                 <div class="added-songs-list">
                     <div></div>
                 </div>
@@ -118,12 +118,12 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
                     <label>No<input type="radio" name="cover" value="dontuse"></label>
                 </div>
             </div>
-            <div class="create-unit">
-                <div><input type="submit" value="CREATE"></div>
-                <div class="close-create"><input type="button" name="cancel" onClick="window.location='tracks.php'" value="CANCEL"></div>
-            </div>
-        </form>
-    </div>
+        </div>
+        <div class="unit create-buttons">
+            <input type="submit" value="CREATE">
+            <input class="close-create" type="button" name="cancel" onClick="window.location='tracks.php'" value="CANCEL">
+        </div>
+    </form>
 </div>
 
 <script src="js/tracks.js"></script>
