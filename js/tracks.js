@@ -616,39 +616,48 @@ class flowerSong {
 
         } else {
             beginShape();
-            vertex(this.x + 20, this.y + 50);
-            vertex(this.x + 30, this.y + 50);
-            vertex(this.x + 40, this.y + 25);
-            vertex(this.x + 50, this.y + 50);
-            vertex(this.x + 150, this.y + 50);
-            vertex(this.x + 150, this.y + 210);
-            vertex(this.x + 20, this.y + 210);
+            vertex(this.x + 20, this.y + 30);
+            vertex(this.x + 30, this.y + 30);
+            vertex(this.x + 40, this.y + 5);
+            vertex(this.x + 50, this.y + 30);
+            vertex(this.x + 150, this.y + 30);
+            vertex(this.x + 150, this.y + 190);
+            vertex(this.x + 20, this.y + 190);
             endShape(CLOSE);
 
             noStroke();
             fill(this.c);
             textStyle(BOLD);
             textSize(12);
-            text("Added by " + split(this.owner, ' ')[0], this.x + 30, this.y + 70);
+            text("Added by " + split(this.owner, ' ')[0], this.x + 30, this.y + 80);
             textStyle(NORMAL);
-            text("Energy: " + map(this.shakeX, 0, 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 90);
-            text("Danceability: " + map(this.danceability, min(allDanceability), max(allDanceability), 10, 100).toFixed(1) + "%", this.x + 30, this.y + 110);
-            text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 130);
-            text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 30, this.y  + 150);
-            text("Speed: " + map(this.speed, min(allSpeed)/5, max(allSpeed)/5, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 170);
+            text("Energy: " + map(this.shakeX, 0, 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 100);
+            text("Danceability: " + map(this.danceability, min(allDanceability), max(allDanceability), 10, 100).toFixed(1) + "%", this.x + 30, this.y + 120);
+            text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 140);
+            text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 30, this.y  + 160);
+            text("Speed: " + map(this.speed, min(allSpeed)/5, max(allSpeed)/5, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 180);
 
-            if(mouseX > this.x + 30 && mouseX < this.x + 120 && mouseY > this.y + 180 && mouseX < this.y + 200) {
+            if(mouseX > this.x + 30 && mouseX < this.x + 120 && mouseY > this.y + 40 && mouseY < this.y + 60) {
                 fill(this.c);
+                stroke(this.c);
+                rect(this.x + 30, this.y + 40, 110, 20);
+                noStroke();
+                fill(0);
+                textSize(10);
+                textStyle(BOLD);
+                text("SAVE SONG", this.x + 50, this.y + 55);
+                if(mouseIsPressed) {
+                    window.location = 'php/addToMySongs.php?id=' + this.id;
+                }
             } else {
                 fill(0);
+                stroke(this.c);
+                rect(this.x + 30, this.y + 40, 110, 20);
+                noStroke();
+                fill(this.c);
+                textSize(10);
+                text("SAVE SONG", this.x + 50, this.y + 55);
             }
-            stroke(this.c);
-            rect(this.x + 30, this.y + 180, 110, 20);
-
-            noStroke();
-            fill(this.c);
-            textSize(10);
-            text("SAVE SONG", this.x + 50, this.y + 190);
         }
 
 
