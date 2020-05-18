@@ -63,19 +63,16 @@ function setup() {
                 map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
                 id[i]);
             remove[i].addEventListener("click", function () {
-                if (contains(artists, artists[i].name)) {
-                    remove[i].classList.remove('hide');
-                } else {
-                    remove[i].classList.add('hide');
-                }
-
             });
 
         });
         remove[i].addEventListener("click", function () {
 
-            removeWave(artists[i].name);
-            remove[i].classList.add('hide');
+            if (contains(artists, artists[i].name)) {
+                remove[i].classList.remove('hide');
+            } else {
+                remove[i].classList.add('hide');
+            }
         });
 
     }
