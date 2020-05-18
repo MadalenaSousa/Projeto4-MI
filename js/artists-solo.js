@@ -62,10 +62,18 @@ function setup() {
                 map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
                 map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
                 id[i]);
-            remove[i].classList.remove('hide');
+            remove[i].addEventListener("click", function () {
+                if (contains(artists, artists[i].name)) {
+                    remove[i].classList.remove('hide');
+                } else {
+                    remove[i].classList.add('hide');
+                }
+
+            });
 
         });
         remove[i].addEventListener("click", function () {
+
             removeWave(artists[i].name);
             remove[i].classList.add('hide');
         });
@@ -169,12 +177,13 @@ function addNewWave(color, divisoes, largura, x, y, shake, valorX, valorY, id) {
 }
 
 function removeWave(artist) {
-    for(let i = 0; i < artists.length; i++){
-        if(artists[i].name === artist) {
+    for (let i = 0; i < artists.length; i++) {
+        if (artists[i].name === artist) {
             artists.splice(i, 1);
         }
     }
 }
+
 function contains(array, nome) {
     for (let i = 0; i < array.length; i++) {
         if (array[i] === nome) {
