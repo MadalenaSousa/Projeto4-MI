@@ -159,13 +159,12 @@ function addNewMountain(name, id, px, py, color, numtracks, resolution, tam, rou
     console.log(mountains);
 }
 
-function clearMountains() {
-    for(let i = 0; i < mountains.length; i++){
-        if(mountains[i].name === song) {
+function clearMountains(playlist) {
+   for(let i = 0; i < mountains.length; i++){
+        if(mountains[i].name === playlist) {
             mountains.splice(i, 1);
         }
     }
-    mountains.splice(0, mountains.length);
 }
 
 function contains(array, nome) {
