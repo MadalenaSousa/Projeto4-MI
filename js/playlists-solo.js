@@ -142,9 +142,7 @@ function setup() {
         img.style.width = "80%";
         img.style.height = "70%";
 
-
         document.querySelector('.PreviewShare').appendChild(img);  //faço append na div onde quero pôr o preview
-
 
         botaoDownload.addEventListener('click', function () {
             console.log('Canvas will be downloaded');
@@ -162,6 +160,11 @@ function addNewMountain(name, id, px, py, color, numtracks, resolution, tam, rou
 }
 
 function clearMountains() {
+    for(let i = 0; i < mountains.length; i++){
+        if(mountains[i].name === song) {
+            mountains.splice(i, 1);
+        }
+    }
     mountains.splice(0, mountains.length);
 }
 
@@ -250,7 +253,6 @@ function createUserDiv(name, profilepic) {
     document.querySelector(".list-people").appendChild(userDiv);
 }
 
-
 function draw() {
 
     if (cruz.style.display === "block" || previewShare.style.display === "block") {
@@ -269,7 +271,6 @@ function draw() {
         }
     }
 }
-
 
 class classMountain {
     c;
