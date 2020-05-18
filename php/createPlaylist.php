@@ -19,7 +19,14 @@ for($i = 0; $i < $songTotal; $i++) {
 }
 
 if($_POST['cover'] == 'use') {
-    $imageData = base64_encode(file_get_contents('../icons/separador-icon.jpg'));
+    $file = fopen("../icons/artboard.jpeg", "wb");
+
+    $data = explode(',', $_POST['playlistImg']);
+
+    fwrite($file, base64_decode($data[1]));
+    fclose($file);
+
+    $imageData = base64_encode(file_get_contents('../icons/artboard.jpeg'));
     $api->updatePlaylistImage($newPlaylist->id, $imageData);
 }
 

@@ -204,7 +204,9 @@ function setup() {
 
     document.querySelector('.download').addEventListener('click', function () {
         console.log('Canvas will be downloaded');
+        resizeCanvas(windowHeight, windowHeight);
         saveCanvas( 'public-tracks-artboard.png');
+        resizeCanvas(windowWidth - windowWidth/6, windowHeight);
     });
 }
 
@@ -295,6 +297,7 @@ function createPlaylistPopUp() {
     document.querySelector(".create-button").addEventListener('click', function () {
 
         cleanCreatePlaylistList();
+        cleanCreatePlaylistPreview();
         let totalSongs = document.createElement('input');
         totalSongs.setAttribute('type', 'hidden');
         totalSongs.setAttribute('name', 'songTotal');
@@ -306,18 +309,20 @@ function createPlaylistPopUp() {
             createPlaylistSongList(i);
         }
 
+        resizeCanvas(windowHeight, windowHeight);
         let canvas = document.getElementById('flowerCanvas');
         let img = new Image(200, 200);
         img.src = canvas.toDataURL('image/jpeg', 0.01);
-        localStorage.setItem('flowerCanvas', canvas.toDataURL());
         document.querySelector('.preview').appendChild(img);
 
         let playlistImg = document.createElement('input');
         playlistImg.setAttribute('type', 'hidden');
         playlistImg.setAttribute('name', 'playlistImg');
-        playlistImg.setAttribute('value', img.src);
+        playlistImg.setAttribute('value', canvas.toDataURL('image/jpeg'));
 
         document.querySelector('.create-playlist form').appendChild(playlistImg);
+
+        resizeCanvas(windowWidth - windowWidth/6, windowHeight);
 
         document.querySelector('.create-playlist').classList.remove('hide');
         document.querySelector('.overlay').classList.remove('hide');
@@ -331,6 +336,14 @@ function createPlaylistPopUp() {
 
 function cleanCreatePlaylistList() {
     let arrayDivs = document.querySelectorAll('.added-songs-list div');
+
+    for(let i = 0; i < arrayDivs.length; i++) {
+        arrayDivs[i].remove();
+    }
+}
+
+function cleanCreatePlaylistPreview() {
+    let arrayDivs = document.querySelectorAll('.preview img');
 
     for(let i = 0; i < arrayDivs.length; i++) {
         arrayDivs[i].remove();
@@ -430,6 +443,7 @@ function draw() {
     if(flowers.length > 0) {
         for(let i = 0; i < flowers.length; i++) {
             flowers[i].display();
+            this.x = width/flowers.length * i;
         }
 
         for(let i = 0; i < flowers.length; i++) {
