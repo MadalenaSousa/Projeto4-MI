@@ -207,7 +207,7 @@ function setup() {
     document.querySelector('.confirm-logout').addEventListener('click', closeSongsRoomConnection);
 
     document.querySelector('.download').addEventListener('click', function () {
-        console.log('Canvas will be downloaded')
+        console.log('Canvas will be downloaded');
 
         document.querySelector('.share').classList.add('hide');
 
@@ -269,7 +269,7 @@ function setup() {
         let width = 0.20 * windowWidth;
         let height = 0.20 * windowWidth;
 
-        let canvas = document.getElementById('defaultCanvas0');
+        let canvas = document.getElementById('flowerCanvas');
         let img = new Image(width, height); //crio uma imagem
         img.src = canvas.toDataURL('image/jpeg', 0.01); //torno a src da imagem o canvas convertido num link
         img.classList.add("imagemPreview");

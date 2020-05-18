@@ -18,8 +18,10 @@ for($i = 0; $i < $songTotal; $i++) {
     ]);
 }
 
+$filename = "../icons/artboard-" . $user->id . ".jpeg";
+
 if($_POST['cover'] == 'use') {
-    $file = fopen("../icons/artboard.jpeg", "wb");
+    $file = fopen($filename, "wb");
 
     $data = explode(',', $_POST['playlistImg']);
 
