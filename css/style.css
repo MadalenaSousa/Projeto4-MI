@@ -273,6 +273,14 @@ h2 {
     text-align: center;
 }
 
+
+.menu-option2 {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: bolder;
+
+}
+
 .menu-option:hover {
     background-color: white;
     color: black;
@@ -358,7 +366,7 @@ h2 {
 
 .create-unit {
     display: inline-block;
-    width: 30%;
+    width: 40%;
     text-align: left;
 }
 
@@ -366,14 +374,14 @@ h2 {
     margin-bottom: 3%;
 }
 
-.create-unit input {
+.create-buttons input {
     background-color: black;
     color: white;
     border: 2px solid white;
     font-weight: bold;
 }
 
-.create-unit input:hover {
+.create-buttons input:hover {
     background-color: white;
     color: black;
     border: 2px solid white;
@@ -383,4 +391,11 @@ h2 {
 
 .preview {
     border: 2px solid white;
+    overflow: hidden;
+    width: fit-content;
 }
+
+.create-buttons {
+    text-align: center;
+}
+

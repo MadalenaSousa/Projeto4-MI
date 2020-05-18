@@ -38,8 +38,8 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         </div>
         <div>
             <!--div class="menu-option unit from-playlist">MY PLAYLIST SONGS</div-->
-            <div class="menu-option unit top-songs">MY TOP SONGS</div>
-            Choose a song to add to the artboard
+            <div class="menu-option2">MY TOP SONGS</div>
+            Choose a song to add to the artboard <br/>
             <div class="list-songs unit">
             </div>
             <div class="menu-option unit create-button">GENERATE PLAYLIST</div>
@@ -74,20 +74,30 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         You can share the artboard you created in your social networks or download it and use it for anything you want!
     </div>
     <div class="unit">
-        <div class="menu-option">
-            <div><img src="icons/facebook.png"></div>
-            <div>Facebook</div>
-        </div>
-        <div class="menu-option">
+
+        <a target="popup"
+           onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=http://music-visualizer.duckdns.org:8888/','popup','width=600,height=400');">
+            <div class="menu-option">
+                <img src="icons/facebook.png">
+                <div>Facebook</div>
+            </div>
+        </a>
+
+        <!--div class="menu-option">
             <div><img src="icons/instagram.png"></div>
             <div>Instagram</div>
-        </div>
-        <div class="menu-option">
-            <div><img src="icons/twitter.png"></div>
-            <div>Twitter</div>
-        </div>
+        </div-->
+
+        <a target="popup"
+           onclick="window.open('https://twitter.com/intent/tweet?text=Look%20at%20my%20sea%20of%20my%20Top%20Artists%20on%20Spotify','popup','width=600,height=400');">
+            <div class="menu-option">
+                <img src="icons/twitter.png">
+                <div>Twitter</div>
+            </div>
+        </a>
+
         <div class="menu-option download">
-            <div><img src="icons/download.png"></div>
+            <img src="icons/download.png">
             <div>Download</div>
         </div>
     </div>
@@ -99,10 +109,10 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <h2><b>Create a Playlist!</b></h2>
     Here is an overview of the playlist you can create! Choose a name, a cover image and select the songs you want, after just click the create button and VOI LÁ!
     </div>
-    <div class="unit">
-        <form method="post" action="php/createPlaylist.php">
+    <form method="post" action="php/createPlaylist.php">
+        <div class="unit">
             <div class="create-unit">
-                <div><label><input placeholder="Playlist Name" type="text" name="playlistname" required></label></div>
+                <div><label><input placeholder="Insert Playlist Name" type="text" name="playlistname" required></label></div>
                 <div class="added-songs-list">
                     <div></div>
                 </div>
@@ -118,12 +128,12 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
                     <label>No<input type="radio" name="cover" value="dontuse"></label>
                 </div>
             </div>
-            <div class="create-unit">
-                <div><input type="submit" value="CREATE"></div>
-                <div class="close-create"><input type="button" name="cancel" onClick="window.location='tracks.php'" value="CANCEL"></div>
-            </div>
-        </form>
-    </div>
+        </div>
+        <div class="unit create-buttons">
+            <input type="submit" value="CREATE">
+            <input class="close-create" type="button" name="cancel" onClick="window.location='tracks.php'" value="CANCEL">
+        </div>
+    </form>
 </div>
 
 <script src="js/tracks.js"></script>

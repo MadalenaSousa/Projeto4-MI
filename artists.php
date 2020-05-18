@@ -36,8 +36,9 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <div class="list-people unit">
         </div>
         <div>
-            Choose an artist to add to the artboard
-            <div class="menu-option unit">MY TOP ARTISTS</div>
+            <div class="menu-option2">MY TOP ARTISTS</div>
+            Choose an artist to add to the artboard<br/>
+
             <div class="list-songs unit">
             </div>
             <div class="menu-option unit share-button">SAVE ART AND SHARE</div>
@@ -73,32 +74,29 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
     </div>
     <div class="unit">
 
-        <a class="menu-option"
-           target="popup"
-           onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=example.org','popup','width=600,height=400');">
-
-
-            <div><img src="icons/facebook.png"></div>
+        <a target="popup"
+           onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=http://music-visualizer.duckdns.org:8888/','popup','width=600,height=400');">
+            <div class="menu-option">
+                <img src="icons/facebook.png">
+                <div>Facebook</div>
+            </div>
         </a>
-        <div>Facebook</div>
 
-        <div class="menu-option">
-            <div><img src="icons/instagram.png"></div>
-            <div>Instagram</div>
-        </div>
-
-        <a class="menu-option"
-           target="popup"
+        <a target="popup"
            onclick="window.open('https://twitter.com/intent/tweet?text=Look%20at%20my%20sea%20of%20my%20Top%20Artists%20on%20Spotify','popup','width=600,height=400');">
-            <div><img src="icons/twitter.png"></div>
-            <div>Twitter</div>
-
+            <div class="menu-option">
+                <img src="icons/twitter.png">
+                <div>Twitter</div>
+            </div>
         </a>
 
         <div class="menu-option download">
-
             <img src="icons/download.png">
+            <div>Download</div>
+        </div>
 
+        <div class="menu-option download">
+            <img src="icons/download.png">
             <div>Download</div>
         </div>
     </div>

@@ -3,16 +3,15 @@ let mountains = [];
 let newMountain;
 let remove;
 
-const client = new DeepstreamClient('localhost:6020');
-const record = [];
-let personRecord;
-let clientsRecords = [];
-let recordList;
-
 let trackstotal=[];
 let speedX=[];
 let loudnessY=[];
 let positivityCor=[];
+
+var previewShare = document.createElement("div");
+var cruz = document.createElement("div");
+var botaoDownload = document.createElement("div");
+
 
 
 function preload() {
@@ -22,61 +21,14 @@ function preload() {
 
 function setup() {
     createCanvas(windowWidth - windowWidth/6, windowHeight);
-    client.login({username: user.name}, (success, data) => {
-        if(success) {
-            console.log("User logged in successfully");
-            client.record.has(user.name, function (error, hasRecord) {
-                console.log(error);
-                if(hasRecord === false) {
-                    console.log("Record of this user doesnt exist, it will be created");
-                    personRecord = client.record.getRecord(user.name);
-                    personRecord.set({
-                        name: user.name,
-                        id: user.id,
-                        profile_pic: user.profile_pic
-                    });
-                } else {
-                    console.log("A record of this user already exists, it will be retrieved");
-                    personRecord = client.record.getRecord(user.name);
-                }
-            });
-        } else {
-            console.log('Login failed');
-        }
-    });
-
-    client.presence.getAll((error, clients) => {
-        for(let i = 0; i < clients.length; i++){
-            console.log('Clients present on login: ' + clients);
-            clientsRecords[i] = client.record.getRecord(clients[i]);
-            clientsRecords[i].subscribe(function () {
-                createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
-            });
-        }
-    });
-
-    client.presence.subscribe((username, isLoggedIn) => {
-        if(isLoggedIn){
-            console.log('A new client logged in');
-            clearArray(clientsRecords);
-            client.presence.getAll((error, clients) => {
-                for(let i = 0; i < clients.length; i++){
-                    console.log('Updated clients list: ' + clients);
-                    clientsRecords[i] = client.record.getRecord(clients[i]);
-                    clientsRecords[i].subscribe(function () {
-                        createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
-                    });
-                }
-            });
-        }
-    });
-
     totalPlaylists = Object.keys(userPlaylists).length;
 
     createUserDiv(user.name, user.profile_pic);
     createPlaylistDiv();
     logoutPopUp();
     sharePopUp();
+
+    remove = document.querySelectorAll(".remove");
 
     for(let i = 0; i < totalPlaylists; i++) {
         trackstotal.push(userPlaylists[i].tracks.total);
@@ -85,103 +37,135 @@ function setup() {
         positivityCor.push(userPlaylists[i].average_features.positivity);
     }
 
-    recordList = client.record.getList('all-playlists');
-    remove = document.querySelectorAll(".remove");
-
-    recordList.subscribe(function () {
-        console.log("LISTA DE RECORDS ATUAL: " + recordList.getEntries());
-        if(recordList.isEmpty()) {
-            clearMountains();
-            console.log("Não há músicas na lista");
-        } else {
-            clearMountains();
-            let recordsOnList = [];
-            for(let i = 0; i < recordList.getEntries().length; i++){
-                recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
-                recordsOnList[i].whenReady(function () {
-                    addNewMountain (recordsOnList[i].get('playlist'), recordsOnList[i].get('px'), recordsOnList[i].get('py'), recordsOnList[i].get('numtracks'), recordsOnList[i].get('color'),
-                        recordsOnList[i].get('resolution'), recordsOnList[i].get('tam'), recordsOnList[i].get('round'), recordsOnList[i].get('nAmp'),
-                        recordsOnList[i].get('t'), recordsOnList[i].get('tChange'), recordsOnList[i].get('nInt'), recordsOnList[i].get('nSeed'), recordsOnList[i].get('user'));
-                });
-            }
-        }
-    });
 
     for (let i = 0; i < totalPlaylists; i++) {
-        recordList.subscribe(function () {
-            if(contains(recordList.getEntries(), userPlaylists[i].name)){
-                remove[i].classList.remove('hide');
-            } else {
-                remove[i].classList.add('hide');
-            }
-        });
-
+        remove[i].classList.add('hide');
         document.querySelectorAll(".playlist")[i].addEventListener("click", function () {
-            console.log("Clicou na música" + userPlaylists[i].name);
-            client.record.has(userPlaylists[i].name, function (error, hasRecord) {
-                if (hasRecord === false) {
-                    console.log('doesnt have record with name: ' + userPlaylists[i].name + ", can create it");
-                    record[i] = client.record.getRecord(userPlaylists[i].name); //cria um novo record no servidor
-                    record[i].set({ //define o novo record
-                        user: user.name,
-                        playlist: userPlaylists[i].name,
-                        px: map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, windowWidth - 410),
-                        py: map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 140, windowHeight - 110),
-                        color: map(userPlaylists[i].average_features.positivity, min(positivityCor), max(positivityCor), 190, 0),
-                        numtracks: userPlaylists[i].tracks.total,
-                        resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
-                        tam: map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 20, 80), //tamanho
-                        round: map(userPlaylists[i].average_features.energy, 0.0, 1.0, 30, 0), //quanto maior o valor, mais espalmada
-                        nAmp: map(userPlaylists[i].average_features.loudness, -60, 0, 0.3, 1), // valor=1 -> redonda
-                        t: 0,
-                        tChange: map(userPlaylists[i].average_features.danceability, 0.0, 1.0, 0.01, 0.06), // dança do objeto
-                        nInt: 10, //intensidade
-                        nSeed: 10
-                    });
+            addNewMountain(
 
-                    recordList.addEntry(userPlaylists[i].name);
-
-                    console.log("NOVA LISTA: " + recordList.getEntries());
-                } else {
-                    console.log('Record with name: ' + userPlaylists[i].name + ", already exists, cannot create it");
-                }
-            });
-
+                        userPlaylists[i].name,
+                        userPlaylists[i].id,
+                        map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, width - 110),
+                        map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 140, height - 110),
+                        map(userPlaylists[i].average_features.positivity, min(positivityCor), max(positivityCor), 190, 0),
+                        userPlaylists[i].tracks.total,
+                        map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
+                        map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 20, 80), //tamanho
+                        map(userPlaylists[i].average_features.energy, 0.0, 1.0, 30, 0), //quanto maior o valor, mais espalmada
+                        map(userPlaylists[i].average_features.loudness, -60, 0, 0.3, 1), // valor=1 -> redonda
+                        0,
+                        map(userPlaylists[i].average_features.danceability, 0.0, 1.0, 0.01, 0.06), // dança do objeto
+                        10, //intensidade
+                        10);
+            remove[i].classList.remove('hide');
         });
 
         remove[i].addEventListener("click", function () {
-            client.record.has(userPlaylists[i].name, function (error, hasRecord) {
-                if (hasRecord) {
-                    console.log('Has record with name: ' + userPlaylists[i].name + ', can delete it');
-
-                    recordList.removeEntry(userPlaylists[i].name);
-                    client.record.getRecord(userPlaylists[i].name).delete();
-
-                    console.log("NOVA LISTA: " + recordList.getEntries());
-                } else {
-                    console.log('Doesnt have record with name: ' + userPlaylists[i].name + ', cannot delete it');
-                }
-            });
+            clearMountains(userPlaylists[i].name);
+            remove[i].classList.add('hide');
         });
-
     }
 
-    document.querySelector('.confirm-logout').addEventListener('click', closePlaylistRoomConnection);
+    document.querySelector('.confirm-logout').addEventListener('click', function () {
+        document.location = './homepage.php';
+    });
 
     document.querySelector('.download').addEventListener('click', function () {
         console.log('Canvas will be downloaded');
-        saveCanvas( 'public-playlists-artboard.png');
+        document.querySelector('.share').classList.add('hide');
+
+        previewShare.classList.add("PreviewShare");
+        cruz.classList.add("cruz");
+        previewShare.style.outline = "outline: 2px solid white";
+
+        previewShare.style.zIndex = "10000";
+        previewShare.style.outline = "2px solid white";
+        previewShare.style.background = "black";
+        previewShare.style.position = 'fixed';
+        previewShare.style.width = '26%';
+        previewShare.style.height = '60%';
+        previewShare.style.left = '30%';
+        previewShare.style.top = '50%';
+        previewShare.style.transform = "translateX(-50%)";
+        previewShare.style.transform = "translateY(-50%)";
+        previewShare.style.display = "block";
+
+
+        cruz.style.color = "white";
+        cruz.innerText = "X";
+        cruz.style.zIndex = "10000";
+        cruz.style.position = 'fixed';
+        cruz.style.width = 'fit-content';
+        cruz.style.height = 'fit-content';
+        cruz.style.left = '92%';
+        cruz.style.top = '3%';
+        cruz.style.cursor = "pointer";
+        cruz.style.display = "block";
+
+        botaoDownload.onmouseenter = function () {
+            botaoDownload.style.color = "black";
+            botaoDownload.style.background = "white";
+        };
+
+        botaoDownload.onmouseleave = function () {
+            botaoDownload.style.color = "white";
+            botaoDownload.style.background = "black";
+        };
+
+        botaoDownload.innerText = "DOWNLOAD IMAGE";
+        botaoDownload.style.zIndex = "10000";
+        botaoDownload.style.position = 'fixed';
+        botaoDownload.style.width = 'fit-content';
+        botaoDownload.style.height = '8%';
+        botaoDownload.style.left = '0%';
+        botaoDownload.style.top = '92%';
+        botaoDownload.style.cursor = "pointer";
+        botaoDownload.style.display = "block";
+        botaoDownload.style.paddingTop = "2%";
+        botaoDownload.style.outline = "2px solid white";
+        botaoDownload.style.width = "100%";
+
+
+        document.body.appendChild(previewShare);
+        document.querySelector('.PreviewShare').appendChild(cruz);
+        document.querySelector('.PreviewShare').appendChild(botaoDownload);
+        let width = 0.20 * windowWidth;
+        let height = 0.20 * windowWidth;
+
+        let canvas = document.getElementById('defaultCanvas0');
+        let img = new Image(width, height); //crio uma imagem
+        img.src = canvas.toDataURL('image/jpeg', 0.01); //torno a src da imagem o canvas convertido num link
+        img.classList.add("imagemPreview");
+        img.style.outline = "1px solid white";
+        img.style.position = "fixed";
+        img.style.left = "10%";
+        img.style.top = "11%";
+        img.style.width = "80%";
+        img.style.height = "70%";
+
+        document.querySelector('.PreviewShare').appendChild(img);  //faço append na div onde quero pôr o preview
+
+        botaoDownload.addEventListener('click', function () {
+            console.log('Canvas will be downloaded');
+            saveCanvas('public-playlists-artboard.png');
+        });
+
     });
+
 }
 
-function addNewMountain(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner) {
-    newMountain = new classMountain(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner);
+function addNewMountain(name, id, px, py, color, numtracks, resolution, tam, round, nAmp, t, tChange, nInt, nSeed) {
+    newMountain = new classMountain(name, id, px, py,  color, numtracks, resolution, tam, round, nAmp, t, tChange, nInt, nSeed);
     mountains.push(newMountain);
     console.log(mountains);
 }
 
-function clearMountains() {
-    mountains.splice(0, mountains.length);
+function clearMountains(playlist) {
+   for(let i = 0; i < mountains.length; i++){
+        if(mountains[i].name === playlist) {
+            mountains.splice(i, 1);
+        }
+    }
 }
 
 function contains(array, nome) {
@@ -195,21 +179,30 @@ function contains(array, nome) {
 
 function logoutPopUp() {
     document.querySelector(".leave").addEventListener('click', function () {
-        document.querySelector('.logout').classList.toggle('hide');
+        document.querySelector('.logout').classList.remove('hide');
+        document.querySelector('.overlay').classList.remove('hide');
     });
 
     document.querySelector(".back").addEventListener('click', function () {
         document.querySelector('.logout').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
+    });
+
+    document.querySelector(".close-logout").addEventListener('click', function () {
+        document.querySelector('.logout').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
     });
 }
 
 function sharePopUp() {
     document.querySelector('.share-button').addEventListener('click', function () {
-        document.querySelector('.share').classList.toggle('hide');
+        document.querySelector('.share').classList.remove('hide');
+        document.querySelector('.overlay').classList.remove('hide');
     });
 
     document.querySelector(".close-share").addEventListener('click', function () {
         document.querySelector('.share').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
     });
 }
 
@@ -260,42 +253,17 @@ function createUserDiv(name, profilepic) {
     document.querySelector(".list-people").appendChild(userDiv);
 }
 
-function closePlaylistRoomConnection() {
-    let allRecords = [];
-    let recordsToRemove = [];
-
-    for(let i = 0; i < recordList.getEntries().length; i++) {
-        allRecords[i] = client.record.getRecord(recordList.getEntries()[i]);
-        allRecords[i].whenReady(function () {
-            console.log('Record to delete: ' + allRecords[i].get('playlist') + ' Owner of the record: ' + allRecords[i].get('user'));
-            if (allRecords[i].get('user') === user.name) {
-                recordsToRemove.push(allRecords[i]);
-            }
-        });
-    }
-
-    if(recordsToRemove.length === 0) {
-        client.close();
-    } else {
-        for(let i = 0; i < recordsToRemove.length; i++) {
-            recordList.removeEntry(recordsToRemove[i].get('playlist'));
-            client.record.getRecord(recordsToRemove[i].get('playlist')).delete();
-        }
-
-        recordsToRemove[recordsToRemove.length - 1].on('delete', function () {
-            client.close();
-        });
-    }
-
-    client.on('connectionStateChanged', connectionState => {
-        if(connectionState === 'CLOSED') {
-            console.log('Connection state changed to: ' + connectionState + ', you will be redirected to homepage');
-            document.location = './homepage.php';
-        }
-    });
-}
-
 function draw() {
+
+    if (cruz.style.display === "block" || previewShare.style.display === "block") {
+        document.querySelector(".cruz").addEventListener('click', function () {
+            document.querySelector('.cruz').style.display = "none";
+            document.querySelector('.PreviewShare').style.display = "none";
+            document.querySelector('.overlay').style.display = "none";
+
+        });
+    }
+
     background(0);
     if(mountains.length > 0) {
         for(let i = 0; i < mountains.length; i++) {
@@ -304,7 +272,6 @@ function draw() {
     }
 }
 
-
 class classMountain {
     c;
     nVal;
@@ -312,12 +279,13 @@ class classMountain {
     y;
     valor;
 
-    constructor(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner) {
+    constructor(name, id, px, py,color, numtracks, resolution, tam, round, nAmp, t, tChange, nInt, nSeed) {
         this.name = name;
+        this.id = id;
         this.px = px;
         this.py = py;
-        this.numtracks = numtracks;
         this.color  = color;
+        this.numtracks = numtracks;
         this.resolution  = resolution;
         this.tam  = tam;
         this.round  = round;
@@ -326,11 +294,10 @@ class classMountain {
         this.tChange  = tChange;
         this.nInt=nInt;
         this.nSeed=nSeed;
-        this.owner=owner;
     }
 
     display() {
-        if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 2) {
+        if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 3) {
             this.t += this.tChange;
         }
         this.c = color(this.color, 210, 255);
@@ -338,7 +305,7 @@ class classMountain {
 
         this.montanha();
 
-        if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 2) {
+        if ((dist(mouseX, mouseY, this.px, this.py) <= this.tam * 3)) {
             if(this.py <=240) this.valor=40;
             else if (this.py > 240) this.valor=0;
             this.balao();
@@ -372,7 +339,7 @@ class classMountain {
 
         //fill(0);
         stroke(this.c);
-        strokeWeight(1);
+        strokeWeight(2);
         noFill();
         for (let b = 1; b <= (this.tam) / 10; b++) {
             beginShape();
@@ -400,8 +367,8 @@ class classMountain {
         strokeWeight(2);
         stroke(this.c);
         beginShape();
-        vertex(this.px, this.py - 230 + (this.valor*11.5));
-        vertex(this.px + 130, this.py - 230 + (this.valor*11.5));
+        vertex(this.px, this.py - 200 + (this.valor*10));
+        vertex(this.px + 130, this.py - 200 + (this.valor*10));
         vertex(this.px + 130, this.py - 50 + (this.valor*2.5));
         vertex(this.px + 30, this.py - 50 + (this.valor*2.5));
         vertex(this.px + 20, this.py - 25 + (this.valor*1.2));
@@ -413,21 +380,14 @@ class classMountain {
         fill(this.c);
         textStyle(BOLD);
         textSize(12);
-        text("Added by " + split(this.owner, ' ')[0], this.px + 10, this.py - 210 + (this.valor*7));
+        text("Added by " + split( user.name, ' ')[0], this.px + 10, this.py - 180 + (this.valor*6.2));
         textStyle(NORMAL);
-        text("Energy: " + map(this.round, 30,0, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 190 + (this.valor*7));
-        text("Danceability: " + map(this.tChange, 0.01, 0.06, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 170 + (this.valor*7));
-        text("Positivity: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 150 + (this.valor*7));
-        text("Loudness: " + map(this.nAmp, 0.3, 1, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 130 + (this.valor*7));
-        text("Speed: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 110 + (this.valor*7));
-        text("Total musics: " + this.numtracks, this.px + 10, this.py - 90 + (this.valor*7));
+        text("Energy: " + map(this.round, 30,0, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 160 + (this.valor*6.2));
+        text("Danceability: " + map(this.tChange, 0.01, 0.06, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 140 + (this.valor*6.2));
+        text("Positivity: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 120 + (this.valor*6.2));
+        text("Loudness: " + map(this.nAmp, 0.3, 1, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 100 + (this.valor*6.2));
+        text("Speed: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 80 + (this.valor*6.2));
+        text("Total songs: " + this.numtracks, this.px + 10, this.py - 60 + (this.valor*6.2));
 
-        fill(0);
-        stroke(this.c);
-        rect(this.px + 10, this.py - 80 + (this.valor*7), 110, 20);
-        noStroke();
-        fill(this.c);
-        textSize(10);
-        text("Add to Favorites ", this.px + 30, this.py - 65 + (this.valor*7));
     }
 }
