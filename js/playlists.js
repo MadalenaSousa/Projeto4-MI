@@ -3,7 +3,7 @@ let mountains = [];
 let newMountain;
 let remove;
 
-const client = new DeepstreamClient('localhost:6020');
+const client = new DeepstreamClient('music-visualizer.duckdns.org:6020');
 const record = [];
 let personRecord;
 let clientsRecords = [];

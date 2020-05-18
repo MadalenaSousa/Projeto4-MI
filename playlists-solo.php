@@ -11,7 +11,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
-    <link rel="icon" href="icons/separador.png" type="image/png" sizes="16x16">
+    <link rel="icon" href="imagens/separador.png" type="image/png" sizes="16x16">
 
     <script type="text/javascript">
         var userid = '<?php echo $session_value;?>';
@@ -75,7 +75,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <a class="menu-option"
            target="popup"
            onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=http://music-visualizer.duckdns.org:8888','popup','width=600,height=400');">
-            <div><img src="icons/facebook.png"></div>
+            <div><img src="imagens/facebook.png"></div>
             <div>Facebook</div>
 
         </a>
@@ -83,13 +83,13 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <a target="popup"
            onclick="window.open('https://twitter.com/intent/tweet?text=Just%20Created%20a%20Draw%20of%20My%20Playlists%20from%20Spotify!%0D%0ACheck%20out%20&url=http://music-visualizer.duckdns.org:8888','popup','width=600,height=400');">
             <div class="menu-option">
-                <img src="icons/twitter.png">
+                <img src="imagens/twitter.png">
                 <div>Twitter</div>
             </div>
         </a>
 
         <div class="menu-option download">
-            <div><img src="icons/download.png"></div>
+            <div><img src="imagens/download.png"></div>
             <div>Download</div>
         </div>
     </div>

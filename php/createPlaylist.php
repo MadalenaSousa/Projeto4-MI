@@ -18,7 +18,7 @@ for($i = 0; $i < $songTotal; $i++) {
     ]);
 }
 
-$filename = "../icons/artboard-" . $user->id . ".jpeg";
+$filename = "../imagens/artboard-" . $user->id . ".jpeg";
 
 if($_POST['cover'] == 'use') {
     $file = fopen($filename, "wb");
@@ -28,7 +28,7 @@ if($_POST['cover'] == 'use') {
     fwrite($file, base64_decode($data[1]));
     fclose($file);
 
-    $imageData = base64_encode(file_get_contents('../icons/artboard.jpeg'));
+    $imageData = base64_encode(file_get_contents($filename));
     $api->updatePlaylistImage($newPlaylist->id, $imageData);
 }
 

@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
-    <link rel="icon" href="icons/separador.png" type="image/png" sizes="16x16">
+    <link rel="icon" href="imagens/separador.png" type="image/png" sizes="16x16">
 
     <script src="p5/p5.js"></script>
     <script src="p5/addons/p5.sound.js"></script>

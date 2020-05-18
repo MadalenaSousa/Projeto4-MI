@@ -11,7 +11,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
-    <link rel="icon" href="icons/separador.png" type="image/png" sizes="16x16">
+    <link rel="icon" href="imagens/separador.png" type="image/png" sizes="16x16">
 
     <script type="text/javascript">
         var userid = '<?php echo $session_value;?>';
@@ -25,7 +25,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 <div class="all-categories">
     <div class="category">
         <div class="titulo unit">PLAYLISTS ROOM</div>
-        <div><img src="icons/playlist-room.png"></div>
+        <div><img src="imagens/playlist-room.png"></div>
         <a href="php/getPlaylistsInfo.php?type=public">
             <div class="option playlist-room">
                 PUBLIC ROOM
@@ -45,7 +45,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
     <div class="category">
         <div class="titulo unit">SONGS ROOM</div>
-        <div><img src="icons/songs-room.png"></div>
+        <div><img src="imagens/songs-room.png"></div>
         <a href="php/getTracksInfo.php?type=public">
             <div class="option song-room">
                 PUBLIC ROOM
@@ -65,7 +65,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
     <div class="category">
         <div class="titulo unit">ARTISTS ROOM</div>
-        <div><img src="icons/artist-room.png"></div>
+        <div><img src="imagens/artist-room.png"></div>
         <a href="php/getArtistsInfo.php?type=public">
             <div class="option artist-room">
                 PUBLIC ROOM
