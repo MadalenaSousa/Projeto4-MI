@@ -99,7 +99,7 @@ function setup() {
             for(let i = 0; i < recordList.getEntries().length; i++){
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
-                    addNewMountain (recordsOnList[i].get('playlist'), recordsOnList[i].get('px'), recordsOnList[i].get('py'), recordsOnList[i].get('numtracks'), recordsOnList[i].get('color'),
+                    addNewMountain (recordsOnList[i].get('playlist'), recordsOnList[i].get('playlistId'),recordsOnList[i].get('px'), recordsOnList[i].get('py'), recordsOnList[i].get('numtracks'), recordsOnList[i].get('color'),
                         recordsOnList[i].get('resolution'), recordsOnList[i].get('tam'), recordsOnList[i].get('round'), recordsOnList[i].get('nAmp'),
                         recordsOnList[i].get('t'), recordsOnList[i].get('tChange'), recordsOnList[i].get('nInt'), recordsOnList[i].get('nSeed'), recordsOnList[i].get('user'));
                 });
@@ -125,6 +125,7 @@ function setup() {
                     record[i].set({ //define o novo record
                         user: user.name,
                         playlist: userPlaylists[i].name,
+                        playlistId: userPlaylists[i].id,
                         px: map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, width - 110),
                         py: map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 140, height - 110),
                         color: map(userPlaylists[i].average_features.positivity, min(positivityCor), max(positivityCor), 190, 0),
@@ -174,8 +175,8 @@ function setup() {
     });
 }
 
-function addNewMountain(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner) {
-    newMountain = new classMountain(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner);
+function addNewMountain(name, id, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner) {
+    newMountain = new classMountain(name, id, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner);
     mountains.push(newMountain);
     console.log(mountains);
 }
@@ -312,8 +313,9 @@ class classMountain {
     y;
     valor;
 
-    constructor(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner) {
+    constructor(name, id, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner) {
         this.name = name;
+        this.id = id;
         this.px = px;
         this.py = py;
         this.numtracks = numtracks;
