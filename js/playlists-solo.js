@@ -12,6 +12,7 @@ let recordList;
 let trackstotal=[];
 let speedX=[];
 let loudnessY=[];
+let positivityCor=[];
 
 
 function preload() {
@@ -81,6 +82,7 @@ function setup() {
         trackstotal.push(userPlaylists[i].tracks.total);
         speedX.push(userPlaylists[i].average_features.speed);
         loudnessY.push(userPlaylists[i].average_features.loudness);
+        positivityCor.push(userPlaylists[i].average_features.positivity);
     }
 
     recordList = client.record.getList('all-playlists');
@@ -123,9 +125,9 @@ function setup() {
                     record[i].set({ //define o novo record
                         user: user.name,
                         playlist: userPlaylists[i].name,
-                        px: map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, windowWidth - 375),
-                        py: map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 150, windowHeight - 110),
-                        color: color(255),
+                        px: map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, windowWidth - 410),
+                        py: map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 140, windowHeight - 110),
+                        color: map(userPlaylists[i].average_features.positivity, min(positivityCor), max(positivityCor), 190, 0),
                         numtracks: userPlaylists[i].tracks.total,
                         resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
                         tam: map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 20, 80), //tamanho
@@ -308,12 +310,14 @@ class classMountain {
     nVal;
     x;
     y;
+    valor;
 
     constructor(name, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner) {
         this.name = name;
         this.px = px;
         this.py = py;
         this.numtracks = numtracks;
+        this.color  = color;
         this.resolution  = resolution;
         this.tam  = tam;
         this.round  = round;
@@ -327,22 +331,21 @@ class classMountain {
 
     display() {
         if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 2) {
-            this.c = color(0, 200, 255);
             this.t += this.tChange;
-
         }
-        else this.c = color(255);
+        this.c = color(this.color, 210, 255);
+        stroke(this.c);
 
         this.montanha();
 
-        if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 2) this.balao();
+        if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 2) {
+            if(this.py <=240) this.valor=40;
+            else if (this.py > 240) this.valor=0;
+            this.balao();
+        }
     }
-    montanha(){
-        //desenho
-        stroke(this.c);
-        strokeWeight(1);
-        noFill();
 
+    montanha(){
 
         if (this.numtracks <= 30) {
             this.tam = map(this.numtracks, 0, 30, 10, 30);
@@ -368,6 +371,9 @@ class classMountain {
         else if(this.numtracks > 600) this.tam = 105;
 
         //fill(0);
+        stroke(this.c);
+        strokeWeight(1);
+        noFill();
         for (let b = 1; b <= (this.tam) / 10; b++) {
             beginShape();
             for (let a = -1; a <= 5; a += 5 / this.resolution) {
@@ -394,34 +400,34 @@ class classMountain {
         strokeWeight(2);
         stroke(this.c);
         beginShape();
-        vertex(this.px, this.py - 230);
-        vertex(this.px + 130, this.py - 230);
-        vertex(this.px + 130, this.py - 50);
-        vertex(this.px + 30, this.py - 50);
-        vertex(this.px + 20, this.py - 25);
-        vertex(this.px + 10, this.py - 50);
-        vertex(this.px, this.py - 50);
+        vertex(this.px, this.py - 230 + (this.valor*11.5));
+        vertex(this.px + 130, this.py - 230 + (this.valor*11.5));
+        vertex(this.px + 130, this.py - 50 + (this.valor*2.5));
+        vertex(this.px + 30, this.py - 50 + (this.valor*2.5));
+        vertex(this.px + 20, this.py - 25 + (this.valor*1.2));
+        vertex(this.px + 10, this.py - 50 + (this.valor*2.5));
+        vertex(this.px, this.py - 50 + (this.valor*2.5));
         endShape(CLOSE);
 
         noStroke();
         fill(this.c);
         textStyle(BOLD);
         textSize(12);
-        text("Added by " + split(this.owner, ' ')[0], this.px + 10, this.py - 210);
+        text("Added by " + split(this.owner, ' ')[0], this.px + 10, this.py - 210 + (this.valor*7));
         textStyle(NORMAL);
-        text("Energy: " + map(this.round, 30,0, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 190);
-        text("Danceability: " + map(this.tChange, 0.01, 0.06, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 170);
-        text("Positivity: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 150);
-        text("Loudness: " + map(this.nAmp, 0.3, 1, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 130);
-        text("Speed: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 110);
-        text("Musics: " + this.numtracks, this.px + 10, this.py - 90);
+        text("Energy: " + map(this.round, 30,0, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 190 + (this.valor*7));
+        text("Danceability: " + map(this.tChange, 0.01, 0.06, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 170 + (this.valor*7));
+        text("Positivity: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 150 + (this.valor*7));
+        text("Loudness: " + map(this.nAmp, 0.3, 1, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 130 + (this.valor*7));
+        text("Speed: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 110 + (this.valor*7));
+        text("Total musics: " + this.numtracks, this.px + 10, this.py - 90 + (this.valor*7));
 
         fill(0);
         stroke(this.c);
-        rect(this.px + 10, this.py - 80, 110, 20);
+        rect(this.px + 10, this.py - 80 + (this.valor*7), 110, 20);
         noStroke();
         fill(this.c);
         textSize(10);
-        text("Add to Favorites ", this.px + 30, this.py - 65);
+        text("Add to Favorites ", this.px + 30, this.py - 65 + (this.valor*7));
     }
 }
