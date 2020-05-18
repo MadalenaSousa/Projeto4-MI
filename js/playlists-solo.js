@@ -12,6 +12,7 @@ let recordList;
 let trackstotal=[];
 let speedX=[];
 let loudnessY=[];
+let positivityCor=[];
 
 
 function preload() {
@@ -81,6 +82,7 @@ function setup() {
         trackstotal.push(userPlaylists[i].tracks.total);
         speedX.push(userPlaylists[i].average_features.speed);
         loudnessY.push(userPlaylists[i].average_features.loudness);
+        positivityCor.push(userPlaylists[i].average_features.positivity);
     }
 
     recordList = client.record.getList('all-playlists');
@@ -125,7 +127,7 @@ function setup() {
                         playlist: userPlaylists[i].name,
                         px: map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, windowWidth - 410),
                         py: map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 140, windowHeight - 110),
-                        color: map(userPlaylists[i].average_features.positivity, 0, 1.0, 170, 230),
+                        color: map(userPlaylists[i].average_features.positivity, min(positivityCor), max(positivityCor), 190, 0),
                         numtracks: userPlaylists[i].tracks.total,
                         resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
                         tam: map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 20, 80), //tamanho
@@ -331,7 +333,7 @@ class classMountain {
         if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 2) {
             this.t += this.tChange;
         }
-        this.c = color(0, this.color, this.color);
+        this.c = color(this.color, 210, 255);
         stroke(this.c);
 
         this.montanha();
