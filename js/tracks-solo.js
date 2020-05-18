@@ -236,6 +236,7 @@ function createPlaylistPopUp() {
     document.querySelector(".create-button").addEventListener('click', function () {
 
         cleanCreatePlaylistList();
+        cleanCreatePlaylistPreview();
         let totalSongs = document.createElement('input');
         totalSongs.setAttribute('type', 'hidden');
         totalSongs.setAttribute('name', 'songTotal');
@@ -274,6 +275,14 @@ function cleanCreatePlaylistList() {
     let arrayDivs = document.querySelectorAll('.added-songs-list div');
 
     for (let i = 0; i < arrayDivs.length; i++) {
+        arrayDivs[i].remove();
+    }
+}
+
+function cleanCreatePlaylistPreview() {
+    let arrayDivs = document.querySelectorAll('.preview img');
+
+    for(let i = 0; i < arrayDivs.length; i++) {
         arrayDivs[i].remove();
     }
 }
@@ -360,9 +369,7 @@ function draw() {
         document.querySelector(".cruz").addEventListener('click', function () {
             document.querySelector('.cruz').style.display = "none";
             document.querySelector('.PreviewShare').style.display = "none";
-            document.querySelector('.overlay').style.display = "none";
-
-
+            document.querySelector('.overlay').classList.add('hide')
         });
     }
 
@@ -379,6 +386,12 @@ function draw() {
     if (flowers.length > 0) {
         for (let i = 0; i < flowers.length; i++) {
             flowers[i].display();
+        }
+
+        for(let i = 0; i < flowers.length; i++) {
+            if(dist(mouseX, mouseY, flowers[i].x, flowers[i].y) <= 120) {
+                flowers[i].balao();
+            }
         }
     }
 }

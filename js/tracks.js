@@ -65,6 +65,7 @@ function setup() {
     });
 
     client.presence.getAll((error, clients) => {
+        clearArray(clientsRecords);
         for(let i = 0; i < clients.length; i++){
             console.log('Clients present on login: ' + clients);
             clientsRecords[i] = client.record.getRecord(clients[i]);
@@ -520,9 +521,7 @@ function draw() {
         document.querySelector(".cruz").addEventListener('click', function () {
             document.querySelector('.cruz').style.display = "none";
             document.querySelector('.PreviewShare').style.display = "none";
-            document.querySelector('.overlay').style.display = "none";
-
-
+            document.querySelector('.overlay').classList.add('hide')
         });
     }
 

@@ -261,8 +261,7 @@ function draw() {
         document.querySelector(".cruz").addEventListener('click', function () {
             document.querySelector('.cruz').style.display = "none";
             document.querySelector('.PreviewShare').style.display = "none";
-            document.querySelector('.overlay').style.display = "none";
-
+            document.querySelector('.overlay').classList.add('hide')
         });
     }
 
@@ -270,6 +269,12 @@ function draw() {
     if(mountains.length > 0) {
         for(let i = 0; i < mountains.length; i++) {
             mountains[i].display();
+        }
+
+        for(let i = 0; i < mountains.length; i++) {
+            if(dist(mouseX, mouseY, mountains[i].px, mountains[i].py) <= mountains[i].tam * 3) {
+                mountains[i].balao();
+            }
         }
     }
 }
@@ -299,7 +304,7 @@ class classMountain {
     }
 
     display() {
-        if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 3) {
+        if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 2) {
             this.t += this.tChange;
         }
         this.c = color(this.color, 210, 255);
@@ -307,10 +312,10 @@ class classMountain {
 
         this.montanha();
 
-        if ((dist(mouseX, mouseY, this.px, this.py) <= this.tam * 3)) {
+        if ((dist(mouseX, mouseY, this.px, this.py) <= this.tam * 2)) {
             if(this.py <=240) this.valor=40;
             else if (this.py > 240) this.valor=0;
-            this.balao();
+            //this.balao();
         }
     }
 

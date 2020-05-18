@@ -297,7 +297,11 @@ function logoutPopUp() {
     document.querySelector(".back").addEventListener('click', function () {
         document.querySelector('.logout').classList.add('hide');
         document.querySelector('.overlay').classList.add('hide');
+    });
 
+    document.querySelector(".close-logout").addEventListener('click', function () {
+        document.querySelector('.logout').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
     });
 }
 
@@ -403,9 +407,7 @@ function draw() {
         document.querySelector(".cruz").addEventListener('click', function () {
             document.querySelector('.cruz').style.display = "none";
             document.querySelector('.PreviewShare').style.display = "none";
-            document.querySelector('.overlay').style.display = "none";
-
-
+            document.querySelector('.overlay').classList.add('hide')
         });
     }
 

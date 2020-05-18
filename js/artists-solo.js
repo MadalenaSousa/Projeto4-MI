@@ -152,7 +152,6 @@ function setup() {
 
         document.querySelector('.PreviewShare').appendChild(img);  //faço append na div onde quero pôr o preview
 
-
         botaoDownload.addEventListener('click', function () {
             console.log('Canvas will be downloaded');
             resizeCanvas(windowHeight, windowHeight);
@@ -191,13 +190,16 @@ function logoutPopUp() {
     document.querySelector(".leave").addEventListener('click', function () {
         document.querySelector('.logout').classList.toggle('hide');
         document.querySelector('.overlay').classList.toggle('hide');
-
     });
 
     document.querySelector(".back").addEventListener('click', function () {
         document.querySelector('.logout').classList.add('hide');
         document.querySelector('.overlay').classList.add('hide');
+    });
 
+    document.querySelector(".close-logout").addEventListener('click', function () {
+        document.querySelector('.logout').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
     });
 }
 
@@ -270,9 +272,7 @@ function draw() {
         document.querySelector(".cruz").addEventListener('click', function () {
             document.querySelector('.cruz').style.display = "none";
             document.querySelector('.PreviewShare').style.display = "none";
-            document.querySelector('.overlay').style.display = "none";
-
-
+            document.querySelector('.overlay').classList.add('hide')
         });
     }
 

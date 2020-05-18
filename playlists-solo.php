@@ -74,17 +74,9 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
         <a class="menu-option"
            target="popup"
-           onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=example.org','popup','width=600,height=400');">
+           onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=http://music-visualizer.duckdns.org:8888','popup','width=600,height=400');">
             <div><img src="icons/facebook.png"></div>
             <div>Facebook</div>
-
-        </a>
-
-        <a class="menu-option"
-           target="popup"
-           onclick="window.open('https://twitter.com/intent/tweet?text=Look%20at%20my%20favorite%20Playlists%20if%20they%20were%20mountains','popup','width=600,height=400');">
-            <div><img src="icons/twitter.png"></div>
-            <div>Twitter</div>
 
         </a>
 
