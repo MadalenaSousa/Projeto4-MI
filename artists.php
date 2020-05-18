@@ -36,8 +36,9 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <div class="list-people unit">
         </div>
         <div>
-            Choose an artist to add to the artboard
-            <div class="menu-option unit">MY TOP ARTISTS</div>
+            <div class="menu-option2">MY TOP ARTISTS</div>
+            Choose an artist to add to the artboard<br/>
+
             <div class="list-songs unit">
             </div>
             <div class="menu-option unit share-button">SAVE ART AND SHARE</div>

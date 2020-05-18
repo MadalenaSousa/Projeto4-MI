@@ -38,8 +38,8 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         </div>
         <div>
             <!--div class="menu-option unit from-playlist">MY PLAYLIST SONGS</div-->
-            <div class="menu-option unit top-songs">MY TOP SONGS</div>
-            Choose a song to add to the artboard
+            <div class="menu-option2">MY TOP SONGS</div>
+            Choose a song to add to the artboard <br/>
             <div class="list-songs unit">
             </div>
             <div class="menu-option unit create-button">GENERATE PLAYLIST</div>

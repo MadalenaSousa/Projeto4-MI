@@ -273,6 +273,14 @@ h2 {
     text-align: center;
 }
 
+
+.menu-option2 {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: bolder;
+
+}
+
 .menu-option:hover {
     background-color: white;
     color: black;
