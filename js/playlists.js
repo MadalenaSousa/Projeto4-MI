@@ -330,7 +330,7 @@ class classMountain {
     }
 
     display() {
-        if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 2) {
+        if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 3) {
             this.t += this.tChange;
         }
         this.c = color(this.color, 210, 255);
@@ -338,7 +338,7 @@ class classMountain {
 
         this.montanha();
 
-        if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 2) {
+        if ((dist(mouseX, mouseY, this.px, this.py) <= this.tam * 4.5)) {
             if(this.py <=240) this.valor=40;
             else if (this.py > 240) this.valor=0;
             this.balao();
@@ -413,21 +413,35 @@ class classMountain {
         fill(this.c);
         textStyle(BOLD);
         textSize(12);
-        text("Added by " + split(this.owner, ' ')[0], this.px + 10, this.py - 210 + (this.valor*7));
+        text("Added by " + split(this.owner, ' ')[0], this.px + 10, this.py - 210 + (this.valor*7.7));
         textStyle(NORMAL);
-        text("Energy: " + map(this.round, 30,0, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 190 + (this.valor*7));
-        text("Danceability: " + map(this.tChange, 0.01, 0.06, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 170 + (this.valor*7));
-        text("Positivity: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 150 + (this.valor*7));
-        text("Loudness: " + map(this.nAmp, 0.3, 1, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 130 + (this.valor*7));
-        text("Speed: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 110 + (this.valor*7));
-        text("Total musics: " + this.numtracks, this.px + 10, this.py - 90 + (this.valor*7));
+        text("Energy: " + map(this.round, 30,0, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 190 + (this.valor*7.7));
+        text("Danceability: " + map(this.tChange, 0.01, 0.06, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 170 + (this.valor*7.7));
+        text("Positivity: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 150 + (this.valor*7.7));
+        text("Loudness: " + map(this.nAmp, 0.3, 1, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 130 + (this.valor*7.7));
+        text("Speed: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 110 + (this.valor*7.7));
+        text("Total musics: " + this.numtracks, this.px + 10, this.py - 90 + (this.valor*7.7));
 
-        fill(0);
-        stroke(this.c);
-        rect(this.px + 10, this.py - 80 + (this.valor*7), 110, 20);
-        noStroke();
-        fill(this.c);
-        textSize(10);
-        text("Add to Favorites ", this.px + 30, this.py - 65 + (this.valor*7));
+        if((mouseX > this.px + 10) && (mouseX < this.px + 110) && (mouseY > this.py - 80 + (this.valor*3.5)) && (mouseY < this.py - 60)+ (this.valor*4)) {
+            fill(this.c);
+            stroke(this.c);
+            rect(this.px + 10, this.py - 80 + (this.valor*3.5), 110, 20);
+            noStroke();
+            fill(0);
+            textSize(10);
+            textStyle(BOLD);
+            text("Save Playlist", this.px + 30, this.py - 65 + (this.valor*3.5));
+            /*if(mouseIsPressed) {
+                window.location = 'php/addToMySongs.php?id=' + this.id;
+            }**/
+        } else {
+            fill(0);
+            stroke(this.c);
+            rect(this.px + 10, this.py - 80 + (this.valor*3.5), 110, 20);
+            noStroke();
+            fill(this.c);
+            textSize(10);
+            text("Save Playlist", this.px + 30, this.py - 65 + (this.valor*3.5));
+        }
     }
 }
