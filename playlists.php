@@ -45,7 +45,11 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
     </div>
 </div>
 
+<div class="overlay hide">
+</div>
+
 <div class="logout hide">
+    <div class="close-logout">X</div>
     <div class="unit">
         <h2><b>Are you sure you want to leave?</b></h2>
         All the songs you added to the artboard will be deleted.
