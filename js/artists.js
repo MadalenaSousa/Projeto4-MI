@@ -127,6 +127,8 @@ function setup() {
                 remove[i].classList.add('hide');
             }
         });
+        console.log(windowWidth);
+
 
         document.querySelectorAll(".artist")[i].addEventListener("click", function () {
             console.log("Clicou na música" + artists[i].name);
@@ -139,9 +141,9 @@ function setup() {
                         artist: artists[i].name,
                         color: map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 0, 255),
                         divisoes: map(artists[i].top_tracks_average_features.danceability, min(danceability), max(danceability), 3, 10),
-                        largura: map(artists[i].popularity, min(popularity), max(popularity), 100, 400),
-                        x: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
-                        y: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
+                        largura: map(artists[i].popularity, min(popularity), max(popularity), windowWidth/(windowWidth/100), windowWidth/(windowWidth/400)),
+                        x: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), windowWidth/(windowWidth/300), windowWidth - (windowWidth / 26) - 375),
+                        y: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - ( windowWidth/(windowWidth/400))/4),
                         shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 1, 2),
                         valorX: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
                         valorY: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
@@ -182,6 +184,7 @@ function setup() {
     document.querySelector('.download').addEventListener('click', function () {
         console.log('Canvas will be downloaded');
         document.querySelector('.share').classList.add('hide');
+
         previewShare.classList.add("PreviewShare");
         cruz.classList.add("cruz");
         previewShare.style.outline = "outline: 2px solid white";
@@ -285,20 +288,28 @@ function contains(array, nome) {
 function logoutPopUp() {
     document.querySelector(".leave").addEventListener('click', function () {
         document.querySelector('.logout').classList.toggle('hide');
+        document.querySelector('.overlay').classList.toggle('hide');
+
     });
 
     document.querySelector(".back").addEventListener('click', function () {
         document.querySelector('.logout').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
+
     });
 }
 
 function sharePopUp() {
     document.querySelector('.share-button').addEventListener('click', function () {
         document.querySelector('.share').classList.toggle('hide');
+        document.querySelector('.overlay').classList.toggle('hide');
+
     });
 
     document.querySelector(".close-share").addEventListener('click', function () {
         document.querySelector('.share').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
+
     });
 }
 
@@ -390,6 +401,8 @@ function draw() {
         document.querySelector(".cruz").addEventListener('click', function () {
             document.querySelector('.cruz').style.display = "none";
             document.querySelector('.PreviewShare').style.display = "none";
+            document.querySelector('.overlay').style.display = "none";
+
 
         });
     }
