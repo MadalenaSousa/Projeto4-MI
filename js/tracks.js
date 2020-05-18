@@ -152,7 +152,7 @@ function setup() {
                         user: user.name,
                         song: songs[i].name,
                         id: songs[i].id,
-                        x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
+                        x: map(getAudioFeatures(i).speed, min(allSpeed), max(allSpeed), 120, width - 120),
                         y: map(allLoudness[i], min(allLoudness), max(allLoudness), height - 80, 80),
                         raio: (songs[i].duration / 3),
                         color: map(allPositivity[i], min(allPositivity), max(allPositivity), 0, 255),
@@ -443,7 +443,7 @@ function draw() {
     if(flowers.length > 0) {
         for(let i = 0; i < flowers.length; i++) {
             flowers[i].display();
-            this.x = width/flowers.length * i;
+            this.x = map(getAudioFeatures(i).speed, min(allSpeed), max(allSpeed), 120, width - 120);
         }
 
         for(let i = 0; i < flowers.length; i++) {
