@@ -25,6 +25,8 @@ let personRecord;
 let clientsRecords = [];
 let recordList;
 
+let flowerCanvas;
+
 function preload() {
     //playlistSongs = loadJSON('php/' + userid +'-playlist-songs-object.json');
     topSongs = loadJSON('php/' + userid + '-top-songs-object.json');
@@ -32,7 +34,9 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(windowWidth - windowWidth/6, windowHeight);
+    flowerCanvas = createCanvas(windowWidth - windowWidth/6, windowHeight);
+    flowerCanvas.id('flowerCanvas');
+
     client.login({username: user.name}, (success, data) => {
         if(success) {
             console.log("User logged in successfully");
@@ -302,10 +306,10 @@ function createPlaylistPopUp() {
             createPlaylistSongList(i);
         }
 
-        let canvas = document.getElementById('defaultCanvas0');
+        let canvas = document.getElementById('flowerCanvas');
         let img = new Image(200, 200);
         img.src = canvas.toDataURL('image/jpeg', 0.01);
-        localStorage.setItem(canvas, canvas.toDataURL());
+        localStorage.setItem('flowerCanvas', canvas.toDataURL());
         document.querySelector('.preview').appendChild(img);
 
         let playlistImg = document.createElement('input');
