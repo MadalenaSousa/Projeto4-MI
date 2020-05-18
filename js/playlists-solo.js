@@ -155,8 +155,8 @@ function setup() {
 
 }
 
-function addNewMountain(name, id, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner) {
-    newMountain = new classMountain(name, id, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner);
+function addNewMountain(name, id, px, py, color, numtracks, resolution, tam, round, nAmp, t, tChange, nInt, nSeed) {
+    newMountain = new classMountain(name, id, px, py,  color, numtracks, resolution, tam, round, nAmp, t, tChange, nInt, nSeed);
     mountains.push(newMountain);
     console.log(mountains);
 }
@@ -278,13 +278,13 @@ class classMountain {
     y;
     valor;
 
-    constructor(name, id, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner) {
+    constructor(name, id, px, py,color, numtracks, resolution, tam, round, nAmp, t, tChange, nInt, nSeed) {
         this.name = name;
         this.id = id;
         this.px = px;
         this.py = py;
-        this.numtracks = numtracks;
         this.color  = color;
+        this.numtracks = numtracks;
         this.resolution  = resolution;
         this.tam  = tam;
         this.round  = round;
@@ -293,7 +293,6 @@ class classMountain {
         this.tChange  = tChange;
         this.nInt=nInt;
         this.nSeed=nSeed;
-        this.owner=owner;
     }
 
     display() {
@@ -305,7 +304,7 @@ class classMountain {
 
         this.montanha();
 
-        if ((dist(mouseX, mouseY, this.px, this.py) <= this.tam * 4.5)) {
+        if ((dist(mouseX, mouseY, this.px, this.py) <= this.tam * 3)) {
             if(this.py <=240) this.valor=40;
             else if (this.py > 240) this.valor=0;
             this.balao();
@@ -367,8 +366,8 @@ class classMountain {
         strokeWeight(2);
         stroke(this.c);
         beginShape();
-        vertex(this.px, this.py - 230 + (this.valor*11.5));
-        vertex(this.px + 130, this.py - 230 + (this.valor*11.5));
+        vertex(this.px, this.py - 200 + (this.valor*10));
+        vertex(this.px + 130, this.py - 200 + (this.valor*10));
         vertex(this.px + 130, this.py - 50 + (this.valor*2.5));
         vertex(this.px + 30, this.py - 50 + (this.valor*2.5));
         vertex(this.px + 20, this.py - 25 + (this.valor*1.2));
@@ -380,37 +379,14 @@ class classMountain {
         fill(this.c);
         textStyle(BOLD);
         textSize(12);
-        text("Added by " + split(this.owner, ' ')[0], this.px + 10, this.py - 210 + (this.valor*7.7));
+        text("Added by " + split( user.name, ' ')[0], this.px + 10, this.py - 180 + (this.valor*6.2));
         textStyle(NORMAL);
-        text("Energy: " + map(this.round, 30,0, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 190 + (this.valor*7.7));
-        text("Danceability: " + map(this.tChange, 0.01, 0.06, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 170 + (this.valor*7.7));
-        text("Positivity: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 150 + (this.valor*7.7));
-        text("Loudness: " + map(this.nAmp, 0.3, 1, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 130 + (this.valor*7.7));
-        text("Speed: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 110 + (this.valor*7.7));
-        text("Total songs: " + this.numtracks, this.px + 10, this.py - 90 + (this.valor*7.7));
+        text("Energy: " + map(this.round, 30,0, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 160 + (this.valor*6.2));
+        text("Danceability: " + map(this.tChange, 0.01, 0.06, 0.0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 140 + (this.valor*6.2));
+        text("Positivity: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 120 + (this.valor*6.2));
+        text("Loudness: " + map(this.nAmp, 0.3, 1, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 100 + (this.valor*6.2));
+        text("Speed: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 80 + (this.valor*6.2));
+        text("Total songs: " + this.numtracks, this.px + 10, this.py - 60 + (this.valor*6.2));
 
-        if((mouseX > this.px + 10) && (mouseX < this.px + 110) && (mouseY > this.py - 80 + (this.valor*3.5)) && (mouseY < this.py - 60)+ (this.valor*4)) {
-            fill(this.c);
-            stroke(this.c);
-            rect(this.px + 10, this.py - 80 + (this.valor*3.5), 110, 20);
-            noStroke();
-            fill(0);
-            textSize(10);
-            textStyle(BOLD);
-            text("Save Playlist", this.px + 30, this.py - 65 + (this.valor*3.5));
-
-            if(mouseIsPressed) {
-                window.location = 'php/savePlaylist.php?id=' + this.id;
-            }
-
-        } else {
-            fill(0);
-            stroke(this.c);
-            rect(this.px + 10, this.py - 80 + (this.valor*3.5), 110, 20);
-            noStroke();
-            fill(this.c);
-            textSize(10);
-            text("Save Playlist", this.px + 30, this.py - 65 + (this.valor*3.5));
-        }
     }
 }
