@@ -17,6 +17,11 @@ let allBarsDuration = [];
 let allBeatsDuration = [];
 let allTatumsDuration = [];
 
+var previewShare = document.createElement("div");
+var cruz = document.createElement("div");
+var botaoDownload = document.createElement("div");
+
+
 function preload() {
     //playlistSongs = loadJSON('php/' + userid +'-playlist-songs-object.json');
     topSongs = loadJSON('php/' + userid + '-top-songs-object.json');
@@ -24,7 +29,7 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(windowWidth - windowWidth/6, windowHeight);
+    createCanvas(windowWidth - windowWidth / 6, windowHeight);
     songs = topSongs;
     totalSongs = Object.keys(songs).length;
 
@@ -36,7 +41,7 @@ function setup() {
 
     remove = document.querySelectorAll(".remove");
 
-    for(let i = 0; i < totalSongs; i++) {
+    for (let i = 0; i < totalSongs; i++) {
         allPositivity[i] = getAudioFeatures(i).positivity;
         allLoudness[i] = getAudioFeatures(i).loudness;
         allSpeed[i] = getAudioFeatures(i).speed;
@@ -62,7 +67,7 @@ function setup() {
                 (songs[i].duration / 3),
                 map(allPositivity[i], min(allPositivity), max(allPositivity), 0, 255),
                 getAudioFeatures(i).energy * 5,
-                getAudioFeatures(i).speed/5,
+                getAudioFeatures(i).speed / 5,
                 allDanceability[i],
                 songs[i].preview_url,
                 songs[i].artists,
@@ -89,21 +94,101 @@ function setup() {
 
     document.querySelector('.download').addEventListener('click', function () {
         console.log('Canvas will be downloaded');
-        resizeCanvas(windowHeight, windowHeight);
-        saveCanvas( 'solo-tracks-artboard.png');
-        resizeCanvas(windowWidth - windowWidth/6, windowHeight);
+        document.querySelector('.share').classList.add('hide');
+
+        previewShare.classList.add("PreviewShare");
+        cruz.classList.add("cruz");
+        previewShare.style.outline = "outline: 2px solid white";
+
+        previewShare.style.zIndex = "10000";
+        previewShare.style.outline = "2px solid white";
+        previewShare.style.background = "black";
+        previewShare.style.position = 'fixed';
+        previewShare.style.width = '26%';
+        previewShare.style.height = '60%';
+        previewShare.style.left = '30%';
+        previewShare.style.top = '50%';
+        previewShare.style.transform = "translateX(-50%)";
+        previewShare.style.transform = "translateY(-50%)";
+        previewShare.style.display = "block";
+
+
+        cruz.style.color = "white";
+        cruz.innerText = "X";
+        cruz.style.zIndex = "10000";
+        cruz.style.position = 'fixed';
+        cruz.style.width = 'fit-content';
+        cruz.style.height = 'fit-content';
+        cruz.style.left = '92%';
+        cruz.style.top = '3%';
+        cruz.style.cursor = "pointer";
+        cruz.style.display = "block";
+
+        botaoDownload.onmouseenter = function () {
+            botaoDownload.style.color = "black";
+            botaoDownload.style.background = "white";
+        };
+
+        botaoDownload.onmouseleave = function () {
+            botaoDownload.style.color = "white";
+            botaoDownload.style.background = "black";
+        };
+
+        botaoDownload.innerText = "DOWNLOAD IMAGE";
+        botaoDownload.style.zIndex = "10000";
+        botaoDownload.style.position = 'fixed';
+        botaoDownload.style.width = 'fit-content';
+        botaoDownload.style.height = '8%';
+        botaoDownload.style.left = '0%';
+        botaoDownload.style.top = '92%';
+        botaoDownload.style.cursor = "pointer";
+        botaoDownload.style.display = "block";
+        botaoDownload.style.paddingTop = "2%";
+        botaoDownload.style.outline = "2px solid white";
+        botaoDownload.style.width = "100%";
+
+
+        document.body.appendChild(previewShare);
+        document.querySelector('.PreviewShare').appendChild(cruz);
+        document.querySelector('.PreviewShare').appendChild(botaoDownload);
+        let width = 0.20 * windowWidth;
+        let height = 0.20 * windowWidth;
+
+        let canvas = document.getElementById('defaultCanvas0');
+        let img = new Image(width, height); //crio uma imagem
+        img.src = canvas.toDataURL('image/jpeg', 0.01); //torno a src da imagem o canvas convertido num link
+        img.classList.add("imagemPreview");
+        img.style.outline = "1px solid white";
+        img.style.position = "fixed";
+        img.style.left = "10%";
+        img.style.top = "11%";
+        img.style.width = "80%";
+        img.style.height = "70%";
+
+
+        document.querySelector('.PreviewShare').appendChild(img);  //faço append na div onde quero pôr o preview
+
+
+        botaoDownload.addEventListener('click', function () {
+            console.log('Canvas will be downloaded');
+            resizeCanvas(windowHeight, windowHeight);
+            saveCanvas('solo-tracks-artboard.png');
+            resizeCanvas(windowWidth - windowWidth / 6, windowHeight);
+        });
+
     });
+
 }
 
-function addNewFlower(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections,  mode) {
-    newFlower = new flowerSong(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections,  mode);
+function addNewFlower(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
+    newFlower = new flowerSong(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode);
     flowers.push(newFlower);
     console.log("LISTA DE FLORES ATUAL: " + flowers);
 }
 
 function removeFlower(song) {
-    for(let i = 0; i < flowers.length; i++){
-        if(flowers[i].name === song) {
+    for (let i = 0; i < flowers.length; i++) {
+        if (flowers[i].name === song) {
             flowers.splice(i, 1);
         }
     }
@@ -158,7 +243,7 @@ function createPlaylistPopUp() {
 
         document.querySelector('.create-playlist form').appendChild(totalSongs);
 
-        for(let i = 0; i < flowers.length; i++) {
+        for (let i = 0; i < flowers.length; i++) {
             createPlaylistSongList(i);
         }
 
@@ -188,7 +273,7 @@ function createPlaylistPopUp() {
 function cleanCreatePlaylistList() {
     let arrayDivs = document.querySelectorAll('.added-songs-list div');
 
-    for(let i = 0; i < arrayDivs.length; i++) {
+    for (let i = 0; i < arrayDivs.length; i++) {
         arrayDivs[i].remove();
     }
 }
@@ -237,7 +322,7 @@ function createUserDiv(name, profilepic) {
 }
 
 function createSongDiv() {
-    for(let i = 0; i < totalSongs; i++) {
+    for (let i = 0; i < totalSongs; i++) {
         let song = document.createElement("div");
 
         let nomeDiv = document.createElement("div");
@@ -249,7 +334,7 @@ function createSongDiv() {
         nomeDiv.setAttribute("style", "margin: 0px");
         nomeDiv.classList.add('song');
 
-        nome.innerHTML ='<b>' + songs[i].name + '</b>';
+        nome.innerHTML = '<b>' + songs[i].name + '</b>';
 
         artista.setAttribute("style", "font-size: 10pt");
         artista.innerHTML = songs[i].artists;
@@ -271,9 +356,19 @@ function createSongDiv() {
 }
 
 function draw() {
+    if (cruz.style.display === "block" || previewShare.style.display === "block") {
+        document.querySelector(".cruz").addEventListener('click', function () {
+            document.querySelector('.cruz').style.display = "none";
+            document.querySelector('.PreviewShare').style.display = "none";
+            document.querySelector('.overlay').style.display = "none";
+
+
+        });
+    }
+
     background(0);
 
-    if(fromPlaylist) {
+    if (fromPlaylist) {
         songs = playlistSongs;
         totalSongs = Object.keys(songs).length;
     } else {
@@ -281,15 +376,15 @@ function draw() {
         totalSongs = Object.keys(songs).length;
     }
 
-    if(flowers.length > 0) {
-        for(let i = 0; i < flowers.length; i++) {
+    if (flowers.length > 0) {
+        for (let i = 0; i < flowers.length; i++) {
             flowers[i].display();
         }
     }
 }
 
 function mousePressed() {
-    for(let i = 0; i < flowers.length; i++) {
+    for (let i = 0; i < flowers.length; i++) {
         flowers[i].playSong();
     }
 }
@@ -297,6 +392,7 @@ function mousePressed() {
 function getAudioFeatures(index) {
     return songs[index].audio_features;
 }
+
 function getAudioAnalysis(index) {
     return songs[index].audio_analysis;
 }
@@ -311,13 +407,13 @@ class flowerSong {
     curves;
     theta;
 
-    constructor(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections,  mode) {
+    constructor(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
         this.id = id;
         this.name = name;
         this.x = x;
         this.y = y;
         this.raio = raio;
-        this.color  = color;
+        this.color = color;
         this.shakeX = energy;
         this.shakeY = energy;
         this.speed = speed;
@@ -330,7 +426,7 @@ class flowerSong {
         this.numberSections = numberSections;
         this.arraySectionLoudness = arraySectionLoudness;
         this.pY = pY;
-        this.theta = TWO_PI/(nBeats*2);
+        this.theta = TWO_PI / (nBeats * 2);
 
         this.curves = [];
         this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode);
@@ -341,7 +437,7 @@ class flowerSong {
 
     display() {
         this.c = color(255, 255, 255 - this.color);
-        if(dist(mouseX, mouseY, this.x, this.y) <= 120){
+        if (dist(mouseX, mouseY, this.x, this.y) <= 120) {
             this.randomX = random(-this.shakeX, this.shakeX);
             this.randomY = random(-this.shakeY, this.shakeY);
         } else {
@@ -349,7 +445,7 @@ class flowerSong {
             this.randomY = 0;
         }
 
-        if(this.musicOn){
+        if (this.musicOn) {
             this.sound.play();
         } else {
             this.sound.pause();
@@ -358,7 +454,7 @@ class flowerSong {
         stroke(this.c);
         this.flor(this.x, this.y, this.nBeats, this.rBeats, this.mode, this.theta);
 
-        if(this.mode === 1) {
+        if (this.mode === 1) {
             noStroke();
             fill(this.c);
             textSize(14);
@@ -383,7 +479,7 @@ class flowerSong {
     }
 
     playSong() {
-        if(dist(mouseX, mouseY, this.x, this.y) <= this.raio ){
+        if (dist(mouseX, mouseY, this.x, this.y) <= this.raio) {
             this.musicOn = !this.musicOn;
         }
     }
@@ -393,7 +489,7 @@ class flowerSong {
         fill(255, 30);
 
         //LINHA + ORIENTAÇÃO DAS FLORES
-        if(mode === 1) {
+        if (mode === 1) {
             if (this.pY < height) {
                 this.pY = this.pY + this.speed;
             } else {
@@ -415,9 +511,9 @@ class flowerSong {
         }
 
         //BEATS
-        for(let i = 0; i < nBeats*2; i++) {
-            let xB = x  + rBeats/1.5 * cos(i*theta);
-            let yB = y  + rBeats/1.5 * sin(i*theta);
+        for (let i = 0; i < nBeats * 2; i++) {
+            let xB = x + rBeats / 1.5 * cos(i * theta);
+            let yB = y + rBeats / 1.5 * sin(i * theta);
             line(x, y, xB + this.randomX, yB + this.randomY);
             fill(255);
             ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
@@ -428,7 +524,7 @@ class flowerSong {
         fill(0);
         strokeWeight(2);
         stroke(this.c);
-        if(this.y - 210 > 0) {
+        if (this.y - 210 > 0) {
             beginShape();
             vertex(this.x + 20, this.y - 210);
             vertex(this.x + 150, this.y - 210);
@@ -449,9 +545,9 @@ class flowerSong {
             text("Danceability: " + map(this.danceability, min(allDanceability), max(allDanceability), 0, 100).toFixed(1) + "%", this.x + 30, this.y - 150);
             text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 130);
             text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 110);
-            text("Speed: " + map(this.speed, min(allSpeed)/5, max(allSpeed)/5, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 90); //MAL MAPEADO
+            text("Speed: " + map(this.speed, min(allSpeed) / 5, max(allSpeed) / 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 90); //MAL MAPEADO
 
-            if(mouseX > this.x + 30 && mouseX < this.x + 120 && mouseY > this.y - 80 && mouseY < this.y - 60) {
+            if (mouseX > this.x + 30 && mouseX < this.x + 120 && mouseY > this.y - 80 && mouseY < this.y - 60) {
                 fill(this.c);
                 stroke(this.c);
                 rect(this.x + 30, this.y - 80, 110, 20);
@@ -460,7 +556,7 @@ class flowerSong {
                 textSize(10);
                 textStyle(BOLD);
                 text("SAVE SONG", this.x + 60, this.y - 65);
-                if(mouseIsPressed) {
+                if (mouseIsPressed) {
                     window.location = 'php/addToMySongs.php?id=' + this.id;
                 }
             } else {
@@ -493,10 +589,10 @@ class flowerSong {
             text("Energy: " + map(this.shakeX, 0, 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 100);
             text("Danceability: " + map(this.danceability, min(allDanceability), max(allDanceability), 10, 100).toFixed(1) + "%", this.x + 30, this.y + 120);
             text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 140);
-            text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 30, this.y  + 160);
-            text("Speed: " + map(this.speed, min(allSpeed)/5, max(allSpeed)/5, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 180);
+            text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 160);
+            text("Speed: " + map(this.speed, min(allSpeed) / 5, max(allSpeed) / 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 180);
 
-            if(mouseX > this.x + 30 && mouseX < this.x + 120 && mouseY > this.y + 40 && mouseY < this.y + 60) {
+            if (mouseX > this.x + 30 && mouseX < this.x + 120 && mouseY > this.y + 40 && mouseY < this.y + 60) {
                 fill(this.c);
                 stroke(this.c);
                 rect(this.x + 30, this.y + 40, 110, 20);
@@ -505,7 +601,7 @@ class flowerSong {
                 textSize(10);
                 textStyle(BOLD);
                 text("SAVE SONG", this.x + 50, this.y + 55);
-                if(mouseIsPressed) {
+                if (mouseIsPressed) {
                     window.location = 'php/addToMySongs.php?id=' + this.id;
                 }
             } else {
@@ -531,7 +627,7 @@ class randFlower {
         this.linenum = linenum; //numero de sections
         this.mode = mode;
         for (let i = 0; i < this.linenum; i++) {
-            this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), 0, arraySectionTempo[i]*TWO_PI);
+            this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), 0, arraySectionTempo[i] * TWO_PI);
             this.d = map(arraySectionLoudness[i], min(arraySectionLoudness), max(arraySectionLoudness), 80, 120); //loudness da section
             this.hy = sin(this.theta);
             this.hx = cos(this.theta);
@@ -539,9 +635,9 @@ class randFlower {
             this.ey = this.d * this.hy + this.y;
 
             for (let z = 0; z < 2; z++) {
-                if(z === 0) {
+                if (z === 0) {
                     this.bow = map(arraySectionDuration[i], min(arraySectionDuration), max(arraySectionDuration), 20, 50); //duração da section
-                } else if(z === 1) {
+                } else if (z === 1) {
                     this.bow = -map(arraySectionDuration[i], min(arraySectionDuration), max(arraySectionDuration), 20, 50);
                 }
                 curves.push(new Curve(x, y, this.ex, this.ey, this.bow));
