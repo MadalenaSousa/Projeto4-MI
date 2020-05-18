@@ -50,6 +50,7 @@ function setup() {
     }
 
     for (let i = 0; i < totalArtists; i++) {
+        remove[i].classList.add('hide');
         document.querySelectorAll(".artist")[i].addEventListener("click", function () {
             addNewWave(
                 artists[i].name,
@@ -62,20 +63,15 @@ function setup() {
                 map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
                 map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
                 id[i]);
-            remove[i].addEventListener("click", function () {
-            });
-
+             remove[i].classList.remove('hide');
         });
+
         remove[i].addEventListener("click", function () {
-
-            if (contains(artists, artists[i].name)) {
-                remove[i].classList.remove('hide');
-            } else {
-                remove[i].classList.add('hide');
-            }
+            removeWave(artists[i].name);
+            remove[i].classList.add('hide');
         });
-
     }
+
 
     document.querySelector('.confirm-logout').addEventListener('click', function () {
         document.location = './homepage.php';
@@ -167,8 +163,8 @@ function setup() {
 }
 
 
-function addNewWave(color, divisoes, largura, x, y, shake, valorX, valorY, id) {
-    newWave = new waveArtist(color, divisoes, largura, x, y, shake, valorX, valorY, id);
+function addNewWave(name, color, divisoes, largura, x, y, shake, valorX, valorY, id) {
+    newWave = new waveArtist(name, color, divisoes, largura, x, y, shake, valorX, valorY, id);
     waves.push(newWave);
     console.log("LISTA DE ONDAS ATUAL: " + waves);
 }
@@ -400,7 +396,7 @@ class waveArtist {
                 fill(255, 255 - this.color, 255);
                 textStyle(BOLD);
                 textSize(12);
-                text("Added by " + split(user.name, ' ')[0], this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 45);
+                text("Added by " + split(user.name, ' ')[0], this.x + 10, this.y - ((2 * this.largura / 2) / 3) - 155);
                 textStyle(NORMAL);
                 text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
                 text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
