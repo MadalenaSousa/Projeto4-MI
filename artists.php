@@ -80,13 +80,9 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
 
             <div><img src="icons/facebook.png"></div>
-        </a>
-        <div>Facebook</div>
+            <div>Facebook</div>
 
-        <div class="menu-option">
-            <div><img src="icons/instagram.png"></div>
-            <div>Instagram</div>
-        </div>
+        </a>
 
         <a class="menu-option"
            target="popup"
