@@ -7,7 +7,7 @@ $user = $api->me();
 
 $playlistId = $_GET['id'];
 
-$api->followPlaylist([
+$api->followPlaylistForCurrentUser([
     $playlistId
 ]);
 
