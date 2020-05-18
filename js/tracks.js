@@ -25,11 +25,11 @@ let personRecord;
 let clientsRecords = [];
 let recordList;
 
+let flowerCanvas;
 
 var previewShare = document.createElement("div");
 var cruz = document.createElement("div");
 var botaoDownload = document.createElement("div");
-
 
 function preload() {
     //playlistSongs = loadJSON('php/' + userid +'-playlist-songs-object.json');
@@ -38,7 +38,9 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(windowWidth - windowWidth/6, windowHeight);
+    flowerCanvas = createCanvas(windowWidth - windowWidth/6, windowHeight);
+    flowerCanvas.id('flowerCanvas');
+
     client.login({username: user.name}, (success, data) => {
         if(success) {
             console.log("User logged in successfully");
@@ -154,7 +156,7 @@ function setup() {
                         user: user.name,
                         song: songs[i].name,
                         id: songs[i].id,
-                        x: (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
+                        x: map(getAudioFeatures(i).speed, min(allSpeed), max(allSpeed), 120, width - 120),
                         y: map(allLoudness[i], min(allLoudness), max(allLoudness), height - 80, 80),
                         raio: (songs[i].duration / 3),
                         color: map(allPositivity[i], min(allPositivity), max(allPositivity), 0, 255),
@@ -205,7 +207,8 @@ function setup() {
     document.querySelector('.confirm-logout').addEventListener('click', closeSongsRoomConnection);
 
     document.querySelector('.download').addEventListener('click', function () {
-        console.log('Canvas will be downloaded');
+        console.log('Canvas will be downloaded')
+
         document.querySelector('.share').classList.add('hide');
 
         previewShare.classList.add("PreviewShare");
@@ -283,8 +286,11 @@ function setup() {
 
         botaoDownload.addEventListener('click', function () {
             console.log('Canvas will be downloaded');
-            saveCanvas('public-tracks-artboard.png');
+            resizeCanvas(windowHeight, windowHeight);
+            saveCanvas( 'public-tracks-artboard.png');
+            resizeCanvas(windowWidth - windowWidth/6, windowHeight);
         });
+
 
     });
 
@@ -377,6 +383,7 @@ function createPlaylistPopUp() {
     document.querySelector(".create-button").addEventListener('click', function () {
 
         cleanCreatePlaylistList();
+        cleanCreatePlaylistPreview();
         let totalSongs = document.createElement('input');
         totalSongs.setAttribute('type', 'hidden');
         totalSongs.setAttribute('name', 'songTotal');
@@ -388,7 +395,8 @@ function createPlaylistPopUp() {
             createPlaylistSongList(i);
         }
 
-        let canvas = document.getElementById('defaultCanvas0');
+        resizeCanvas(windowHeight, windowHeight);
+        let canvas = document.getElementById('flowerCanvas');
         let img = new Image(200, 200);
         img.src = canvas.toDataURL('image/jpeg', 0.01);
         document.querySelector('.preview').appendChild(img);
@@ -396,9 +404,11 @@ function createPlaylistPopUp() {
         let playlistImg = document.createElement('input');
         playlistImg.setAttribute('type', 'hidden');
         playlistImg.setAttribute('name', 'playlistImg');
-        playlistImg.setAttribute('value', img.src);
+        playlistImg.setAttribute('value', canvas.toDataURL('image/jpeg'));
 
         document.querySelector('.create-playlist form').appendChild(playlistImg);
+
+        resizeCanvas(windowWidth - windowWidth/6, windowHeight);
 
         document.querySelector('.create-playlist').classList.remove('hide');
         document.querySelector('.overlay').classList.remove('hide');
@@ -412,6 +422,14 @@ function createPlaylistPopUp() {
 
 function cleanCreatePlaylistList() {
     let arrayDivs = document.querySelectorAll('.added-songs-list div');
+
+    for(let i = 0; i < arrayDivs.length; i++) {
+        arrayDivs[i].remove();
+    }
+}
+
+function cleanCreatePlaylistPreview() {
+    let arrayDivs = document.querySelectorAll('.preview img');
 
     for(let i = 0; i < arrayDivs.length; i++) {
         arrayDivs[i].remove();
@@ -521,6 +539,7 @@ function draw() {
     if(flowers.length > 0) {
         for(let i = 0; i < flowers.length; i++) {
             flowers[i].display();
+            this.x = map(getAudioFeatures(i).speed, min(allSpeed), max(allSpeed), 120, width - 120);
         }
 
         for(let i = 0; i < flowers.length; i++) {
@@ -588,24 +607,6 @@ class flowerSong {
         if(dist(mouseX, mouseY, this.x, this.y) <= 120){
             this.randomX = random(-this.shakeX, this.shakeX);
             this.randomY = random(-this.shakeY, this.shakeY);
-
-            push();
-            translate(this.x, this.y);
-            rotate(PI/2);
-            if(this.mode === 1) {
-                translate(-this.x + 10, -this.y);
-            } else {
-                translate(-this.x - 120, -this.y);
-            }
-            noStroke();
-            fill(this.c);
-            textSize(14);
-            textStyle(BOLD);
-            text(this.name, this.x, this.y);
-            textSize(12);
-            textStyle(NORMAL);
-            text(this.artist, this.x, this.y + 10);
-            pop();
         } else {
             this.randomX = 0;
             this.randomY = 0;
@@ -619,6 +620,27 @@ class flowerSong {
 
         stroke(this.c);
         this.flor(this.x, this.y, this.nBeats, this.rBeats, this.mode, this.theta);
+
+        if(this.mode === 1) {
+            noStroke();
+            fill(this.c);
+            textSize(14);
+            textStyle(BOLD);
+            text(this.name, this.x, this.y + 50);
+            textSize(12);
+            textStyle(NORMAL);
+            text(this.artist, this.x, this.y + 60);
+        } else {
+            noStroke();
+            fill(this.c);
+            textSize(14);
+            textStyle(BOLD);
+            text(this.name, this.x, this.y - 60);
+            textSize(12);
+            textStyle(NORMAL);
+            text(this.artist, this.x, this.y - 50);
+        }
+
 
         //this.theta = this.theta + TWO_PI/(this.nBeats*100);
     }

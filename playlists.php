@@ -71,6 +71,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         You can share the artboard you created in your social networks or download it and use it for anything you want!
     </div>
     <div class="unit">
+
         <a class="menu-option"
            target="popup"
            onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=example.org','popup','width=600,height=400');">
@@ -86,6 +87,20 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
             <div>Twitter</div>
 
         </a>
+
+        <a target="popup"
+           onclick="window.open('https://twitter.com/intent/tweet?text=Look%20at%20my%20sea%20of%20my%20Top%20Artists%20on%20Spotify','popup','width=600,height=400');">
+            <div class="menu-option">
+                <img src="icons/twitter.png">
+                <div>Twitter</div>
+            </div>
+        </a>
+
+        <div class="menu-option download">
+            <img src="icons/download.png">
+            <div>Download</div>
+        </div>
+
         <div class="menu-option download">
             <div><img src="icons/download.png"></div>
             <div>Download</div>

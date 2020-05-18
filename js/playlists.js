@@ -527,7 +527,7 @@ class classMountain {
         text("Positivity: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 150 + (this.valor*7.7));
         text("Loudness: " + map(this.nAmp, 0.3, 1, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 130 + (this.valor*7.7));
         text("Speed: " + map(this.resolution, 13, 20, 0, 1.0).toFixed(1)*100 + "%", this.px + 10, this.py - 110 + (this.valor*7.7));
-        text("Total musics: " + this.numtracks, this.px + 10, this.py - 90 + (this.valor*7.7));
+        text("Total songs: " + this.numtracks, this.px + 10, this.py - 90 + (this.valor*7.7));
 
         if((mouseX > this.px + 10) && (mouseX < this.px + 110) && (mouseY > this.py - 80 + (this.valor*3.5)) && (mouseY < this.py - 60)+ (this.valor*4)) {
             fill(this.c);
