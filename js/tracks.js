@@ -4,6 +4,7 @@ let flowers = [];
 let newFlower;
 let remove;
 let check = false;
+let pY;
 
 let allLoudness = [];
 let allPositivity = [];
@@ -104,7 +105,7 @@ function setup() {
             for(let i = 0; i < recordList.getEntries().length; i++){
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
-                    addNewFlower(recordsOnList[i].get('id'), recordsOnList[i].get('song'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
+                    addNewFlower(recordsOnList[i].get('id'), recordsOnList[i].get('song'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
                         recordsOnList[i].get('energy'), recordsOnList[i].get('speed'), recordsOnList[i].get('danceability'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'), recordsOnList[i].get('user'),
                         recordsOnList[i].get('tSections'), recordsOnList[i].get('dSections'), recordsOnList[i].get('lSections'),
                         recordsOnList[i].get('nBeats'), recordsOnList[i].get('rBeats'),recordsOnList[i].get('nSections'),
@@ -203,8 +204,8 @@ function setup() {
     });
 }
 
-function addNewFlower(id, name, x, y, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
-    newFlower = new flowerSong(id, name, x, y, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode);
+function addNewFlower(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
+    newFlower = new flowerSong(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode);
     flowers.push(newFlower);
     console.log("LISTA DE FLORES ATUAL: " + flowers);
 }
@@ -456,8 +457,9 @@ class flowerSong {
     sound;
     randflower;
     curves;
+    theta;
 
-    constructor(id, name, x, y, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections,  mode) {
+    constructor(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections,  mode) {
         this.id = id;
         this.name = name;
         this.x = x;
@@ -475,7 +477,8 @@ class flowerSong {
         this.rBeats = rBeats;
         this.numberSections = numberSections;
         this.arraySectionLoudness = arraySectionLoudness;
-        this.pY = this.y;
+        this.pY = pY;
+        this.theta = TWO_PI/(nBeats*2);
 
         this.curves = [];
         this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode);
@@ -494,7 +497,7 @@ class flowerSong {
             translate(this.x, this.y);
             rotate(PI/2);
             if(this.mode === 1) {
-                translate(-this.x + 120, -this.y);
+                translate(-this.x + 10, -this.y);
             } else {
                 translate(-this.x - 120, -this.y);
             }
@@ -519,9 +522,9 @@ class flowerSong {
         }
 
         stroke(this.c);
-        this.flor(this.x, this.y, this.nBeats, this.rBeats, this.mode);
+        this.flor(this.x, this.y, this.nBeats, this.rBeats, this.mode, this.theta);
 
-
+        //this.theta = this.theta + TWO_PI/(this.nBeats*100);
     }
 
     playSong() {
@@ -530,10 +533,9 @@ class flowerSong {
         }
     }
 
-    flor(x, y, nBeats, rBeats, mode) {
+    flor(x, y, nBeats, rBeats, mode, theta) {
         strokeWeight(2);
         fill(255, 30);
-        let theta = 0;
 
         //LINHA + ORIENTAÇÃO DAS FLORES
         if(mode === 1) {
@@ -542,16 +544,14 @@ class flowerSong {
             } else {
                 this.pY = height;
             }
-            line(x, y, x, this.pY);
-            theta = TWO_PI/(nBeats*2);
+            line(x, y, x, height);
         } else {
             if (this.pY > 0) {
                 this.pY = this.pY - this.speed;
             } else {
                 this.pY = 0;
             }
-            line(x, y, x, this.pY);
-            theta = TWO_PI/(nBeats*2);
+            line(x, y, x, 0);
         }
 
         //SECTIONS
