@@ -492,24 +492,6 @@ class flowerSong {
         if(dist(mouseX, mouseY, this.x, this.y) <= 120){
             this.randomX = random(-this.shakeX, this.shakeX);
             this.randomY = random(-this.shakeY, this.shakeY);
-
-            push();
-            translate(this.x, this.y);
-            rotate(PI/2);
-            if(this.mode === 1) {
-                translate(-this.x + 10, -this.y);
-            } else {
-                translate(-this.x - 120, -this.y);
-            }
-            noStroke();
-            fill(this.c);
-            textSize(14);
-            textStyle(BOLD);
-            text(this.name, this.x, this.y);
-            textSize(12);
-            textStyle(NORMAL);
-            text(this.artist, this.x, this.y + 10);
-            pop();
         } else {
             this.randomX = 0;
             this.randomY = 0;
@@ -523,6 +505,27 @@ class flowerSong {
 
         stroke(this.c);
         this.flor(this.x, this.y, this.nBeats, this.rBeats, this.mode, this.theta);
+
+        if(this.mode === 1) {
+            noStroke();
+            fill(this.c);
+            textSize(14);
+            textStyle(BOLD);
+            text(this.name, this.x, this.y + 50);
+            textSize(12);
+            textStyle(NORMAL);
+            text(this.artist, this.x, this.y + 60);
+        } else {
+            noStroke();
+            fill(this.c);
+            textSize(14);
+            textStyle(BOLD);
+            text(this.name, this.x, this.y - 60);
+            textSize(12);
+            textStyle(NORMAL);
+            text(this.artist, this.x, this.y - 50);
+        }
+
 
         //this.theta = this.theta + TWO_PI/(this.nBeats*100);
     }
