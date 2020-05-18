@@ -50,7 +50,6 @@ function setup() {
     }
 
     for (let i = 0; i < totalArtists; i++) {
-        remove[i].classList.add('hide');
         document.querySelectorAll(".artist")[i].addEventListener("click", function () {
             addNewWave(
                 artists[i].name,
@@ -170,9 +169,9 @@ function addNewWave(name, color, divisoes, largura, x, y, shake, valorX, valorY,
 }
 
 function removeWave(artist) {
-    for (let i = 0; i < artists.length; i++) {
-        if (artists[i].name === artist) {
-            artists.splice(i, 1);
+    for (let i = 0; i < waves.length; i++) {
+        if (waves[i].name === artist) {
+            waves.splice(i, 1);
         }
     }
 }
@@ -232,6 +231,7 @@ function createArtistDiv() {
 
         remove.innerText = "x";
         remove.classList.add("remove");
+        remove.classList.add("hide");
         remove.setAttribute("style", "cursor: pointer; margin-left: 5px;");
 
         song.classList.add('unit');
