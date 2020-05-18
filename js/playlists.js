@@ -372,7 +372,7 @@ class classMountain {
 
             //fill(0);
         stroke(this.c);
-        strokeWeight(1);
+        strokeWeight(2);
         noFill();
             for (let b = 1; b <= (this.tam) / 10; b++) {
                 beginShape();
@@ -431,9 +431,11 @@ class classMountain {
             textSize(10);
             textStyle(BOLD);
             text("Save Playlist", this.px + 30, this.py - 65 + (this.valor*3.5));
-            /*if(mouseIsPressed) {
-                window.location = 'php/addToMySongs.php?id=' + this.id;
-            }**/
+
+            if(mouseIsPressed) {
+                window.location = 'php/savePlaylist.php?id=' + this.id;
+            }
+
         } else {
             fill(0);
             stroke(this.c);
