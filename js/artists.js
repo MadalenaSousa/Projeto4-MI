@@ -260,7 +260,9 @@ function setup() {
 
         botaoDownload.addEventListener('click', function () {
             console.log('Canvas will be downloaded');
-            saveCanvas('public-artists-artboard.png');
+            resizeCanvas(windowHeight, windowHeight);
+            saveCanvas( 'public-artists-artboard.png');
+            resizeCanvas(windowWidth - windowWidth/6, windowHeight);
         });
 
     });
