@@ -196,21 +196,30 @@ function contains(array, nome) {
 
 function logoutPopUp() {
     document.querySelector(".leave").addEventListener('click', function () {
-        document.querySelector('.logout').classList.toggle('hide');
+        document.querySelector('.logout').classList.remove('hide');
+        document.querySelector('.overlay').classList.remove('hide');
     });
 
     document.querySelector(".back").addEventListener('click', function () {
         document.querySelector('.logout').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
+    });
+
+    document.querySelector(".close-logout").addEventListener('click', function () {
+        document.querySelector('.logout').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
     });
 }
 
 function sharePopUp() {
     document.querySelector('.share-button').addEventListener('click', function () {
-        document.querySelector('.share').classList.toggle('hide');
+        document.querySelector('.share').classList.remove('hide');
+        document.querySelector('.overlay').classList.remove('hide');
     });
 
     document.querySelector(".close-share").addEventListener('click', function () {
         document.querySelector('.share').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
     });
 }
 

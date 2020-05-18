@@ -45,6 +45,9 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
     </div>
 </div>
 
+<div class="overlay hide">
+</div>
+
 <div class="logout hide">
     <div class="unit">
         <h2><b>Are you sure you want to leave?</b></h2>
