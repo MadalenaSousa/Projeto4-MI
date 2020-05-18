@@ -39,6 +39,7 @@ function setup() {
 
 
     for (let i = 0; i < totalPlaylists; i++) {
+        remove[i].classList.add('hide');
         document.querySelectorAll(".playlist")[i].addEventListener("click", function () {
             addNewMountain(
 
