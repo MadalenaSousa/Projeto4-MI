@@ -32,6 +32,7 @@ function setup() {
     createSongDiv();
     logoutPopUp();
     sharePopUp();
+    createPlaylistPopUp();
 
     remove = document.querySelectorAll(".remove");
 
@@ -117,22 +118,101 @@ function contains(array, nome) {
 
 function logoutPopUp() {
     document.querySelector(".leave").addEventListener('click', function () {
-        document.querySelector('.logout').classList.toggle('hide');
+        document.querySelector('.logout').classList.remove('hide');
+        document.querySelector('.overlay').classList.remove('hide');
     });
 
     document.querySelector(".back").addEventListener('click', function () {
         document.querySelector('.logout').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
+    });
+
+    document.querySelector(".close-logout").addEventListener('click', function () {
+        document.querySelector('.logout').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
     });
 }
 
 function sharePopUp() {
     document.querySelector('.share-button').addEventListener('click', function () {
-        document.querySelector('.share').classList.toggle('hide');
+        document.querySelector('.share').classList.remove('hide');
+        document.querySelector('.overlay').classList.remove('hide');
     });
 
     document.querySelector(".close-share").addEventListener('click', function () {
         document.querySelector('.share').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
     });
+}
+
+function createPlaylistPopUp() {
+    document.querySelector(".create-button").addEventListener('click', function () {
+
+        cleanCreatePlaylistList();
+        let totalSongs = document.createElement('input');
+        totalSongs.setAttribute('type', 'hidden');
+        totalSongs.setAttribute('name', 'songTotal');
+        totalSongs.setAttribute('value', flowers.length);
+
+        document.querySelector('.create-playlist form').appendChild(totalSongs);
+
+        for(let i = 0; i < flowers.length; i++) {
+            createPlaylistSongList(i);
+        }
+
+        let canvas = document.getElementById('defaultCanvas0');
+        let img = new Image(200, 200);
+        img.src = canvas.toDataURL('image/jpeg', 0.01);
+        localStorage.setItem(canvas, canvas.toDataURL());
+        document.querySelector('.preview').appendChild(img);
+
+        let playlistImg = document.createElement('input');
+        playlistImg.setAttribute('type', 'hidden');
+        playlistImg.setAttribute('name', 'playlistImg');
+        playlistImg.setAttribute('value', img.src);
+
+        document.querySelector('.create-playlist form').appendChild(playlistImg);
+
+        document.querySelector('.create-playlist').classList.remove('hide');
+        document.querySelector('.overlay').classList.remove('hide');
+    });
+
+    document.querySelector(".close-create").addEventListener('click', function () {
+        document.querySelector('.create-playlist').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
+    });
+}
+
+function cleanCreatePlaylistList() {
+    let arrayDivs = document.querySelectorAll('.added-songs-list div');
+
+    for(let i = 0; i < arrayDivs.length; i++) {
+        arrayDivs[i].remove();
+    }
+}
+
+function createPlaylistSongList(index) {
+    let songDiv = document.createElement('div');
+
+    let songInput = document.createElement('input');
+    songInput.setAttribute('type', 'checkbox');
+    songInput.setAttribute('name', 'song' + index);
+    songInput.setAttribute('checked', 'true');
+
+    let songLabel = document.createElement('label');
+    songLabel.innerText = flowers[index].name;
+
+    let songId = document.createElement('input');
+    songId.setAttribute('type', 'hidden');
+    songId.setAttribute('name', 'songId' + index);
+    songId.setAttribute('value', flowers[index].id);
+
+    songLabel.appendChild(songInput);
+
+    songDiv.appendChild(songLabel);
+    songDiv.appendChild(songId);
+
+    document.querySelector('.added-songs-list').appendChild(songDiv);
 }
 
 function createUserDiv(name, profilepic) {
