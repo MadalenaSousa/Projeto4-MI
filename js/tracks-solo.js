@@ -89,7 +89,9 @@ function setup() {
 
     document.querySelector('.download').addEventListener('click', function () {
         console.log('Canvas will be downloaded');
+        resizeCanvas(windowHeight, windowHeight);
         saveCanvas( 'solo-tracks-artboard.png');
+        resizeCanvas(windowWidth - windowWidth/6, windowHeight);
     });
 }
 
