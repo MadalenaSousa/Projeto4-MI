@@ -4,7 +4,8 @@ require '../vendor/autoload.php';
 $session = new SpotifyWebAPI\Session(
     'de8b0fa92d7a421da94cd48858522a77',
     'a713fdaaef5347ae801749567d4e82e8',
-    'http://music-visualizer.duckdns.org:8888/php/loginSpotify.php'
+    'http://localhost/Projeto4-MI/php/loginSpotify.php'
+    //'http://music-visualizer.duckdns.org:8888/php/loginSpotify.php'
 );
 
 $api = new SpotifyWebAPI\SpotifyWebAPI();
