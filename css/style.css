@@ -224,7 +224,7 @@ h2 {
     margin-bottom: 5%;
 }
 
-.share, .create-playlist {
+.share, .create-playlist, .logout-or-home {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -249,7 +249,7 @@ h2 {
     margin: 0.5%;
 }
 
-.close-share, .close-create, .close-logout {
+.close-share, .close-create, .close-logout, .close-home {
     display: inline-block;
     position: absolute;
     right: 3%;
@@ -312,6 +312,7 @@ h2 {
     top: 3vh;
     width: 50vw;
     font-size: 0.5vw;
+    cursor: pointer;
 }
 
 .home-button a {

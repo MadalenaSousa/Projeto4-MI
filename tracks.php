@@ -25,7 +25,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 </head>
 <body>
 
-<div class="home-button"><a href="homepage.php">BACK TO HOMEPAGE</a></div>
+<div class="home-button">BACK TO HOMEPAGE</div>
 
 <div class="menu">
     <div class="unit">
@@ -130,10 +130,25 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
             </div>
         </div>
         <div class="unit create-buttons">
-            <input type="submit" value="CREATE">
+            <input type="submit" value="CRE\ATE">
             <input class="close-create" type="button" name="cancel" onClick="window.location='tracks.php'" value="CANCEL">
         </div>
     </form>
+</div>
+
+<div class="logout-or-home hide">
+    <div class="close-home">X</div>
+    <div class="unit">
+        <h2><b>Keep Changes?</b></h2>
+    </div>
+    <div class="unit">
+        Do you want to keep the changes you made to the artboard ou do you want to leave the room?
+        Keep in mind that, if you are not coming back to the room, you should leave the room and all your songs will be removed from the artboard.
+    </div>
+    <div class="unit">
+        <div>LEAVE ROOM</div>
+        <div>I WILL COME BACK</div>
+    </div>
 </div>
 
 <script src="js/tracks.js"></script>

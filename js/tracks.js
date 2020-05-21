@@ -99,6 +99,7 @@ function setup() {
     logoutPopUp();
     sharePopUp();
     createPlaylistPopUp();
+    backToHomepagePopUp();
 
     recordList = client.record.getList('all-songs');
     remove = document.querySelectorAll(".remove");
@@ -348,6 +349,20 @@ function closeSongsRoomConnection() {
             console.log('Connection state changed to: ' + connectionState + ', you will be redirected to homepage');
             document.location = './homepage.php';
         }
+    });
+}
+
+function backToHomepagePopUp() {
+    document.querySelector('.home-button').addEventListener('click', function () {
+        document.querySelector('.logout-or-home').classList.remove('hide');
+        document.querySelector('.overlay').classList.remove('hide');
+    });
+
+    document.querySelector('.close-home').addEventListener('click', function () {
+        document.querySelector('.logout-or-home').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
+
+        console.log('oioioi');
     });
 }
 
