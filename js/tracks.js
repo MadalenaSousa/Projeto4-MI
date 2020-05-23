@@ -26,6 +26,8 @@ let clientsRecords = [];
 let recordList;
 
 let flowerCanvas;
+let w = window.innerWidth - window.innerWidth/6;
+let h = window.innerHeight;
 
 var previewShare = document.createElement("div");
 var cruz = document.createElement("div");
@@ -38,7 +40,7 @@ function preload() {
 }
 
 function setup() {
-    flowerCanvas = createCanvas(windowWidth - windowWidth/6, windowHeight);
+    flowerCanvas = createCanvas(w, h);
     flowerCanvas.id('flowerCanvas');
 
     client.login({username: user.name}, (success, data) => {
@@ -99,6 +101,7 @@ function setup() {
     logoutPopUp();
     sharePopUp();
     createPlaylistPopUp();
+    backToHomepagePopUp();
 
     recordList = client.record.getList('all-songs');
     remove = document.querySelectorAll(".remove");
@@ -210,92 +213,28 @@ function setup() {
     document.querySelector('.download').addEventListener('click', function () {
         console.log('Canvas will be downloaded');
 
-        document.querySelector('.share').classList.add('hide');
-
-        previewShare.classList.add("PreviewShare");
-        cruz.classList.add("cruz");
-        previewShare.style.outline = "outline: 2px solid white";
-
-        previewShare.style.zIndex = "10000";
-        previewShare.style.outline = "2px solid white";
-        previewShare.style.background = "black";
-        previewShare.style.position = 'fixed';
-        previewShare.style.width = '26%';
-        previewShare.style.height = '60%';
-        previewShare.style.left = '30%';
-        previewShare.style.top = '50%';
-        previewShare.style.transform = "translateX(-50%)";
-        previewShare.style.transform = "translateY(-50%)";
-        previewShare.style.display = "block";
-
-
-        cruz.style.color = "white";
-        cruz.innerText = "X";
-        cruz.style.zIndex = "10000";
-        cruz.style.position = 'fixed';
-        cruz.style.width = 'fit-content';
-        cruz.style.height = 'fit-content';
-        cruz.style.left = '92%';
-        cruz.style.top = '3%';
-        cruz.style.cursor = "pointer";
-        cruz.style.display = "block";
-
-        botaoDownload.onmouseenter = function () {
-            botaoDownload.style.color = "black";
-            botaoDownload.style.background = "white";
-        };
-
-        botaoDownload.onmouseleave = function () {
-            botaoDownload.style.color = "white";
-            botaoDownload.style.background = "black";
-        };
-
-        botaoDownload.innerText = "DOWNLOAD IMAGE";
-        botaoDownload.style.zIndex = "10000";
-        botaoDownload.style.position = 'fixed';
-        botaoDownload.style.width = 'fit-content';
-        botaoDownload.style.height = '8%';
-        botaoDownload.style.left = '0%';
-        botaoDownload.style.top = '92%';
-        botaoDownload.style.cursor = "pointer";
-        botaoDownload.style.display = "block";
-        botaoDownload.style.paddingTop = "2%";
-        botaoDownload.style.outline = "2px solid white";
-        botaoDownload.style.width = "100%";
-
-
-        document.body.appendChild(previewShare);
-        document.querySelector('.PreviewShare').appendChild(cruz);
-        document.querySelector('.PreviewShare').appendChild(botaoDownload);
-        let width = 0.20 * windowWidth;
-        let height = 0.20 * windowWidth;
-
-        let canvas = document.getElementById('flowerCanvas');
-        let img = new Image(width, height); //crio uma imagem
-        img.src = canvas.toDataURL('image/jpeg', 0.01); //torno a src da imagem o canvas convertido num link
-        img.classList.add("imagemPreview");
-        img.style.outline = "1px solid white";
-        img.style.position = "fixed";
-        img.style.left = "10%";
-        img.style.top = "11%";
-        img.style.width = "80%";
-        img.style.height = "70%";
-
-
-        document.querySelector('.PreviewShare').appendChild(img);  //faço append na div onde quero pôr o preview
-
-
-        botaoDownload.addEventListener('click', function () {
-            console.log('Canvas will be downloaded');
-            resizeCanvas(windowHeight, windowHeight);
-            saveCanvas( 'public-tracks-artboard.png');
-            resizeCanvas(windowWidth - windowWidth/6, windowHeight);
-        });
-
-
+        resizeCanvas(windowHeight, windowHeight);
+        saveCanvas( 'public-tracks-artboard.png');
+        resizeCanvas(windowWidth - windowWidth/6, windowHeight);
     });
 
 }
+
+window.addEventListener('resize', function () {
+    w = window.innerWidth - window.innerWidth/6;
+    h = window.innerHeight;
+    resizeCanvas(w, h);
+
+    let recordToUpdate = [];
+    for(let i = 0; i < recordList.getEntries().length; i++) {
+        recordToUpdate[i] = client.record.getRecord(recordList.getEntries()[i]);
+        recordToUpdate[i].set('x', map(getAudioFeatures(i).speed, min(allSpeed), max(allSpeed), 120, width - 120));
+        recordToUpdate[i].whenReady(function () {
+            flowers[i].x = recordToUpdate[i].get('x');
+            console.log(recordToUpdate[i].get('x'));
+        });
+    }
+});
 
 function addNewFlower(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
     newFlower = new flowerSong(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode);
@@ -351,6 +290,31 @@ function closeSongsRoomConnection() {
     });
 }
 
+function backToHomepagePopUp() {
+    document.querySelector('.home-button').addEventListener('click', function () {
+        document.querySelector('.logout-or-home').classList.remove('hide');
+        document.querySelector('.overlay').classList.remove('hide');
+    });
+
+    document.querySelector('.close-home').addEventListener('click', function () {
+        document.querySelector('.logout-or-home').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
+    });
+
+    document.querySelector('.back-artboard').addEventListener('click', function () {
+        document.querySelector('.logout-or-home').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
+    });
+
+    document.querySelector('.keep-changes').addEventListener('click', function () {
+        document.location = 'homepage.php';
+    });
+
+    document.querySelector('.delete-changes').addEventListener('click', function () {
+        closeSongsRoomConnection();
+    });
+}
+
 function logoutPopUp() {
     document.querySelector(".leave").addEventListener('click', function () {
         document.querySelector('.logout').classList.remove('hide');
@@ -372,6 +336,14 @@ function sharePopUp() {
     document.querySelector('.share-button').addEventListener('click', function () {
         document.querySelector('.share').classList.remove('hide');
         document.querySelector('.overlay').classList.remove('hide');
+
+        resizeCanvas(windowHeight, windowHeight);
+        let canvas = document.getElementById('flowerCanvas');
+        let img = new Image(100, 100);
+        img.src = canvas.toDataURL('image/jpeg', 0.01);
+        img.classList.add('contorno');
+        document.querySelector('.preview').appendChild(img);
+        resizeCanvas(windowWidth - windowWidth/6, windowHeight);
     });
 
     document.querySelector(".close-share").addEventListener('click', function () {
@@ -592,6 +564,8 @@ class flowerSong {
         this.rBeats = rBeats;
         this.numberSections = numberSections;
         this.arraySectionLoudness = arraySectionLoudness;
+        this.arraySectionTempo = arraySectionTempo;
+        this.arraySectionDuration = arraySectionDuration;
         this.pY = pY;
         this.theta = TWO_PI/(nBeats*2);
 

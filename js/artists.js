@@ -86,6 +86,7 @@ function setup() {
     createUserDiv(user.name, user.profile_pic);
     logoutPopUp();
     sharePopUp();
+    backToHomepagePopUp();
 
     for (let i = 0; i < totalArtists; i++) {
         popularity.push(artists[i].popularity);
@@ -183,88 +184,9 @@ function setup() {
 
     document.querySelector('.download').addEventListener('click', function () {
         console.log('Canvas will be downloaded');
-        document.querySelector('.share').classList.add('hide');
-
-        previewShare.classList.add("PreviewShare");
-        cruz.classList.add("cruz");
-        previewShare.style.outline = "outline: 2px solid white";
-
-        previewShare.style.zIndex = "10000";
-        previewShare.style.outline = "2px solid white";
-        previewShare.style.background = "black";
-        previewShare.style.position = 'fixed';
-        previewShare.style.width = '26%';
-        previewShare.style.height = '60%';
-        previewShare.style.left = '30%';
-        previewShare.style.top = '50%';
-        previewShare.style.transform = "translateX(-50%)";
-        previewShare.style.transform = "translateY(-50%)";
-        previewShare.style.display = "block";
-
-
-        cruz.style.color = "white";
-        cruz.innerText = "X";
-        cruz.style.zIndex = "10000";
-        cruz.style.position = 'fixed';
-        cruz.style.width = 'fit-content';
-        cruz.style.height = 'fit-content';
-        cruz.style.left = '92%';
-        cruz.style.top = '3%';
-        cruz.style.cursor = "pointer";
-        cruz.style.display = "block";
-
-        botaoDownload.onmouseenter = function () {
-            botaoDownload.style.color = "black";
-            botaoDownload.style.background = "white";
-        };
-
-        botaoDownload.onmouseleave = function () {
-            botaoDownload.style.color = "white";
-            botaoDownload.style.background = "black";
-        };
-
-        botaoDownload.innerText = "DOWNLOAD IMAGE";
-        botaoDownload.style.zIndex = "10000";
-        botaoDownload.style.position = 'fixed';
-        botaoDownload.style.width = 'fit-content';
-        botaoDownload.style.height = '8%';
-        botaoDownload.style.left = '0%';
-        botaoDownload.style.top = '92%';
-        botaoDownload.style.cursor = "pointer";
-        botaoDownload.style.display = "block";
-        botaoDownload.style.paddingTop = "2%";
-        botaoDownload.style.outline = "2px solid white";
-        botaoDownload.style.width = "100%";
-
-
-        document.body.appendChild(previewShare);
-        document.querySelector('.PreviewShare').appendChild(cruz);
-        document.querySelector('.PreviewShare').appendChild(botaoDownload);
-        let width = 0.20 * windowWidth;
-        let height = 0.20 * windowWidth;
-
-        let canvas = document.getElementById('defaultCanvas0');
-        let img = new Image(width, height); //crio uma imagem
-        img.src = canvas.toDataURL('image/jpeg', 0.01); //torno a src da imagem o canvas convertido num link
-        img.classList.add("imagemPreview");
-        img.style.outline = "1px solid white";
-        img.style.position = "fixed";
-        img.style.left = "10%";
-        img.style.top = "11%";
-        img.style.width = "80%";
-        img.style.height = "70%";
-
-
-        document.querySelector('.PreviewShare').appendChild(img);  //faço append na div onde quero pôr o preview
-
-
-        botaoDownload.addEventListener('click', function () {
-            console.log('Canvas will be downloaded');
-            resizeCanvas(windowHeight, windowHeight);
-            saveCanvas('public-artists-artboard.png');
-            resizeCanvas(windowWidth - windowWidth / 6, windowHeight);
-        });
-
+        resizeCanvas(windowHeight, windowHeight);
+        saveCanvas( 'public-artists-artboard.png');
+        resizeCanvas(windowWidth - windowWidth/6, windowHeight);
     });
 }
 
@@ -285,6 +207,31 @@ function contains(array, nome) {
         }
     }
     return false;
+}
+
+function backToHomepagePopUp() {
+    document.querySelector('.home-button').addEventListener('click', function () {
+        document.querySelector('.logout-or-home').classList.remove('hide');
+        document.querySelector('.overlay').classList.remove('hide');
+    });
+
+    document.querySelector('.close-home').addEventListener('click', function () {
+        document.querySelector('.logout-or-home').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
+    });
+
+    document.querySelector('.back-artboard').addEventListener('click', function () {
+        document.querySelector('.logout-or-home').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
+    });
+
+    document.querySelector('.keep-changes').addEventListener('click', function () {
+        document.location = 'homepage.php';
+    });
+
+    document.querySelector('.delete-changes').addEventListener('click', function () {
+        closeArtistRoomConnection();
+    });
 }
 
 function logoutPopUp() {
@@ -310,6 +257,14 @@ function sharePopUp() {
         document.querySelector('.share').classList.toggle('hide');
         document.querySelector('.overlay').classList.toggle('hide');
 
+        cleanCreatePlaylistPreview();
+        resizeCanvas(windowHeight, windowHeight);
+        let canvas = document.getElementById('defaultCanvas0');
+        let img = new Image(100, 100);
+        img.src = canvas.toDataURL('image/jpeg', 0.01);
+        img.classList.add('contorno');
+        document.querySelector('.preview').appendChild(img);
+        resizeCanvas(windowWidth - windowWidth/6, windowHeight);
     });
 
     document.querySelector(".close-share").addEventListener('click', function () {
@@ -365,6 +320,14 @@ function createUserDiv(name, profilepic) {
     userDiv.appendChild(person);
 
     document.querySelector(".list-people").appendChild(userDiv);
+}
+
+function cleanCreatePlaylistPreview() {
+    let arrayDivs = document.querySelectorAll('.preview img');
+
+    for(let i = 0; i < arrayDivs.length; i++) {
+        arrayDivs[i].remove();
+    }
 }
 
 function closeArtistRoomConnection() {

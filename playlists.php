@@ -24,7 +24,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 </head>
 <body>
 
-<div class="home-button"><a href="homepage.php">BACK TO HOMEPAGE</a></div>
+<div class="home-button">BACK TO HOMEPAGE</div>
 
 <div class="menu">
     <div class="unit">
@@ -75,7 +75,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <a class="menu-option"
            target="popup"
            onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=http://music-visualizer.duckdns.org:8888','popup','width=600,height=400');">
-            <div><img src="imagens/facebook.png"></div>
+            <img class="contorno" src="imagens/facebook.png" width="100" alt="Facebook">
             <div>Facebook</div>
 
         </a>
@@ -83,17 +83,34 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <a target="popup"
            onclick="window.open('https://twitter.com/intent/tweet?text=Just%20Created%20a%20Draw%20of%20My%20Playlists%20from%20Spotify!%0D%0ACheck%20out%20&url=http://music-visualizer.duckdns.org:8888','popup','width=600,height=400');">
             <div class="menu-option">
-                <img src="imagens/twitter.png">
+                <img class="contorno" src="imagens/twitter.png" width="100" alt="Twitter">
                 <div>Twitter</div>
             </div>
         </a>
 
         <div class="menu-option download">
-            <div><img src="imagens/download.png"></div>
+            <div class="preview"></div>
             <div>Download</div>
         </div>
     </div>
 </div>
+
+<div class="logout-or-home hide">
+    <div class="close-home">X</div>
+    <div class="unit">
+        <h2><b>Keep Changes?</b></h2>
+    </div>
+    <div class="unit">
+        Do you want to keep the changes you made to the artboard ou do you want to leave the room?
+        Keep in mind that, if you are not coming back to the room, you should leave the room and all your songs will be removed from the artboard.
+    </div>
+    <div class="unit">
+        <div class="menu-option delete-changes">LEAVE ROOM</div>
+        <div class="menu-option keep-changes">I WILL COME BACK</div>
+        <div class="menu-option back-artboard">BACK TO ARTBOARD</div>
+    </div>
+</div>
+
 <script src="js/playlists.js"></script>
 </body>
 </html>
