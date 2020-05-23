@@ -117,7 +117,7 @@ function setup() {
             for(let i = 0; i < recordList.getEntries().length; i++){
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
-                    addNewFlower(recordsOnList[i].get('id'), recordsOnList[i].get('song'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
+                    addNewFlower(recordsOnList[i].get('id'), recordsOnList[i].get('song'), map(recordsOnList[i].get('x'), min(allSpeed), max(allSpeed), 120, width - 120), recordsOnList[i].get('y'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
                         recordsOnList[i].get('energy'), recordsOnList[i].get('speed'), recordsOnList[i].get('danceability'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'), recordsOnList[i].get('user'),
                         recordsOnList[i].get('tSections'), recordsOnList[i].get('dSections'), recordsOnList[i].get('lSections'),
                         recordsOnList[i].get('nBeats'), recordsOnList[i].get('rBeats'),recordsOnList[i].get('nSections'),
@@ -160,7 +160,7 @@ function setup() {
                         user: user.name,
                         song: songs[i].name,
                         id: songs[i].id,
-                        x: map(getAudioFeatures(i).speed, min(allSpeed), max(allSpeed), 120, width - 120),
+                        x: getAudioFeatures(i).speed,
                         y: map(allLoudness[i], min(allLoudness), max(allLoudness), height - 80, 80),
                         raio: (songs[i].duration / 3),
                         color: map(allPositivity[i], min(allPositivity), max(allPositivity), 0, 255),
@@ -228,9 +228,8 @@ window.addEventListener('resize', function () {
     let recordToUpdate = [];
     for(let i = 0; i < recordList.getEntries().length; i++) {
         recordToUpdate[i] = client.record.getRecord(recordList.getEntries()[i]);
-        recordToUpdate[i].set('x', map(getAudioFeatures(i).speed, min(allSpeed), max(allSpeed), 120, width - 120));
         recordToUpdate[i].whenReady(function () {
-            flowers[i].x = recordToUpdate[i].get('x');
+            flowers[i].x = map(recordToUpdate[i].get('x'), min(allSpeed), max(allSpeed), 120, width - 120);
             console.log(recordToUpdate[i].get('x'));
         });
     }
@@ -337,6 +336,7 @@ function sharePopUp() {
         document.querySelector('.share').classList.remove('hide');
         document.querySelector('.overlay').classList.remove('hide');
 
+        cleanCreatePlaylistPreview();
         resizeCanvas(windowHeight, windowHeight);
         let canvas = document.getElementById('flowerCanvas');
         let img = new Image(100, 100);
