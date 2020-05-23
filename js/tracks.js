@@ -477,6 +477,7 @@ function createSongDiv() {
 
         remove.innerText = "x";
         remove.classList.add("remove");
+        remove.classList.add("removeSongs");
         remove.classList.add("hide");
         remove.setAttribute("style", "cursor: pointer; margin-left: 5px;");
 

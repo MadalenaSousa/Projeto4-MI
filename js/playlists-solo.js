@@ -166,6 +166,7 @@ function createPlaylistDiv() {
 
         remove.innerText = "x";
         remove.classList.add("remove");
+        remove.classList.add("removePlaylists");
         remove.setAttribute("style", "cursor: pointer; margin-left: 5px;");
 
         playlist.classList.add('unit');
