@@ -29,7 +29,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 <div class="menu">
     <div class="unit">
         <div class="titulo">MENU</div>
-        <div class="leave">Leave Room</div>
+        <div class="leave leavePlaylists">Leave Room</div>
     </div>
     <div>
         People in the Room
@@ -49,7 +49,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 </div>
 
 <div class="logout hide">
-    <div class="close-logout">X</div>
+    <div class="close-logout close-logoutP">X</div>
     <div class="unit">
         <h2><b>Are you sure you want to leave?</b></h2>
         All the songs you added to the artboard will be deleted.
@@ -65,7 +65,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 </div>
 
 <div class="share hide">
-    <div class="close-share">X</div>
+    <div class="close-share close-shareP">X</div>
     <div class="unit">
         <h2><b>Share your art!</b></h2>
         You can share the artboard you created in your social networks or download it and use it for anything you want!

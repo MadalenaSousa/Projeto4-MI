@@ -168,8 +168,18 @@ a {
     bottom: 2%;
 }
 
-.leave:hover {
+.leaveArtists:hover {
+    color: magenta;
+    cursor: pointer;
+}
+
+.leaveSongs:hover {
     color: yellow;
+    cursor: pointer;
+}
+
+.leavePlaylists:hover {
+    color: deepskyblue;
     cursor: pointer;
 }
 
@@ -270,8 +280,18 @@ h2 {
     z-index: 10;
 }
 
-.close-share:hover, .close-create:hover, .close-logout:hover {
+.close-shareA:hover, .close-createA:hover, .close-logoutA:hover {
+    color: magenta;
+    cursor: pointer;
+}
+
+.close-shareS:hover, .close-createS:hover, .close-logoutS:hover {
     color: yellow;
+    cursor: pointer;
+}
+
+.close-shareP:hover, .close-createP:hover, .close-logoutP:hover {
+    color: deepskyblue;
     cursor: pointer;
 }
 
@@ -352,8 +372,17 @@ h2 {
     right: 0;
 }
 
-.remove:hover {
+
+.removeSongs:hover {
     color: yellow;
+}
+
+.removeArtists:hover {
+    color: magenta;
+}
+
+.removePlaylists:hover {
+    color: deepskyblue;
 }
 
 .playlist:hover {
