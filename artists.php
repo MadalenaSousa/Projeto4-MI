@@ -24,7 +24,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 </head>
 <body>
 
-<div class="home-button"><a href="homepage.php">BACK TO HOMEPAGE</a></div>
+<div class="home-button">BACK TO HOMEPAGE</div>
 
 <div class="menu">
     <div class="unit">
@@ -95,6 +95,22 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
             <img src="imagens/download.png">
             <div>Download</div>
         </div>
+    </div>
+</div>
+
+<div class="logout-or-home hide">
+    <div class="close-home">X</div>
+    <div class="unit">
+        <h2><b>Keep Changes?</b></h2>
+    </div>
+    <div class="unit">
+        Do you want to keep the changes you made to the artboard ou do you want to leave the room?
+        Keep in mind that, if you are not coming back to the room, you should leave the room and all your songs will be removed from the artboard.
+    </div>
+    <div class="unit">
+        <div class="menu-option delete-changes">LEAVE ROOM</div>
+        <div class="menu-option keep-changes">I WILL COME BACK</div>
+        <div class="menu-option back-artboard">BACK TO ARTBOARD</div>
     </div>
 </div>
 

@@ -146,8 +146,9 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         Keep in mind that, if you are not coming back to the room, you should leave the room and all your songs will be removed from the artboard.
     </div>
     <div class="unit">
-        <div>LEAVE ROOM</div>
-        <div>I WILL COME BACK</div>
+        <div class="menu-option delete-changes">LEAVE ROOM</div>
+        <div class="menu-option keep-changes">I WILL COME BACK</div>
+        <div class="menu-option back-artboard">BACK TO ARTBOARD</div>
     </div>
 </div>
 

@@ -236,6 +236,14 @@ h2 {
     z-index: 5;
 }
 
+.logout-or-home {
+    padding: 1%;
+}
+
+.logout-or-home .menu-option {
+    display: inline-block;
+}
+
 .share * , .create-playlist * {
     z-index: 5;
 }
@@ -255,6 +263,7 @@ h2 {
     right: 3%;
     top: 5%;
     cursor: pointer;
+    z-index: 10;
 }
 
 .close-share:hover, .close-create:hover, .close-logout:hover {

@@ -86,6 +86,7 @@ function setup() {
     createUserDiv(user.name, user.profile_pic);
     logoutPopUp();
     sharePopUp();
+    backToHomepagePopUp();
 
     for (let i = 0; i < totalArtists; i++) {
         popularity.push(artists[i].popularity);
@@ -285,6 +286,31 @@ function contains(array, nome) {
         }
     }
     return false;
+}
+
+function backToHomepagePopUp() {
+    document.querySelector('.home-button').addEventListener('click', function () {
+        document.querySelector('.logout-or-home').classList.remove('hide');
+        document.querySelector('.overlay').classList.remove('hide');
+    });
+
+    document.querySelector('.close-home').addEventListener('click', function () {
+        document.querySelector('.logout-or-home').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
+    });
+
+    document.querySelector('.back-artboard').addEventListener('click', function () {
+        document.querySelector('.logout-or-home').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
+    });
+
+    document.querySelector('.keep-changes').addEventListener('click', function () {
+        document.location = 'homepage.php';
+    });
+
+    document.querySelector('.delete-changes').addEventListener('click', function () {
+        closeArtistRoomConnection();
+    });
 }
 
 function logoutPopUp() {

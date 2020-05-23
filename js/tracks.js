@@ -26,6 +26,8 @@ let clientsRecords = [];
 let recordList;
 
 let flowerCanvas;
+let w = window.innerWidth - window.innerWidth/6;
+let h = window.innerHeight;
 
 var previewShare = document.createElement("div");
 var cruz = document.createElement("div");
@@ -38,7 +40,7 @@ function preload() {
 }
 
 function setup() {
-    flowerCanvas = createCanvas(windowWidth - windowWidth/6, windowHeight);
+    flowerCanvas = createCanvas(w, h);
     flowerCanvas.id('flowerCanvas');
 
     client.login({username: user.name}, (success, data) => {
@@ -298,6 +300,21 @@ function setup() {
 
 }
 
+window.addEventListener('resize', function () {
+    w = window.innerWidth - window.innerWidth/6;
+    h = window.innerHeight;
+    resizeCanvas(w, h);
+
+    let recordToUpdate = [];
+    for(let i = 0; i < recordList.getEntries().length; i++) {
+        recordToUpdate[i] = client.record.getRecord(recordList.getEntries()[i]);
+        recordToUpdate[i].whenReady(function () {
+            recordToUpdate[i].set('x', map(getAudioFeatures(i).speed, min(allSpeed), max(allSpeed), 120, width - 120));
+        });
+    }
+    console.log(recordToUpdate);
+});
+
 function addNewFlower(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
     newFlower = new flowerSong(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode);
     flowers.push(newFlower);
@@ -361,8 +378,19 @@ function backToHomepagePopUp() {
     document.querySelector('.close-home').addEventListener('click', function () {
         document.querySelector('.logout-or-home').classList.add('hide');
         document.querySelector('.overlay').classList.add('hide');
+    });
 
-        console.log('oioioi');
+    document.querySelector('.back-artboard').addEventListener('click', function () {
+        document.querySelector('.logout-or-home').classList.add('hide');
+        document.querySelector('.overlay').classList.add('hide');
+    });
+
+    document.querySelector('.keep-changes').addEventListener('click', function () {
+        document.location = 'homepage.php';
+    });
+
+    document.querySelector('.delete-changes').addEventListener('click', function () {
+        closeSongsRoomConnection();
     });
 }
 
