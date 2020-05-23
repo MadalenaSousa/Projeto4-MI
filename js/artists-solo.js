@@ -62,7 +62,7 @@ function setup() {
                 map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
                 map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
                 id[i]);
-             remove[i].classList.remove('hide');
+            remove[i].classList.remove('hide');
         });
 
         remove[i].addEventListener("click", function () {
@@ -314,16 +314,14 @@ class waveArtist {
     }
 
     aparecer() {
-
         if (dist(mouseX, mouseY, this.x, this.y - (this.largura / 3)) <= this.largura / 6) {
             this.balao();
             this.verificar = true;
             this.y = this.y + 0.2 * sin(alfa * this.shake);
             this.x = this.x + 0.2 * cos(alfa * this.shake);
-        } else if (this.valorY >= ((2 * (this.largura / 2)) / 3) + 180) {
-            if (this.verificar === true && (mouseX > this.x && mouseX < this.x + 130 && mouseY > this.y - ((2 * (this.largura / 2)) / 3) - 180 && mouseY < this.y - ((2 * (this.largura / 2)) / 3) - 20)) {
-                this.balao();
-            }
+        } else if (this.valorY >= ((2 * (this.largura / 2)) / 3) + 180 && this.verificar === true && (mouseX > this.x && mouseX < this.x + 130 && mouseY > this.y - ((2 * (this.largura / 2)) / 3) - 180 && mouseY < this.y - ((2 * (this.largura / 2)) / 3) - 20)) {
+            this.balao();
+
         } else if (this.verificar === true && (mouseX > this.x && mouseX < this.x + 130 && mouseY > this.y - ((2 * this.largura / 2) / 3) && mouseY < this.y - ((2 * this.largura / 2) / 3) + 180)) {
             this.balao();
         } else {
@@ -405,16 +403,28 @@ class waveArtist {
                 text("Loudness: " + map(this.valorY, 250, windowHeight - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
                 text("Speed: " + map(this.valorX, 125, windowWidth - (windowWidth / 26) - 375, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
 
-                fill(0);
-                stroke(255, 255 - this.color, 255);
-                rect(this.x + 10, (this.y - ((2 * (this.largura / 2)) / 3)) - 50, 110, 20);
-                noStroke();
-                fill(255, 255 - this.color, 255);
-                textSize(10);
-                text("Visit Artist's Page", this.x + 30, (this.y - ((2 * (this.largura / 2)) / 3)) - 37);
 
-                if (mouseIsPressed && mouseX > this.x + 10 && mouseX < this.x + 10 + 110 && mouseY > (this.y - ((2 * (this.largura / 2)) / 3)) - 50 && mouseY < (this.y - ((2 * (this.largura / 2)) / 3)) - 50 + 20) {
-                    window.open("https://open.spotify.com/artist/" + this.id, "_blank");
+                if (mouseX > this.x + 10 && mouseX < this.x + 10 + 110 && mouseY > (this.y - ((2 * (this.largura / 2)) / 3)) - 50 && mouseY < (this.y - ((2 * (this.largura / 2)) / 3)) - 50 + 20) {
+                    if (mouseIsPressed) {
+                        window.open("https://open.spotify.com/artist/" + this.id, "_blank");
+                    }
+                    fill(255, 255 - this.color, 255);
+                    stroke(0);
+                    rect(this.x + 10, (this.y - ((2 * (this.largura / 2)) / 3)) - 50, 110, 20);
+                    noStroke();
+                    fill(0);
+                    textSize(10);
+                    text("Visit Artist's Page", this.x + 30, (this.y - ((2 * (this.largura / 2)) / 3)) - 37);
+
+                }
+                else{
+                    fill(0);
+                    stroke(255, 255 - this.color, 255);
+                    rect(this.x + 10, (this.y - ((2 * (this.largura / 2)) / 3)) - 50, 110, 20);
+                    noStroke();
+                    fill(255, 255 - this.color, 255);
+                    textSize(10);
+                    text("Visit Artist's Page", this.x + 30, (this.y - ((2 * (this.largura / 2)) / 3)) - 37);
                 }
 
             } else {
@@ -440,16 +450,30 @@ class waveArtist {
                 text("Loudness: " + map(this.valorY, 250, windowHeight - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 90);
                 text("Speed: " + map(this.valorX, 125, windowWidth - (windowWidth / 26) - 375, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 70);
 
-                fill(0);
-                stroke(255, 255 - this.color, 255);
-                rect(this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 150, 110, 20);
-                noStroke();
-                fill(255, 255 - this.color, 255);
-                textSize(10);
-                text("Visit Artist's Page", this.x + 30, this.y - ((2 * this.largura / 2) / 3) + 163);
 
-                if (mouseIsPressed && mouseX > this.x + 10 && mouseX < this.x + 10 + 110 && mouseY > (this.y - ((2 * this.largura / 2) / 3) + 150) && mouseY < (this.y - ((2 * this.largura / 2) / 3) + 150 + 20)) {
-                    window.open("https://open.spotify.com/artist/" + this.id, "_blank");
+                if (mouseX > this.x + 10 && mouseX < this.x + 10 + 110 && mouseY > (this.y - ((2 * this.largura / 2) / 3) + 150) && mouseY < (this.y - ((2 * this.largura / 2) / 3) + 150 + 20)) {
+
+                    if (mouseIsPressed) {
+                        window.open("https://open.spotify.com/artist/" + this.id, "_blank");
+                    }
+
+                    fill(255, 255 - this.color, 255);
+                    stroke(0);
+                    rect(this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 150, 110, 20);
+                    noStroke();
+                    fill(0);
+                    textSize(10);
+                    text("Visit Artist's Page", this.x + 30, this.y - ((2 * this.largura / 2) / 3) + 163);
+
+
+                } else {
+                    fill(0);
+                    stroke(255, 255 - this.color, 255);
+                    rect(this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 150, 110, 20);
+                    noStroke();
+                    fill(255, 255 - this.color, 255);
+                    textSize(10);
+                    text("Visit Artist's Page", this.x + 30, this.y - ((2 * this.largura / 2) / 3) + 163);
                 }
 
 
