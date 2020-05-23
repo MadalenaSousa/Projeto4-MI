@@ -337,6 +337,7 @@ function createArtistDiv() {
 
         remove.innerText = "x";
         remove.classList.add("remove");
+        remove.classList.add("removeArtists");
         remove.setAttribute("style", "cursor: pointer; margin-left: 5px;");
 
         song.classList.add('unit');

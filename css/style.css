@@ -338,8 +338,17 @@ h2 {
     right: 0;
 }
 
-.remove:hover {
+
+.removeSongs:hover {
     color: yellow;
+}
+
+.removeArtists:hover {
+    color: magenta;
+}
+
+.removePlaylists:hover {
+    color: deepskyblue;
 }
 
 .playlist:hover {
