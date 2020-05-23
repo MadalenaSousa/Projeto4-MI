@@ -244,6 +244,10 @@ h2 {
     display: inline-block;
 }
 
+.contorno {
+    border: 2px solid white;
+}
+
 .share * , .create-playlist * {
     z-index: 5;
 }
@@ -400,7 +404,6 @@ h2 {
 }
 
 .preview {
-    border: 2px solid white;
     overflow: hidden;
     width: fit-content;
 }

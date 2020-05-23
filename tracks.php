@@ -78,7 +78,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <a target="popup"
            onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=http://music-visualizer.duckdns.org:8888/','popup','width=600,height=400');">
             <div class="menu-option">
-                <img src="imagens/facebook.png">
+                <img class="contorno" src="imagens/facebook.png" width="100" alt="Facebook">
                 <div>Facebook</div>
             </div>
         </a>
@@ -91,13 +91,14 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <a target="popup"
            onclick="window.open('https://twitter.com/intent/tweet?text=Just%20Created%20a%20Garden%20of%20My%20Songs%20from%20Spotify!%0D%0ACheck%20out%20&url=http://music-visualizer.duckdns.org:8888','popup','width=600,height=400');">
             <div class="menu-option">
-                <img src="imagens/twitter.png">
+                <img class="contorno" src="imagens/twitter.png" width="100" alt="Twitter">
                 <div>Twitter</div>
             </div>
         </a>
 
         <div class="menu-option download">
-            <img src="imagens/download.png">
+            <!--img src="imagens/download.png"-->
+            <div class="preview"></div>
             <div>Download</div>
         </div>
     </div>
