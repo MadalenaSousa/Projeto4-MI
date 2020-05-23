@@ -168,8 +168,18 @@ a {
     bottom: 2%;
 }
 
-.leave:hover {
+.leaveArtists:hover {
+    color: magenta;
+    cursor: pointer;
+}
+
+.leaveSongs:hover {
     color: yellow;
+    cursor: pointer;
+}
+
+.leavePlaylists:hover {
+    color: deepskyblue;
     cursor: pointer;
 }
 
@@ -257,8 +267,18 @@ h2 {
     cursor: pointer;
 }
 
-.close-share:hover, .close-create:hover, .close-logout:hover {
+.close-shareA:hover, .close-createA:hover, .close-logoutA:hover {
+    color: magenta;
+    cursor: pointer;
+}
+
+.close-shareS:hover, .close-createS:hover, .close-logoutS:hover {
     color: yellow;
+    cursor: pointer;
+}
+
+.close-shareP:hover, .close-createP:hover, .close-logoutP:hover {
+    color: deepskyblue;
     cursor: pointer;
 }
 
