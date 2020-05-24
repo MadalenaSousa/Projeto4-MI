@@ -462,10 +462,11 @@ h2 {
     background: black;
     outline: 2px solid white;
     position: absolute;
-    top: 48%;
-    left: 44%;
+    top: 50%;
+    left: 50%;
     transform: translateY(8%);
     display: none;
+    z-index: 5;
 }
 
 .imagem-info{

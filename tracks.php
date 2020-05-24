@@ -7,7 +7,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Music Taste Visualiser</title>
+    <title>Music Taste Visualizer</title>
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
@@ -24,6 +24,9 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
 </head>
 <body>
+
+<div class="overlay hide">
+</div>
 
 <div class="home-button">BACK TO HOMEPAGE</div>
 
@@ -42,7 +45,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <div class="leave leaveSongs">Leave Room</div>
     </div>
     <div>
-        People in the Room
+        People in the Website
         <div  class="list-people unit">
         </div>
         <div>
@@ -55,9 +58,6 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
             <div class="menu-option unit share-button">SAVE ART AND SHARE</div>
         </div>
     </div>
-</div>
-
-<div class="overlay hide">
 </div>
 
 <div class="logout hide">
