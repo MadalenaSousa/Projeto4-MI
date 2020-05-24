@@ -45,7 +45,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <div class="leave leaveSongs">Leave Room</div>
     </div>
     <div>
-        People in the Website
+        People in Music Taste Visualizer
         <div  class="list-people unit">
         </div>
         <div>
@@ -131,16 +131,16 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
                 <div>
                     Do you want to use this photo as playlist cover image? <br>
                 </div>
-                <div class="preview">
+                <div class="preview-create">
                 </div>
                 <div>
-                    <label>Yes<input type="radio" name="cover" value="use"></label>
-                    <label>No<input type="radio" name="cover" value="dontuse"></label>
+                    <label>Yes<input type="radio" name="cover" value="use" required></label>
+                    <label>No<input type="radio" name="cover" value="dontuse" required></label>
                 </div>
             </div>
         </div>
         <div class="unit create-buttons">
-            <input type="submit" value="CRE\ATE">
+            <input type="submit" value="CREATE">
             <input class="close-create" type="button" name="cancel" onClick="window.location='tracks.php'" value="CANCEL">
         </div>
     </form>
