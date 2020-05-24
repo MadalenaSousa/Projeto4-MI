@@ -55,7 +55,9 @@ function setup() {
             console.log('Clients present on login: ' + clients);
             clientsRecords[i] = client.record.getRecord(clients[i]);
             clientsRecords[i].subscribe(function () {
-                createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
+                if((clientsRecords[i].get('name') !== undefined)) {
+                    createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'));
+                }
             });
         }
     });
@@ -69,7 +71,9 @@ function setup() {
                     console.log('Updated clients list: ' + clients);
                     clientsRecords[i] = client.record.getRecord(clients[i]);
                     clientsRecords[i].subscribe(function () {
-                        createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
+                        if((clientsRecords[i].get('name') !== undefined)) {
+                            createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'));
+                        }
                     });
                 }
             });

@@ -67,13 +67,9 @@ function setup() {
         for (let i = 0; i < clients.length; i++) {
             console.log('Clients present on login: ' + clients);
             clientsRecords[i] = client.record.getRecord(clients[i]);
-            let userNames = [];
-            for(let z = 0; z < document.querySelectorAll('.user .username').length; z++) {
-                userNames.push(document.querySelectorAll('.user .username').innerText);
-            }
             clientsRecords[i].subscribe(function () {
-                if(!(clientsRecords[i].get('name') === undefined) || !(contains(userNames, clientsRecords[i].get('name')))) {
-                    createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
+                if((clientsRecords[i].get('name') !== undefined)) {
+                    createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'));
                 }
             });
         }
@@ -87,13 +83,9 @@ function setup() {
                 for (let i = 0; i < clients.length; i++) {
                     console.log('Updated clients list: ' + clients);
                     clientsRecords[i] = client.record.getRecord(clients[i]);
-                    let userNames = [];
-                    for(let z = 0; z < document.querySelectorAll('.user .username').length; z++) {
-                        userNames.push(document.querySelectorAll('.user .username').innerText);
-                    }
                     clientsRecords[i].subscribe(function () {
-                        if(!(clientsRecords[i].get('name') === undefined) || !(contains(userNames, clientsRecords[i].get('name')))) {
-                            createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
+                        if((clientsRecords[i].get('name') !== undefined)) {
+                            createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'));
                         }
                     });
                 }
