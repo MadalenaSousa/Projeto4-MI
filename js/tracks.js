@@ -387,7 +387,8 @@ function createPlaylistPopUp() {
         let canvas = document.getElementById('flowerCanvas');
         let img = new Image(200, 200);
         img.src = canvas.toDataURL('image/jpeg', 0.01);
-        document.querySelector('.preview').appendChild(img);
+        img.style.border = '2px solid white';
+        document.querySelector('.preview-create').appendChild(img);
 
         let playlistImg = document.createElement('input');
         playlistImg.setAttribute('type', 'hidden');

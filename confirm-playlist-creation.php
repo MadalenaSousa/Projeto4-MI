@@ -19,9 +19,9 @@
         Nice work! You just created a brand new playlist you can jam to!
         Check out your spotify to see it, the app or online, feel free to costumize it to your preference!
     </div>
-    <a href="homepage.php">
+    <a href="tracks.php">
         <div class="option">
-        Back to Homepage
+            Back to Songs Room
         </div>
     </a>
 </div>

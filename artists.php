@@ -41,7 +41,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <div class="leave leaveArtists">Leave Room</div>
     </div>
     <div>
-        People in the Room
+        People in Music Taste Visualizer
         <div class="list-people unit">
         </div>
         <div>
