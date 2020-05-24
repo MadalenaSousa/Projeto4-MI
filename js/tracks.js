@@ -26,7 +26,7 @@ let clientsRecords = [];
 let recordList;
 
 let flowerCanvas;
-let w = window.innerWidth - window.innerWidth/6;
+let w = window.innerWidth - window.innerWidth / 6;
 let h = window.innerHeight;
 
 function preload() {
@@ -40,11 +40,11 @@ function setup() {
     flowerCanvas.id('flowerCanvas');
 
     client.login({username: user.name}, (success, data) => {
-        if(success) {
+        if (success) {
             console.log("User logged in successfully");
             client.record.has(user.name, function (error, hasRecord) {
                 console.log(error);
-                if(hasRecord === false) {
+                if (hasRecord === false) {
                     console.log("Record of this user doesnt exist, it will be created");
                     personRecord = client.record.getRecord(user.name);
                     personRecord.set({
@@ -64,7 +64,7 @@ function setup() {
 
     client.presence.getAll((error, clients) => {
         clearArray(clientsRecords);
-        for(let i = 0; i < clients.length; i++){
+        for (let i = 0; i < clients.length; i++) {
             console.log('Clients present on login: ' + clients);
             clientsRecords[i] = client.record.getRecord(clients[i]);
             let userNames = [];
@@ -80,11 +80,11 @@ function setup() {
     });
 
     client.presence.subscribe((username, isLoggedIn) => {
-        if(isLoggedIn){
+        if (isLoggedIn) {
             console.log('A new client logged in');
             clearArray(clientsRecords);
             client.presence.getAll((error, clients) => {
-                for(let i = 0; i < clients.length; i++){
+                for (let i = 0; i < clients.length; i++) {
                     console.log('Updated clients list: ' + clients);
                     clientsRecords[i] = client.record.getRecord(clients[i]);
                     let userNames = [];
@@ -116,13 +116,13 @@ function setup() {
 
     recordList.subscribe(function () {
         console.log("LISTA DE RECORDS ATUAL: " + recordList.getEntries());
-        if(recordList.isEmpty()) {
+        if (recordList.isEmpty()) {
             clearArray(flowers);
             console.log("Não há músicas na lista");
         } else {
             clearArray(flowers);
             let recordsOnList = [];
-            for(let i = 0; i < recordList.getEntries().length; i++){
+            for (let i = 0; i < recordList.getEntries().length; i++) {
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
                     let speedX = 0;
@@ -136,14 +136,14 @@ function setup() {
                     addNewFlower(recordsOnList[i].get('id'), recordsOnList[i].get('song'), speedX, recordsOnList[i].get('y'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
                         recordsOnList[i].get('energy'), recordsOnList[i].get('speed'), recordsOnList[i].get('danceability'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'), recordsOnList[i].get('user'),
                         recordsOnList[i].get('tSections'), recordsOnList[i].get('dSections'), recordsOnList[i].get('lSections'),
-                        recordsOnList[i].get('nBeats'), recordsOnList[i].get('rBeats'),recordsOnList[i].get('nSections'),
+                        recordsOnList[i].get('nBeats'), recordsOnList[i].get('rBeats'), recordsOnList[i].get('nSections'),
                         recordsOnList[i].get('mode'), recordsOnList[i].get('type'));
                 });
             }
         }
     });
 
-    for(let i = 0; i < totalSongs; i++) {
+    for (let i = 0; i < totalSongs; i++) {
         allPositivity[i] = getAudioFeatures(i).positivity;
         allLoudness[i] = getAudioFeatures(i).loudness;
         allSpeed[i] = getAudioFeatures(i).speed;
@@ -160,7 +160,7 @@ function setup() {
 
     for (let i = 0; i < totalSongs; i++) {
         recordList.subscribe(function () {
-            if(contains(recordList.getEntries(), songs[i].name)){
+            if (contains(recordList.getEntries(), songs[i].name)) {
                 remove[i].classList.remove('hide');
             } else {
                 remove[i].classList.add('hide');
@@ -181,7 +181,7 @@ function setup() {
                         raio: (songs[i].duration / 3),
                         color: map(allPositivity[i], min(allPositivity), max(allPositivity), 0, 255),
                         energy: getAudioFeatures(i).energy * 5,
-                        speed: getAudioFeatures(i).speed/5,
+                        speed: getAudioFeatures(i).speed / 5,
                         danceability: allDanceability[i],
                         artist: songs[i].artists,
                         url: songs[i].preview_url,
@@ -208,7 +208,7 @@ function setup() {
 
         });
 
-       remove[i].addEventListener("click", function () {
+        remove[i].addEventListener("click", function () {
             client.record.has(songs[i].name, function (error, hasRecord) {
                 if (hasRecord) {
                     console.log('Has record with name: ' + songs[i].name + ', can delete it');
@@ -230,10 +230,22 @@ function setup() {
         console.log('Canvas will be downloaded');
 
         resizeCanvas(windowHeight, windowHeight);
-        saveCanvas( 'public-tracks-artboard.png');
-        resizeCanvas(windowWidth - windowWidth/6, windowHeight);
+        saveCanvas('public-tracks-artboard.png');
+        resizeCanvas(windowWidth - windowWidth / 6, windowHeight);
     });
 
+}
+
+document.querySelector('.info').addEventListener('click', abrirPopupInfo);
+document.querySelector('.fechar-info').addEventListener('click', fecharPopupInfo);
+
+
+function abrirPopupInfo() {
+    document.querySelector('.popup-info').style.display = "block";
+}
+
+function fecharPopupInfo() {
+    document.querySelector('.popup-info').style.display = "none";
 }
 
 function addNewFlower(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
@@ -259,7 +271,7 @@ function closeSongsRoomConnection() {
     let allRecords = [];
     let recordsToRemove = [];
 
-    for(let i = 0; i < recordList.getEntries().length; i++) {
+    for (let i = 0; i < recordList.getEntries().length; i++) {
         allRecords[i] = client.record.getRecord(recordList.getEntries()[i]);
         allRecords[i].whenReady(function () {
             console.log('Record to delete: ' + allRecords[i].get('song') + ' Owner of the record: ' + allRecords[i].get('user'));
@@ -269,10 +281,10 @@ function closeSongsRoomConnection() {
         });
     }
 
-    if(recordsToRemove.length === 0) {
+    if (recordsToRemove.length === 0) {
         client.close();
     } else {
-        for(let i = 0; i < recordsToRemove.length; i++) {
+        for (let i = 0; i < recordsToRemove.length; i++) {
             recordList.removeEntry(recordsToRemove[i].get('song'));
             client.record.getRecord(recordsToRemove[i].get('song')).delete();
         }
@@ -283,7 +295,7 @@ function closeSongsRoomConnection() {
     }
 
     client.on('connectionStateChanged', connectionState => {
-        if(connectionState === 'CLOSED') {
+        if (connectionState === 'CLOSED') {
             console.log('Connection state changed to: ' + connectionState + ', you will be redirected to homepage');
             document.location = './homepage.php';
         }
@@ -344,7 +356,7 @@ function sharePopUp() {
         img.src = canvas.toDataURL('image/jpeg', 0.01);
         img.classList.add('contorno');
         document.querySelector('.preview').appendChild(img);
-        resizeCanvas(windowWidth - windowWidth/6, windowHeight);
+        resizeCanvas(windowWidth - windowWidth / 6, windowHeight);
     });
 
     document.querySelector(".close-share").addEventListener('click', function () {
@@ -365,7 +377,7 @@ function createPlaylistPopUp() {
 
         document.querySelector('.create-playlist form').appendChild(totalSongs);
 
-        for(let i = 0; i < recordList.getEntries().length; i++) {
+        for (let i = 0; i < recordList.getEntries().length; i++) {
             createPlaylistSongList(i);
         }
 
@@ -382,7 +394,7 @@ function createPlaylistPopUp() {
 
         document.querySelector('.create-playlist form').appendChild(playlistImg);
 
-        resizeCanvas(windowWidth - windowWidth/6, windowHeight);
+        resizeCanvas(windowWidth - windowWidth / 6, windowHeight);
 
         document.querySelector('.create-playlist').classList.remove('hide');
         document.querySelector('.overlay').classList.remove('hide');
@@ -397,7 +409,7 @@ function createPlaylistPopUp() {
 function cleanCreatePlaylistList() {
     let arrayDivs = document.querySelectorAll('.added-songs-list div');
 
-    for(let i = 0; i < arrayDivs.length; i++) {
+    for (let i = 0; i < arrayDivs.length; i++) {
         arrayDivs[i].remove();
     }
 }
@@ -405,7 +417,7 @@ function cleanCreatePlaylistList() {
 function cleanCreatePlaylistPreview() {
     let arrayDivs = document.querySelectorAll('.preview img');
 
-    for(let i = 0; i < arrayDivs.length; i++) {
+    for (let i = 0; i < arrayDivs.length; i++) {
         arrayDivs[i].remove();
     }
 }
@@ -456,7 +468,7 @@ function createUserDiv(name, profilepic) {
 }
 
 function createSongDiv() {
-    for(let i = 0; i < totalSongs; i++) {
+    for (let i = 0; i < totalSongs; i++) {
         let song = document.createElement("div");
 
         let nomeDiv = document.createElement("div");
@@ -468,7 +480,7 @@ function createSongDiv() {
         nomeDiv.setAttribute("style", "margin: 0px");
         nomeDiv.classList.add('song');
 
-        nome.innerHTML ='<b>' + songs[i].name + '</b>';
+        nome.innerHTML = '<b>' + songs[i].name + '</b>';
 
         artista.setAttribute("style", "font-size: 10pt");
         artista.innerHTML = songs[i].artists;
@@ -498,8 +510,8 @@ function draw() {
             flowers[i].display();
         }
 
-        for(let i = 0; i < flowers.length; i++) {
-            if(dist(mouseX, mouseY, flowers[i].x, flowers[i].y) <= 120) {
+        for (let i = 0; i < flowers.length; i++) {
+            if (dist(mouseX, mouseY, flowers[i].x, flowers[i].y) <= 120) {
                 flowers[i].balao();
             }
         }
@@ -507,7 +519,7 @@ function draw() {
 }
 
 function mousePressed() {
-    for(let i = 0; i < flowers.length; i++) {
+    for (let i = 0; i < flowers.length; i++) {
         flowers[i].playSong();
     }
 }
@@ -530,13 +542,13 @@ class flowerSong {
     curves;
     theta;
 
-    constructor(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections,  mode) {
+    constructor(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
         this.id = id;
         this.name = name;
         this.x = x;
         this.y = y;
         this.raio = raio;
-        this.color  = color;
+        this.color = color;
         this.shakeX = energy;
         this.shakeY = energy;
         this.speed = speed;
@@ -551,7 +563,7 @@ class flowerSong {
         this.arraySectionTempo = arraySectionTempo;
         this.arraySectionDuration = arraySectionDuration;
         this.pY = pY;
-        this.theta = TWO_PI/(nBeats*2);
+        this.theta = TWO_PI / (nBeats * 2);
 
         this.curves = [];
         this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode);
@@ -562,7 +574,7 @@ class flowerSong {
 
     display() {
         this.c = color(255, 255, 255 - this.color);
-        if(dist(mouseX, mouseY, this.x, this.y) <= 120){
+        if (dist(mouseX, mouseY, this.x, this.y) <= 120) {
             this.randomX = random(-this.shakeX, this.shakeX);
             this.randomY = random(-this.shakeY, this.shakeY);
         } else {
@@ -570,7 +582,7 @@ class flowerSong {
             this.randomY = 0;
         }
 
-        if(this.musicOn){
+        if (this.musicOn) {
             this.sound.play();
         } else {
             this.sound.pause();
@@ -579,7 +591,7 @@ class flowerSong {
         stroke(this.c);
         this.flor(this.x, this.y, this.nBeats, this.rBeats, this.mode, this.theta);
 
-        if(this.mode === 1) {
+        if (this.mode === 1) {
             noStroke();
             fill(this.c);
             textSize(14);
@@ -602,7 +614,7 @@ class flowerSong {
     }
 
     playSong() {
-        if(dist(mouseX, mouseY, this.x, this.y) <= this.raio ){
+        if (dist(mouseX, mouseY, this.x, this.y) <= this.raio) {
             this.musicOn = !this.musicOn;
         }
     }
@@ -612,7 +624,7 @@ class flowerSong {
         fill(255, 30);
 
         //LINHA + ORIENTAÇÃO DAS FLORES
-        if(mode === 1) {
+        if (mode === 1) {
             if (this.pY < height) {
                 this.pY = this.pY + this.speed;
             } else {
@@ -634,9 +646,9 @@ class flowerSong {
         }
 
         //BEATS
-        for(let i = 0; i < nBeats*2; i++) {
-            let xB = x  + rBeats/1.5 * cos(i*theta);
-            let yB = y  + rBeats/1.5 * sin(i*theta);
+        for (let i = 0; i < nBeats * 2; i++) {
+            let xB = x + rBeats / 1.5 * cos(i * theta);
+            let yB = y + rBeats / 1.5 * sin(i * theta);
             line(x, y, xB + this.randomX, yB + this.randomY);
             fill(255);
             ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
@@ -647,7 +659,7 @@ class flowerSong {
         fill(0);
         strokeWeight(2);
         stroke(this.c);
-        if(this.y - 210 > 0) {
+        if (this.y - 210 > 0) {
             beginShape();
             vertex(this.x + 20, this.y - 210);
             vertex(this.x + 150, this.y - 210);
@@ -668,9 +680,9 @@ class flowerSong {
             text("Danceability: " + map(this.danceability, min(allDanceability), max(allDanceability), 0, 100).toFixed(1) + "%", this.x + 30, this.y - 150);
             text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 130);
             text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 110);
-            text("Speed: " + map(this.speed, min(allSpeed)/5, max(allSpeed)/5, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 90); //MAL MAPEADO
+            text("Speed: " + map(this.speed, min(allSpeed) / 5, max(allSpeed) / 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 90); //MAL MAPEADO
 
-            if(mouseX > this.x + 30 && mouseX < this.x + 120 && mouseY > this.y - 80 && mouseY < this.y - 60) {
+            if (mouseX > this.x + 30 && mouseX < this.x + 120 && mouseY > this.y - 80 && mouseY < this.y - 60) {
                 fill(this.c);
                 stroke(this.c);
                 rect(this.x + 30, this.y - 80, 110, 20);
@@ -679,7 +691,7 @@ class flowerSong {
                 textSize(10);
                 textStyle(BOLD);
                 text("SAVE SONG", this.x + 60, this.y - 65);
-                if(mouseIsPressed) {
+                if (mouseIsPressed) {
                     window.location = 'php/addToMySongs.php?id=' + this.id;
                 }
             } else {
@@ -712,10 +724,10 @@ class flowerSong {
             text("Energy: " + map(this.shakeX, 0, 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 100);
             text("Danceability: " + map(this.danceability, min(allDanceability), max(allDanceability), 10, 100).toFixed(1) + "%", this.x + 30, this.y + 120);
             text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 140);
-            text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 30, this.y  + 160);
-            text("Speed: " + map(this.speed, min(allSpeed)/5, max(allSpeed)/5, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 180);
+            text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 160);
+            text("Speed: " + map(this.speed, min(allSpeed) / 5, max(allSpeed) / 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 180);
 
-            if(mouseX > this.x + 30 && mouseX < this.x + 120 && mouseY > this.y + 40 && mouseY < this.y + 60) {
+            if (mouseX > this.x + 30 && mouseX < this.x + 120 && mouseY > this.y + 40 && mouseY < this.y + 60) {
                 fill(this.c);
                 stroke(this.c);
                 rect(this.x + 30, this.y + 40, 110, 20);
@@ -724,7 +736,7 @@ class flowerSong {
                 textSize(10);
                 textStyle(BOLD);
                 text("SAVE SONG", this.x + 50, this.y + 55);
-                if(mouseIsPressed) {
+                if (mouseIsPressed) {
                     window.location = 'php/addToMySongs.php?id=' + this.id;
                 }
             } else {
@@ -750,7 +762,7 @@ class randFlower {
         this.linenum = linenum; //numero de sections
         this.mode = mode;
         for (let i = 0; i < this.linenum; i++) {
-            this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), 0, arraySectionTempo[i]*TWO_PI);
+            this.theta = map(arraySectionTempo[i], min(arraySectionTempo), max(arraySectionTempo), 0, arraySectionTempo[i] * TWO_PI);
             this.d = map(arraySectionLoudness[i], min(arraySectionLoudness), max(arraySectionLoudness), 80, 120); //loudness da section
             this.hy = sin(this.theta);
             this.hx = cos(this.theta);
@@ -758,9 +770,9 @@ class randFlower {
             this.ey = this.d * this.hy + this.y;
 
             for (let z = 0; z < 2; z++) {
-                if(z === 0) {
+                if (z === 0) {
                     this.bow = map(arraySectionDuration[i], min(arraySectionDuration), max(arraySectionDuration), 20, 50); //duração da section
-                } else if(z === 1) {
+                } else if (z === 1) {
                     this.bow = -map(arraySectionDuration[i], min(arraySectionDuration), max(arraySectionDuration), 20, 50);
                 }
                 curves.push(new Curve(x, y, this.ex, this.ey, this.bow));
@@ -792,9 +804,9 @@ class Curve { //preenchimento
 
 function avg(array) {
     let sum = 0;
-    for(let i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
         sum = sum + array[i];
     }
 
-    return sum/array.length;
+    return sum / array.length;
 }

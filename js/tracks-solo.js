@@ -101,6 +101,22 @@ function setup() {
 
 }
 
+
+document.querySelector('.info').addEventListener('click', abrirPopupInfo);
+document.querySelector('.fechar-info').addEventListener('click', fecharPopupInfo);
+
+
+function abrirPopupInfo(){
+    document.querySelector('.popup-info').style.display = "block";
+}
+
+function fecharPopupInfo(){
+    document.querySelector('.popup-info').style.display = "none";
+}
+
+
+
+
 function addNewFlower(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
     newFlower = new flowerSong(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode);
     flowers.push(newFlower);

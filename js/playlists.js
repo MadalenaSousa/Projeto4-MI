@@ -141,7 +141,7 @@ function setup() {
                         playlist: userPlaylists[i].name,
                         playlistId: userPlaylists[i].id,
                         px: userPlaylists[i].average_features.speed,
-                        py: map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 140, height - 110),
+                        py: map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), height - 110, 140),
                         color: map(userPlaylists[i].average_features.positivity, min(positivityCor), max(positivityCor), 190, 0),
                         numtracks: userPlaylists[i].tracks.total,
                         resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
@@ -192,6 +192,21 @@ function setup() {
     });
 
 }
+
+
+document.querySelector('.info').addEventListener('click', abrirPopupInfo);
+document.querySelector('.fechar-info').addEventListener('click', fecharPopupInfo);
+
+
+function abrirPopupInfo(){
+    document.querySelector('.popup-info').style.display = "block";
+}
+
+function fecharPopupInfo(){
+    document.querySelector('.popup-info').style.display = "none";
+}
+
+
 
 function addNewMountain(name, id, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner) {
     newMountain = new classMountain(name, id, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner);

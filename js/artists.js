@@ -144,10 +144,10 @@ function setup() {
                         divisoes: map(artists[i].top_tracks_average_features.danceability, min(danceability), max(danceability), 3, 10),
                         largura: map(artists[i].popularity, min(popularity), max(popularity), windowWidth / (windowWidth / 100), windowWidth / (windowWidth / 400)),
                         x: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375),
-                        y: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - (windowWidth / (windowWidth / 400)) / 4),
+                        y: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness),  windowHeight - (windowWidth / (windowWidth / 400)) / 4,250),
                         shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 1, 2),
-                        valorX: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
-                        valorY: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
+                        valorX: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375),
+                        valorY: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness),  windowHeight - (windowWidth / (windowWidth / 400)) / 4, 250),
                         id: id[i]
 
                     });
@@ -189,6 +189,20 @@ function setup() {
         resizeCanvas(windowWidth - windowWidth/6, windowHeight);
     });
 }
+
+
+document.querySelector('.info').addEventListener('click', abrirPopupInfo);
+document.querySelector('.fechar-info').addEventListener('click', fecharPopupInfo);
+
+
+function abrirPopupInfo(){
+    document.querySelector('.popup-info').style.display = "block";
+}
+
+function fecharPopupInfo(){
+    document.querySelector('.popup-info').style.display = "none";
+}
+
 
 function addNewWave(name, color, divisoes, largura, x, y, shake, valorX, valorY, id, owner) {
     newWave = new waveArtist(name, color, divisoes, largura, x, y, shake, valorX, valorY, id, owner);
@@ -400,8 +414,6 @@ class waveArtist {
 
     display() {
         this.onda();
-
-
     }
 
     aparecer() {
