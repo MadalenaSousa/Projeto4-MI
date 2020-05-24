@@ -242,10 +242,12 @@ document.querySelector('.fechar-info').addEventListener('click', fecharPopupInfo
 
 function abrirPopupInfo() {
     document.querySelector('.popup-info').style.display = "block";
+    document.querySelector('.overlay').classList.remove('hide');
 }
 
 function fecharPopupInfo() {
     document.querySelector('.popup-info').style.display = "none";
+    document.querySelector('.overlay').classList.add('hide');
 }
 
 function addNewFlower(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {

@@ -25,6 +25,9 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 </head>
 <body>
 
+<div class="overlay hide">
+</div>
+
 <div class="home-button">BACK TO HOMEPAGE</div>
 
 <div class="informacao">
@@ -55,9 +58,6 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
             <div class="menu-option unit share-button">SAVE ART AND SHARE</div>
         </div>
     </div>
-</div>
-
-<div class="overlay hide">
 </div>
 
 <div class="logout hide">
