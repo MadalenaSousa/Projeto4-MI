@@ -441,3 +441,27 @@ h2 {
     text-align: center;
 }
 
+.informacao{
+    position: absolute;
+    text-align: left;
+    left: 7vw;
+    top: 2.5vh;
+    width: 50vw;
+    cursor: pointer;
+}
+.info{
+    width: 2.5%;
+    height: 2.5%;
+
+}
+
+.popup-info{
+    width: 600px;
+    height: 600px;
+    background: black;
+    outline: 2px solid white;
+    position: absolute;
+    top: 50%;
+    left: 44%;
+    transform: translateY(10%);
+}
