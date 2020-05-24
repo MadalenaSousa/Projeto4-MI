@@ -194,7 +194,6 @@ function setup() {
         saveCanvas( 'public-playlists-artboard.png');
         resizeCanvas(windowWidth - windowWidth/6, windowHeight);
     });
-
 }
 
 
