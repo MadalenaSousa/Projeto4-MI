@@ -59,7 +59,7 @@ function setup() {
                 map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375),
                 map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness),  windowHeight - (windowWidth / (windowWidth / 400)) / 4,250),
                 map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 1, 2),
-                map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
+                map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375),
                 map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness),  windowHeight - (windowWidth / (windowWidth / 400)) / 4,250),
                 id[i]);
             remove[i].classList.remove('hide');
@@ -219,14 +219,6 @@ function cleanCreatePlaylistPreview() {
 
 function draw() {
 
-    if (cruz.style.display === "block" || previewShare.style.display === "block") {
-        document.querySelector(".cruz").addEventListener('click', function () {
-            document.querySelector('.cruz').style.display = "none";
-            document.querySelector('.PreviewShare').style.display = "none";
-            document.querySelector('.overlay').classList.add('hide')
-        });
-    }
-
     background(0);
     alfa = alfa + (PI / 56);
     if (waves.length > 0) {
@@ -239,7 +231,6 @@ function draw() {
         }
     }
 }
-
 
 class waveArtist {
     verificar;
@@ -260,8 +251,6 @@ class waveArtist {
 
     display() {
         this.onda();
-
-
     }
 
     aparecer() {
@@ -347,7 +336,7 @@ class waveArtist {
                 fill(255, 255 - this.color, 255);
                 textStyle(BOLD);
                 textSize(12);
-                text("Added by " + split(user.name, ' ')[0], this.x + 10, this.y - ((2 * this.largura / 2) / 3) - 155);
+                text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 155);
                 textStyle(NORMAL);
                 text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
                 text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
@@ -366,9 +355,7 @@ class waveArtist {
                     fill(0);
                     textSize(10);
                     text("Visit Artist's Page", this.x + 30, (this.y - ((2 * (this.largura / 2)) / 3)) - 37);
-
-                }
-                else{
+                } else {
                     fill(0);
                     stroke(255, 255 - this.color, 255);
                     rect(this.x + 10, (this.y - ((2 * (this.largura / 2)) / 3)) - 50, 110, 20);
@@ -377,6 +364,7 @@ class waveArtist {
                     textSize(10);
                     text("Visit Artist's Page", this.x + 30, (this.y - ((2 * (this.largura / 2)) / 3)) - 37);
                 }
+
 
             } else {
                 beginShape();
@@ -394,7 +382,7 @@ class waveArtist {
                 fill(255, 255 - this.color, 255);
                 textStyle(BOLD);
                 textSize(12);
-                text("Added by " + split(user.name, ' ')[0], this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 45);
+                text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 45);
                 textStyle(NORMAL);
                 text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 130);
                 text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 110);
@@ -435,4 +423,3 @@ class waveArtist {
 
     }
 }
-
