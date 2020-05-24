@@ -58,28 +58,35 @@ function setup() {
 
     for (let i = 0; i < totalSongs; i++) {
         document.querySelectorAll(".song")[i].addEventListener("click", function () {
-            addNewFlower(
-                songs[i].id,
-                songs[i].name,
-                (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
-                map(allLoudness[i], min(allLoudness), max(allLoudness), height - 80, 80),
-                map(allLoudness[i], min(allLoudness), max(allLoudness), height - 80, 80),
-                (songs[i].duration / 3),
-                map(allPositivity[i], min(allPositivity), max(allPositivity), 0, 255),
-                getAudioFeatures(i).energy * 5,
-                getAudioFeatures(i).speed / 5,
-                allDanceability[i],
-                songs[i].preview_url,
-                songs[i].artists,
-                user.name,
-                getAudioAnalysis(i).sections.tempo,
-                getAudioAnalysis(i).sections.durations,
-                getAudioAnalysis(i).sections.loudness,
-                map(allBeatsTotal[i], min(allBeatsTotal), max(allBeatsTotal), 3, 5),
-                map(allBeatsDuration[i], min(allBeatsDuration), max(allBeatsDuration), 30, 50),
-                getAudioAnalysis(i).sections.total,
-                songs[i].mode);
-            remove[i].classList.remove('hide');
+            let flowersId = [];
+            for(let z = 0; z < flowers.length; z++) {
+                flowersId.push(flowers[i].id);
+            }
+            if(contains(flowersId, songs[i].id) === false) {
+                addNewFlower(
+                    songs[i].id,
+                    songs[i].name,
+                    (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
+                    map(allLoudness[i], min(allLoudness), max(allLoudness), height - 80, 80),
+                    map(allLoudness[i], min(allLoudness), max(allLoudness), height - 80, 80),
+                    (songs[i].duration / 3),
+                    map(allPositivity[i], min(allPositivity), max(allPositivity), 0, 255),
+                    getAudioFeatures(i).energy * 5,
+                    getAudioFeatures(i).speed / 5,
+                    allDanceability[i],
+                    songs[i].preview_url,
+                    songs[i].artists,
+                    user.name,
+                    getAudioAnalysis(i).sections.tempo,
+                    getAudioAnalysis(i).sections.durations,
+                    getAudioAnalysis(i).sections.loudness,
+                    map(allBeatsTotal[i], min(allBeatsTotal), max(allBeatsTotal), 3, 5),
+                    map(allBeatsDuration[i], min(allBeatsDuration), max(allBeatsDuration), 30, 50),
+                    getAudioAnalysis(i).sections.total,
+                    songs[i].mode);
+
+                remove[i].classList.remove('hide');
+            }
         });
 
         remove[i].addEventListener("click", function () {
