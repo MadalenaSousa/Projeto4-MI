@@ -366,15 +366,6 @@ function closeArtistRoomConnection() {
 }
 
 function draw() {
-
-    if (cruz.style.display === "block" || previewShare.style.display === "block") {
-        document.querySelector(".cruz").addEventListener('click', function () {
-            document.querySelector('.cruz').style.display = "none";
-            document.querySelector('.PreviewShare').style.display = "none";
-            document.querySelector('.overlay').classList.add('hide')
-        });
-    }
-
     background(0);
     alfa = alfa + (PI / 56);
     if (waves.length > 0) {

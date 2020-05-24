@@ -29,10 +29,6 @@ let flowerCanvas;
 let w = window.innerWidth - window.innerWidth/6;
 let h = window.innerHeight;
 
-var previewShare = document.createElement("div");
-var cruz = document.createElement("div");
-var botaoDownload = document.createElement("div");
-
 function preload() {
     //playlistSongs = loadJSON('php/' + userid +'-playlist-songs-object.json');
     topSongs = loadJSON('php/' + userid + '-top-songs-object.json');
@@ -71,8 +67,14 @@ function setup() {
         for(let i = 0; i < clients.length; i++){
             console.log('Clients present on login: ' + clients);
             clientsRecords[i] = client.record.getRecord(clients[i]);
+            let userNames = [];
+            for(let z = 0; z < document.querySelectorAll('.user .username').length; z++) {
+                userNames.push(document.querySelectorAll('.user .username').innerText);
+            }
             clientsRecords[i].subscribe(function () {
-                createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
+                if(!(clientsRecords[i].get('name') === undefined) || !(contains(userNames, clientsRecords[i].get('name')))) {
+                    createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
+                }
             });
         }
     });
@@ -85,8 +87,14 @@ function setup() {
                 for(let i = 0; i < clients.length; i++){
                     console.log('Updated clients list: ' + clients);
                     clientsRecords[i] = client.record.getRecord(clients[i]);
+                    let userNames = [];
+                    for(let z = 0; z < document.querySelectorAll('.user .username').length; z++) {
+                        userNames.push(document.querySelectorAll('.user .username').innerText);
+                    }
                     clientsRecords[i].subscribe(function () {
-                        createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
+                        if(!(clientsRecords[i].get('name') === undefined) || !(contains(userNames, clientsRecords[i].get('name')))) {
+                            createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
+                        }
                     });
                 }
             });
@@ -117,7 +125,15 @@ function setup() {
             for(let i = 0; i < recordList.getEntries().length; i++){
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
-                    addNewFlower(recordsOnList[i].get('id'), recordsOnList[i].get('song'), map(recordsOnList[i].get('x'), min(allSpeed), max(allSpeed), 120, width - 120), recordsOnList[i].get('y'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
+                    let speedX = 0;
+                    if(recordsOnList[i].get('x') > max(allSpeed)) {
+                        speedX = width - 200;
+                    } else if(recordsOnList[i].get('x') < min(allSpeed)) {
+                        speedX = 120;
+                    } else {
+                        speedX = map(recordsOnList[i].get('x'), min(allSpeed), max(allSpeed), 120, width - 200);
+                    }
+                    addNewFlower(recordsOnList[i].get('id'), recordsOnList[i].get('song'), speedX, recordsOnList[i].get('y'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
                         recordsOnList[i].get('energy'), recordsOnList[i].get('speed'), recordsOnList[i].get('danceability'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'), recordsOnList[i].get('user'),
                         recordsOnList[i].get('tSections'), recordsOnList[i].get('dSections'), recordsOnList[i].get('lSections'),
                         recordsOnList[i].get('nBeats'), recordsOnList[i].get('rBeats'),recordsOnList[i].get('nSections'),
@@ -219,21 +235,6 @@ function setup() {
     });
 
 }
-
-window.addEventListener('resize', function () {
-    w = window.innerWidth - window.innerWidth/6;
-    h = window.innerHeight;
-    resizeCanvas(w, h);
-
-    let recordToUpdate = [];
-    for(let i = 0; i < recordList.getEntries().length; i++) {
-        recordToUpdate[i] = client.record.getRecord(recordList.getEntries()[i]);
-        recordToUpdate[i].whenReady(function () {
-            flowers[i].x = map(recordToUpdate[i].get('x'), min(allSpeed), max(allSpeed), 120, width - 120);
-            console.log(recordToUpdate[i].get('x'));
-        });
-    }
-});
 
 function addNewFlower(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
     newFlower = new flowerSong(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode);
@@ -490,28 +491,11 @@ function createSongDiv() {
 }
 
 function draw() {
-    if (cruz.style.display === "block" || previewShare.style.display === "block") {
-        document.querySelector(".cruz").addEventListener('click', function () {
-            document.querySelector('.cruz').style.display = "none";
-            document.querySelector('.PreviewShare').style.display = "none";
-            document.querySelector('.overlay').classList.add('hide')
-        });
-    }
-
     background(0);
-
-    if(fromPlaylist) {
-        songs = playlistSongs;
-        totalSongs = Object.keys(songs).length;
-    } else {
-        songs = topSongs;
-        totalSongs = Object.keys(songs).length;
-    }
 
     if(flowers.length > 0) {
         for(let i = 0; i < flowers.length; i++) {
             flowers[i].display();
-            this.x = map(getAudioFeatures(i).speed, min(allSpeed), max(allSpeed), 120, width - 120);
         }
 
         for(let i = 0; i < flowers.length; i++) {
@@ -615,8 +599,6 @@ class flowerSong {
             text(this.artist, this.x, this.y - 50);
         }
 
-
-        //this.theta = this.theta + TWO_PI/(this.nBeats*100);
     }
 
     playSong() {

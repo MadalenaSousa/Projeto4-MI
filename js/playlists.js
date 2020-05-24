@@ -105,7 +105,15 @@ function setup() {
             for(let i = 0; i < recordList.getEntries().length; i++){
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
-                    addNewMountain (recordsOnList[i].get('playlist'), recordsOnList[i].get('playlistId'),recordsOnList[i].get('px'), recordsOnList[i].get('py'), recordsOnList[i].get('numtracks'), recordsOnList[i].get('color'),
+                    let speedUse = 0;
+                    if(recordsOnList[i].get('px') > max(speedX)) {
+                        speedUse = width - 410;
+                    } else if(recordsOnList[i].get('px') < min(speedX)) {
+                        speedUse = 110;
+                    } else {
+                        speedUse = map(recordsOnList[i].get('px'), min(speedX), max(speedX), 110, width - 410);
+                    }
+                    addNewMountain (recordsOnList[i].get('playlist'), recordsOnList[i].get('playlistId'), speedUse, recordsOnList[i].get('py'), recordsOnList[i].get('numtracks'), recordsOnList[i].get('color'),
                         recordsOnList[i].get('resolution'), recordsOnList[i].get('tam'), recordsOnList[i].get('round'), recordsOnList[i].get('nAmp'),
                         recordsOnList[i].get('t'), recordsOnList[i].get('tChange'), recordsOnList[i].get('nInt'), recordsOnList[i].get('nSeed'), recordsOnList[i].get('user'));
                 });
@@ -132,7 +140,7 @@ function setup() {
                         user: user.name,
                         playlist: userPlaylists[i].name,
                         playlistId: userPlaylists[i].id,
-                        px: map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, width - 410),
+                        px: userPlaylists[i].average_features.speed,
                         py: map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 140, height - 110),
                         color: map(userPlaylists[i].average_features.positivity, min(positivityCor), max(positivityCor), 190, 0),
                         numtracks: userPlaylists[i].tracks.total,
@@ -359,15 +367,6 @@ function closePlaylistRoomConnection() {
 }
 
 function draw() {
-
-    if (cruz.style.display === "block" || previewShare.style.display === "block") {
-        document.querySelector(".cruz").addEventListener('click', function () {
-            document.querySelector('.cruz').style.display = "none";
-            document.querySelector('.PreviewShare').style.display = "none";
-            document.querySelector('.overlay').classList.add('hide')
-        });
-    }
-
     background(0);
     if(mountains.length > 0) {
         for(let i = 0; i < mountains.length; i++) {
