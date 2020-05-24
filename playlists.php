@@ -26,6 +26,15 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
 <div class="home-button">BACK TO HOMEPAGE</div>
 
+
+<div class="informacao">
+    <img class="info" src="imagens/Info.png" width="834" height="834" alt="info">
+    <div class="popup-info">
+        <img class="imagem-info" src="imagens/LegendaPlaylist.png" width="2599" height="2600" alt="info">
+        <div class="fechar-info fechar-infoP">X</div>
+    </div>
+</div>
+
 <div class="menu">
     <div class="unit">
         <div class="titulo">MENU</div>
