@@ -190,6 +190,20 @@ function setup() {
     });
 }
 
+
+document.querySelector('.info').addEventListener('click', abrirPopupInfo);
+document.querySelector('.fechar-info').addEventListener('click', fecharPopupInfo);
+
+
+function abrirPopupInfo(){
+    document.querySelector('.popup-info').style.display = "block";
+}
+
+function fecharPopupInfo(){
+    document.querySelector('.popup-info').style.display = "none";
+}
+
+
 function addNewWave(name, color, divisoes, largura, x, y, shake, valorX, valorY, id, owner) {
     newWave = new waveArtist(name, color, divisoes, largura, x, y, shake, valorX, valorY, id, owner);
     waves.push(newWave);

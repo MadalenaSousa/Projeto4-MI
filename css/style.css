@@ -447,11 +447,12 @@ h2 {
     left: 7vw;
     top: 2.5vh;
     width: 50vw;
-    cursor: pointer;
 }
 .info{
     width: 2.5%;
     height: 2.5%;
+    cursor: pointer;
+
 
 }
 
@@ -461,7 +462,40 @@ h2 {
     background: black;
     outline: 2px solid white;
     position: absolute;
-    top: 50%;
+    top: 48%;
     left: 44%;
-    transform: translateY(10%);
+    transform: translateY(8%);
+    display: none;
+}
+
+.imagem-info{
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 600px;
+    height: 600px;
+}
+
+.fechar-info{
+    display: inline-block;
+    position: absolute;
+    right: 3%;
+    top: 3%;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.fechar-infoA:hover{
+    color: magenta;
+    cursor: pointer;
+}
+
+.fechar-infoS:hover{
+    color: yellow;
+    cursor: pointer;
+}
+
+.fechar-infoP:hover{
+    color: deepskyblue;
+    cursor: pointer;
 }
