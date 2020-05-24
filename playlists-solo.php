@@ -29,7 +29,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 <div class="menu">
     <div class="unit">
         <div class="titulo">MENU</div>
-        <div class="leave">Leave Room</div>
+        <div class="leave leavePlaylists">Leave Room</div>
     </div>
     <div>
         You are the only person in the room
@@ -49,7 +49,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 </div>
 
 <div class="logout hide">
-    <div class="close-logout">X</div>
+    <div class="close-logout close-logoutP">X</div>
     <div class="unit">
         <h2><b>Are you sure you want to leave?</b></h2>
         All the songs you added to the artboard will be deleted.
@@ -65,7 +65,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 </div>
 
 <div class="share hide">
-    <div class="close-share">X</div>
+    <div class="close-share close-shareP">X</div>
     <div class="unit">
         <h2><b>Share your art!</b></h2>
         You can share the artboard you created in your social networks or download it and use it for anything you want!
@@ -75,7 +75,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <a class="menu-option"
            target="popup"
            onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=http://music-visualizer.duckdns.org:8888','popup','width=600,height=400');">
-            <div><img src="imagens/facebook.png"></div>
+            <img class="contorno" src="imagens/facebook.png" width="100" alt="Facebook">
             <div>Facebook</div>
 
         </a>
@@ -83,13 +83,13 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
         <a target="popup"
            onclick="window.open('https://twitter.com/intent/tweet?text=Just%20Created%20a%20Draw%20of%20My%20Playlists%20from%20Spotify!%0D%0ACheck%20out%20&url=http://music-visualizer.duckdns.org:8888','popup','width=600,height=400');">
             <div class="menu-option">
-                <img src="imagens/twitter.png">
+                <img class="contorno" src="imagens/twitter.png" width="100" alt="Twitter">
                 <div>Twitter</div>
             </div>
         </a>
 
         <div class="menu-option download">
-            <div><img src="imagens/download.png"></div>
+            <div class="preview"></div>
             <div>Download</div>
         </div>
     </div>

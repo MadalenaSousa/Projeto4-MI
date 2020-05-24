@@ -62,7 +62,7 @@ function setup() {
                 map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
                 map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
                 id[i]);
-             remove[i].classList.remove('hide');
+            remove[i].classList.remove('hide');
         });
 
         remove[i].addEventListener("click", function () {
@@ -78,87 +78,9 @@ function setup() {
 
     document.querySelector('.download').addEventListener('click', function () {
         console.log('Canvas will be downloaded');
-        document.querySelector('.share').classList.add('hide');
-
-        previewShare.classList.add("PreviewShare");
-        cruz.classList.add("cruz");
-        previewShare.style.outline = "outline: 2px solid white";
-
-        previewShare.style.zIndex = "10000";
-        previewShare.style.outline = "2px solid white";
-        previewShare.style.background = "black";
-        previewShare.style.position = 'fixed';
-        previewShare.style.width = '26%';
-        previewShare.style.height = '60%';
-        previewShare.style.left = '30%';
-        previewShare.style.top = '50%';
-        previewShare.style.transform = "translateX(-50%)";
-        previewShare.style.transform = "translateY(-50%)";
-        previewShare.style.display = "block";
-
-
-        cruz.style.color = "white";
-        cruz.innerText = "X";
-        cruz.style.zIndex = "10000";
-        cruz.style.position = 'fixed';
-        cruz.style.width = 'fit-content';
-        cruz.style.height = 'fit-content';
-        cruz.style.left = '92%';
-        cruz.style.top = '3%';
-        cruz.style.cursor = "pointer";
-        cruz.style.display = "block";
-
-        botaoDownload.onmouseenter = function () {
-            botaoDownload.style.color = "black";
-            botaoDownload.style.background = "white";
-        };
-
-        botaoDownload.onmouseleave = function () {
-            botaoDownload.style.color = "white";
-            botaoDownload.style.background = "black";
-        };
-
-        botaoDownload.innerText = "DOWNLOAD IMAGE";
-        botaoDownload.style.zIndex = "10000";
-        botaoDownload.style.position = 'fixed';
-        botaoDownload.style.width = 'fit-content';
-        botaoDownload.style.height = '8%';
-        botaoDownload.style.left = '0%';
-        botaoDownload.style.top = '92%';
-        botaoDownload.style.cursor = "pointer";
-        botaoDownload.style.display = "block";
-        botaoDownload.style.paddingTop = "2%";
-        botaoDownload.style.outline = "2px solid white";
-        botaoDownload.style.width = "100%";
-
-
-        document.body.appendChild(previewShare);
-        document.querySelector('.PreviewShare').appendChild(cruz);
-        document.querySelector('.PreviewShare').appendChild(botaoDownload);
-        let width = 0.20 * windowWidth;
-        let height = 0.20 * windowWidth;
-
-        let canvas = document.getElementById('defaultCanvas0');
-        let img = new Image(width, height); //crio uma imagem
-        img.src = canvas.toDataURL('image/jpeg', 0.01); //torno a src da imagem o canvas convertido num link
-        img.classList.add("imagemPreview");
-        img.style.outline = "1px solid white";
-        img.style.position = "fixed";
-        img.style.left = "10%";
-        img.style.top = "11%";
-        img.style.width = "80%";
-        img.style.height = "70%";
-
-
-        document.querySelector('.PreviewShare').appendChild(img);  //faço append na div onde quero pôr o preview
-
-        botaoDownload.addEventListener('click', function () {
-            console.log('Canvas will be downloaded');
-            resizeCanvas(windowHeight, windowHeight);
-            saveCanvas('solo-artists-artboard.png');
-            resizeCanvas(windowWidth - windowWidth / 6, windowHeight);
-        });
-
+        resizeCanvas(windowHeight, windowHeight);
+        saveCanvas('solo-artists-artboard.png');
+        resizeCanvas(windowWidth - windowWidth / 6, windowHeight);
     });
 }
 
@@ -208,6 +130,14 @@ function sharePopUp() {
         document.querySelector('.share').classList.toggle('hide');
         document.querySelector('.overlay').classList.toggle('hide');
 
+        cleanCreatePlaylistPreview();
+        resizeCanvas(windowHeight, windowHeight);
+        let canvas = document.getElementById('defaultCanvas0');
+        let img = new Image(100, 100);
+        img.src = canvas.toDataURL('image/jpeg', 0.01);
+        img.classList.add('contorno');
+        document.querySelector('.preview').appendChild(img);
+        resizeCanvas(windowWidth - windowWidth/6, windowHeight);
     });
 
     document.querySelector(".close-share").addEventListener('click', function () {
@@ -235,6 +165,7 @@ function createArtistDiv() {
 
         remove.innerText = "x";
         remove.classList.add("remove");
+        remove.classList.add("removeArtists");
         remove.classList.add("hide");
         remove.setAttribute("style", "cursor: pointer; margin-left: 5px;");
 
@@ -265,6 +196,13 @@ function createUserDiv(name, profilepic) {
     document.querySelector(".list-people").appendChild(userDiv);
 }
 
+function cleanCreatePlaylistPreview() {
+    let arrayDivs = document.querySelectorAll('.preview img');
+
+    for(let i = 0; i < arrayDivs.length; i++) {
+        arrayDivs[i].remove();
+    }
+}
 
 function draw() {
 
@@ -314,16 +252,14 @@ class waveArtist {
     }
 
     aparecer() {
-
         if (dist(mouseX, mouseY, this.x, this.y - (this.largura / 3)) <= this.largura / 6) {
             this.balao();
             this.verificar = true;
             this.y = this.y + 0.2 * sin(alfa * this.shake);
             this.x = this.x + 0.2 * cos(alfa * this.shake);
-        } else if (this.valorY >= ((2 * (this.largura / 2)) / 3) + 180) {
-            if (this.verificar === true && (mouseX > this.x && mouseX < this.x + 130 && mouseY > this.y - ((2 * (this.largura / 2)) / 3) - 180 && mouseY < this.y - ((2 * (this.largura / 2)) / 3) - 20)) {
-                this.balao();
-            }
+        } else if (this.valorY >= ((2 * (this.largura / 2)) / 3) + 180 && this.verificar === true && (mouseX > this.x && mouseX < this.x + 130 && mouseY > this.y - ((2 * (this.largura / 2)) / 3) - 180 && mouseY < this.y - ((2 * (this.largura / 2)) / 3) - 20)) {
+            this.balao();
+
         } else if (this.verificar === true && (mouseX > this.x && mouseX < this.x + 130 && mouseY > this.y - ((2 * this.largura / 2) / 3) && mouseY < this.y - ((2 * this.largura / 2) / 3) + 180)) {
             this.balao();
         } else {
@@ -405,16 +341,28 @@ class waveArtist {
                 text("Loudness: " + map(this.valorY, 250, windowHeight - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
                 text("Speed: " + map(this.valorX, 125, windowWidth - (windowWidth / 26) - 375, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
 
-                fill(0);
-                stroke(255, 255 - this.color, 255);
-                rect(this.x + 10, (this.y - ((2 * (this.largura / 2)) / 3)) - 50, 110, 20);
-                noStroke();
-                fill(255, 255 - this.color, 255);
-                textSize(10);
-                text("Visit Artist's Page", this.x + 30, (this.y - ((2 * (this.largura / 2)) / 3)) - 37);
 
-                if (mouseIsPressed && mouseX > this.x + 10 && mouseX < this.x + 10 + 110 && mouseY > (this.y - ((2 * (this.largura / 2)) / 3)) - 50 && mouseY < (this.y - ((2 * (this.largura / 2)) / 3)) - 50 + 20) {
-                    window.open("https://open.spotify.com/artist/" + this.id, "_blank");
+                if (mouseX > this.x + 10 && mouseX < this.x + 10 + 110 && mouseY > (this.y - ((2 * (this.largura / 2)) / 3)) - 50 && mouseY < (this.y - ((2 * (this.largura / 2)) / 3)) - 50 + 20) {
+                    if (mouseIsPressed) {
+                        window.open("https://open.spotify.com/artist/" + this.id, "_blank");
+                    }
+                    fill(255, 255 - this.color, 255);
+                    stroke(0);
+                    rect(this.x + 10, (this.y - ((2 * (this.largura / 2)) / 3)) - 50, 110, 20);
+                    noStroke();
+                    fill(0);
+                    textSize(10);
+                    text("Visit Artist's Page", this.x + 30, (this.y - ((2 * (this.largura / 2)) / 3)) - 37);
+
+                }
+                else{
+                    fill(0);
+                    stroke(255, 255 - this.color, 255);
+                    rect(this.x + 10, (this.y - ((2 * (this.largura / 2)) / 3)) - 50, 110, 20);
+                    noStroke();
+                    fill(255, 255 - this.color, 255);
+                    textSize(10);
+                    text("Visit Artist's Page", this.x + 30, (this.y - ((2 * (this.largura / 2)) / 3)) - 37);
                 }
 
             } else {
@@ -440,16 +388,30 @@ class waveArtist {
                 text("Loudness: " + map(this.valorY, 250, windowHeight - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 90);
                 text("Speed: " + map(this.valorX, 125, windowWidth - (windowWidth / 26) - 375, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 70);
 
-                fill(0);
-                stroke(255, 255 - this.color, 255);
-                rect(this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 150, 110, 20);
-                noStroke();
-                fill(255, 255 - this.color, 255);
-                textSize(10);
-                text("Visit Artist's Page", this.x + 30, this.y - ((2 * this.largura / 2) / 3) + 163);
 
-                if (mouseIsPressed && mouseX > this.x + 10 && mouseX < this.x + 10 + 110 && mouseY > (this.y - ((2 * this.largura / 2) / 3) + 150) && mouseY < (this.y - ((2 * this.largura / 2) / 3) + 150 + 20)) {
-                    window.open("https://open.spotify.com/artist/" + this.id, "_blank");
+                if (mouseX > this.x + 10 && mouseX < this.x + 10 + 110 && mouseY > (this.y - ((2 * this.largura / 2) / 3) + 150) && mouseY < (this.y - ((2 * this.largura / 2) / 3) + 150 + 20)) {
+
+                    if (mouseIsPressed) {
+                        window.open("https://open.spotify.com/artist/" + this.id, "_blank");
+                    }
+
+                    fill(255, 255 - this.color, 255);
+                    stroke(0);
+                    rect(this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 150, 110, 20);
+                    noStroke();
+                    fill(0);
+                    textSize(10);
+                    text("Visit Artist's Page", this.x + 30, this.y - ((2 * this.largura / 2) / 3) + 163);
+
+
+                } else {
+                    fill(0);
+                    stroke(255, 255 - this.color, 255);
+                    rect(this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 150, 110, 20);
+                    noStroke();
+                    fill(255, 255 - this.color, 255);
+                    textSize(10);
+                    text("Visit Artist's Page", this.x + 30, this.y - ((2 * this.largura / 2) / 3) + 163);
                 }
 
 
