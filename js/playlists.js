@@ -185,6 +185,21 @@ function setup() {
 
 }
 
+
+document.querySelector('.info').addEventListener('click', abrirPopupInfo);
+document.querySelector('.fechar-info').addEventListener('click', fecharPopupInfo);
+
+
+function abrirPopupInfo(){
+    document.querySelector('.popup-info').style.display = "block";
+}
+
+function fecharPopupInfo(){
+    document.querySelector('.popup-info').style.display = "none";
+}
+
+
+
 function addNewMountain(name, id, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner) {
     newMountain = new classMountain(name, id, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner);
     mountains.push(newMountain);

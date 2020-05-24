@@ -26,6 +26,15 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 
 <div class="home-button">BACK TO HOMEPAGE</div>
 
+<div class="informacao">
+    <img class="info" src="imagens/Info.png" width="834" height="834" alt="info">
+    <div class="popup-info">
+        <img class="imagem-info" src="imagens/LegendaArtistas.png" width="2599" height="2600" alt="info">
+        <div class="fechar-info fechar-infoA">X</div>
+    </div>
+
+</div>
+
 <div class="menu">
     <div class="unit">
         <div class="titulo">MENU</div>
@@ -105,7 +114,8 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
     </div>
     <div class="unit">
         Do you want to keep the changes you made to the artboard ou do you want to leave the room?
-        Keep in mind that, if you are not coming back to the room, you should leave the room and all your songs will be removed from the artboard.
+        Keep in mind that, if you are not coming back to the room, you should leave the room and all your songs will be
+        removed from the artboard.
     </div>
     <div class="unit">
         <div class="menu-option delete-changes">LEAVE ROOM</div>
