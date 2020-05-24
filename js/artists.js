@@ -144,10 +144,10 @@ function setup() {
                         divisoes: map(artists[i].top_tracks_average_features.danceability, min(danceability), max(danceability), 3, 10),
                         largura: map(artists[i].popularity, min(popularity), max(popularity), windowWidth / (windowWidth / 100), windowWidth / (windowWidth / 400)),
                         x: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375),
-                        y: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - (windowWidth / (windowWidth / 400)) / 4),
+                        y: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness),  windowHeight - (windowWidth / (windowWidth / 400)) / 4,250),
                         shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 1, 2),
-                        valorX: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
-                        valorY: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
+                        valorX: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed),  windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375),
+                        valorY: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness),  windowHeight - (windowWidth / (windowWidth / 400)) / 4, 250),
                         id: id[i]
 
                     });
@@ -381,14 +381,6 @@ function closeArtistRoomConnection() {
 
 function draw() {
 
-    if (cruz.style.display === "block" || previewShare.style.display === "block") {
-        document.querySelector(".cruz").addEventListener('click', function () {
-            document.querySelector('.cruz').style.display = "none";
-            document.querySelector('.PreviewShare').style.display = "none";
-            document.querySelector('.overlay').classList.add('hide')
-        });
-    }
-
     background(0);
     alfa = alfa + (PI / 56);
     if (waves.length > 0) {
@@ -423,8 +415,6 @@ class waveArtist {
 
     display() {
         this.onda();
-
-
     }
 
     aparecer() {

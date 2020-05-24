@@ -57,10 +57,10 @@ function setup() {
                 map(artists[i].top_tracks_average_features.danceability, min(danceability), max(danceability), 3, 10),
                 map(artists[i].popularity, min(popularity), max(popularity), windowWidth / (windowWidth / 100), windowWidth / (windowWidth / 400)),
                 map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375),
-                map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - (windowWidth / (windowWidth / 400)) / 4),
+                map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness),  windowHeight - (windowWidth / (windowWidth / 400)) / 4,250),
                 map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 1, 2),
                 map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), 125, windowWidth - (windowWidth / 26) - 375),
-                map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), 250, windowHeight - 50),
+                map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness),  windowHeight - (windowWidth / (windowWidth / 400)) / 4,250),
                 id[i]);
             remove[i].classList.remove('hide');
         });
@@ -95,6 +95,8 @@ function abrirPopupInfo(){
 function fecharPopupInfo(){
     document.querySelector('.popup-info').style.display = "none";
 }
+
+
 
 function addNewWave(name, color, divisoes, largura, x, y, shake, valorX, valorY, id) {
     newWave = new waveArtist(name, color, divisoes, largura, x, y, shake, valorX, valorY, id);
