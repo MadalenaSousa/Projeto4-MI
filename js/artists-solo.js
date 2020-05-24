@@ -51,18 +51,24 @@ function setup() {
 
     for (let i = 0; i < totalArtists; i++) {
         document.querySelectorAll(".artist")[i].addEventListener("click", function () {
-            addNewWave(
-                artists[i].name,
-                map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 0, 255),
-                map(artists[i].top_tracks_average_features.danceability, min(danceability), max(danceability), 3, 10),
-                map(artists[i].popularity, min(popularity), max(popularity), windowWidth / (windowWidth / 100), windowWidth / (windowWidth / 400)),
-                map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375),
-                map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness),  windowHeight - (windowWidth / (windowWidth / 400)) / 4,250),
-                map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 1, 2),
-                map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375),
-                map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness),  windowHeight - (windowWidth / (windowWidth / 400)) / 4,250),
-                id[i]);
-            remove[i].classList.remove('hide');
+            let wavesId = [];
+            for(let z = 0; z < waves.length; z++) {
+                wavesId.push(waves[i].id);
+            }
+            if(contains(wavesId, artists[i].id) === false) {
+                addNewWave(
+                    artists[i].name,
+                    map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 0, 255),
+                    map(artists[i].top_tracks_average_features.danceability, min(danceability), max(danceability), 3, 10),
+                    map(artists[i].popularity, min(popularity), max(popularity), windowWidth / (windowWidth / 100), windowWidth / (windowWidth / 400)),
+                    map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375),
+                    map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), windowHeight - (windowWidth / (windowWidth / 400)) / 4, 250),
+                    map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 1, 2),
+                    map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375),
+                    map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), windowHeight - (windowWidth / (windowWidth / 400)) / 4, 250),
+                    id[i]);
+                remove[i].classList.remove('hide');
+            }
         });
 
         remove[i].addEventListener("click", function () {

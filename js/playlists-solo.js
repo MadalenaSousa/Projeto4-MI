@@ -39,25 +39,29 @@ function setup() {
 
 
     for (let i = 0; i < totalPlaylists; i++) {
-        remove[i].classList.add('hide');
         document.querySelectorAll(".playlist")[i].addEventListener("click", function () {
-            addNewMountain(
-
-                        userPlaylists[i].name,
-                        userPlaylists[i].id,
-                        map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, width - 110),
-                        map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 140, height - 110),
-                        map(userPlaylists[i].average_features.positivity, min(positivityCor), max(positivityCor), 190, 0),
-                        userPlaylists[i].tracks.total,
-                        map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
-                        map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 20, 80), //tamanho
-                        map(userPlaylists[i].average_features.energy, 0.0, 1.0, 30, 0), //quanto maior o valor, mais espalmada
-                        map(userPlaylists[i].average_features.loudness, -60, 0, 0.3, 1), // valor=1 -> redonda
-                        0,
-                        map(userPlaylists[i].average_features.danceability, 0.0, 1.0, 0.01, 0.06), // dança do objeto
-                        10, //intensidade
-                        10);
-            remove[i].classList.remove('hide');
+            let mountainsId = [];
+            for(let z = 0; z < mountains.length; z++) {
+                mountainsId.push(mountains[i].id);
+            }
+            if(contains(mountainsId, userPlaylists[i].id) === false) {
+                addNewMountain(
+                    userPlaylists[i].name,
+                    userPlaylists[i].id,
+                    map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, width - 110),
+                    map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 140, height - 110),
+                    map(userPlaylists[i].average_features.positivity, min(positivityCor), max(positivityCor), 190, 0),
+                    userPlaylists[i].tracks.total,
+                    map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
+                    map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 20, 80), //tamanho
+                    map(userPlaylists[i].average_features.energy, 0.0, 1.0, 30, 0), //quanto maior o valor, mais espalmada
+                    map(userPlaylists[i].average_features.loudness, -60, 0, 0.3, 1), // valor=1 -> redonda
+                    0,
+                    map(userPlaylists[i].average_features.danceability, 0.0, 1.0, 0.01, 0.06), // dança do objeto
+                    10, //intensidade
+                    10);
+                remove[i].classList.remove('hide');
+            }
         });
 
         remove[i].addEventListener("click", function () {
@@ -182,6 +186,7 @@ function createPlaylistDiv() {
         remove.innerText = "x";
         remove.classList.add("remove");
         remove.classList.add("removePlaylists");
+        remove.classList.add('hide');
         remove.setAttribute("style", "cursor: pointer; margin-left: 5px;");
 
         playlist.classList.add('unit');
