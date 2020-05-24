@@ -114,7 +114,15 @@ function setup() {
             for (let i = 0; i < recordList.getEntries().length; i++) {
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
-                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), recordsOnList[i].get('x'), recordsOnList[i].get('y'), recordsOnList[i].get('shake'), recordsOnList[i].get('valorX'), recordsOnList[i].get('valorY'), recordsOnList[i].get('id'), recordsOnList[i].get('user'));
+                    let speedX = 0;
+                    if(recordsOnList[i].get('x') > max(speed)) {
+                        speedX = windowWidth - (windowWidth / 26) - 375;
+                    } else if(recordsOnList[i].get('x') < min(speed)) {
+                        speedX = windowWidth / (windowWidth / 300);
+                    } else {
+                        speedX = map(recordsOnList[i].get('x'), min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375);
+                    }
+                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), speedX, recordsOnList[i].get('y'), recordsOnList[i].get('shake'), recordsOnList[i].get('valorX'), recordsOnList[i].get('valorY'), recordsOnList[i].get('id'), recordsOnList[i].get('user'));
                 });
             }
         }
@@ -143,7 +151,7 @@ function setup() {
                         color: map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 0, 255),
                         divisoes: map(artists[i].top_tracks_average_features.danceability, min(danceability), max(danceability), 3, 10),
                         largura: map(artists[i].popularity, min(popularity), max(popularity), windowWidth / (windowWidth / 100), windowWidth / (windowWidth / 400)),
-                        x: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375),
+                        x: artists[i].top_tracks_average_features.speed,
                         y: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness),  windowHeight - (windowWidth / (windowWidth / 400)) / 4,250),
                         shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 1, 2),
                         valorX: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375),
