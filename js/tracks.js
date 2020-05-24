@@ -225,7 +225,6 @@ function setup() {
         saveCanvas('public-tracks-artboard.png');
         resizeCanvas(windowWidth - windowWidth / 6, windowHeight);
     });
-
 }
 
 document.querySelector('.info').addEventListener('click', abrirPopupInfo);

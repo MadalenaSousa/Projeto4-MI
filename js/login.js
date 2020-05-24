@@ -16,6 +16,12 @@ function setup() {
     yvalues = new Array(floor(w / xspacing));
 }
 
+window.addEventListener('resize', function () {
+    w = window.innerWidth - window.innerWidth / 6;
+    h = window.innerHeight;
+    resizeCanvas(w, h);
+});
+
 function draw() {
     background(0);
     calcWave();
