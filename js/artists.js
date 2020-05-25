@@ -30,6 +30,7 @@ function preload() {
 
 function setup() {
     createCanvas(windowWidth - windowWidth / 6, windowHeight);
+
     client.login({username: user.name}, (success, data) => {
         if (success) {
             console.log("User logged in successfully");
@@ -58,7 +59,9 @@ function setup() {
             console.log('Clients present on login: ' + clients);
             clientsRecords[i] = client.record.getRecord(clients[i]);
             clientsRecords[i].subscribe(function () {
-                createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
+                if((clientsRecords[i].get('name') !== undefined)) {
+                    createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'));;
+                }
             });
         }
     });
@@ -72,7 +75,9 @@ function setup() {
                     console.log('Updated clients list: ' + clients);
                     clientsRecords[i] = client.record.getRecord(clients[i]);
                     clientsRecords[i].subscribe(function () {
-                        createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'))
+                        if((clientsRecords[i].get('name') !== undefined)) {
+                            createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'));
+                        }
                     });
                 }
             });
