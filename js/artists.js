@@ -120,6 +120,7 @@ function setup() {
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
                     let speedX = 0;
+                    let speedValorX = 0;
                     if(recordsOnList[i].get('x') > max(speed)) {
                         speedX = windowWidth - (windowWidth / 26) - 375;
                     } else if(recordsOnList[i].get('x') < min(speed)) {
@@ -127,7 +128,14 @@ function setup() {
                     } else {
                         speedX = map(recordsOnList[i].get('x'), min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375);
                     }
-                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), speedX, recordsOnList[i].get('y'), recordsOnList[i].get('shake'), recordsOnList[i].get('valorX'), recordsOnList[i].get('valorY'), recordsOnList[i].get('id'), recordsOnList[i].get('user'));
+                    if(recordsOnList[i].get('valorX') > max(speed)) {
+                        speedValorX = windowWidth - (windowWidth / 26) - 375;
+                    } else if(recordsOnList[i].get('valorX') < min(speed)) {
+                        speedValorX = windowWidth / (windowWidth / 300);
+                    } else {
+                        speedValorX = map(recordsOnList[i].get('valorX'), min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375);
+                    }
+                    addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), speedX, recordsOnList[i].get('y'), recordsOnList[i].get('shake'), speedValorX, recordsOnList[i].get('valorY'), recordsOnList[i].get('id'), recordsOnList[i].get('user'));
                 });
             }
         }
