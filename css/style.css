@@ -344,7 +344,7 @@ h2 {
     left: 1vw;
     top: 3vh;
     width: 50vw;
-    font-size: 0.5vw;
+    font-size: 0.7vw;
     cursor: pointer;
 }
 
@@ -444,13 +444,13 @@ h2 {
 .informacao{
     position: absolute;
     text-align: left;
-    left: 7vw;
-    top: 2.5vh;
+    left: 9vw;
+    top: 2.3vh;
     width: 50vw;
 }
 .info{
-    width: 2.5%;
-    height: 2.5%;
+    width: 3%;
+    height: 3%;
     cursor: pointer;
 
 
