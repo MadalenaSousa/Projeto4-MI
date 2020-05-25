@@ -348,7 +348,7 @@ class waveArtist {
                 fill(255, 255 - this.color, 255);
                 textStyle(BOLD);
                 textSize(12);
-                text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 155);
+                text("Added by "  + split( user.name, ' ')[0], this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 155);
                 textStyle(NORMAL);
                 text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
                 text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
@@ -394,7 +394,7 @@ class waveArtist {
                 fill(255, 255 - this.color, 255);
                 textStyle(BOLD);
                 textSize(12);
-                text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 45);
+                text("Added by "  + split( user.name, ' ')[0], this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 45);
                 textStyle(NORMAL);
                 text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 130);
                 text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 110);
