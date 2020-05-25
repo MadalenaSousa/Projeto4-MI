@@ -159,7 +159,7 @@ function setup() {
                         x: artists[i].top_tracks_average_features.speed,
                         y: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness),  windowHeight - (windowWidth / (windowWidth / 400)) / 4,250),
                         shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 1, 2),
-                        valorX: map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375),
+                        valorX: artists[i].top_tracks_average_features.speed,
                         valorY: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness),  windowHeight - (windowWidth / (windowWidth / 400)) / 4, 250),
                         id: id[i]
 
