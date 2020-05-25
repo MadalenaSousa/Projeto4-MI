@@ -41,10 +41,8 @@ function setup() {
     for (let i = 0; i < totalPlaylists; i++) {
         document.querySelectorAll(".playlist")[i].addEventListener("click", function () {
             let mountainsId = [];
-            if(mountains.length < 0) {
-                for(let z = 0; z < mountains.length; z++) {
-                    mountainsId.push(mountains[z].id);
-                }
+            for(let z = 0; z < mountains.length; z++) {
+                mountainsId.push(mountains[z].id);
             }
             if(contains(mountainsId, userPlaylists[i].id) === false) {
                 addNewMountain(

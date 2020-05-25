@@ -55,10 +55,8 @@ function setup() {
     for (let i = 0; i < totalSongs; i++) {
         document.querySelectorAll(".song")[i].addEventListener("click", function () {
             let flowersId = [];
-            if(flowers.length < 0) {
-                for(let z = 0; z < flowers.length; z++) {
-                    flowersId.push(flowers[z].id);
-                }
+            for(let z = 0; z < flowers.length; z++) {
+                flowersId.push(flowers[z].id);
             }
             if(contains(flowersId, songs[i].id) === false) {
                 addNewFlower(

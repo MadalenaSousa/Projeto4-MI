@@ -52,10 +52,8 @@ function setup() {
     for (let i = 0; i < totalArtists; i++) {
         document.querySelectorAll(".artist")[i].addEventListener("click", function () {
             let wavesId = [];
-            if(waves.length < 0) {
-                for(let z = 0; z < waves.length; z++) {
-                    wavesId.push(waves[z].id);
-                }
+            for(let z = 0; z < waves.length; z++) {
+                wavesId.push(waves[z].id);
             }
             if(contains(wavesId, artists[i].id) === false) {
                 addNewWave(
