@@ -179,7 +179,7 @@ a {
 }
 
 .leavePlaylists:hover {
-    color: deepskyblue;
+    color: cyan;
     cursor: pointer;
 }
 
@@ -291,7 +291,7 @@ h2 {
 }
 
 .close-shareP:hover, .close-createP:hover, .close-logoutP:hover {
-    color: deepskyblue;
+    color: cyan;
     cursor: pointer;
 }
 
@@ -382,11 +382,11 @@ h2 {
 }
 
 .removePlaylists:hover {
-    color: deepskyblue;
+    color: cyan;
 }
 
 .playlist:hover {
-    color: deepskyblue;
+    color: cyan;
 }
 
 .artist:hover {
@@ -497,6 +497,6 @@ h2 {
 }
 
 .fechar-infoP:hover{
-    color: deepskyblue;
+    color: cyan;
     cursor: pointer;
 }

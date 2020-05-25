@@ -140,7 +140,7 @@ function setup() {
                         playlistId: userPlaylists[i].id,
                         px: userPlaylists[i].average_features.speed,
                         py: map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), height - 110, 140),
-                        color: map(userPlaylists[i].average_features.positivity, min(positivityCor), max(positivityCor), 190, 0),
+                        color: map(userPlaylists[i].average_features.positivity, min(positivityCor), max(positivityCor), 0, 255),
                         numtracks: userPlaylists[i].tracks.total,
                         resolution: map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
                         tam: map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 20, 80), //tamanho
@@ -429,7 +429,7 @@ class classMountain {
         if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 2) {
             this.t += this.tChange;
         }
-        this.c = color(this.color, 210, 255);
+        this.c = color(255 - this.color, 255, 255);
         stroke(this.c);
 
         this.montanha();
@@ -513,7 +513,7 @@ class classMountain {
         textStyle(NORMAL);
         text("Energy: " + map(this.round, 30,0, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 190 + (this.valor*7.7));
         text("Danceability: " + map(this.tChange, 0.01, 0.06, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 170 + (this.valor*7.7));
-        text("Positivity: " + map(this.color, 190,0, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 150 + (this.valor*7.7));
+        text("Positivity: " + map(this.color, 0,255, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 150 + (this.valor*7.7));
         text("Loudness: " + map(this.py, height,0, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 130 + (this.valor*7.7));
         text("Speed: " + map(this.px, 0, width, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 110 + (this.valor*7.7));
         text("Total songs: " + this.numtracks, this.px + 10, this.py - 90 + (this.valor*7.7));
