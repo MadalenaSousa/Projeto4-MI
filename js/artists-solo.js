@@ -9,14 +9,9 @@ let danceability = [];
 let loudness = [];
 let energy = [];
 let id = [];
-var previewShare = document.createElement("div");
-var cruz = document.createElement("div");
-var botaoDownload = document.createElement("div");
-
 
 let remove;
 let alfa = 0;
-
 
 function preload() {
     topArtists = loadJSON('php/' + userid + '-artists-object.json');
@@ -96,10 +91,12 @@ document.querySelector('.fechar-info').addEventListener('click', fecharPopupInfo
 
 function abrirPopupInfo(){
     document.querySelector('.popup-info').style.display = "block";
+    document.querySelector('.overlay').classList.remove('hide');
 }
 
 function fecharPopupInfo(){
     document.querySelector('.popup-info').style.display = "none";
+    document.querySelector('.overlay').classList.add('hide');
 }
 
 

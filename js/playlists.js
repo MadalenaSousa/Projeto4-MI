@@ -14,12 +14,6 @@ let speedX=[];
 let loudnessY=[];
 let positivityCor=[];
 
-var previewShare = document.createElement("div");
-var cruz = document.createElement("div");
-var botaoDownload = document.createElement("div");
-
-
-
 function preload() {
     userPlaylists = loadJSON('php/' + userid + '-playlist-object.json');
     user = loadJSON('php/' + userid + '-user-object.json');
@@ -203,10 +197,12 @@ document.querySelector('.fechar-info').addEventListener('click', fecharPopupInfo
 
 function abrirPopupInfo(){
     document.querySelector('.popup-info').style.display = "block";
+    document.querySelector('.overlay').classList.remove('hide');
 }
 
 function fecharPopupInfo(){
     document.querySelector('.popup-info').style.display = "none";
+    document.querySelector('.overlay').classList.add('hide');
 }
 
 function addNewMountain(name, id, px, py, numtracks, color, resolution, tam, round, nAmp, t, tChange, nInt, nSeed, owner) {
@@ -515,9 +511,9 @@ class classMountain {
         textSize(12);
         text("Added by " + split(this.owner, ' ')[0], this.px + 10, this.py - 210 + (this.valor*7.7));
         textStyle(NORMAL);
-        text("Energy: " + map(userPlaylists[i].average_features.energy, 0, 1, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 190 + (this.valor*7.7));
-        text("Danceability: " + map(userPlaylists[i].average_features.danceability, 0, 1, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 170 + (this.valor*7.7));
-        text("Positivity: " + map(userPlaylists[i].average_features.positivity, 0, 1, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 150 + (this.valor*7.7));
+        text("Energy: " + map(this.round, 30,0, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 190 + (this.valor*7.7));
+        text("Danceability: " + map(this.tChange, 0.01, 0.06, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 170 + (this.valor*7.7));
+        text("Positivity: " + map(this.color, 190,0, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 150 + (this.valor*7.7));
         text("Loudness: " + map(this.py, height,0, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 130 + (this.valor*7.7));
         text("Speed: " + map(this.px, 0, width, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 110 + (this.valor*7.7));
         text("Total songs: " + this.numtracks, this.px + 10, this.py - 90 + (this.valor*7.7));
