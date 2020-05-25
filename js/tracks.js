@@ -5,6 +5,7 @@ let newFlower;
 let remove;
 let check = false;
 let pY;
+let musicOn = false;
 
 let allLoudness = [];
 let allPositivity = [];
@@ -18,6 +19,8 @@ let allTatumsTotal = [];
 let allBarsDuration = [];
 let allBeatsDuration = [];
 let allTatumsDuration = [];
+
+let flowerSound = {};
 
 const client = new DeepstreamClient('localhost:6020');
 const record = [];
@@ -114,6 +117,7 @@ function setup() {
         } else {
             clearArray(flowers);
             let recordsOnList = [];
+            let soundIds = [];
             for (let i = 0; i < recordList.getEntries().length; i++) {
                 recordsOnList[i] = client.record.getRecord(recordList.getEntries()[i]);
                 recordsOnList[i].whenReady(function () {
@@ -125,13 +129,16 @@ function setup() {
                     } else {
                         speedX = map(recordsOnList[i].get('x'), min(allSpeed), max(allSpeed), 120, width - 200);
                     }
+                    soundIds[i] = recordsOnList[i].get('id');
+                    let soundF = getOrCreateSound(recordsOnList[i].get('id'), recordsOnList[i].get('url'));
                     addNewFlower(recordsOnList[i].get('id'), recordsOnList[i].get('song'), speedX, recordsOnList[i].get('y'), recordsOnList[i].get('y'), recordsOnList[i].get('raio'), recordsOnList[i].get('color'),
-                        recordsOnList[i].get('energy'), recordsOnList[i].get('speed'), recordsOnList[i].get('danceability'), recordsOnList[i].get('url'), recordsOnList[i].get('artist'), recordsOnList[i].get('user'),
+                        recordsOnList[i].get('energy'), recordsOnList[i].get('speed'), recordsOnList[i].get('danceability'), recordsOnList[i].get('url'), soundF, recordsOnList[i].get('artist'), recordsOnList[i].get('user'),
                         recordsOnList[i].get('tSections'), recordsOnList[i].get('dSections'), recordsOnList[i].get('lSections'),
                         recordsOnList[i].get('nBeats'), recordsOnList[i].get('rBeats'), recordsOnList[i].get('nSections'),
                         recordsOnList[i].get('mode'), recordsOnList[i].get('type'));
                 });
             }
+            clearSounds(soundIds);
         }
     });
 
@@ -188,10 +195,6 @@ function setup() {
 
                     recordList.addEntry(songs[i].name);
 
-                    record[i].whenReady(function () {
-                        console.log(record[i]);
-                    });
-
                     console.log("NOVA LISTA: " + recordList.getEntries());
                 } else {
                     console.log('Record with name: ' + songs[i].name + ", already exists, cannot create it");
@@ -230,6 +233,22 @@ function setup() {
 document.querySelector('.info').addEventListener('click', abrirPopupInfo);
 document.querySelector('.fechar-info').addEventListener('click', fecharPopupInfo);
 
+function getOrCreateSound(id, url) {
+     if(!(id in flowerSound)) {
+         flowerSound[id] = new Audio(url);
+     }
+    return flowerSound[id];
+}
+
+function clearSounds(ids) {
+    let soundIds = Object.keys(flowerSound);
+    for(let i = 0; i < soundIds.length; i++) {
+        if(!(ids.includes(soundIds[i]))) {
+            flowerSound[soundIds[i]].pause();
+            delete flowerSound[soundIds[i]];
+        }
+    }
+}
 
 function abrirPopupInfo() {
     document.querySelector('.popup-info').style.display = "block";
@@ -241,10 +260,18 @@ function fecharPopupInfo() {
     document.querySelector('.overlay').classList.add('hide');
 }
 
-function addNewFlower(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
-    newFlower = new flowerSong(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode);
+function addNewFlower(id, name, x, y, pY, raio, color, energy, speed, danceability, url, sound, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
+    newFlower = new flowerSong(id, name, x, y, pY, raio, color, energy, speed, danceability, url, sound, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode);
     flowers.push(newFlower);
     console.log("LISTA DE FLORES ATUAL: " + flowers);
+}
+
+function removeFlower(id) {
+    for(let i = 0; i < flowers.length; i++) {
+        if(flowers[i].id === id) {
+            flowers.splice(i, 1);
+        }
+    }
 }
 
 function clearArray(array) {
@@ -546,7 +573,7 @@ class flowerSong {
     curves;
     theta;
 
-    constructor(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
+    constructor(id, name, x, y, pY, raio, color, energy, speed, danceability, url, sound, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
         this.id = id;
         this.name = name;
         this.x = x;
@@ -572,8 +599,9 @@ class flowerSong {
         this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode);
 
         this.url = url;
-        this.sound = new Audio(url);
-        this.musicOn = false;
+        this.sound = sound;
+        console.log(sound.paused);
+        this.musicOn = !sound.paused;
     }
 
     display() {
@@ -586,18 +614,6 @@ class flowerSong {
             this.botaoPlay(this.x, this.y, this.musicOn);
         } else {
             this.random = 0;
-        }
-
-        if (this.musicOn) {
-            this.sound.play();
-            if(this.url === null) {
-                document.querySelector('.no-url').classList.remove('hide');
-                document.querySelector('.overlay').classList.remove('hide');
-                console.log('BOSTA');
-                this.musicOn = false;
-            }
-        } else {
-            this.sound.pause();
         }
 
         if (this.mode === 1) {
@@ -623,8 +639,20 @@ class flowerSong {
     }
 
     playSong() {
-        if (dist(mouseX, mouseY, this.x, this.y) <= this.raio) {
+        if (dist(mouseX, mouseY, this.x, this.y) <= 20) {
             this.musicOn = !this.musicOn;
+        }
+
+        if (this.musicOn) {
+            this.sound.play();
+            if(this.url === null) {
+                document.querySelector('.no-url').classList.remove('hide');
+                document.querySelector('.overlay').classList.remove('hide');
+                console.log('BOSTA');
+                this.musicOn = false;
+            }
+        } else {
+            this.sound.pause();
         }
     }
 
