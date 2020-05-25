@@ -43,7 +43,7 @@ foreach ($playlists->items as $playlist) {
         $speed = $speed + $trackFeatures[$i]->tempo;
     }
 
-    if($user->id == $playlist->owner->id) {
+    //if($user->id == $playlist->owner->id) {
         $singlePlaylist = array(
             "name" => $playlist->name,
             "description" => $playlist->description,
@@ -67,7 +67,7 @@ foreach ($playlists->items as $playlist) {
         );
 
         array_push($playlistsObject, $singlePlaylist);
-    }
+    //}
 }
 
 $playlistData = json_encode($playlistsObject);
