@@ -529,7 +529,7 @@ class waveArtist {
                 textStyle(NORMAL);
                 text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
                 text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
-                text("Loudness: " + map(this.valorY, 250, height - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
+                text("Loudness: " + map(this.valorY, 250, height - 50, 100, 0).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
                 text("Speed: " + map(this.valorX, 125, width - 170, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
 
 
@@ -574,7 +574,7 @@ class waveArtist {
                 text("Added by " + split(this.owner, ' ')[0], this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 45);
                 textStyle(NORMAL);
                 text("Speed: " + map(this.valorX, 125, width - 170, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 130);
-                text("Loudness: " + map(this.valorY, 250, height - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 110);
+                text("Loudness: " + map(this.valorY, 250, height - 50, 100, 0).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 110);
                 text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 90);
                 text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 70);
 
