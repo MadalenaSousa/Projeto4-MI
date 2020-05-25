@@ -345,7 +345,7 @@ class classMountain {
         textStyle(NORMAL);
         text("Energy: " + map(this.round, 30,0, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 160 + (this.valor*6.2));
         text("Danceability: " + map(this.tChange, 0.01, 0.06, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 140 + (this.valor*6.2));
-        text("Positivity: " + map(this.color, 190,0, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 120 + (this.valor*6.2));
+        text("Positivity: " + map(this.color, 0,255, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 120 + (this.valor*6.2));
         text("Loudness: " + map(this.py, height,0, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 100 + (this.valor*6.2));
         text("Speed: " + map(this.px, 0, width, 0, 100).toFixed(1) + "%", this.px + 10, this.py - 80 + (this.valor*6.2));
         text("Total songs: " + this.numtracks, this.px + 10, this.py - 60 + (this.valor*6.2));
