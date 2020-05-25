@@ -56,11 +56,7 @@ function setup() {
             clientsRecords[i] = client.record.getRecord(clients[i]);
             clientsRecords[i].subscribe(function () {
                 if ((clientsRecords[i].get('name') !== undefined)) {
-                    if(user.profile_pic === null) {
-                        createUserDiv(user.name, 'imagens/default.profile.png');
-                    } else {
-                        createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'));
-                    }
+                    createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'));
                 }
             });
         }
@@ -76,11 +72,7 @@ function setup() {
                     clientsRecords[i] = client.record.getRecord(clients[i]);
                     clientsRecords[i].subscribe(function () {
                         if ((clientsRecords[i].get('name') !== undefined)) {
-                            if(user.profile_pic === null) {
-                                createUserDiv(user.name, 'imagens/default.profile.png');
-                            } else {
-                                createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'));
-                            }
+                            createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'));
                         }
                     });
                 }
@@ -92,11 +84,7 @@ function setup() {
     totalArtists = Object.keys(artists).length;
 
     createArtistDiv();
-    if(user.profile_pic === null) {
-        createUserDiv(user.name, 'imagens/default.profile.png');
-    } else {
-        createUserDiv(user.name, user.profile_pic);
-    }
+    createUserDiv(user.name, user.profile_pic);
 
     logoutPopUp();
     sharePopUp();

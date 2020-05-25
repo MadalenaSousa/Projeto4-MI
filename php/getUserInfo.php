@@ -11,6 +11,13 @@ $api = $_SESSION['api_obj'];
 
 $user = $api->me();
 $userFile = $user->id . "-user-object.json";
+$profilepic = "imagens/default-profile.png";
+
+if($user->images[0]->url == null) {
+    $profilepic = "imagens/default-profile.png";
+} else {
+    $profilepic = $user->images[0]->url;
+}
 
 $userObject = array(
     "name" => $user->display_name,
@@ -18,7 +25,7 @@ $userObject = array(
     "country" => $user->country,
     "email" => $user->email,
     "n_followers" => $user->followers->total,
-    "profile_pic" => $user->images[0]->url,
+    "profile_pic" => $profilepic,
     "account_type" => $user->product
 );
 
