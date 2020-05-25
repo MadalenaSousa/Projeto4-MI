@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Music Taste Visualizer | Login</title>
+    <title>Music Taste Visualizer | Error</title>
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
 

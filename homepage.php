@@ -7,7 +7,7 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Music Taste Visualizer</title>
+    <title>Music Taste Visualizer | Home</title>
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
