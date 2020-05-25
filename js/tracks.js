@@ -502,6 +502,11 @@ window.addEventListener('resize', function () {
     resizeCanvas(w, h);
 });
 
+document.querySelector('.close-url').addEventListener('click', function () {
+    document.querySelector('.no-url').classList.add('hide');
+    document.querySelector('.overlay').classList.add('hide');
+});
+
 function draw() {
     background(0);
 
@@ -534,8 +539,7 @@ function getAudioAnalysis(index) {
 
 class flowerSong {
     c;
-    randomX;
-    randomY;
+    random;
     musicOn;
     sound;
     randflower;
@@ -549,8 +553,7 @@ class flowerSong {
         this.y = y;
         this.raio = raio;
         this.color = color;
-        this.shakeX = energy;
-        this.shakeY = energy;
+        this.shake = energy;
         this.speed = speed;
         this.danceability = danceability;
         this.artist = artist;
@@ -568,28 +571,34 @@ class flowerSong {
         this.curves = [];
         this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode);
 
+        this.url = url;
         this.sound = new Audio(url);
         this.musicOn = false;
     }
 
     display() {
         this.c = color(255, 255, 255 - this.color);
+        stroke(this.c);
+        this.flor(this.x, this.y, this.nBeats, this.rBeats, this.mode, this.theta);
+
         if (dist(mouseX, mouseY, this.x, this.y) <= 120) {
-            this.randomX = random(-this.shakeX, this.shakeX);
-            this.randomY = random(-this.shakeY, this.shakeY);
+            this.random = random(-this.shake, this.shake);
+            this.botaoPlay(this.x, this.y, this.musicOn);
         } else {
-            this.randomX = 0;
-            this.randomY = 0;
+            this.random = 0;
         }
 
         if (this.musicOn) {
             this.sound.play();
+            if(this.url === null) {
+                document.querySelector('.no-url').classList.remove('hide');
+                document.querySelector('.overlay').classList.remove('hide');
+                console.log('BOSTA');
+                this.musicOn = false;
+            }
         } else {
             this.sound.pause();
         }
-
-        stroke(this.c);
-        this.flor(this.x, this.y, this.nBeats, this.rBeats, this.mode, this.theta);
 
         if (this.mode === 1) {
             noStroke();
@@ -642,16 +651,27 @@ class flowerSong {
 
         //SECTIONS
         for (let c = 0; c < this.curves.length; c++) {
-            this.curves[c].display(this.randomX, this.randomY);
+            this.curves[c].display(this.random, this.random);
         }
 
         //BEATS
         for (let i = 0; i < nBeats * 2; i++) {
             let xB = x + rBeats / 1.5 * cos(i * theta);
             let yB = y + rBeats / 1.5 * sin(i * theta);
-            line(x, y, xB + this.randomX, yB + this.randomY);
+            line(x, y, xB + this.random, yB + this.random);
             fill(255);
-            ellipse(xB + this.randomX, yB + this.randomY, 5, 5);
+            ellipse(xB + this.random, yB + this.random, 5, 5);
+        }
+    }
+
+    botaoPlay(x, y, state) {
+        fill(0);
+        if(state === true) {
+            rectMode(CENTER);
+            rect(x - 8, y, 8, 20);
+            rect(x + 8, y, 8, 20);
+        } else {
+            triangle(x - 8, y - 10, x - 8, y + 10, x + 10, y);
         }
     }
 
@@ -659,6 +679,7 @@ class flowerSong {
         fill(0);
         strokeWeight(2);
         stroke(this.c);
+        rectMode(CORNER);
         if (this.y - 210 > 0) {
             beginShape();
             vertex(this.x + 20, this.y - 210);
@@ -676,7 +697,7 @@ class flowerSong {
             textSize(12);
             text("Added by " + split(this.owner, ' ')[0], this.x + 30, this.y - 190);
             textStyle(NORMAL);
-            text("Energy: " + map(this.shakeX, 0, 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 170);
+            text("Energy: " + map(this.shake, 0, 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 170);
             text("Danceability: " + map(this.danceability, min(allDanceability), max(allDanceability), 0, 100).toFixed(1) + "%", this.x + 30, this.y - 150);
             text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 130);
             text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 110);
@@ -721,7 +742,7 @@ class flowerSong {
             textSize(12);
             text("Added by " + split(this.owner, ' ')[0], this.x + 30, this.y + 80);
             textStyle(NORMAL);
-            text("Energy: " + map(this.shakeX, 0, 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 100);
+            text("Energy: " + map(this.shake, 0, 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 100);
             text("Danceability: " + map(this.danceability, min(allDanceability), max(allDanceability), 10, 100).toFixed(1) + "%", this.x + 30, this.y + 120);
             text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 140);
             text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 160);

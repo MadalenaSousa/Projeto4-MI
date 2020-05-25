@@ -234,7 +234,7 @@ h2 {
     margin-bottom: 5%;
 }
 
-.share, .create-playlist, .logout-or-home {
+.share, .create-playlist, .logout-or-home, .no-url {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -246,7 +246,7 @@ h2 {
     z-index: 5;
 }
 
-.logout-or-home {
+.logout-or-home, .no-url {
     padding: 1%;
 }
 
@@ -271,7 +271,7 @@ h2 {
     margin: 0.5%;
 }
 
-.close-share, .close-create, .close-logout, .close-home {
+.close-share, .close-create, .close-logout, .close-home, .close-url {
     display: inline-block;
     position: absolute;
     right: 3%;
