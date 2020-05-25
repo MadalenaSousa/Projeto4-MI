@@ -409,7 +409,7 @@ function cleanCreatePlaylistList() {
 }
 
 function cleanCreatePlaylistPreview() {
-    let arrayDivs = document.querySelectorAll('.preview img');
+    let arrayDivs = document.querySelectorAll('.preview-create img');
 
     for (let i = 0; i < arrayDivs.length; i++) {
         arrayDivs[i].remove();
