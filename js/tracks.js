@@ -698,7 +698,7 @@ class flowerSong {
             text("Added by " + split(this.owner, ' ')[0], this.x + 30, this.y - 190);
             textStyle(NORMAL);
             text("Energy: " + map(this.shake, 0, 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 170);
-            text("Danceability: " + map(this.danceability, min(allDanceability), max(allDanceability), 0, 100).toFixed(1) + "%", this.x + 30, this.y - 150);
+            text("Danceability: " + map(this.danceability, 0, 1, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 150);
             text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 130);
             text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 110);
             text("Speed: " + map(this.speed, min(allSpeed) / 5, max(allSpeed) / 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y - 90); //MAL MAPEADO
@@ -743,7 +743,7 @@ class flowerSong {
             text("Added by " + split(this.owner, ' ')[0], this.x + 30, this.y + 80);
             textStyle(NORMAL);
             text("Energy: " + map(this.shake, 0, 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 100);
-            text("Danceability: " + map(this.danceability, min(allDanceability), max(allDanceability), 10, 100).toFixed(1) + "%", this.x + 30, this.y + 120);
+            text("Danceability: " + map(this.danceability, 0, 1, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 120);
             text("Positivity: " + map(this.color, 0, 255, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 140);
             text("Loudness: " + map(this.y, height, 0, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 160);
             text("Speed: " + map(this.speed, min(allSpeed) / 5, max(allSpeed) / 5, 0, 100).toFixed(1) + "%", this.x + 30, this.y + 180);
