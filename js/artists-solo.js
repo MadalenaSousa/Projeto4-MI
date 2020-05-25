@@ -332,8 +332,8 @@ class waveArtist {
             stroke(255, 255 - this.color, 255);
             if (this.valorY >= ((2 * (this.largura / 2)) / 3) + 180) {
                 beginShape();
-                vertex(this.x - 0, this.y - ((2 * (this.largura / 2)) / 3) - 180);
-                vertex(this.x + 130, this.y - ((2 * (this.largura / 2)) / 3) - 180);
+                vertex(this.x - 0, this.y - ((2 * (this.largura / 2)) / 3) - 188);
+                vertex(this.x + 130, this.y - ((2 * (this.largura / 2)) / 3) - 188);
                 vertex(this.x + 130, this.y - ((2 * (this.largura / 2)) / 3) - 20);
                 vertex(this.x + 30, this.y - ((2 * (this.largura / 2)) / 3) - 20);
                 vertex(this.x, this.y - ((2 * (this.largura / 2)) / 3));
@@ -346,12 +346,13 @@ class waveArtist {
                 fill(255, 255 - this.color, 255);
                 textStyle(BOLD);
                 textSize(12);
-                text("Added by " + split( user.name, ' ')[0], this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 155);
+                text("Added by " + split( user.name, ' ')[0], this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 165);
                 textStyle(NORMAL);
-                text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
-                text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
-                text("Loudness: " + map(this.valorY, 250, height - 50, 100, 0).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
-                text("Speed: " + map(this.valorX, 125, width - 170, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
+                text("Energy: " + map(this.shake, 1, 2, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 145);
+                text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 125);
+                text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 105);
+                text("Loudness: " + map(this.valorY, 250, height - 50, 100, 0).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 85);
+                text("Speed: " + map(this.valorX, 125, width - 170, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 65);
 
 
                 if (mouseX > this.x + 10 && mouseX < this.x + 10 + 110 && mouseY > (this.y - ((2 * (this.largura / 2)) / 3)) - 50 && mouseY < (this.y - ((2 * (this.largura / 2)) / 3)) - 50 + 20) {
@@ -380,11 +381,11 @@ class waveArtist {
                 beginShape();
                 vertex(this.x - 0, this.y - ((2 * this.largura / 2) / 3) + 180);
                 vertex(this.x + 130, this.y - ((2 * this.largura / 2) / 3) + 180);
-                vertex(this.x + 130, this.y - ((2 * this.largura / 2) / 3) + 20);
-                vertex(this.x + 30, this.y - ((2 * this.largura / 2) / 3) + 20);
+                vertex(this.x + 130, this.y - ((2 * this.largura / 2) / 3) + 15);
+                vertex(this.x + 30, this.y - ((2 * this.largura / 2) / 3) + 15);
                 vertex(this.x, this.y - ((2 * this.largura / 2) / 3));
-                vertex(this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 20);
-                vertex(this.x, this.y - ((2 * this.largura / 2) / 3) + 20);
+                vertex(this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 15);
+                vertex(this.x, this.y - ((2 * this.largura / 2) / 3) + 15);
                 endShape(CLOSE);
 
                 noStroke();
@@ -392,12 +393,13 @@ class waveArtist {
                 fill(255, 255 - this.color, 255);
                 textStyle(BOLD);
                 textSize(12);
-                text("Added by "  + split( user.name, ' ')[0], this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 45);
+                text("Added by " + split( user.name, ' ')[0], this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 35);
                 textStyle(NORMAL);
-                text("Speed: " + map(this.valorX, 125, width - 170, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 130);
-                text("Loudness: " + map(this.valorY, 250, height - 50, 100, 0).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 110);
-                text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 90);
-                text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 70);
+                text("Speed: " + map(this.valorX, 125, width - 170, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 135);
+                text("Loudness: " + map(this.valorY, 250, height - 50, 100, 0).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 115);
+                text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 95);
+                text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 75);
+                text("Energy: " + map(this.shake, 1, 2, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 55);
 
 
                 if (mouseX > this.x + 10 && mouseX < this.x + 10 + 110 && mouseY > (this.y - ((2 * this.largura / 2) / 3) + 150) && mouseY < (this.y - ((2 * this.largura / 2) / 3) + 150 + 20)) {
