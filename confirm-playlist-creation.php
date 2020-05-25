@@ -15,7 +15,7 @@
 
 <div class="login">
     <div class="titulo unit">Your Playlist Was Created</div>
-    <div class="unit">
+    <div class="unit" style="text-align: center">
         Nice work! You just created a brand new playlist you can jam to!
         Check out your spotify to see it, the app or online, feel free to costumize it to your preference!
     </div>
