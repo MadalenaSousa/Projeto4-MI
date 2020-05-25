@@ -60,12 +60,12 @@ function setup() {
                     artists[i].name,
                     map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 0, 255),
                     map(artists[i].top_tracks_average_features.danceability, min(danceability), max(danceability), 3, 10),
-                    map(artists[i].popularity, min(popularity), max(popularity), windowWidth / (windowWidth / 100), windowWidth / (windowWidth / 400)),
-                    map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375),
-                    map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), windowHeight - (windowWidth / (windowWidth / 400)) / 4, 250),
+                    map(artists[i].popularity, min(popularity), max(popularity), width / (width / 100), width / (width / 400)),
+                    map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), width / (width / 300), width - 170),
+                    map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), height - (width / (width / 400)) / 4, 250),
                     map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 1, 2),
-                    map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375),
-                    map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), windowHeight - (windowWidth / (windowWidth / 400)) / 4, 250),
+                    map(artists[i].top_tracks_average_features.speed, min(speed), max(speed), width / (width / 300), width - 170),
+                    map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), height - (width / (width / 400)) / 4, 250),
                     id[i]);
                 remove[i].classList.remove('hide');
             }
@@ -261,6 +261,7 @@ class waveArtist {
     }
 
 
+
     display() {
         this.onda();
     }
@@ -348,12 +349,12 @@ class waveArtist {
                 fill(255, 255 - this.color, 255);
                 textStyle(BOLD);
                 textSize(12);
-                text("Added by "  + split( user.name, ' ')[0], this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 155);
+                text("Added by " + split( user.name, ' ')[0], this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 155);
                 textStyle(NORMAL);
                 text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
                 text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
-                text("Loudness: " + map(this.valorY, 250, windowHeight - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
-                text("Speed: " + map(this.valorX, 125, windowWidth - (windowWidth / 26) - 375, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
+                text("Loudness: " + map(this.valorY, 250, height - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
+                text("Speed: " + map(this.valorX, 125, width - 170, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
 
 
                 if (mouseX > this.x + 10 && mouseX < this.x + 10 + 110 && mouseY > (this.y - ((2 * (this.largura / 2)) / 3)) - 50 && mouseY < (this.y - ((2 * (this.largura / 2)) / 3)) - 50 + 20) {
@@ -396,10 +397,10 @@ class waveArtist {
                 textSize(12);
                 text("Added by "  + split( user.name, ' ')[0], this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 45);
                 textStyle(NORMAL);
-                text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 130);
-                text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 110);
-                text("Loudness: " + map(this.valorY, 250, windowHeight - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 90);
-                text("Speed: " + map(this.valorX, 125, windowWidth - (windowWidth / 26) - 375, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 70);
+                text("Speed: " + map(this.valorX, 125, width - 170, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 130);
+                text("Loudness: " + map(this.valorY, 250, height - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 110);
+                text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 90);
+                text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 70);
 
 
                 if (mouseX > this.x + 10 && mouseX < this.x + 10 + 110 && mouseY > (this.y - ((2 * this.largura / 2) / 3) + 150) && mouseY < (this.y - ((2 * this.largura / 2) / 3) + 150 + 20)) {
