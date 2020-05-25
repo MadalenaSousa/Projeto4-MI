@@ -49,7 +49,7 @@ function setup() {
                     userPlaylists[i].name,
                     userPlaylists[i].id,
                     map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, width - 110),
-                    map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), 140, height - 110),
+                    map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), height - 110, 140),
                     map(userPlaylists[i].average_features.positivity, min(positivityCor), max(positivityCor), 190, 0),
                     userPlaylists[i].tracks.total,
                     map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
