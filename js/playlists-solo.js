@@ -42,7 +42,7 @@ function setup() {
                 addNewMountain(
                     userPlaylists[i].name,
                     userPlaylists[i].id,
-                    map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, width - 110),
+                    map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, width - 250),
                     map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), height - 110, 140),
                     map(userPlaylists[i].average_features.positivity, min(positivityCor), max(positivityCor), 0, 255),
                     userPlaylists[i].tracks.total,
