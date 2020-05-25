@@ -59,7 +59,7 @@ function setup() {
             console.log('Clients present on login: ' + clients);
             clientsRecords[i] = client.record.getRecord(clients[i]);
             clientsRecords[i].subscribe(function () {
-                if((clientsRecords[i].get('name') !== undefined)) {
+                if ((clientsRecords[i].get('name') !== undefined)) {
                     createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'));
                 }
             });
@@ -75,7 +75,7 @@ function setup() {
                     console.log('Updated clients list: ' + clients);
                     clientsRecords[i] = client.record.getRecord(clients[i]);
                     clientsRecords[i].subscribe(function () {
-                        if((clientsRecords[i].get('name') !== undefined)) {
+                        if ((clientsRecords[i].get('name') !== undefined)) {
                             createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'));
                         }
                     });
@@ -121,19 +121,19 @@ function setup() {
                 recordsOnList[i].whenReady(function () {
                     let speedX = 0;
                     let speedValorX = 0;
-                    if(recordsOnList[i].get('x') > max(speed)) {
-                        speedX = windowWidth - (windowWidth / 26) - 375;
-                    } else if(recordsOnList[i].get('x') < min(speed)) {
-                        speedX = windowWidth / (windowWidth / 300);
+                    if (recordsOnList[i].get('x') > max(speed)) {
+                        speedX = width - (width / 26) - 375;
+                    } else if (recordsOnList[i].get('x') < min(speed)) {
+                        speedX = width / (width / 300);
                     } else {
-                        speedX = map(recordsOnList[i].get('x'), min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375);
+                        speedX = map(recordsOnList[i].get('x'), min(speed), max(speed), width / (width / 300), width - (width / 26) - 375);
                     }
-                    if(recordsOnList[i].get('valorX') > max(speed)) {
-                        speedValorX = windowWidth - (windowWidth / 26) - 375;
-                    } else if(recordsOnList[i].get('valorX') < min(speed)) {
-                        speedValorX = windowWidth / (windowWidth / 300);
+                    if (recordsOnList[i].get('valorX') > max(speed)) {
+                        speedValorX = width - (width / 26) - 375;
+                    } else if (recordsOnList[i].get('valorX') < min(speed)) {
+                        speedValorX = width / (width / 300);
                     } else {
-                        speedValorX = map(recordsOnList[i].get('valorX'), min(speed), max(speed), windowWidth / (windowWidth / 300), windowWidth - (windowWidth / 26) - 375);
+                        speedValorX = map(recordsOnList[i].get('valorX'), min(speed), max(speed), width / (width / 300), width - (width / 26) - 375);
                     }
                     addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), speedX, recordsOnList[i].get('y'), recordsOnList[i].get('shake'), speedValorX, recordsOnList[i].get('valorY'), recordsOnList[i].get('id'), recordsOnList[i].get('user'));
                 });
@@ -149,7 +149,6 @@ function setup() {
                 remove[i].classList.add('hide');
             }
         });
-        console.log(windowWidth);
 
 
         document.querySelectorAll(".artist")[i].addEventListener("click", function () {
@@ -163,12 +162,12 @@ function setup() {
                         artist: artists[i].name,
                         color: map(artists[i].top_tracks_average_features.positivity, min(positivity), max(positivity), 0, 255),
                         divisoes: map(artists[i].top_tracks_average_features.danceability, min(danceability), max(danceability), 3, 10),
-                        largura: map(artists[i].popularity, min(popularity), max(popularity), windowWidth / (windowWidth / 100), windowWidth / (windowWidth / 400)),
+                        largura: map(artists[i].popularity, min(popularity), max(popularity), width / (width / 100), width / (width / 400)),
                         x: artists[i].top_tracks_average_features.speed,
-                        y: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness),  windowHeight - (windowWidth / (windowWidth / 400)) / 4,250),
+                        y: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), height - (width / (width / 400)) / 4, 250),
                         shake: map(artists[i].top_tracks_average_features.energy, min(energy), max(energy), 1, 2),
                         valorX: artists[i].top_tracks_average_features.speed,
-                        valorY: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness),  windowHeight - (windowWidth / (windowWidth / 400)) / 4, 250),
+                        valorY: map(artists[i].top_tracks_average_features.loudness, min(loudness), max(loudness), height - (width / (width / 400)) / 4, 250),
                         id: id[i]
 
                     });
@@ -206,8 +205,8 @@ function setup() {
     document.querySelector('.download').addEventListener('click', function () {
         console.log('Canvas will be downloaded');
         resizeCanvas(windowHeight, windowHeight);
-        saveCanvas( 'public-artists-artboard.png');
-        resizeCanvas(windowWidth - windowWidth/6, windowHeight);
+        saveCanvas('public-artists-artboard.png');
+        resizeCanvas(windowWidth - windowWidth / 6, windowHeight);
     });
 }
 
@@ -216,11 +215,11 @@ document.querySelector('.info').addEventListener('click', abrirPopupInfo);
 document.querySelector('.fechar-info').addEventListener('click', fecharPopupInfo);
 
 
-function abrirPopupInfo(){
+function abrirPopupInfo() {
     document.querySelector('.popup-info').style.display = "block";
 }
 
-function fecharPopupInfo(){
+function fecharPopupInfo() {
     document.querySelector('.popup-info').style.display = "none";
 }
 
@@ -299,7 +298,7 @@ function sharePopUp() {
         img.src = canvas.toDataURL('image/jpeg', 0.01);
         img.classList.add('contorno');
         document.querySelector('.preview').appendChild(img);
-        resizeCanvas(windowWidth - windowWidth/6, windowHeight);
+        resizeCanvas(windowWidth - windowWidth / 6, windowHeight);
     });
 
     document.querySelector(".close-share").addEventListener('click', function () {
@@ -360,7 +359,7 @@ function createUserDiv(name, profilepic) {
 function cleanCreatePlaylistPreview() {
     let arrayDivs = document.querySelectorAll('.preview img');
 
-    for(let i = 0; i < arrayDivs.length; i++) {
+    for (let i = 0; i < arrayDivs.length; i++) {
         arrayDivs[i].remove();
     }
 }
@@ -530,8 +529,8 @@ class waveArtist {
                 textStyle(NORMAL);
                 text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 130);
                 text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 110);
-                text("Loudness: " + map(this.valorY, 250, windowHeight - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
-                text("Speed: " + map(this.valorX, 125, windowWidth - (windowWidth / 26) - 375, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
+                text("Loudness: " + map(this.valorY, 250, height - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 90);
+                text("Speed: " + map(this.valorX, 125, width - (width / 26) - 375, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * (this.largura / 2)) / 3) - 70);
 
 
                 if (mouseX > this.x + 10 && mouseX < this.x + 10 + 110 && mouseY > (this.y - ((2 * (this.largura / 2)) / 3)) - 50 && mouseY < (this.y - ((2 * (this.largura / 2)) / 3)) - 50 + 20) {
@@ -576,8 +575,8 @@ class waveArtist {
                 textStyle(NORMAL);
                 text("Danceability: " + map(this.divisoes, 3, 10, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 130);
                 text("Positivity: " + map(this.largura, 100, 400, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 110);
-                text("Loudness: " + map(this.valorY, 250, windowHeight - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 90);
-                text("Speed: " + map(this.valorX, 125, windowWidth - (windowWidth / 26) - 375, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 70);
+                text("Loudness: " + map(this.valorY, 250, height - 50, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 90);
+                text("Speed: " + map(this.valorX, 125, width - (width / 26) - 375, 0, 100).toFixed(1) + "%", this.x + 10, this.y - ((2 * this.largura / 2) / 3) + 70);
 
 
                 if (mouseX > this.x + 10 && mouseX < this.x + 10 + 110 && mouseY > (this.y - ((2 * this.largura / 2) / 3) + 150) && mouseY < (this.y - ((2 * this.largura / 2) / 3) + 150 + 20)) {
