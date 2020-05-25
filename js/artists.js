@@ -60,7 +60,7 @@ function setup() {
             clientsRecords[i] = client.record.getRecord(clients[i]);
             clientsRecords[i].subscribe(function () {
                 if((clientsRecords[i].get('name') !== undefined)) {
-                    createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'));;
+                    createUserDiv(clientsRecords[i].get('name'), clientsRecords[i].get('profile_pic'));
                 }
             });
         }

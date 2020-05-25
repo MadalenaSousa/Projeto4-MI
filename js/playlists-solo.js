@@ -41,8 +41,10 @@ function setup() {
     for (let i = 0; i < totalPlaylists; i++) {
         document.querySelectorAll(".playlist")[i].addEventListener("click", function () {
             let mountainsId = [];
-            for(let z = 0; z < mountains.length; z++) {
-                mountainsId.push(mountains[i].id);
+            if(mountains.length < 0) {
+                for(let z = 0; z < mountains.length; z++) {
+                    mountainsId.push(mountains[z].id);
+                }
             }
             if(contains(mountainsId, userPlaylists[i].id) === false) {
                 addNewMountain(
@@ -215,6 +217,12 @@ function createUserDiv(name, profilepic) {
 
     document.querySelector(".list-people").appendChild(userDiv);
 }
+
+window.addEventListener('resize', function () {
+    w = window.innerWidth - window.innerWidth / 6;
+    h = window.innerHeight;
+    resizeCanvas(w, h);
+});
 
 function draw() {
 

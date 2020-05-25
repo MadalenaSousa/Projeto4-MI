@@ -17,10 +17,6 @@ let allBarsDuration = [];
 let allBeatsDuration = [];
 let allTatumsDuration = [];
 
-var previewShare = document.createElement("div");
-var cruz = document.createElement("div");
-var botaoDownload = document.createElement("div");
-
 
 function preload() {
     //playlistSongs = loadJSON('php/' + userid +'-playlist-songs-object.json');
@@ -59,14 +55,16 @@ function setup() {
     for (let i = 0; i < totalSongs; i++) {
         document.querySelectorAll(".song")[i].addEventListener("click", function () {
             let flowersId = [];
-            for(let z = 0; z < flowers.length; z++) {
-                flowersId.push(flowers[i].id);
+            if(flowers.length < 0) {
+                for(let z = 0; z < flowers.length; z++) {
+                    flowersId.push(flowers[z].id);
+                }
             }
             if(contains(flowersId, songs[i].id) === false) {
                 addNewFlower(
                     songs[i].id,
                     songs[i].name,
-                    (songs[i].duration / 2) + ((width - (songs[i].duration / 2)) / totalSongs) * i,
+                    map(getAudioFeatures(i).speed, min(allSpeed), max(allSpeed), 120, width - 200),
                     map(allLoudness[i], min(allLoudness), max(allLoudness), height - 80, 80),
                     map(allLoudness[i], min(allLoudness), max(allLoudness), height - 80, 80),
                     (songs[i].duration / 3),
@@ -115,14 +113,13 @@ document.querySelector('.fechar-info').addEventListener('click', fecharPopupInfo
 
 function abrirPopupInfo(){
     document.querySelector('.popup-info').style.display = "block";
+    document.querySelector('.overlay').classList.remove('hide');
 }
 
 function fecharPopupInfo(){
     document.querySelector('.popup-info').style.display = "none";
+    document.querySelector('.overlay').classList.add('hide');
 }
-
-
-
 
 function addNewFlower(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode) {
     newFlower = new flowerSong(id, name, x, y, pY, raio, color, energy, speed, danceability, url, artist, owner, arraySectionTempo, arraySectionDuration, arraySectionLoudness, nBeats, rBeats, numberSections, mode);
@@ -318,15 +315,18 @@ function createSongDiv() {
     }
 }
 
-function draw() {
-    if (cruz.style.display === "block" || previewShare.style.display === "block") {
-        document.querySelector(".cruz").addEventListener('click', function () {
-            document.querySelector('.cruz').style.display = "none";
-            document.querySelector('.PreviewShare').style.display = "none";
-            document.querySelector('.overlay').classList.add('hide')
-        });
-    }
+window.addEventListener('resize', function () {
+    w = window.innerWidth - window.innerWidth / 6;
+    h = window.innerHeight;
+    resizeCanvas(w, h);
+});
 
+document.querySelector('.close-url').addEventListener('click', function () {
+    document.querySelector('.no-url').classList.add('hide');
+    document.querySelector('.overlay').classList.add('hide');
+});
+
+function draw() {
     background(0);
 
     if (fromPlaylist) {
@@ -398,15 +398,20 @@ class flowerSong {
         this.curves = [];
         this.randflower = new randFlower(arraySectionTempo, arraySectionDuration, arraySectionLoudness, this.curves, x, y, this.numberSections, mode);
 
+        this.url = url;
         this.sound = new Audio(url);
         this.musicOn = false;
     }
 
     display() {
         this.c = color(255, 255, 255 - this.color);
+        stroke(this.c);
+        this.flor(this.x, this.y, this.nBeats, this.rBeats, this.mode, this.theta);
+
         if (dist(mouseX, mouseY, this.x, this.y) <= 120) {
             this.randomX = random(-this.shakeX, this.shakeX);
             this.randomY = random(-this.shakeY, this.shakeY);
+            this.botaoPlay(this.x, this.y, this.musicOn);
         } else {
             this.randomX = 0;
             this.randomY = 0;
@@ -414,12 +419,15 @@ class flowerSong {
 
         if (this.musicOn) {
             this.sound.play();
+            if(this.url === null) {
+                document.querySelector('.no-url').classList.remove('hide');
+                document.querySelector('.overlay').classList.remove('hide');
+                console.log('BOSTA');
+                this.musicOn = false;
+            }
         } else {
             this.sound.pause();
         }
-
-        stroke(this.c);
-        this.flor(this.x, this.y, this.nBeats, this.rBeats, this.mode, this.theta);
 
         if (this.mode === 1) {
             noStroke();
@@ -487,10 +495,22 @@ class flowerSong {
         }
     }
 
+    botaoPlay(x, y, state) {
+        fill(0);
+        if(state === true) {
+            rectMode(CENTER);
+            rect(x - 8, y, 8, 20);
+            rect(x + 8, y, 8, 20);
+        } else {
+            triangle(x - 8, y - 10, x - 8, y + 10, x + 10, y);
+        }
+    }
+
     balao() {
         fill(0);
         strokeWeight(2);
         stroke(this.c);
+        rectMode(CORNER);
         if (this.y - 210 > 0) {
             beginShape();
             vertex(this.x + 20, this.y - 210);

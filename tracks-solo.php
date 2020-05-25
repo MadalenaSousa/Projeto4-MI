@@ -132,8 +132,8 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
                 <div class="preview">
                 </div>
                 <div>
-                    <label>Yes<input type="radio" name="cover" value="use"></label>
-                    <label>No<input type="radio" name="cover" value="dontuse"></label>
+                    <label>Yes<input type="radio" name="cover" value="use" required></label>
+                    <label>No<input type="radio" name="cover" value="dontuse" required></label>
                 </div>
             </div>
         </div>
@@ -142,6 +142,18 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
             <input class="close-create" type="button" name="cancel" onClick="window.location='tracks.php'" value="CANCEL">
         </div>
     </form>
+</div>
+
+<div class="no-url hide">
+    <div class="close-url">X</div>
+    <div class="unit">
+        <h2><b>Sorry!</b></h2>
+    </div>
+    <div class="unit">
+        Looks like Spotify doesn't have a preview of this Song or it's currently unvailable.
+        Please try another song. <br>
+        Thank You!
+    </div>
 </div>
 
 <script src="js/tracks-solo.js"></script>
