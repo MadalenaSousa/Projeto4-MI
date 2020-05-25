@@ -162,6 +162,18 @@ $session_value = (isset($_SESSION['userData'])) ? $_SESSION['userData'] : '';
     </div>
 </div>
 
+<div class="no-url hide">
+    <div class="close-url">X</div>
+    <div class="unit">
+        <h2><b>Sorry!</b></h2>
+    </div>
+    <div class="unit">
+        Looks like Spotify doesn't have a preview of this Song or it's currently unvailable.
+        Please try another song. <br>
+        Thank You!
+    </div>
+</div>
+
 <script src="js/tracks.js"></script>
 </body>
 </html>
