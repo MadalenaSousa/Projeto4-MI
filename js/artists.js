@@ -122,18 +122,18 @@ function setup() {
                     let speedX = 0;
                     let speedValorX = 0;
                     if (recordsOnList[i].get('x') > max(speed)) {
-                        speedX = width - (width / 26) - 375;
+                        speedX = width - 375;
                     } else if (recordsOnList[i].get('x') < min(speed)) {
                         speedX = width / (width / 300);
                     } else {
-                        speedX = map(recordsOnList[i].get('x'), min(speed), max(speed), width / (width / 300), width - (width / 26) - 375);
+                        speedX = map(recordsOnList[i].get('x'), min(speed), max(speed), width / (width / 300), width - 375);
                     }
                     if (recordsOnList[i].get('valorX') > max(speed)) {
-                        speedValorX = width - (width / 26) - 375;
+                        speedValorX = width - 375;
                     } else if (recordsOnList[i].get('valorX') < min(speed)) {
                         speedValorX = width / (width / 300);
                     } else {
-                        speedValorX = map(recordsOnList[i].get('valorX'), min(speed), max(speed), width / (width / 300), width - (width / 26) - 375);
+                        speedValorX = map(recordsOnList[i].get('valorX'), min(speed), max(speed), width / (width / 300), width - 375);
                     }
                     addNewWave(recordsOnList[i].get('artist'), recordsOnList[i].get('color'), recordsOnList[i].get('divisoes'), recordsOnList[i].get('largura'), speedX, recordsOnList[i].get('y'), recordsOnList[i].get('shake'), speedValorX, recordsOnList[i].get('valorY'), recordsOnList[i].get('id'), recordsOnList[i].get('user'));
                 });
