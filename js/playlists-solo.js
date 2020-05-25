@@ -44,7 +44,7 @@ function setup() {
                     userPlaylists[i].id,
                     map(userPlaylists[i].average_features.speed, min(speedX), max(speedX), 110, width - 110),
                     map(userPlaylists[i].average_features.loudness, min(loudnessY), max(loudnessY), height - 110, 140),
-                    map(userPlaylists[i].average_features.positivity, min(positivityCor), max(positivityCor), 190, 0),
+                    map(userPlaylists[i].average_features.positivity, min(positivityCor), max(positivityCor), 0, 255),
                     userPlaylists[i].tracks.total,
                     map(userPlaylists[i].average_features.positivity, 0, 1.0, 13, 20),// número de "vértices"
                     map(userPlaylists[i].tracks.total, min(trackstotal), max(trackstotal), 20, 80), //tamanho
@@ -219,15 +219,6 @@ window.addEventListener('resize', function () {
 });
 
 function draw() {
-
-    if (cruz.style.display === "block" || previewShare.style.display === "block") {
-        document.querySelector(".cruz").addEventListener('click', function () {
-            document.querySelector('.cruz').style.display = "none";
-            document.querySelector('.PreviewShare').style.display = "none";
-            document.querySelector('.overlay').classList.add('hide')
-        });
-    }
-
     background(0);
     if(mountains.length > 0) {
         for(let i = 0; i < mountains.length; i++) {
@@ -270,7 +261,7 @@ class classMountain {
         if (dist(mouseX, mouseY, this.px, this.py) <= this.tam * 2) {
             this.t += this.tChange;
         }
-        this.c = color(this.color, 210, 255);
+        this.c = color(255 - this.color, 255, 255);
         stroke(this.c);
 
         this.montanha();
