@@ -8,12 +8,6 @@ let speedX=[];
 let loudnessY=[];
 let positivityCor=[];
 
-var previewShare = document.createElement("div");
-var cruz = document.createElement("div");
-var botaoDownload = document.createElement("div");
-
-
-
 function preload() {
     userPlaylists = loadJSON('php/' + userid + '-playlist-object.json');
     user = loadJSON('php/' + userid + '-user-object.json');
@@ -90,10 +84,12 @@ document.querySelector('.fechar-info').addEventListener('click', fecharPopupInfo
 
 function abrirPopupInfo(){
     document.querySelector('.popup-info').style.display = "block";
+    document.querySelector('.overlay').classList.remove('hide');
 }
 
 function fecharPopupInfo(){
     document.querySelector('.popup-info').style.display = "none";
+    document.querySelector('.overlay').classList.add('hide');
 }
 
 
